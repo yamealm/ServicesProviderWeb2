@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="/WEB-INF/tld/core.dsp.tld" prefix="c" ?>
+<?page title="${c:l('sp.crud.profile.admin')}"?>
+<?link rel="icon" tye="image/x-icon" href="/images/favicon.ico"?>
+<?init class="com.alodiga.services.provider.web.security.InitiatorLoggedUser" ?>
+<zk xmlns:n="native">
+    <window id="winAdminProfile" width="100%" height="100%" apply="com.alodiga.services.provider.web.controllers.AdminTransactionController" class="general-window">
+        <style src="/css/general.css"/>
+        <borderlayout width="100%" height="100%" class="content-transparent">
+            <north border="none" size="52px" class="content-transparent">
+                <include src="adminHeader.zul"/>
+            </north>
+            <center border="none" flex="true" class="content-transparent" autoscroll="true">
+                <div align="center" >
+                    <hlayout >
+                        <div></div>
+                        <div width="1200px" align="left" height="850px">
+                            <hlayout>
+                                <div>
+                                    <include src="adminMainMenu.zul"/>
+                                </div>
+                                <div width="900px">
+                                    <vlayout>
+                                        <div height="20px" width="100%" align="left">
+                                            <!--Bread crumb-->
+                                            <hlayout>
+                                                <toolbarbutton label="${c:l('sp.bread.crumb.home')}" onClick='Executions.sendRedirect(&quot;home-admin.zul&quot;)'/>
+                                                 |
+                                                <toolbarbutton label="${c:l('sp.crud.transaction.list')}" onClick='Executions.sendRedirect(&quot;listTransactions.zul&quot;)'/>
+                                                 |
+                                                <toolbarbutton id="tbbCurrentAction" />
+                                            </hlayout>
+                                        </div>
+                                        <div height="5px" width="100%" style="background:#333;" align="left"></div>
+                                        <div>
+                                            <vlayout>
+                                                <label value="${c:l('sp.common.data.basic')}" sclass="lblbold"/>
+                                                <grid fixedLayout="true">
+                                                    <columns>
+                                                        <column label="" width="200px"/>
+                                                        <column label="" width="690px"/>
+                                                    </columns>
+                                                    <rows>
+                                                        <row>
+                                                            <label value="${c:l('sp.common.number')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <label id="lblNumber" width="320px" />
+                                                            </hlayout>
+                                                        </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.common.login')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <label id="lblLogin" width="320px" />
+                                                            </hlayout>
+                                                        </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.common.name')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <label id="lblName" width="320px"/>
+                                                            </hlayout>
+                                                        </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.common.type')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <label id="cmbTransactionType" width="190px"/>
+                                                            </hlayout>
+                                                        </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.common.creationDate')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <label id="dtbCreationDate" width="80px"/>
+                                                            </hlayout>
+                                                        </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.transaction.total.amount')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <label id="dbxAmount" width="320px"/>
+                                                                <separator/>
+                                                            </hlayout>
+                                                        </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.transaction.taxAmount.total')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <label id="dbxTaxAmount" width="320px"/>
+                                                                <separator/>
+                                                            </hlayout>
+                                                        </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.transaction.promotionAmount.total')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <label id="dbxPromotionAmount" width="320px"/>
+                                                            </hlayout>
+                                                        </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.common.status')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <label id="lblStatus" width="320px" />
+                                                            </hlayout>
+                                                        </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.common.description')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <label id="lblDescription" width="320px" />
+                                                            </hlayout>
+                                                        </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.common.additionalDetails')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <label id="lblAditional" width="320px" />
+                                                            </hlayout>
+                                                        </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.common.external')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <label id="lblExternalId" width="320px" />
+                                                            </hlayout>
+                                                        </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.product.referenceCode')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <label id="lblReferenceCode" width="320px" />
+                                                            </hlayout>
+                                                        </row>
+                                                        <row id="rowrechargeid" visible="false">
+                                                            <label value="${c:l('sp.common.RechargeId')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <label id="lblRechargeId" width="320px" />
+                                                            </hlayout>
+                                                        </row>
+                                                        <row id="rowpinserial" visible="false">
+                                                            <label value="${c:l('sp.purchase.balance.pinserial')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <label id="lblPinSerial" width="320px" />
+                                                            </hlayout>
+                                                        </row>
+                                                    </rows>
+                                                </grid>
+                                            </vlayout>
+                                        </div>
+                                        <separator/>
+                                         <div id="divTopup" visible="false">
+                                            <vlayout>
+                                                <label value="${c:l('sp.common.details.product')}" sclass="lblbold"/>
+                                                <grid fixedLayout="true">
+                                                    <columns>
+                                                        <column label="" width="200px"/>
+                                                        <column label="" width="690px"/>
+                                                    </columns>
+                                                    <rows>
+                                                        <row>
+                                                            <label value="${c:l('sp.preference.id')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <label id="lblId" width="320px" />
+                                                            </hlayout>
+                                                        </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.common.name')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <label id="lblNameTopup" width="320px" />
+                                                            </hlayout>
+                                                        </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.common.description')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <label id="lblDescriptionTopup" width="320px" />
+                                                            </hlayout>
+                                                        </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.common.mobileOperator')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <label id="lblmobileOperator" width="320px" />
+                                                            </hlayout>
+                                                        </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.common.provider')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <label id="lblProvider" width="320px" />
+                                                            </hlayout>
+                                                        </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.common.denominations')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <label id="lblDenominations" width="320px" />
+                                                            </hlayout>
+                                                        </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.common.commissions')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <label id="lblCommissions" width="320px" />
+                                                            </hlayout>
+                                                        </row>
+                                                         <row>
+                                                            <label value="${c:l('sp.common.creationDate')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <label id="lblCreationDate" width="320px" />
+                                                            </hlayout>
+                                                        </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.common.referenceCode')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <label id="lblReferenceCodeTopup" width="320px" />
+                                                            </hlayout>
+                                                        </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.common.status')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <label id="lblStatusTopup" width="320px" />
+                                                            </hlayout>
+                                                        </row>
+                                                    </rows>
+                                                </grid>
+                                            </vlayout>
+                                        </div>
+
+                                         <div id="divBillpayment" visible="false">
+                                            <vlayout>
+                                                <label value="${c:l('sp.common.details.product')}" sclass="lblbold"/>
+                                                <grid fixedLayout="true">
+                                                    <columns>
+                                                        <column label="" width="200px"/>
+                                                        <column label="" width="690px"/>
+                                                    </columns>
+                                                     <rows>
+                                                        <row>
+                                                            <label value="${c:l('sp.preference.id')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <label id="lblIdBillpayment" width="320px" />
+                                                            </hlayout>
+                                                        </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.common.name')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <label id="lblNameBillpayment" width="320px" />
+                                                            </hlayout>
+                                                        </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.common.description')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <label id="lblDescriptionBillpayment" width="320px" />
+                                                            </hlayout>
+                                                        </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.common.referenceCode')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <label id="lblReferenceCodeBillpayment" width="320px" />
+                                                            </hlayout>
+                                                        </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.common.provider')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <label id="lblProviderBillpayment" width="320px" />
+                                                            </hlayout>
+                                                        </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.common.country')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <label id="lblCountry" width="320px" />
+                                                            </hlayout>
+                                                        </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.common.exchangeRate')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <label id="lblexchangeRate" width="320px" />
+                                                            </hlayout>
+                                                        </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.common.minAmount')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <label id="lblMinAmount" width="320px" />
+                                                            </hlayout>
+                                                        </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.common.maxAmount')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <label id="lblMaxAmount" width="320px" />
+                                                            </hlayout>
+                                                        </row>
+                                                         <row>
+                                                            <label value="${c:l('sp.common.currency')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <label id="lblcurrencyCode" width="320px" />
+                                                            </hlayout>
+                                                        </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.common.status')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <label id="lblStatusBillpayment" width="320px" />
+                                                            </hlayout>
+                                                        </row>
+                                                    </rows>
+                                                </grid>
+                                            </vlayout>
+                                        </div>
+
+
+                                        <div id="divInfo" height="20px" width="100%" style="background:#B6E59E;" align="left" visible="false"/>
+                                        <!--Buttons-->
+                                        <div align="right">
+<!--                                            <button  id="btnSave" width="150px" label="${c:l('sp.common.actions.save')}" class="open orange"/>-->
+                                            <button  id="btnBack" width="150px" label="${c:l('sp.common.actions.back')}" class="open gray" onClick="Executions.sendRedirect(&quot;listTransactions.zul&quot;)"/>
+                                        </div>
+                                    </vlayout>
+                                </div>
+                                <div></div>
+                            </hlayout>
+                        </div>
+                        <div></div>
+                    </hlayout>
+                </div>
+            </center>
+            <south border="none" size="40px">
+                <include src="adminFooter.zul"/>
+            </south>
+        </borderlayout>
+    </window>
+</zk>

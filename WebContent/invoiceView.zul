@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="/WEB-INF/tld/core.dsp.tld" prefix="c" ?>
+<?page title="${c:l('sp.page.title')}"?>
+<?link rel="icon" type="image/x-icon" href="/images/favicon.ico"?>
+<?init class="com.alodiga.services.provider.web.security.InitiatorLoggedAccount" ?>
+<zk>
+    <style src="/css/general.css"/>
+    <window apply="com.alodiga.services.provider.web.controllers.InvoiceViewController" width="100%" height="100%" >
+
+        <div align="center">
+
+            <hlayout>
+                <div></div>
+                <div width="670px">
+                    <div width="660px" align="left">
+                        <hlayout>
+                            <div width="100px">
+                                <image src="/images/img-alodiga-logo.png" style="cursor:pointer" />
+                            </div>
+                            <div width="550px"></div>
+                        </hlayout>
+
+                        <div align="center">
+                            <separator/>
+                            <div width="100%" style="background: -webkit-gradient(linear, left top, left bottom, from(#E8BE01), to(#FDB813));">
+                                <label value="${c:l('sp.common.details.purchase')}" sclass="lblbold"/>
+                            </div>
+                            <vlayout>
+                                <grid fixedLayout="true" width="650px">
+                                    <columns>
+                                        <column label="" width="300px"/>
+                                        <column label="" width="340px"/>
+                                    </columns>
+                                    <rows>
+                                        <row >
+                                            <label value="${c:l('sp.purchase.balance.transactionNumber')}" sclass="lblbold"/>
+                                            <label id="lblTransactionNumber1"/>
+                                        </row>
+                                        <row>
+                                            <label value="${c:l('sp.common.date')}" sclass="lblbold"/>
+                                            <label id="lblDate1" />
+                                        </row>
+
+                                        <row >
+                                            <label value="${c:l('sp.purchase.balance.transactionTax')}" sclass="lblbold"/>
+                                            <label id="lblTax1" />
+                                        </row>
+                                        <row>
+                                            <label value="${c:l('sp.purchase.balance.totalTransaction')}" sclass="lblbold"/>
+                                            <label id="lblTransactionAmount1" />
+                                        </row>
+                                        <row id="row1" visible="false">
+                                            <label value="${c:l('sp.purchase.balance.promotionalAmount')}" sclass="lblbold"/>
+                                            <label id="lblPromotionalAmount1" />
+                                        </row>
+                                        <row id="row2" visible="false">
+                                            <label value="${c:l('sp.purchase.balance.realAmount')}" sclass="lblbold"/>
+                                            <label id="lblRealAmount1" />
+                                        </row>
+                                        <row id="row3" visible="false">
+                                            <label value="${c:l('sp.purchase.balance.alopointsUsed')}" sclass="lblbold"/>
+                                            <label id="UsedlblAlopoint1" />
+                                        </row>
+                                    </rows>
+                                </grid>
+                                <separator/>
+                                <div width="100%" style="background: -webkit-gradient(linear, left top, left bottom, from(#E8BE01), to(#FDB813));">
+
+                                    <label value="${c:l('sp.purchase.data.product')}" sclass="lblbold"/>
+                                </div>
+                                <vlayout id="vltPinOperations" visible="false">
+                                    <grid fixedLayout="true" width="650px">
+                                        <columns>
+                                            <column label="" width="300px"/>
+                                            <column label="" width="340px"/>
+                                        </columns>
+                                        <rows>
+                                            <row>
+                                                <label value="${c:l('sp.product.title')}" sclass="lblbold"/>
+                                                <label id="lblProductValue1"/>
+                                            </row>
+                                            <row>
+                                                <label value="${c:l('sp.common.principalPhoneNumber')}" sclass="lblbold"/>
+                                                <label id="lblPhoneNumberValue1" />
+                                            </row>
+                                            <row>
+                                                <label value="${c:l('sp.purchase.balance.pinserial')}" sclass="lblbold"/>
+                                                <label id="lblSerial1" />
+                                            </row>
+                                            <row>
+                                                <label value="${c:l('sp.purchase.balance.promotionalSecret')}" sclass="lblbold"/>
+                                                <label id="lblSecret1" />
+                                            </row>
+                                        </rows>
+                                    </grid>
+                                </vlayout>
+                                <vlayout id="vltTopUp" visible="false">
+                                    <grid fixedLayout="true" width="650px">
+                                        <columns>
+                                            <column label="" width="300px"/>
+                                            <column label="" width="340px"/>
+                                        </columns>
+                                        <rows>
+                                            <row>
+                                                <label value="${c:l('sp.product.title')}" sclass="lblbold"/>
+                                                <label id="lblProductValue3"/>
+                                            </row>
+                                            <row>
+                                                <label value="${c:l('sp.common.country')}" sclass="lblbold"/>
+                                                <label id="lblCountry1" width="550px"/>
+                                            </row>
+                                            <row>
+                                                <label value="${c:l('sp.common.mobileOperator')}" sclass="lblbold"/>
+                                                <label id="lblMobileOperator" width="550px"/>
+                                            </row>
+
+                                            <row>
+                                                <label value="${c:l('sp.common.phoneNumber')}" sclass="lblbold"/>
+                                                <label id="lblPhoneNumber" width="550px"/>
+                                            </row>
+                                            <row id="rowAdditional" visible="false">
+                                                <label value="${c:l('sp.recharge.product.additional')}" sclass="lblbold"/>
+                                                <label id="lblAdditional" width="550px"/>
+                                            </row>
+                                        </rows>
+                                    </grid>
+                                </vlayout>
+                                <vlayout id="vltPurchaseBalance" visible="false">
+                                    <grid fixedLayout="true" width="650px">
+                                        <columns>
+                                            <column label="" width="300px"/>
+                                            <column label="" width="340px"/>
+                                        </columns>
+                                        <rows>
+                                            <row>
+                                                <label value="${c:l('sp.product.title')}" sclass="lblbold"/>
+                                                <label id="lblProductValue2"/>
+                                            </row>
+                                            <row>
+                                                <label value="${c:l('sp.recharge.creditCard.type')}" sclass="lblbold"/>
+                                                <label id="lblInvCCType"/>
+                                            </row>
+                                            <row>
+                                                <label value="${c:l('sp.recharge.creditCard.name')}" sclass="lblbold"/>
+                                                <label id="lblInvCCName"/>
+                                            </row>
+                                            <row>
+                                                <label value="${c:l('sp.recharge.creditCard.number')}" sclass="lblbold"/>
+                                                <label id="lblInvCCNumber"/>
+                                            </row>
+                                        </rows>
+                                    </grid>
+                                </vlayout>
+                                <vlayout id="vltBillPayment" visible="false">
+                                    <grid fixedLayout="true" width="650px">
+                                        <columns>
+                                            <column label="" width="300px"/>
+                                            <column label="" width="340px"/>
+                                        </columns>
+                                        <rows>
+                                            <row>
+                                                <label value="${c:l('sp.product.title')}" sclass="lblbold"/>
+                                                <label id="lblProductValue4"/>
+                                            </row>
+                                            <row>
+                                                <label value="${c:l('sp.bill.payment.service')}" sclass="lblbold"/>
+                                                <label id="lblBillProductName"/>
+                                            </row>
+                                            <row>
+                                                <label value="${c:l('sp.bill.payment.account.number')}" sclass="lblbold"/>
+                                                <label id="lblAccountNumber"/>
+                                            </row>
+                                            <row>
+                                                <label value="${c:l('sp.bill.payment.amount')}" sclass="lblbold"/>
+                                                <label id="lblAmount"/>
+                                            </row>
+                                            <row>
+                                                <label value="${c:l('sp.bill.payment.authenticationKey')}" sclass="lblbold"/>
+                                                <label id="lblAuthenticationKey"/>
+                                            </row>
+                                            <row>
+                                                <label value="${c:l('sp.bill.payment.exchangeRate')}" sclass="lblbold"/>
+                                                <label id="lblExchangeRate"/>
+                                            </row>
+                                            <row>
+                                                <label value="${c:l('sp.bill.payment.dollar')}" sclass="lblbold"/>
+                                                <label id="lblTotalDollar"/>
+                                            </row>
+                                        </rows>
+                                    </grid>
+                                </vlayout>
+                                <button id="btnClose" visible="false" width="150px" image="/images/icon-cancel.png" label="${c:l('sp.common.close')}"/>
+                            </vlayout>
+                        </div>
+                    </div>
+                </div>
+                <div></div>
+            </hlayout>
+        </div>
+
+    </window>
+</zk>

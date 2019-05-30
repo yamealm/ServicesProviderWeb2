@@ -1,0 +1,18 @@
+START TRANSACTION;
+
+SELECT @enterpriseId := 1;
+SELECT @languageEs := 1; # ESPAÃ‘OL
+
+INSERT INTO `SISAC`.`web_user` VALUES (null,@languageEs,@enterpriseId,null,'multiLevelMaster','e7d6db99c8e422c9f7961b59cdde94ba','2012-03-22','2012-03-22',null,null,0,1,1);
+SELECT @webUserId := LAST_INSERT_ID();
+
+INSERT INTO `SISAC`.`address` VALUES (null,445,9346,1389,47,null,null,'Multilevel Alley','','33130',null,null,null,null);
+SELECT @addressId := LAST_INSERT_ID();
+
+INSERT INTO `SISAC`.`customer` (id,enterpriseId,addressId,tin,name,lastName,balance,phone,email,created,tinType)
+VALUES (null,@enterpriseId,@addressId,999555111,'Multilevel','Master',0,'17864120257','desarrollo@opextel.com','2012-03-22','GEN');
+SELECT @customerId := LAST_INSERT_ID();
+
+INSERT INTO `SISAC`.`customer_has_web_user` VALUES (null,@customerId,@webUserId,1,'2012-03-22',null);
+
+COMMIT;

@@ -1,0 +1,45 @@
+#23-03-2012 Scripts de creaciÃ³n de servicio DISTRIBUTION PINLINE y el WebUser por defecto que representarÃ¡ la entidad asociativa de los pines de distribuciÃ³n
+
+START TRANSACTION;
+
+SELECT @serviceFamilyId := 5; #CALLING CARD - PINLINE
+SELECT @segmentId := 2; # RESIDENCIAL
+SELECT @currencyId := 2; # DÃ“LAR
+SELECT @languageEs := 1; # ESPAÃ‘OL
+SELECT @languageEn := 2; # INGLÃ‰S
+SELECT @customServiceName := 'MultiLevel Pinline';
+SELECT @pinLineServiceUSA := 12; # Servicio Pinline USA
+SELECT @expirationType := 4; # Vencimiento que se usa en general para los pines
+
+# Se inserta el servicio nuevo
+INSERT INTO `SISAC`.`service` VALUES (null,@serviceFamilyId,@segmentId,'MULTILEVEL PINLINE','Servicio Pinline para el site de multinivel',0,0,1,null,2147483647,0,100,null);
+SELECT @serviceId := LAST_INSERT_ID();
+
+#Se crea un Custom Service asociado a ese servicio
+INSERT INTO `SISAC`.`custom_service` VALUES (null,@customServiceName,@serviceId,null,null,@currencyId,1,0,0,0,null,0);
+SELECT @customServiceId := LAST_INSERT_ID();
+
+#Necesario para que aparezca eventualmente en alguno de los sites, asÃ­ eso no se plantee nunca
+INSERT INTO `SISAC`.`custom_service_data` (id,customServiceId,languageId,alias,shortName,summary,description,rollOverImage,rollOutImage,rightImage,configProductImage,xmlFile) VALUES
+(null,@customServiceId,@languageEs,@customServiceName,@customServiceName,'','','','','','','');
+INSERT INTO `SISAC`.`custom_service_data` (id,customServiceId,languageId,alias,shortName,summary,description,rollOverImage,rollOutImage,rightImage,configProductImage,xmlFile) VALUES
+(null,@customServiceId,@languageEn,@customServiceName,@customServiceName,'','','','','','','');
+
+#Se obtiene la lista de precios de terminaciÃ³n de Pinline para asociarla al plan del servicio nuevo
+SELECT @terminationPriceListId := (SELECT id FROM `SISAC`.`termination_price_list` WHERE serviceId = @pinLineServiceUSA);
+
+#Nuevo plan
+INSERT INTO `SISAC`.`plan` VALUES (null,@currencyId,@serviceId,@terminationPriceListId,null,'Plan MultiLevel Pinline','Plan MultiLevel Pinline',1,0,null,'2012-03-22',1,0,2,0,1,null);
+
+#Se asignan al servicio todos los nÃºmeros de acceso de los que disponga Pinline USA
+INSERT INTO `SISAC`.`service_has_dn`
+SELECT null,@serviceId, dnId FROM `SISAC`.`service_has_dn` WHERE serviceId = @pinLineServiceUSA;
+
+#Se asignan los tipos de aprovisionamiento de los que disponga Pinline USA
+INSERT INTO `SISAC`.`service_has_provision_type`
+SELECT null, @serviceId, provisionTypeId FROM `SISAC`.`service_has_provision_type` WHERE serviceId = @pinLineServiceUSA;
+
+#Se crea el lote por defecto de generacion de pines asociado al servicio
+INSERT INTO `SISAC`.`lot` VALUES (null,@serviceId,@expirationType,'Lote de generaciin dinamica de tarjetas MultiLevel pinline','2012-03-22',1,'2012-03-22',null,120);
+
+COMMIT;

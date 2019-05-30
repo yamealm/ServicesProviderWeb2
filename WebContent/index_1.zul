@@ -1,0 +1,9 @@
+<?page title="Auto Generated index.zul"?>
+<window title="Hello World!!" border="normal" width="200px" apply="tes.com.FileController">
+
+<label value="You are using: ${desktop.webApp.version}"/>
+
+
+<button label="seleccione" upload="true" id="btnUpload" height="30px"  width="180px"/>
+
+</window>

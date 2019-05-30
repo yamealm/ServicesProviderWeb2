@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="/WEB-INF/tld/core.dsp.tld" prefix="c" ?>
+<?page title="${c:l('sp.common.page.title')}"?>
+<?link rel="icon" tye="image/x-icon" href="/images/favicon.ico"?>
+<?init class="com.alodiga.services.provider.web.security.InitiatorLoggedDistributor"?>
+<zk xmlns:n="native">
+    <window width="100%" height="100%" class="general-window" apply="com.alodiga.services.provider.web.controllers.HomeController">
+        <style src="/css/general.css"/>
+        <borderlayout width="100%" height="100%" class="content-transparent">
+            <north border="none" size="62px" class="content-transparent">
+                <include src="header.zul"/>
+            </north>
+            <center border="none" flex="true" class="content-transparent" autoscroll="true">
+                <div align="center">
+                    <hlayout>
+                        <div></div>
+                        <div width="1100px" height="950px" align="left">
+                            <hlayout>
+                                <div  width="230px">
+                                    <vlayout>
+                                        <include src="distributorMainMenu.zul"/>
+                                    
+                                    </vlayout>
+                                </div>
+                                <div width="870px" height="940px">
+                                    <vlayout>
+                                        <vlayout>
+                                            <div height="23px" width="100%" align="left">
+                                                <separator/>
+                                <!--Bread crumb-->
+                                                <hlayout>
+                                                <label value="${c:l('sp.home.main.panel')}" sclass="lblbold"/>
+                                                </hlayout>
+                                            </div>
+                                            <div height="5px" width="100%" style="background:rgb(88, 88, 88);" align="left"></div>
+                                            <separator/>
+                                        </vlayout>
+                                        <groupbox mold="3d" width="860px">
+                                            <hlayout>
+                                                <vlayout>
+                                                    <label value="${c:l('sp.home.total.info')}" sclass="lblbold"/>
+                                                    <hlayout>
+                                                        <chart id="chtSales" width="300" height="170" fgAlpha="192" orient="horizontal" paneColor="#ffffff" bgColor="#ffffff" type="bar" threeD="true"/>
+                                                        <grid id="grdSummary" width="300px">
+                                                            <columns>
+                                                                <column width="210px"><label value="${c:l('sp.home.category')}"/></column>
+                                                                <column width="90px"><label value="${c:l('sp.home.amount')}" /></column>
+                                                            </columns>
+                                                            <rows>
+                                                                <row>
+                                                                    <label value="${c:l('sp.home.total.pinOperations')}" sclass="lblbold"/>
+                                                                    <label id="lblTotalPinAmount" />
+                                                                </row>
+                                                                <row>
+                                                                    <label value="${c:l('sp.home.commissions.pinOperations')}" sclass="lblbold"/>
+                                                                    <label id="lblTotalPinCommission" />
+                                                                </row>
+                                                                <row>
+                                                                    <label value="${c:l('sp.home.total.topUps')}" sclass="lblbold" />
+                                                                    <label id="lblTotalTopUpAmount" />
+                                                                </row>
+                                                                <row>
+                                                                    <label value="${c:l('sp.home.commission.topUps')}" sclass="lblbold" />
+                                                                    <label id="lblTotalTopUpCommission" />
+                                                                </row>
+                                                            </rows>
+                                                        </grid>
+                                                    </hlayout>
+                                                </vlayout>
+                                                <vlayout>
+                                                    <label value="${c:l('sp.home.goal.info')}" sclass="lblbold"/>
+                                                    <chart id="chtGoal" width="220" height="170" fgAlpha="192" orient="horizontal" paneColor="#ffffff" bgColor="#ffffff" type="bar" threeD="true"/>
+                                                </vlayout>
+                                            </hlayout>
+                                        </groupbox>
+                                        <separator/>
+                                        <hlayout>
+                                            <div height="230px" width="100%" align="left">
+                                                <label id="lblTransactions" value="${c:l('sp.preference.transaction.last')}" sclass="lblbold"/>
+                                                <separator/>
+                                                <listbox id="lbxTransactions" fixedLayout="true" width="860px" height="200px" mold="paging">
+                                                    <listhead>
+                                                        <listheader label="${c:l('sp.common.number')}" width="80px" sort="auto"/>
+                                                        <listheader label="${c:l('sp.common.userType')}" width="170px"/>
+                                                        <listheader label="${c:l('sp.promotion.type.date')}" width="150px"/>
+                                                        <listheader label="${c:l('sp.transaction.amount')}" width="80px"/>
+                                                        <listheader label="${c:l('sp.common.alopoint')}" width="80px"/>
+                                                        <listheader label="${c:l('sp.purchase.balance.points')}" width="80px"/>
+                                                        <listheader label="${c:l('sp.purchase.balance.discount')}" width="90px"/>
+                                                        <listheader label="-" width="100px" align="center"/>
+                                                    </listhead>
+                                                </listbox>
+                                            </div>
+                                        </hlayout>
+                                        <hlayout>
+                                            <div height="700px" width="530px" align="left">
+                                                <separator/>
+                                                <vlayout>
+                                                    
+                                                    <label id="lblpromotions" value="${c:l('sp.transaction.promotion.last')}" sclass="lblbold"/>
+                                                    <separator/>
+                                                    <listbox id="lbxpromotions" fixedLayout="true" width="520px" height="150px" mold="paging">
+                                                        <listhead>
+                                                            <listheader label="${c:l('sp.promotion.title')}" width="148px"/>
+                                                            <listheader label="${c:l('sp.promotion.type.date')}" width="108px"/>
+                                                            <listheader label="${c:l('sp.promotion.type.product')}" width="148px"/>
+                                                            <listheader label="${c:l('sp.common.amount.allocated')}" width="108px" sort="auto"/>
+                                                        </listhead>
+                                                    </listbox>
+                                                    <separator/>
+                                                    <label id="lblRoyalties" value="${c:l('sp.common.royalty.month')}" sclass="lblbold"/>
+                                                    <separator/>
+                                                    <listbox id="lbxRoyalties" fixedLayout="true" width="520px" height="150px" mold="paging">
+                                                        <listhead>
+                                                            <listheader label="${c:l('sp.promotion.type.date')}" width="172px"/>
+                                                            <listheader label="${c:l('sp.common.bonificationAmount')}" width="172px"/>
+                                                            <listheader label="${c:l('sp.common.assignment.type')}" width="172px"/>
+                                                        </listhead>
+                                                    </listbox>
+                                                </vlayout>
+                                                
+                                            </div>
+                                            <div height="800px" width="330px" align="right">
+                                                <iframe src="/html/apiTwitter.html" width="320px" height="370px"> </iframe>
+                                            </div>
+                                        </hlayout>
+
+
+                                    </vlayout>
+                                </div>
+                                <div></div>
+                            </hlayout>
+                        </div>
+                        <div></div>
+                    </hlayout>
+                </div>
+            </center>
+            <south border="none" size="40px">
+                <include src="adminFooter.zul"/>
+            </south>
+        </borderlayout>
+    </window>
+</zk>
