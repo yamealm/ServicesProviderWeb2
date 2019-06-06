@@ -160,7 +160,7 @@ public class ListAccountsController extends GenericAbstractListController<Accoun
             account.setEnabled(!account.getEnabled());
             listItem.setValue(account);
             request.setParam(account);
-            userEJB.saveAccount(request);
+//            userEJB.saveAccount(request);
             AccessControl.saveAction(Permission.CHANGE_ACCOUNT_STATUS, "changeStatus account = " + account.getId() + " to status = " + !account.getEnabled());
 
         } catch (Exception ex) {
@@ -207,18 +207,18 @@ public class ListAccountsController extends GenericAbstractListController<Accoun
 
     public void getData() {
         accounts = new ArrayList<Account>();
-        try {
-            request.setFirst(0);
-            request.setLimit(null);
-//            request.setAuditData(AccessControl.getCurrentAudit());
-            accounts = userEJB.getAccounts(request);
-        } catch (NullParameterException ex) {
-            showError(ex);
-        } catch (EmptyListException ex) {
-            //lblInfo.setValue(Labels.getLabel("error.empty.list"));
-        } catch (GeneralException ex) {
-            showError(ex);
-        }
+//        try {
+//            request.setFirst(0);
+//            request.setLimit(null);
+////            request.setAuditData(AccessControl.getCurrentAudit());
+////            accounts = userEJB.getAccounts(request);
+//        } catch (NullParameterException ex) {
+//            showError(ex);
+//        } catch (EmptyListException ex) {
+//            //lblInfo.setValue(Labels.getLabel("error.empty.list"));
+//        } catch (GeneralException ex) {
+//            showError(ex);
+//        }
     }
 
     public void onClick$btnDownload() throws InterruptedException {
@@ -245,7 +245,7 @@ public class ListAccountsController extends GenericAbstractListController<Accoun
             Long enterpriseId = ((Enterprise) cmbEnterprises.getSelectedItem().getValue()).getId();
             String enabled = (String) cmbStatus.getSelectedItem().getValue();
 
-            loadList(userEJB.searchAccounts(enterpriseId, login, fullName, email,enabled));
+//            loadList(userEJB.searchAccounts(enterpriseId, login, fullName, email,enabled));
         } catch (Exception ex) {
             //showError(ex);
             ex.printStackTrace();

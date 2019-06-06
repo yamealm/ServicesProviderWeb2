@@ -52,7 +52,7 @@ import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 
 import com.alodiga.services.provider.commons.ejbs.CustomerEJB;
-import com.alodiga.services.provider.commons.ejbs.ProductEJB;
+//import com.alodiga.services.provider.commons.ejbs.ProductEJB;
 import com.alodiga.services.provider.commons.ejbs.ReportEJB;
 import com.alodiga.services.provider.commons.ejbs.UserEJB;
 import com.alodiga.services.provider.commons.genericEJB.AbstractSPEntity;
@@ -78,7 +78,7 @@ public class ManagementAdminReportController extends GenericAbstractController {
     private ReportEJB reportEJB = null;
     private UserEJB userEJB = null;
     private CustomerEJB customerEJB = null;
-    private ProductEJB productEJB = null;
+//    private ProductEJB productEJB = null;
     protected Grid gridParams;
     protected Rows filasParams;
     protected Row rowInsumo;

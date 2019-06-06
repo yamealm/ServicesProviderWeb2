@@ -71,11 +71,11 @@ public class IndexViewController extends GenericAbstractController {
         if (validateEmptyRecover()) {
             try {
                 Account account = null;
-                account = userEJB.loadAccountByLogin(txtLoginRecover.getText());
+//                account = userEJB.loadAccountByLogin(txtLoginRecover.getText());
                 AccessControl.generateNewPassword(null, account, false);
                 lblInfo02.setValue(Labels.getLabel("sp.common.recoveryPassword.success"));
-            } catch (RegisterNotFoundException ex) {
-                lblInfo02.setValue(Labels.getLabel("sp.common.recoveryPassword.notFound"));
+//            } catch (RegisterNotFoundException ex) {
+//                lblInfo02.setValue(Labels.getLabel("sp.common.recoveryPassword.notFound"));
             } catch (Exception ex) {
                 lblInfo02.setValue(Labels.getLabel("sp.error.general"));
             }

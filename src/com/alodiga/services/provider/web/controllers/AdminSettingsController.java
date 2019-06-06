@@ -1,7 +1,7 @@
 package com.alodiga.services.provider.web.controllers;
 
 import com.alodiga.services.provider.commons.ejbs.PreferencesEJB;
-import com.alodiga.services.provider.commons.ejbs.ProductEJB;
+//import com.alodiga.services.provider.commons.ejbs.ProductEJB;
 import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
 import com.alodiga.services.provider.commons.exceptions.GeneralException;
 import com.alodiga.services.provider.commons.genericEJB.AbstractSPEntity;
@@ -41,7 +41,7 @@ public class AdminSettingsController extends GenericAbstractController implement
     private Textbox txtMaxPromotionalTransactionLimit;
     private PreferencesEJB preferencesEJB = null;
     private UtilsEJB utilsEJB = null;
-    private ProductEJB productEJB = null;
+//    private ProductEJB productEJB = null;
     private List<Period> periods = new ArrayList<Period>();
     private Combobox cmbPeriods;
     private Button btnSave;
@@ -80,7 +80,7 @@ public class AdminSettingsController extends GenericAbstractController implement
         try {
             preferencesEJB = (PreferencesEJB) EJBServiceLocator.getInstance().get(EjbConstants.PREFERENCES_EJB);
             utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
-            productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
+//            productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
             loadEnterprises();
             onChange$cmbEnterprises();
             if (eventType != null && eventType == WebConstants.EVENT_VIEW) {
@@ -148,7 +148,7 @@ public class AdminSettingsController extends GenericAbstractController implement
             List<Provider> providers = new ArrayList<Provider>();
             EJBRequest r = new EJBRequest();
             r.setLimit(1000);
-            providers = productEJB.getSMSProviders(r);
+//            providers = productEJB.getSMSProviders(r);
             cmbDefaultSMSProvider.getItems().clear();
             for (Provider provider : providers) {
                 Comboitem item = new Comboitem();

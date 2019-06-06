@@ -15,7 +15,7 @@ import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Textbox;
 
 import com.alodiga.services.provider.commons.ejbs.BillingsEJB;
-import com.alodiga.services.provider.commons.ejbs.ProductEJB;
+//import com.alodiga.services.provider.commons.ejbs.ProductEJB;
 import com.alodiga.services.provider.commons.ejbs.UserEJB;
 import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
 import com.alodiga.services.provider.commons.exceptions.EmptyListException;
@@ -39,7 +39,7 @@ public class ForceAdminController extends GenericAbstractListController<Product>
     private static final long serialVersionUID = -9145887024839938515L;
     private Listbox lbxRecords;
     private Textbox txtAlias;
-    private ProductEJB productEJB;
+//    private ProductEJB productEJB;
     private List<Product> products ;
     private User currentUser;
     private Profile currentProfile;
@@ -87,7 +87,7 @@ public class ForceAdminController extends GenericAbstractListController<Product>
 
         try {
             adminPage = "listInvoices.zul";
-            productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
+//            productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
             utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
             userEJB = (UserEJB) EJBServiceLocator.getInstance().get(EjbConstants.USER_EJB);
 //            transactionEJB=(TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
@@ -150,7 +150,7 @@ public class ForceAdminController extends GenericAbstractListController<Product>
             product.setEnabled(!product.getEnabled());
             listItem.setValue(product);
             request.setParam(product);
-            productEJB.saveProduct(request);
+//            productEJB.saveProduct(request);
             AccessControl.saveAction(Permission.CHANGE_PRODUCT_STATUS, "changeStatus product = " + product.getId() + " to status = " + !product.getEnabled());
 
         } catch (Exception ex) {
@@ -159,18 +159,18 @@ public class ForceAdminController extends GenericAbstractListController<Product>
     }
 
     public void getData() {
-        products = new ArrayList<Product>();
-        try {
-            request.setFirst(0);
-            request.setLimit(null);
-            request.setAuditData(null);
-            products = productEJB.getProducts(request);
-        } catch (NullParameterException ex) {
-            showError(ex);
-        } catch (EmptyListException ex) {
-        } catch (GeneralException ex) {
-            showError(ex);
-        }
+//        products = new ArrayList<Product>();
+//        try {
+//            request.setFirst(0);
+//            request.setLimit(null);
+//            request.setAuditData(null);
+////            products = productEJB.getProducts(request);
+//        } catch (NullParameterException ex) {
+//            showError(ex);
+//        } catch (EmptyListException ex) {
+//        } catch (GeneralException ex) {
+//            showError(ex);
+//        }
     }
 
     public void onClick$btnClear() throws InterruptedException {

@@ -61,7 +61,7 @@ public class EditPasswordViewController extends GenericAbstractAdminController {
                         account.setAccountPassword(Encoder.MD5(txtNewPassword1.getText()));
                         UserEJB userEJB = (UserEJB) EJBServiceLocator.getInstance().get(EjbConstants.USER_EJB);
                         request.setParam(account);
-                        userEJB.saveAccount(request);
+//                        userEJB.saveAccount(request);
                         
                         lblInfo.setValue(Labels.getLabel("sp.common.save.update"));
                     } else {

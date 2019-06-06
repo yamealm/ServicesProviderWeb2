@@ -1,6 +1,6 @@
 package com.alodiga.services.provider.web.controllers;
 
-import com.alodiga.services.provider.commons.ejbs.ProductEJB;
+//import com.alodiga.services.provider.commons.ejbs.ProductEJB;
 import com.alodiga.services.provider.commons.exceptions.EmptyListException;
 import com.alodiga.services.provider.commons.exceptions.GeneralException;
 import com.alodiga.services.provider.commons.exceptions.NullParameterException;
@@ -39,7 +39,7 @@ public class ListProductsController extends GenericAbstractListController<Produc
     private static final long serialVersionUID = -9145887024839938515L;
     private Listbox lbxRecords;
     private Textbox txtAlias;
-    private ProductEJB productEJB = null;
+//    private ProductEJB productEJB = null;
     private List<Product> products = null;
     private User currentUser;
     private Profile currentProfile;
@@ -74,7 +74,7 @@ public class ListProductsController extends GenericAbstractListController<Produc
             currentProfile = currentUser.getCurrentProfile(Enterprise.ALODIGA_USA);
             checkPermissions();
             adminPage = "adminProduct.zul";
-            productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
+//            productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
             loadPermission(new Provider());
             startListener();
             getData();
@@ -128,7 +128,7 @@ public class ListProductsController extends GenericAbstractListController<Produc
             product.setEnabled(!product.getEnabled());
             listItem.setValue(product);
             request.setParam(product);
-            productEJB.saveProduct(request);
+//            productEJB.saveProduct(request);
             AccessControl.saveAction(Permission.CHANGE_PRODUCT_STATUS, "changeStatus product = " + product.getId() + " to status = " + !product.getEnabled());
 
         } catch (Exception ex) {
@@ -170,17 +170,17 @@ public class ListProductsController extends GenericAbstractListController<Produc
 
     public void getData() {
         products = new ArrayList<Product>();
-        try {
-            request.setFirst(0);
-            request.setLimit(null);
-            request.setAuditData(null);
-            products = productEJB.getProducts(request);
-        } catch (NullParameterException ex) {
-            showError(ex);
-        } catch (EmptyListException ex) {
-        } catch (GeneralException ex) {
-            showError(ex);
-        }
+//        try {
+//            request.setFirst(0);
+//            request.setLimit(null);
+//            request.setAuditData(null);
+//            products = productEJB.getProducts(request);
+//        } catch (NullParameterException ex) {
+//            showError(ex);
+//        } catch (EmptyListException ex) {
+//        } catch (GeneralException ex) {
+//            showError(ex);
+//        }
     }
 
     public void onClick$btnDownload() throws InterruptedException {

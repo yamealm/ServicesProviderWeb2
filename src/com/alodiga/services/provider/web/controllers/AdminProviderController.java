@@ -1,6 +1,6 @@
 package com.alodiga.services.provider.web.controllers;
 
-import com.alodiga.services.provider.commons.ejbs.ProductEJB;
+//import com.alodiga.services.provider.commons.ejbs.ProductEJB;
 import com.alodiga.services.provider.commons.models.Provider;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
@@ -19,7 +19,7 @@ public class AdminProviderController extends GenericAbstractAdminController {
     private Textbox txtURL;
     private Checkbox cbxEnabled;
     private Checkbox cbxIsSMSProvider;
-    private ProductEJB productEJB = null;
+//    private ProductEJB productEJB = null;
     private Provider providerParam;
     private Button btnSave;
     
@@ -39,12 +39,12 @@ public class AdminProviderController extends GenericAbstractAdminController {
     @Override
     public void initialize() {
         super.initialize();
-        try {
-            
-            productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
-        } catch (Exception ex) {
-            showError(ex);
-        }
+//        try {
+//            
+//            productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
+//        } catch (Exception ex) {
+//            showError(ex);
+//        }
     }
 
     public void clearFields() {
@@ -94,7 +94,7 @@ public class AdminProviderController extends GenericAbstractAdminController {
             provider.setIsSMSProvider(cbxIsSMSProvider.isChecked());
             provider.setEnabled(cbxEnabled.isChecked());
             request.setParam(provider);
-            providerParam = productEJB.saveProvider(request);
+//            providerParam = productEJB.saveProvider(request);
             providerParam = provider;
             eventType = WebConstants.EVENT_EDIT;
             this.showMessage("sp.common.save.success", false, null);

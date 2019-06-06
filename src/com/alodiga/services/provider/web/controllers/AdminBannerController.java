@@ -1,6 +1,6 @@
 package com.alodiga.services.provider.web.controllers;
 import com.alodiga.services.provider.commons.ejbs.BannerEJB;
-import com.alodiga.services.provider.commons.managers.ContentManager;
+//import com.alodiga.services.provider.commons.managers.ContentManager;
 import com.alodiga.services.provider.commons.models.Banner;
 import com.alodiga.services.provider.commons.models.BannerType;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;

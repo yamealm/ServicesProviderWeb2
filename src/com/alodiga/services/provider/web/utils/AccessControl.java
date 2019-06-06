@@ -156,13 +156,13 @@ public class AccessControl {
 
     public static boolean validateExistingDistributor(String login) throws GeneralException {
         userEJB = (UserEJB) EJBServiceLocator.getInstance().get(EjbConstants.USER_EJB);
-        try {
-            userEJB.loadAccountByLogin(login);
-        } catch (RegisterNotFoundException ex) {
-            return false;
-        } catch (Exception ex) {
-            throw new GeneralException(ex.getMessage());
-        }
+//        try {
+//            userEJB.loadAccountByLogin(login);
+//        } catch (RegisterNotFoundException ex) {
+//            return false;
+//        } catch (Exception ex) {
+//            throw new GeneralException(ex.getMessage());
+//        }
         return true;
 
     }
@@ -200,7 +200,7 @@ public class AccessControl {
                 String password = GeneralUtils.getRamdomNumber(Constants.MAX_PASSWORD_DIGITS);
                 account.setPassword(Encoder.MD5(password));
                 request.setParam(account);
-                userEJB.saveAccount(request);
+//                userEJB.saveAccount(request);
                 try {
                     SMS sms = new SMS();
                     if (isForward) {
@@ -218,7 +218,7 @@ public class AccessControl {
                     cuenta con el password que tenia previamente.*/
                     account.setPassword(oldPassword);
                     request.setParam(account);
-                    userEJB.saveAccount(request);
+//                    userEJB.saveAccount(request);
                     throw new GeneralException(ex.getMessage());
                 }
             }

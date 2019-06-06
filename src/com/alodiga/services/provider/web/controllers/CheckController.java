@@ -14,10 +14,7 @@ import com.alodiga.services.provider.commons.ejbs.BannerEJB;
 import com.alodiga.services.provider.commons.ejbs.BillingsEJB;
 import com.alodiga.services.provider.commons.ejbs.CustomerEJB;
 import com.alodiga.services.provider.commons.ejbs.PreferencesEJB;
-import com.alodiga.services.provider.commons.ejbs.ProductEJB;
 import com.alodiga.services.provider.commons.ejbs.ReportEJB;
-import com.alodiga.services.provider.commons.ejbs.ServicesEJB;
-import com.alodiga.services.provider.commons.ejbs.TransferToTimerEJB;
 import com.alodiga.services.provider.commons.ejbs.UserEJB;
 import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
 import com.alodiga.services.provider.commons.exceptions.GeneralException;
@@ -59,10 +56,7 @@ public class CheckController extends GenericAbstractController implements Generi
             ReportEJB reportEJB = (ReportEJB) EJBServiceLocator.getInstance().get(EjbConstants.REPORT_EJB);
             UserEJB userEJB = (UserEJB) EJBServiceLocator.getInstance().get(EjbConstants.USER_EJB);
             UtilsEJB utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
-            ProductEJB productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
             CustomerEJB customerEJB = (CustomerEJB) EJBServiceLocator.getInstance().get(EjbConstants.CUSTOMER_EJB);
-            ServicesEJB servicesEJB = (ServicesEJB) EJBServiceLocator.getInstance().get(EjbConstants.SERVICES_EJB);
-            TransferToTimerEJB transferToTimerEJB = (TransferToTimerEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSFER_TO_TIMER_EJB);
             BillingsEJB billingsEJB = (BillingsEJB) EJBServiceLocator.getInstance().get(EjbConstants.BILLINGS_EJB);
             BannerEJB bannerEJB = (BannerEJB) EJBServiceLocator.getInstance().get(EjbConstants.BANNER_EJB);
                      
@@ -98,12 +92,7 @@ public class CheckController extends GenericAbstractController implements Generi
             } else {
                 badEjbs.add("utilsEJB");
             }
-            if (productEJB != null) {
-                goodEjbs.add("productEJB");
-            } else {
-                badEjbs.add("topUpProductEJB");
-            }
-             if (billingsEJB != null) {
+            if (billingsEJB != null) {
                 goodEjbs.add("billingsEJB");
             } else {
                 badEjbs.add("billingsEJB");
@@ -119,20 +108,7 @@ public class CheckController extends GenericAbstractController implements Generi
             } else {
                 badEjbs.add("customerEJB");
             }
-          
-            if (servicesEJB != null) {
-                goodEjbs.add("servicesEJB");
-            } else {
-                badEjbs.add("servicesEJB");
-            }
-           
-            if (transferToTimerEJB != null) {
-                goodEjbs.add("transferToTimerEJB");
-            } else {
-                badEjbs.add("transferToTimerEJB");
-            }
-
-          
+                    
         } catch (Exception ex) {
             ex.printStackTrace();
             this.showMessage("sp.error.general", true, null);
