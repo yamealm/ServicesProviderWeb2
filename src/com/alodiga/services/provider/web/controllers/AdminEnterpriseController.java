@@ -158,7 +158,7 @@ public class AdminEnterpriseController extends GenericAbstractAdminController {
                 ehtt.setEnterprise(enterprise);
                 enterpriseHasTinTypes.add(ehtt);
             }
-            enterprise.setEnterpriseHasTinTypes(enterpriseHasTinTypes);
+//            enterprise.setEnterpriseHasTinTypes(enterpriseHasTinTypes);
             
             if (_enterprise != null) {
                 enterprise.setId(_enterprise.getId());
@@ -268,29 +268,29 @@ public class AdminEnterpriseController extends GenericAbstractAdminController {
             request.setAuditData(null);
             tinTypes = utilsEJB.getTinTypes();
             lbxTinTypes.getItems().clear();
-            if (tinTypes != null && !tinTypes.isEmpty()) {
-                for (TinType tinType : tinTypes) {
-
-                        Listitem item = new Listitem();
-                        if (enterprise != null) {
-                            List<EnterpriseHasTinType> enterpriseHasTinType = enterprise.getEnterpriseHasTinTypes();
-                            for (int y = 0; y < enterpriseHasTinType.size(); y++) {
-                                TinType tt = enterpriseHasTinType.get(y).getTinType();
-                                if (tt.getId().equals(tinType.getId())) {
-                                    item.setSelected(true);
-                                }
-                            }
-                        }
-                        item.setValue(tinType);
-                        item.appendChild(new Listcell());
-                        item.appendChild(new Listcell(tinType.getName()));
-                        item.appendChild(new Listcell(tinType.getIsNatural() ? Labels.getLabel("sp.common.yes") : Labels.getLabel("sp.common.no")));
-                        item.appendChild(new Listcell(tinType.getPrefix()));
-                        item.setParent(lbxTinTypes);
-
-
-                }
-            }
+//            if (tinTypes != null && !tinTypes.isEmpty()) {
+//                for (TinType tinType : tinTypes) {
+//
+//                        Listitem item = new Listitem();
+//                        if (enterprise != null) {
+//                            List<EnterpriseHasTinType> enterpriseHasTinType = enterprise.getEnterpriseHasTinTypes();
+//                            for (int y = 0; y < enterpriseHasTinType.size(); y++) {
+//                                TinType tt = enterpriseHasTinType.get(y).getTinType();
+//                                if (tt.getId().equals(tinType.getId())) {
+//                                    item.setSelected(true);
+//                                }
+//                            }
+//                        }
+//                        item.setValue(tinType);
+//                        item.appendChild(new Listcell());
+//                        item.appendChild(new Listcell(tinType.getName()));
+//                        item.appendChild(new Listcell(tinType.getIsNatural() ? Labels.getLabel("sp.common.yes") : Labels.getLabel("sp.common.no")));
+//                        item.appendChild(new Listcell(tinType.getPrefix()));
+//                        item.setParent(lbxTinTypes);
+//
+//
+//                }
+//            }
 
         } catch (Exception ex) {
             showError(ex);

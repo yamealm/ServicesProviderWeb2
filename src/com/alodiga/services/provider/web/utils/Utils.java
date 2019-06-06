@@ -28,7 +28,6 @@ import org.zkoss.zul.Listitem;
 import com.alodiga.services.provider.commons.models.BannerType;
 import com.alodiga.services.provider.commons.models.Language;
 import com.alodiga.services.provider.commons.models.Period;
-import com.alodiga.services.provider.commons.models.TransactionType;
 import com.alodiga.services.provider.commons.utils.Constants;
 import com.alodiga.services.provider.commons.utils.GeneralUtils;
 
@@ -239,17 +238,17 @@ public class Utils {
 
     public static String getTransactionTypeName(Long transactionTypeId) {
         String value = "";
-        if (transactionTypeId.equals(TransactionType.PIN_PURCHASE)) {
-            value = Labels.getLabel("sp.transactionType.purchaseProduct");
-        } else if (transactionTypeId.equals(TransactionType.PIN_RECHARGE)) {
-            value = Labels.getLabel("sp.transactionType.rechargeProduct");
-        } else if (transactionTypeId.equals(TransactionType.TOP_UP_PURCHASE)) {
-            value = Labels.getLabel("sp.transactionType.purchaseTopUp");
-        } else if (transactionTypeId.equals(TransactionType.BILL_PAYMENT_PURCHASE)) {
-            value = Labels.getLabel("sp.transactionType.billpaymentrecharge");
-        } else if (transactionTypeId.equals(TransactionType.PURCHASE_BALANCE)) {
-            value = Labels.getLabel("sp.transactionType.purchaseBalance");
-        }
+//        if (transactionTypeId.equals(TransactionType.PIN_PURCHASE)) {
+//            value = Labels.getLabel("sp.transactionType.purchaseProduct");
+//        } else if (transactionTypeId.equals(TransactionType.PIN_RECHARGE)) {
+//            value = Labels.getLabel("sp.transactionType.rechargeProduct");
+//        } else if (transactionTypeId.equals(TransactionType.TOP_UP_PURCHASE)) {
+//            value = Labels.getLabel("sp.transactionType.purchaseTopUp");
+//        } else if (transactionTypeId.equals(TransactionType.BILL_PAYMENT_PURCHASE)) {
+//            value = Labels.getLabel("sp.transactionType.billpaymentrecharge");
+//        } else if (transactionTypeId.equals(TransactionType.PURCHASE_BALANCE)) {
+//            value = Labels.getLabel("sp.transactionType.purchaseBalance");
+//        }
         return value;
     }
 

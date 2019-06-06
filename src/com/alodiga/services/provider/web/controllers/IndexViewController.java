@@ -1,22 +1,23 @@
 package com.alodiga.services.provider.web.controllers;
 
-import com.alodiga.services.provider.commons.ejbs.UserEJB;
-import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
-import com.alodiga.services.provider.commons.exceptions.DisabledAccountException;
-import com.alodiga.services.provider.commons.exceptions.RegisterNotFoundException;
-import com.alodiga.services.provider.commons.models.Account;
-import com.alodiga.services.provider.commons.models.Enterprise;
-import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
-import com.alodiga.services.provider.commons.utils.EjbConstants;
-import com.alodiga.services.provider.web.generic.controllers.GenericAbstractController;
-import com.alodiga.services.provider.web.utils.AccessControl;
 import java.util.Calendar;
+
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Vlayout;
+
+import com.alodiga.services.provider.commons.ejbs.UserEJB;
+import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
+import com.alodiga.services.provider.commons.exceptions.DisabledAccountException;
+import com.alodiga.services.provider.commons.exceptions.RegisterNotFoundException;
+import com.alodiga.services.provider.commons.models.Enterprise;
+import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
+import com.alodiga.services.provider.commons.utils.EjbConstants;
+import com.alodiga.services.provider.web.generic.controllers.GenericAbstractController;
+import com.alodiga.services.provider.web.utils.AccessControl;
 
 public class IndexViewController extends GenericAbstractController {
 
@@ -70,9 +71,9 @@ public class IndexViewController extends GenericAbstractController {
     public void onClick$btnLoginRecover() throws InterruptedException {
         if (validateEmptyRecover()) {
             try {
-                Account account = null;
-//                account = userEJB.loadAccountByLogin(txtLoginRecover.getText());
-                AccessControl.generateNewPassword(null, account, false);
+//                Account account = null;
+////                account = userEJB.loadAccountByLogin(txtLoginRecover.getText());
+//                AccessControl.generateNewPassword(null, account, false);
                 lblInfo02.setValue(Labels.getLabel("sp.common.recoveryPassword.success"));
 //            } catch (RegisterNotFoundException ex) {
 //                lblInfo02.setValue(Labels.getLabel("sp.common.recoveryPassword.notFound"));
@@ -114,14 +115,14 @@ public class IndexViewController extends GenericAbstractController {
         boolean valid = false;
         if (validateEmpty()) {
             try {
-                valid = AccessControl.validateAccount(txtLogin.getText(), txtPassword.getText());
+//                valid = AccessControl.validateAccount(txtLogin.getText(), txtPassword.getText());
                 urlRedirect = "loggedAccountView.zul";
-            } catch (DisabledAccountException ex) {
-                ex.printStackTrace();
-                lblInfo.setValue(Labels.getLabel("sp.error.disableAccount"));
-            } catch (RegisterNotFoundException ex) {
-                ex.printStackTrace();
-                lblInfo.setValue(Labels.getLabel("sp.error.invalid.login"));
+//            } catch (DisabledAccountException ex) {
+//                ex.printStackTrace();
+//                lblInfo.setValue(Labels.getLabel("sp.error.disableAccount"));
+//            } catch (RegisterNotFoundException ex) {
+//                ex.printStackTrace();
+//                lblInfo.setValue(Labels.getLabel("sp.error.invalid.login"));
             } catch (Exception ex) {
                 ex.printStackTrace();
                 lblInfo.setValue(Labels.getLabel("sp.error.general"));

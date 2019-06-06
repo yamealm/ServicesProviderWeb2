@@ -1,16 +1,18 @@
 package com.alodiga.services.provider.web.controllers;
 
-import com.alodiga.services.provider.web.utils.AccessControl;
-import com.alodiga.services.provider.web.utils.WebConstants;
-import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.util.GenericForwardComposer;
 import java.util.Locale;
+
 import org.zkoss.util.Locales;
-import org.zkoss.zul.Hlayout;
 import org.zkoss.web.Attributes;
+import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zk.ui.util.GenericForwardComposer;
 import org.zkoss.zul.Button;
+import org.zkoss.zul.Hlayout;
+
+import com.alodiga.services.provider.web.utils.AccessControl;
+import com.alodiga.services.provider.web.utils.WebConstants;
 
 public class MenuOptionsController extends GenericForwardComposer {
 
@@ -40,9 +42,9 @@ public class MenuOptionsController extends GenericForwardComposer {
                     btnEnglish.setVisible(true);
                 }
             }
-            if (AccessControl.loadCurrentAccount() != null || AccessControl.loadCurrentUser() != null) {
-                btnLogout.setVisible(true);
-            }
+//            if (AccessControl.loadCurrentAccount() != null || AccessControl.loadCurrentUser() != null) {
+//                btnLogout.setVisible(true);
+//            }
 
             if (Sessions.getCurrent().getAttribute(WebConstants.SESSION_FULLSITE) != null) {
                 btnGoToMobileSite.setVisible(true);

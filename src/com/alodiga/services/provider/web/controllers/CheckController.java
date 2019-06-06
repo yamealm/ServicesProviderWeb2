@@ -11,9 +11,7 @@ import org.zkoss.zul.Listitem;
 import com.alodiga.services.provider.commons.ejbs.AccessControlEJB;
 import com.alodiga.services.provider.commons.ejbs.AuditoryEJB;
 import com.alodiga.services.provider.commons.ejbs.BannerEJB;
-import com.alodiga.services.provider.commons.ejbs.BillingsEJB;
 import com.alodiga.services.provider.commons.ejbs.CustomerEJB;
-import com.alodiga.services.provider.commons.ejbs.PreferencesEJB;
 import com.alodiga.services.provider.commons.ejbs.ReportEJB;
 import com.alodiga.services.provider.commons.ejbs.UserEJB;
 import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
@@ -21,7 +19,6 @@ import com.alodiga.services.provider.commons.exceptions.GeneralException;
 import com.alodiga.services.provider.commons.genericEJB.AbstractSPEntity;
 import com.alodiga.services.provider.commons.managers.ContentManager;
 import com.alodiga.services.provider.commons.managers.PermissionManager;
-import com.alodiga.services.provider.commons.managers.PreferenceManager;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractController;
@@ -52,12 +49,11 @@ public class CheckController extends GenericAbstractController implements Generi
         try {
             AccessControlEJB accessControlEJB = (AccessControlEJB) EJBServiceLocator.getInstance().get(EjbConstants.ACCESS_CONTROL_EJB);
             AuditoryEJB auditoryEJB = (AuditoryEJB) EJBServiceLocator.getInstance().get(EjbConstants.AUDITORY_EJB);
-            PreferencesEJB preferencesEJB = (PreferencesEJB) EJBServiceLocator.getInstance().get(EjbConstants.PREFERENCES_EJB);
             ReportEJB reportEJB = (ReportEJB) EJBServiceLocator.getInstance().get(EjbConstants.REPORT_EJB);
             UserEJB userEJB = (UserEJB) EJBServiceLocator.getInstance().get(EjbConstants.USER_EJB);
             UtilsEJB utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
             CustomerEJB customerEJB = (CustomerEJB) EJBServiceLocator.getInstance().get(EjbConstants.CUSTOMER_EJB);
-            BillingsEJB billingsEJB = (BillingsEJB) EJBServiceLocator.getInstance().get(EjbConstants.BILLINGS_EJB);
+      
             BannerEJB bannerEJB = (BannerEJB) EJBServiceLocator.getInstance().get(EjbConstants.BANNER_EJB);
                      
             
@@ -72,11 +68,7 @@ public class CheckController extends GenericAbstractController implements Generi
                 badEjbs.add("auditoryEJB");
             }
 
-            if (preferencesEJB != null) {
-                goodEjbs.add("preferencesEJB");
-            } else {
-                badEjbs.add("preferencesEJB");
-            }
+            
             if (reportEJB != null) {
                 goodEjbs.add("reportEJB");
             } else {
@@ -92,11 +84,7 @@ public class CheckController extends GenericAbstractController implements Generi
             } else {
                 badEjbs.add("utilsEJB");
             }
-            if (billingsEJB != null) {
-                goodEjbs.add("billingsEJB");
-            } else {
-                badEjbs.add("billingsEJB");
-            }
+            
              if (bannerEJB != null) {
                 goodEjbs.add("bannerEJB");
             } else {
@@ -131,7 +119,6 @@ public class CheckController extends GenericAbstractController implements Generi
      public void onClick$btnReloadCache() {
         try {
             ContentManager.refresh();
-            PreferenceManager.refresh();
             PermissionManager.refresh();
             this.showMessage("sp.common.reload.cache.success", false, null);
         } catch (Exception ex) {
