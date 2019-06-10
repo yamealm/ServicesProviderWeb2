@@ -1,6 +1,6 @@
 package com.alodiga.services.provider.web.controllers;
 
-//import com.alodiga.services.provider.commons.ejbs.ProductEJB;
+import com.alodiga.services.provider.commons.ejbs.ProductEJB;
 import com.alodiga.services.provider.commons.exceptions.EmptyListException;
 import com.alodiga.services.provider.commons.exceptions.GeneralException;
 import com.alodiga.services.provider.commons.exceptions.NullParameterException;
@@ -38,7 +38,7 @@ public class ListProvidersController extends GenericAbstractListController<Provi
     private static final long serialVersionUID = -9145887024839938515L;
     private Listbox lbxRecords;
     private Textbox txtAlias;
-//    private ProductEJB productEJB = null;
+    private ProductEJB productEJB = null;
     private List<Provider> providers = null;
     private User currentUser;
     private Profile currentProfile;
@@ -73,7 +73,7 @@ public class ListProvidersController extends GenericAbstractListController<Provi
             currentProfile = currentUser.getCurrentProfile(Enterprise.ALODIGA_USA);
             checkPermissions();
             adminPage = "adminProvider.zul";
-//            productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
+            productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
             loadPermission(new Provider());
             startListener();
             getData();
@@ -125,9 +125,9 @@ public class ListProvidersController extends GenericAbstractListController<Provi
             button.changeImageStatus(provider.getEnabled());
             provider.setEnabled(!provider.getEnabled());
             listItem.setValue(provider);
-            //request.setAuditData(AccessControl.getCurrentAudit());
+            request.setAuditData(AccessControl.getCurrentAudit());
             request.setParam(provider);
-//            productEJB.saveProvider(request);
+            productEJB.saveProvider(request);
             AccessControl.saveAction(Permission.CHANGE_PROVIDER_STATUS, "changeStatus provider = " + provider.getId() + " to status = " + !provider.getEnabled());
 
         } catch (Exception ex) {
@@ -170,17 +170,17 @@ public class ListProvidersController extends GenericAbstractListController<Provi
 
     public void getData() {
         providers = new ArrayList<Provider>();
-//        try {
-//            request.setFirst(0);
-//            request.setLimit(null);
-//            request.setAuditData(null);
-////            providers = productEJB.getProviders(request);
-//        } catch (NullParameterException ex) {
-//            showError(ex);
-//        } catch (EmptyListException ex) {
-//        } catch (GeneralException ex) {
-//            showError(ex);
-//        }
+        try {
+            request.setFirst(0);
+            request.setLimit(null);
+            request.setAuditData(null);
+            providers = productEJB.getProviders(request);
+        } catch (NullParameterException ex) {
+            showError(ex);
+        } catch (EmptyListException ex) {
+        } catch (GeneralException ex) {
+            showError(ex);
+        }
     }
 
     public void onClick$btnDownload() throws InterruptedException {
