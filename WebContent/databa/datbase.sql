@@ -28,7 +28,7 @@ DELETE FROM `services`.`product` WHERE (`id` = '2');
 DELETE FROM `services`.`product` WHERE (`id` = '4');
 DELETE FROM `services`.`product` WHERE (`id` = '5');
 
-CREATE TABLE `condition` (
+CREATE TABLE `services`.`condition` (
   `id` int(3) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   PRIMARY KEY (`id`)
@@ -133,9 +133,6 @@ DROP INDEX `login` ;
 ;
 
 ALTER TABLE `services`.`customer` 
-DROP INDEX `fk_customer_address` ;
-;
-ALTER TABLE `services`.`customer` 
 CHANGE COLUMN `gender` `DNI` VARCHAR(45) NULL DEFAULT NULL ;
 INSERT INTO `services`.`customer` (`id`, `firstName`, `lastName`, `creationDate`, `email`, `phoneNumber`, `DNI`, `enabled`, `address`) VALUES ('1', 'Yamelis', 'Almea', '2013-09-09 11:39:17', 'yamealm@gmail.com', '2612594080', '95931962', '1', 'CABA');
 
@@ -162,3 +159,116 @@ ALTER TABLE `services`.`stock`
 ADD COLUMN `departureDate` VARCHAR(45) NULL AFTER `categoryIdl`,
 CHANGE COLUMN `customerId` `customerId` BIGINT(5) NULL DEFAULT NULL AFTER `departureDate`,
 CHANGE COLUMN `EndingDate` `endingDate` DATETIME NULL DEFAULT NULL ;
+
+//nuevo
+ALTER TABLE `services`.`condition` 
+ADD COLUMN `enabled` TINYINT(1) NOT NULL DEFAULT 0 AFTER `name`;
+
+ALTER TABLE `services`.`customer` 
+CHANGE COLUMN `DNI` `dni` VARCHAR(45) NULL DEFAULT NULL ;
+
+ALTER TABLE `services`.`product` 
+CHANGE COLUMN `partNumber` `partNumber` VARCHAR(45) NOT NULL AFTER `id`,
+CHANGE COLUMN `description` `description` VARCHAR(45) NOT NULL AFTER `partNumber`;
+
+ALTER TABLE `services`.`product` 
+ADD COLUMN `enabled` TINYINT(1) NOT NULL DEFAULT 0 AFTER `amount`;
+
+ALTER TABLE `services`.`product` 
+CHANGE COLUMN `act_np_nsn` `actNpNsn` VARCHAR(45) NOT NULL ;
+
+ALTER TABLE `services`.`product` 
+ADD COLUMN `ubicationFolder` VARCHAR(45) NULL AFTER `ubicationBox`,
+CHANGE COLUMN `ubication` `ubicationBox` VARCHAR(45) NOT NULL ;
+
+ALTER TABLE `services`.`stock` 
+;
+ALTER TABLE `services`.`stock` RENAME INDEX `Fk_product_condicion_idx` TO `Fk_product_condicion`;
+ALTER TABLE `services`.`stock` ALTER INDEX `Fk_product_condicion` INVISIBLE;
+ALTER TABLE `services`.`stock` 
+ADD CONSTRAINT `FK_product_category`
+  FOREIGN KEY (`categoryId`)
+  REFERENCES `services`.`category` (`id`)
+  ON DELETE RESTRICT
+  ON UPDATE RESTRICT,
+ADD CONSTRAINT `FK_product_customer`
+  FOREIGN KEY (`customerId`)
+  REFERENCES `services`.`customer` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION,
+ADD CONSTRAINT `Fk_product_condicion`
+  FOREIGN KEY (`conditionId`)
+  REFERENCES `services`.`condition` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+  
+  ALTER TABLE `services`.`stock` 
+RENAME TO  `services`.`transaction` ;
+
+ALTER TABLE `services`.`transaction` 
+DROP COLUMN `endingDate`,
+DROP COLUMN `departureDate`,
+CHANGE COLUMN `serial` `isSerial` TINYINT(1) NULL DEFAULT NULL ;
+
+ALTER TABLE `services`.`provider` 
+DROP COLUMN `isSMSProvider`,
+CHANGE COLUMN `url` `address` VARCHAR(255) NOT NULL ;
+
+
+ALTER TABLE `services`.`transaction` 
+ADD PRIMARY KEY (`id`);
+;
+
+CREATE TABLE `services`.`product_history` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `productId` bigint(5) NOT NULL,
+  `transactionId` bigint(5) NOT NULL,
+  `currentQuantity` int(3) NOT NULL,
+  `oldQuantity` int(3) DEFAULT NULL,
+  `creationDate` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_product_history_product1` (`productId`),
+  KEY `fk_product_history_transaction` (`transactionId`),
+  CONSTRAINT `fk_product_history_product1` FOREIGN KEY (`productId`) REFERENCES `product` (`id`),
+  CONSTRAINT `fk_product_history_transaction` FOREIGN KEY (`transactionId`) REFERENCES `transaction` (`id`)
+)ENGINE=InnoDB;
+
+CREATE TABLE `services`.`product_serie` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `productId` bigint(5) NOT NULL,
+  `providerId` bigint(5) NOT NULL,
+  `beginTransactionId` bigint(5) NOT NULL,
+  `endingTransactionId` bigint(5) DEFAULT NULL,
+  `serie` VARCHAR(45) NOT NULL,
+  `amount` Float(10,2) NOT NULL,
+  `expirationDate` datetime NOT NULL,
+  `cure` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_product_serie_product` (`productId`),
+  KEY `fk_product_serie_provider` (`providerId`),
+  KEY `fk_product_serie_transaction1` (`beginTransactionId`),
+  KEY `fk_product_serie_transaction2` (`endingTransactionId`),
+  CONSTRAINT `fk_product_serie_product` FOREIGN KEY (`productId`) REFERENCES `product` (`id`),
+  CONSTRAINT `fk_product_serie_provider` FOREIGN KEY (`providerId`) REFERENCES `provider` (`id`),
+  CONSTRAINT `fk_product_serie_transaction1` FOREIGN KEY (`beginTransactionId`) REFERENCES `transaction` (`id`),
+  CONSTRAINT `fk_product_serie_transaction2` FOREIGN KEY (`endingTransactionId`) REFERENCES `transaction` (`id`)
+)ENGINE=InnoDB;
+
+CREATE TABLE `services`.`product_expiration` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `productId` bigint(5) NOT NULL,
+  `providerId` bigint(5) NOT NULL,
+  `beginTransactionId` bigint(5) NOT NULL,
+  `quantity` int(4) NOT NULL,
+  `amount` Float(10,2) NOT NULL,
+  `expirationDate` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_product_expiration_product` (`productId`),
+  KEY `fk_product_expiration_provider` (`providerId`),
+  KEY `fk_product_expiration_transaction1` (`beginTransactionId`),
+  CONSTRAINT `fk_product_expiration_product` FOREIGN KEY (`productId`) REFERENCES `product` (`id`),
+  CONSTRAINT `fk_product_expiration_provider` FOREIGN KEY (`providerId`) REFERENCES `provider` (`id`),
+  CONSTRAINT `fk_product_expiration_transaction1` FOREIGN KEY (`beginTransactionId`) REFERENCES `transaction` (`id`)
+)ENGINE=InnoDB;
+
+

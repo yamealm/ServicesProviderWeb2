@@ -172,7 +172,7 @@ public class ListCustomersController extends GenericAbstractListController<Custo
                     item.setValue(customer);
                     item.appendChild(new Listcell(customer.getFirstName()));
                     item.appendChild(new Listcell(customer.getLastName()));
-                    item.appendChild(new Listcell(customer.getLogin()));
+                    item.appendChild(new Listcell(customer.getPhoneNumber()));
                     item.appendChild(new Listcell(customer.getEmail()));
                     item.appendChild(permissionChangeStatus ? initEnabledButton(customer.getEnabled(), item) : new Listcell());
                     item.appendChild(permissionEdit ? new ListcellEditButton(adminPage, customer,Permission.EDIT_CUSTOMER) : new Listcell());

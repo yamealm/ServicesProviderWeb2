@@ -146,8 +146,8 @@ public class ListProvidersController extends GenericAbstractListController<Provi
                     item = new Listitem();
                     item.setValue(provider);
                     item.appendChild(new Listcell(provider.getName()));
-                    item.appendChild(new Listcell(provider.getUrl()));
-                    item.appendChild(new Listcell(provider.isIsSMSProvider() ? Labels.getLabel("sp.common.yes") : Labels.getLabel("sp.common.no")));
+                    item.appendChild(new Listcell(provider.getAddress()));
+                    item.appendChild(new Listcell(provider.getEnabled() ? Labels.getLabel("sp.common.yes") : Labels.getLabel("sp.common.no")));
                     item.appendChild(permissionChangeStatus ? initEnabledButton(provider.getEnabled(), item) : new Listcell());
                     item.appendChild(permissionEdit ? new ListcellEditButton(adminPage, provider,Permission.EDIT_PROVIDER) : new Listcell());
                     item.appendChild(permissionRead ? new ListcellViewButton(adminPage, provider,Permission.VIEW_PROVIDER) : new Listcell());

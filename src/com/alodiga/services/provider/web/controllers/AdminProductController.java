@@ -149,13 +149,13 @@ public class AdminProductController extends GenericAbstractAdminController {
         switch (eventType) {
             case WebConstants.EVENT_EDIT:
                 loadFields(productParam);
-                loadCategories(productParam.getCategory());
+//                loadCategories(productParam.getCategory());
                 loadEnterprises(productParam.getEnterprise());
                 loadDenominations();
                 break;
             case WebConstants.EVENT_VIEW:
                 loadFields(productParam);
-                loadCategories(productParam.getCategory());
+//                loadCategories(productParam.getCategory());
                 loadEnterprises(productParam.getEnterprise());
                 loadDenominations();
                 blockFields();
@@ -170,13 +170,13 @@ public class AdminProductController extends GenericAbstractAdminController {
     }
 
     public void loadFields(Product product) {
-        txtName.setText(product.getName());
-        txtReferenceCode.setText(product.getReferenceCode());
-        txtURLRates.setText(product.getRatesUrl());
-        txtAccessNumbers.setText(product.getAccessNumberUrl());
-        cbxTaxInclude.setChecked(product.getTaxInclude());
-        cbxEnabled.setChecked(product.getEnabled());
-        cbxFree.setChecked(product.getIsFree());
+        txtName.setText(product.getDescription());
+//        txtReferenceCode.setText(product.getReferenceCode());
+//        txtURLRates.setText(product.getRatesUrl());
+//        txtAccessNumbers.setText(product.getAccessNumberUrl());
+//        cbxTaxInclude.setChecked(product.getTaxInclude());
+//        cbxEnabled.setChecked(product.getEnabled());
+//        cbxFree.setChecked(product.getIsFree());
 //
 //        List<ProductData> productDatas = product.getProductData();
 //        for (ProductData productData : productDatas) {
@@ -312,17 +312,17 @@ public class AdminProductController extends GenericAbstractAdminController {
     private void saveProduct(Product _product) {
         Product product = new Product();
         try {
-            product.setName(txtName.getText());
-            product.setReferenceCode(txtReferenceCode.getText());
-            product.setAccessNumberUrl(txtAccessNumbers.getText());
-            product.setRatesUrl(txtURLRates.getText());
+            product.setDescription(txtName.getText());
+//            product.setReferenceCode(txtReferenceCode.getText());
+//            product.setAccessNumberUrl(txtAccessNumbers.getText());
+//            product.setRatesUrl(txtURLRates.getText());
             product.setEnabled(cbxEnabled.isChecked());
-            product.setIsFree(cbxFree.isChecked());
-            product.setTaxInclude(cbxTaxInclude.isChecked());
+//            product.setIsFree(cbxFree.isChecked());
+//            product.setTaxInclude(cbxTaxInclude.isChecked());
             Enterprise e = new Enterprise();
             e.setId(((Enterprise) cmbEnterprise.getSelectedItem().getValue()).getId());
             product.setEnterprise(e);
-            product.setCategory((Category) cmbCategory.getSelectedItem().getValue());
+//            product.setCategory((Category) cmbCategory.getSelectedItem().getValue());
 
             if (_product != null) {
                 product.setId(_product.getId());
@@ -367,13 +367,7 @@ public class AdminProductController extends GenericAbstractAdminController {
                     productDenominations.add(denomination);
                 }
             }
-            if (eventType == WebConstants.EVENT_EDIT) {
-                request.setParam(productParam.getId());
-                request.setAuditData(null);
-//                productEJB.deleteProductDenomination(request);
-            }
 
-//            product.setProductDenominations(productDenominations);
             request.setParam(product);
             request.setAuditData(null);
             product = productEJB.saveProduct(request);

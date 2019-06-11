@@ -340,7 +340,7 @@ public class AccessControl {
                 audit.setResponsibleId(loadCurrentUser().getLogin());
                 audit.setResponsibleType("User");
             } else if (loadCurrentCustomer() != null) {
-                audit.setResponsibleId(loadCurrentCustomer().getLogin());
+                audit.setResponsibleId(loadCurrentCustomer().getFirstName());
                 audit.setResponsibleType("Customer");
             } else {
                 audit.setResponsibleId("unknown");

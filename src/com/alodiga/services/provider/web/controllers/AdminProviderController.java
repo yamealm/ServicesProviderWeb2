@@ -18,7 +18,6 @@ public class AdminProviderController extends GenericAbstractAdminController {
     private Textbox txtName;
     private Textbox txtURL;
     private Checkbox cbxEnabled;
-    private Checkbox cbxIsSMSProvider;
 //    private ProductEJB productEJB = null;
     private Provider providerParam;
     private Button btnSave;
@@ -50,21 +49,18 @@ public class AdminProviderController extends GenericAbstractAdminController {
     public void clearFields() {
         txtName.setRawValue(null);
         txtURL.setRawValue(null);
-        cbxIsSMSProvider.setChecked(false);
         cbxEnabled.setChecked(true);
     }
 
     private void loadFields(Provider provider) {
         txtName.setText(provider.getName());
-        txtURL.setText(provider.getUrl());
-        cbxIsSMSProvider.setChecked(provider.isIsSMSProvider());
+        txtURL.setText(provider.getAddress());
         cbxEnabled.setChecked(provider.getEnabled());
     }
 
     public void blockFields() {
         txtName.setReadonly(true);
         txtURL.setReadonly(true);
-        cbxIsSMSProvider.setDisabled(true);
         cbxEnabled.setDisabled(true);
         btnSave.setVisible(false);
     }
@@ -90,8 +86,7 @@ public class AdminProviderController extends GenericAbstractAdminController {
             provider.setId(_provider.getId());
             }
             provider.setName(txtName.getText());
-            provider.setUrl(txtURL.getText());
-            provider.setIsSMSProvider(cbxIsSMSProvider.isChecked());
+            provider.setAddress(txtURL.getText());
             provider.setEnabled(cbxEnabled.isChecked());
             request.setParam(provider);
 //            providerParam = productEJB.saveProvider(request);
