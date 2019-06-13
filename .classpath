@@ -5,6 +5,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/ServicesLibraries"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ServicesProviderCommons"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ServicesEJB"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GlaasfishLibraries"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GlassfishLibraries"/>
 	<classpathentry kind="output" path="build/web/WEB-INF/classes"/>
 </classpath>

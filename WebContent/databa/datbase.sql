@@ -183,8 +183,6 @@ CHANGE COLUMN `ubication` `ubicationBox` VARCHAR(45) NOT NULL ;
 
 ALTER TABLE `services`.`stock` 
 ;
-ALTER TABLE `services`.`stock` RENAME INDEX `Fk_product_condicion_idx` TO `Fk_product_condicion`;
-ALTER TABLE `services`.`stock` ALTER INDEX `Fk_product_condicion` INVISIBLE;
 ALTER TABLE `services`.`stock` 
 ADD CONSTRAINT `FK_product_category`
   FOREIGN KEY (`categoryId`)
