@@ -270,3 +270,21 @@ CREATE TABLE `services`.`product_expiration` (
 )ENGINE=InnoDB;
 
 
+//13-06-2019
+CREATE TABLE `services`.`transaction_type` (
+  `id` int(3) NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
+ALTER TABLE `services`.`transaction` 
+ADD COLUMN `transactionTypeId` INT(3) NULL AFTER `userId`,
+ADD INDEX `Fk_product_transactionType` (`transactionTypeId` ASC) INVISIBLE;
+;
+ALTER TABLE `services`.`transaction` 
+ADD CONSTRAINT `Fk_product_transactionType`
+  FOREIGN KEY (`transactionTypeId`)
+  REFERENCES `services`.`transaction_type` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
