@@ -58,135 +58,144 @@
                                                                 <label value="*" sclass="lblreq" />
                                                             </hlayout>
                                                         </row>
-                                                        <row>
-                                                            <label value="${c:l('sp.common.category')}" sclass="lblbold"/>
+                                                         <row>
+                                                            <label value="${c:l('sp.common.PartNumber')}" sclass="lblbold"/>
                                                             <hlayout>
-                                                                <combobox id="cmbCategory" width="190px" mold="rounded" readonly="true"/>
-                                                                <label value="*" sclass="lblreq" />
-                                                            </hlayout>
-                                                        </row>
-                                                              <row>
-                                                            <label value="${c:l('sp.common.name')}" sclass="lblbold"/>
-                                                            <hlayout>
-                                                                <textbox id="txtName" maxlength="45" width="320px" constraint="no empty: ${c:l('error.field.required')}"/>
+                                                                <textbox id="txtPartNumber" maxlength="45" width="320px" constraint="no empty: ${c:l('error.field.required')}"/>
                                                                 <label value="*" sclass="lblreq" />
                                                                 <label value="${c:l('sp.common.max45')}" sclass="lblexample"/>
                                                             </hlayout>
                                                         </row>
-                                                        <row>
-                                                            <label value="${c:l('sp.common.taxInclude')}" sclass="lblbold"/>
-                                                            <checkbox id="cbxTaxInclude"/>
-                                                        </row>
-                                                        <row>
-                                                            <label id="" value="${c:l('sp.common.product.free')}" sclass="lblbold" />
-                                                            <checkbox id="cbxFree"/>
-                                                        </row>
-                                                            
-                                                        <row>
-                                                            <label value="${c:l('sp.common.referenceCode')}" sclass="lblbold"/>
-                                                            <textbox id="txtReferenceCode" maxlength="45" width="320px" constraint="no empty: ${c:l('error.field.required')}"/>
-                                                        </row>
-                                                        <row>
-                                                            <label value="${c:l('sp.common.urlRates')}" sclass="lblbold"/>
+                                                         <row>
+                                                            <label value="${c:l('sp.common.descripton')}" sclass="lblbold"/>
                                                             <hlayout>
-                                                                <textbox id="txtURLRates" value="" width="370px" />
-                                                                <label value="${c:l('sp.common.max255')}" sclass="lblexample"/>
-                                                                <separator/>
-                                                                <label value="${c:l('sp.common.url.example')}" sclass="lblexample"/>
+                                                                <textbox id="txtDescription" maxlength="45" width="320px" constraint="no empty: ${c:l('error.field.required')}"/>
+                                                                <label value="*" sclass="lblreq" />
+                                                                <label value="${c:l('sp.common.max45')}" sclass="lblexample"/>
+                                                            </hlayout>
+                                                        </row>
+                                                       	
+                                                        <row>
+                                                            <label value="${c:l('sp.common.actNpNsn')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                              
+                                                               <textbox id="txtactNpNsn" maxlength="45" width="320px" constraint="no empty: ${c:l('error.field.required')}"/>
+                                                               <label value="*" sclass="lblreq" />
+                                                               <label value="${c:l('sp.common.max45')}" sclass="lblexample"/>
                                                             </hlayout>
                                                         </row>
                                                         <row>
-                                                            <label value="${c:l('sp.common.urlAccessNumbers')}" sclass="lblbold"/>
+                                                        <label value="${c:l('sp.common.ubicationBox')}" sclass="lblbold"/>
                                                             <hlayout>
-                                                                <textbox id="txtAccessNumbers" value="" width="370px" />
-                                                                <label value="${c:l('sp.common.max255')}" sclass="lblexample"/>
-                                                                <separator/>
-                                                                <label value="${c:l('sp.common.url.example')}" sclass="lblexample"/>
-                                                            </hlayout>
+                                                               <textbox id="txtUbicationBox" maxlength="45" width="320px" constraint="no empty: ${c:l('error.field.required')}"/>
+                                                               <label value="*" sclass="lblreq" />
+                                                               <label value="${c:l('sp.common.max45')}" sclass="lblexample"/>
+                                                             </hlayout>
                                                         </row>
-
+                                                        
                                                         <row>
-                                                            <label value="${c:l('sp.common.enabled')}" sclass="lblbold"/>
+                                                        <label value="${c:l('sp.common.ubicationFolder')}" sclass="lblbold"/>
+                                                          <hlayout>
+                                                            <textbox id="txtUbicationFolder" maxlength="45" width="320px" constraint="no empty: ${c:l('error.field.required')}"/>
+                                                            <label value="*" sclass="lblreq" />
+                                                            <label value="${c:l('sp.common.max45')}" sclass="lblexample"/>
+                                                          </hlayout>
+                                                        </row>
+                                                         <row>
+                                                         <label value="${c:l('sp.common.batchNumber')}" sclass="lblbold"/>
+                                                           <hlayout>
+                                                            <textbox id="txtBachNumber" maxlength="45" width="320px" constraint="no empty: ${c:l('error.field.required')}"/>
+                                                            <label value="*" sclass="lblreq" />
+                                                            <label value="${c:l('sp.common.max45')}" sclass="lblexample"/>
+                                                          </hlayout>
+                                                        </row>
+                                                        <row>
+                                                        <label value="${c:l('sp.common.enabled')}" sclass="lblbold"/>
+                                                          <hlayout>
                                                             <checkbox id="cbxEnabled" checked="true"/>
+                                                          </hlayout>
                                                         </row>
                                                     </rows>
                                                 </grid>
-                                                <label value="${c:l('sp.common.data.multilanguage')}" sclass="lblbold"/>
+                                                
+
+
+<!--  -->
+<!--  -->
+
+                                                
+                                                
+                                                
+                                               <label value="${c:l('sp.common.amounts.values')}" sclass="lblbold"/>
                                                 <grid fixedLayout="true">
                                                     <columns>
                                                         <column label="" width="200px"/>
                                                         <column label="" width="690px"/>
                                                     </columns>
                                                     <rows>
-                                                        <group label="${c:l('sp.common.english')}" />
+                                                        <group label="${c:l('sp.common.amounts.values')}" />
                                                         <row>
-                                                            <label value="${c:l('sp.common.alias')}" sclass="lblbold"/>
+                                                            <label value="${c:l('sp.common.inictialAmount')}" sclass="lblbold"/>
                                                             <hlayout>
-                                                                <textbox id="txtAliasEN" width="320px" maxlength="45" constraint="no empty: ${c:l('error.field.required')}"/>
+                                                                <textbox id="txtInitialAmount" width="320px" maxlength="45" constraint="no empty: ${c:l('error.field.required')}"/>
                                                                 <label value="*" sclass="lblreq" />
                                                                 <label value="${c:l('sp.common.max45')}" sclass="lblexample"/>
                                                             </hlayout>
                                                         </row>
-                                                        <row>
-                                                            <label value="${c:l('sp.common.description')}" sclass="lblbold"/>
+                                                          <row>
+                                                            <label value="${c:l('sp.common.realAmount.product')}" sclass="lblbold"/>
                                                             <hlayout>
-                                                                <textbox id="txtDescriptionEN" width="320px" rows="2" maxlength="255"/>
-                                                                <label value="${c:l('sp.common.max255')}" sclass="lblexample"/>
-                                                            </hlayout>
-                                                        </row>
-                                                        <group label="${c:l('sp.common.spanish')}" />
-                                                        <row>
-                                                            <label value="${c:l('sp.common.alias')}" sclass="lblbold"/>
-                                                            <hlayout>
-                                                                <textbox id="txtAliasES" width="320px" maxlength="45" constraint="no empty: ${c:l('error.field.required')}"/>
+                                                                <textbox id="txtRealAmount" width="320px" maxlength="45" constraint="no empty: ${c:l('error.field.required')}"/>
                                                                 <label value="*" sclass="lblreq" />
                                                                 <label value="${c:l('sp.common.max45')}" sclass="lblexample"/>
                                                             </hlayout>
                                                         </row>
-                                                        <row>
-                                                            <label value="${c:l('sp.common.description')}" sclass="lblbold"/>
+                                                       <row>
+                                                            <label value="${c:l('sp.common.amount')}" sclass="lblbold"/>
                                                             <hlayout>
-                                                                <textbox id="txtDescriptionES" width="320px" rows="2" maxlength="255" />
-                                                                <label value="${c:l('sp.common.max255')}" sclass="lblexample"/>
+                                                                <textbox id="txtAmount" width="320px" maxlength="45" constraint="no empty: ${c:l('error.field.required')}"/>
+                                                                <label value="*" sclass="lblreq" />
+                                                                <label value="${c:l('sp.common.max45')}" sclass="lblexample"/>
                                                             </hlayout>
                                                         </row>
                                                     </rows>
                                                 </grid>
-                                                <label value="${c:l('sp.common.denominations')}" sclass="lblbold"/>
-                                                <vlayout>
-                                                    
-                                                    <listbox id="lbxDenominations" fixedLayout="true" width="890px" height="120px">
-                                                        <listhead>
-                                                            <listheader width="350px">
-                                                                
-                                                            </listheader>
-                                                            <listheader width="470px">
-                                                                <div align="right">
-
-                                                                    <hlayout>
-                                                                        <label value="${c:l('sp.common.value')}" sclass="lblbold"/>
-                                                                        <decimalbox id="tbxDenomination" width="50px" maxlength="3"/>
-                                                                        <separator/>
-                                                                        <separator/>
-                                                                        <label value="${c:l('sp.common.currency')}" sclass="lblbold"/>
-                                                                        <combobox id="cmbCurrency" width="150px" mold="rounded" readonly="true"/>
-                                                                    </hlayout>
-                                                                </div>
-                                                            </listheader>
-                                                            <listheader width="50px">
-                                                                <button id="btnAddDenomination" onClick="" image="/images/icon-add.png" class="open orange"/>
-                                                            </listheader>
-                                                        </listhead>
-                                                    </listbox>
-                                                </vlayout>
                                                 
+                                                
+                                                <label value="${c:l('sp.common.stock')}" sclass="lblbold"/>
+                                                <grid fixedLayout="true">
+                                                    <columns>
+                                                        <column label="" width="200px"/>
+                                                        <column label="" width="690px"/>
+                                                    </columns>
+                                                    <rows>
+                                                        <group label="${c:l('sp.common.stock')}" />
+                                                        <row>
+                                                            <label value="${c:l('sp.common.stockMin')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <intbox id="intStockMin" width="320px" maxlength="45" constraint="no empty: ${c:l('error.field.required')}"/>
+                                                                <label value="*" sclass="lblreq" />
+                                                                <label value="${c:l('sp.common.max45')}" sclass="lblexample"/>
+                                                            </hlayout>
+                                                        </row> 
+                                                          <row>
+                                                            <label value="${c:l('sp.common.stockMax')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <intbox id="intStockMax" width="320px" maxlength="45" constraint="no empty: ${c:l('error.field.required')}"/>
+                                                                <label value="*" sclass="lblreq" />
+                                                                <label value="${c:l('sp.common.max45')}" sclass="lblexample"/>
+                                                            </hlayout>
+                                                        </row>
+                                                    </rows>
+                                                </grid>
+
                                             </vlayout>
                                         </div>
                                         <div id="divInfo" height="20px" width="100%" style="background:#B6E59E;" align="left" visible="false"/>
                                         <!--Buttons-->
                                         <div align="right">
                                             <button  id="btnSave" width="150px" label="${c:l('sp.common.actions.save')}" class="open orange"/>
-                                            <button  id="btnBack" width="150px" label="${c:l('sp.common.actions.back')}" class="open gray" onClick="Executions.sendRedirect(&quot;listProducts.zul&quot;)"/>
+                                            <button  id="btnBack" width="150px" label="${c:l('sp.common.actions.back')}" class="open gray" />
                                         </div>
                                     </vlayout>
                                 </div>

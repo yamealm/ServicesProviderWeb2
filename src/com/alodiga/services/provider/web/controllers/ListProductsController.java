@@ -130,7 +130,6 @@ public class ListProductsController extends GenericAbstractListController<Produc
             request.setParam(product);
             productEJB.saveProduct(request);
             AccessControl.saveAction(Permission.CHANGE_PRODUCT_STATUS, "changeStatus product = " + product.getId() + " to status = " + !product.getEnabled());
-
         } catch (Exception ex) {
             showError(ex);
         }
@@ -146,8 +145,11 @@ public class ListProductsController extends GenericAbstractListController<Produc
 
                     item = new Listitem();
                     item.setValue(product);
+                    item.appendChild(new Listcell(product.getPartNumber()));
                     item.appendChild(new Listcell(product.getDescription()));
-                    item.appendChild(new Listcell(product.getPartNumber())); 
+                    item.appendChild(new Listcell(String.valueOf(product.getAmount())));
+                    item.appendChild(new Listcell(String.valueOf(product.getStockMin())));
+                    item.appendChild(new Listcell(String.valueOf(product.getStockMax())));
                     item.appendChild(permissionChangeStatus ? initEnabledButton(product.getEnabled(), item) : new Listcell());
                     item.appendChild(permissionEdit ? new ListcellEditButton(adminPage, product,Permission.EDIT_PRODUCT) : new Listcell());
                     item.appendChild(permissionRead ? new ListcellViewButton(adminPage, product,Permission.VIEW_PRODUCT) : new Listcell());

@@ -55,13 +55,23 @@
                                             <!--Record Listbox-->
                                             <listbox id="lbxRecords" fixedLayout="true" width="895px" height="530px">
                                                 <listhead>
-                                                    <listheader label="${c:l('sp.common.name')}" width="385px" sort="auto"/>
-                                                    <listheader label="${c:l('sp.common.category')}" width="360px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.common.PartNumber')}" width="140px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.common.descripton')}" width="300px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.common.amount')}" width="105px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.common.stockMin')}" width="105px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.common.stockMax')}" width="105px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.common.status')}" width="45px" sort="auto"/>
                                                     <listheader label="-" width="45px"/>
                                                     <listheader label="-" width="45px"/>
-                                                    <listheader label="-" width="45px"/>
+                                                    
                                                 </listhead>
                                             </listbox>
+                                            
+
+
+
+
+
 
                                         </div>
                                         <!--Download button-->

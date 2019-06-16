@@ -11,11 +11,13 @@ import com.alodiga.services.provider.commons.models.ProductData;
 import com.alodiga.services.provider.commons.models.ProductDenomination;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
+import com.alodiga.services.provider.commons.utils.GeneralUtils;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractAdminController;
 import com.alodiga.services.provider.web.utils.WebConstants;
 import java.util.ArrayList;
 import java.util.List;
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -24,6 +26,7 @@ import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Decimalbox;
+import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
@@ -33,21 +36,19 @@ public class AdminProductController extends GenericAbstractAdminController {
 
     private static final long serialVersionUID = -9145887024839938515L;
     private Combobox cmbEnterprise;
-    private Combobox cmbCategory;
-    private Combobox cmbIntegrationType;
-    private Combobox cmbCurrency;
-    private Textbox txtName;
-    private Checkbox cbxTaxInclude;
     private Checkbox cbxEnabled;
-    private Checkbox cbxFree;
-    private Textbox txtReferenceCode;
-    private Textbox txtURLRates;
-    private Textbox txtAccessNumbers;
-    private Textbox txtAliasES;
-    private Textbox txtDescriptionES;
-    private Textbox txtAliasEN;
-    private Textbox txtDescriptionEN;
-    private Decimalbox tbxDenomination;
+    private Textbox txtAmount;
+    private Textbox txtRealAmount;
+    private Textbox txtInitialAmount;
+    private Textbox txtBachNumber;
+    private Textbox txtUbicationFolder;
+    private Textbox txtUbicationBox;
+    private Textbox txtactNpNsn;
+    private Textbox txtDescription;
+    private Textbox txtPartNumber;
+    private Intbox intStockMax;
+    private Intbox intStockMin;
+
     private Listbox lbxDenominations;
     private ProductEJB productEJB = null;
     private UtilsEJB utilsEJB = null;
@@ -82,53 +83,93 @@ public class AdminProductController extends GenericAbstractAdminController {
     }
 
     public void clearFields() {
-        txtName.setRawValue(null);
-        cbxTaxInclude.setChecked(false);
-        cbxEnabled.setChecked(false);
-        txtReferenceCode.setRawValue(null);
-        txtURLRates.setRawValue(null);
-        txtAccessNumbers.setRawValue(null);
-        txtAliasES.setRawValue(null);
-        txtDescriptionES.setRawValue(null);
-        txtAliasEN.setRawValue(null);
-        txtDescriptionEN.setRawValue(null);
+		cbxEnabled.setChecked(false);
+		txtRealAmount.setRawValue(null);
+		txtInitialAmount.setRawValue(null);
+		txtBachNumber.setRawValue(null);
+		txtUbicationFolder.setRawValue(null);
+		txtUbicationBox.setRawValue(null);
+		txtactNpNsn.setRawValue(null);
+		txtDescription.setRawValue(null);
+		txtPartNumber.setRawValue(null);
+    	intStockMax.setRawValue(null);
+    	intStockMin.setRawValue(null);
     }
 
     public void blockFields() {
-        txtName.setReadonly(true);
-        txtReferenceCode.setReadonly(true);
-        txtURLRates.setReadonly(true);
-        txtAccessNumbers.setReadonly(true);
-        cbxTaxInclude.setDisabled(true);
+
+    	cbxEnabled.setChecked(false);
+		txtRealAmount.setReadonly(true);
+		txtInitialAmount.setReadonly(true);
+		txtBachNumber.setReadonly(true);
+		txtUbicationFolder.setReadonly(true);
+		txtUbicationBox.setReadonly(true);
+		txtactNpNsn.setReadonly(true);
+		txtDescription.setReadonly(true);
+		txtPartNumber.setReadonly(true);
+    	intStockMax.setReadonly(true);
+    	intStockMin.setReadonly(true);
         cbxEnabled.setDisabled(true);
-        cbxFree.setDisabled(true);
-        txtAliasES.setReadonly(true);
-        txtDescriptionES.setReadonly(true);
-        txtAliasEN.setReadonly(true);
-        txtDescriptionEN.setReadonly(true);
-        tbxDenomination.setReadonly(true);
-        cmbCurrency.setDisabled(true);
         cmbEnterprise.setDisabled(true);
-        cmbCategory.setDisabled(true);
         btnAddDenomination.setVisible(false);
         btnSave.setVisible(false);
     }
 
     public Boolean validateEmpty() {
-        if (txtName.getText().isEmpty()) {
-            txtName.setFocus(true);
+        if (txtRealAmount.getText().isEmpty()) {
+        	txtRealAmount.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        } else {
+        }  if (txtInitialAmount.getText().isEmpty()) {
+        	txtInitialAmount.setFocus(true);
+            this.showMessage("sp.error.field.cannotNull", true, null);
+        } if (txtBachNumber.getText().isEmpty()) {
+        	txtBachNumber.setFocus(true);
+            this.showMessage("sp.error.field.cannotNull", true, null);
+        } if (txtUbicationFolder.getText().isEmpty()) {
+        	txtUbicationFolder.setFocus(true);
+            this.showMessage("sp.error.field.cannotNull", true, null);
+        } if (txtUbicationBox.getText().isEmpty()) {
+        	txtUbicationBox.setFocus(true);
+            this.showMessage("sp.error.field.cannotNull", true, null);
+        } if (txtactNpNsn.getText().isEmpty()) {
+        	txtactNpNsn.setFocus(true);
+            this.showMessage("sp.error.field.cannotNull", true, null);
+        } if (txtDescription.getText().isEmpty()) {
+        	txtDescription.setFocus(true);
+            this.showMessage("sp.error.field.cannotNull", true, null);
+        }if (txtPartNumber.getText().isEmpty()) {
+        	txtPartNumber.setFocus(true);
+            this.showMessage("sp.error.field.cannotNull", true, null); 
+        }if (intStockMax.getText().isEmpty()) {
+        	intStockMax.setFocus(true);
+            this.showMessage("sp.error.field.cannotNull", true, null);
+        }if (intStockMin.getText().isEmpty()) {
+        	intStockMin.setFocus(true);
+            this.showMessage("sp.error.field.cannotNull", true, null);
+        } if (txtPartNumber.getText().isEmpty()) {
+        	txtPartNumber.setFocus(true);
+            this.showMessage("sp.error.field.cannotNull", true, null);
+        }if (intStockMin.getValue()>intStockMax.getValue()) {
+        	intStockMin.setFocus(true);
+            this.showMessage("sp.common.stock.min.error", true, null);
+        }if (GeneralUtils.isNumeric(txtAmount.getText())) {
+        	txtAmount.setFocus(true);
+            this.showMessage("sp.error.field.number", true, null);
+        }if (GeneralUtils.isNumeric(txtRealAmount.getText())) {
+        	txtAmount.setFocus(true);
+            this.showMessage("sp.error.field.number", true, null);
+        }if (GeneralUtils.isNumeric(txtInitialAmount.getText())) {
+        	txtInitialAmount.setFocus(true);
+            this.showMessage("sp.error.field.number", true, null);
+        }
+        
+        
+        else {
             return true;
         }
         return false;
     }
 
-    public void onChange$cmbEnterprise() {
-        Enterprise enterprise = (Enterprise) cmbEnterprise.getSelectedItem().getValue();
-        loadCurrencies(enterprise);
-
-    }
 
     public void onClick$btnSave() {
         if (validateEmpty()) {
@@ -145,23 +186,24 @@ public class AdminProductController extends GenericAbstractAdminController {
         }
     }
 
+    
+
+    public void onClick$btnBack() {
+    	 Executions.sendRedirect("./listProducts.zul");
+    }
+    
     public void loadData() {
         switch (eventType) {
             case WebConstants.EVENT_EDIT:
                 loadFields(productParam);
-//                loadCategories(productParam.getCategory());
                 loadEnterprises(productParam.getEnterprise());
-                loadDenominations();
                 break;
             case WebConstants.EVENT_VIEW:
                 loadFields(productParam);
-//                loadCategories(productParam.getCategory());
                 loadEnterprises(productParam.getEnterprise());
-                loadDenominations();
                 blockFields();
                 break;
             case WebConstants.EVENT_ADD:
-                loadCategories(null);
                 loadEnterprises(null);
                 break;
             default:
@@ -169,86 +211,23 @@ public class AdminProductController extends GenericAbstractAdminController {
         }
     }
 
+    
     public void loadFields(Product product) {
-        txtName.setText(product.getDescription());
-//        txtReferenceCode.setText(product.getReferenceCode());
-//        txtURLRates.setText(product.getRatesUrl());
-//        txtAccessNumbers.setText(product.getAccessNumberUrl());
-//        cbxTaxInclude.setChecked(product.getTaxInclude());
-//        cbxEnabled.setChecked(product.getEnabled());
-//        cbxFree.setChecked(product.getIsFree());
-//
-//        List<ProductData> productDatas = product.getProductData();
-//        for (ProductData productData : productDatas) {
-//            if (productData.getLanguage().getId().equals(Language.SPANISH)) {
-//                txtAliasES.setText(productData.getAlias());
-//                txtDescriptionES.setText(productData.getDescription());
-//            } else {
-//                txtAliasEN.setText(productData.getAlias());
-//                txtDescriptionEN.setText(productData.getDescription());
-//            }
-//        }
-
+    	
+    	intStockMax.setValue(product.getStockMax());
+    	intStockMin.setValue(product.getStockMin());
+    	txtAmount.setText(String.valueOf(product.getAmount()));
+    	txtRealAmount.setText(String.valueOf(product.getRealAmount()));
+		txtInitialAmount.setText(String.valueOf(product.getInictialAmount()));
+		txtBachNumber.setText(product.getBatchNumber());
+		txtUbicationFolder.setText(product.getUbicationFolder());
+		txtUbicationBox.setText(product.getUbicationBox());
+		txtactNpNsn.setText(product.getActNpNsn());
+		txtDescription.setText(product.getDescription());
+		txtPartNumber.setText(product.getPartNumber());
+		cbxEnabled.setChecked(product.getEnabled());
     }
 
-    public void onClick$btnAddDenomination() throws InterruptedException {
-
-        if (cmbCurrency.getSelectedIndex() == -1) {
-            this.showMessage("sp.error.currencyNotSelected", true, null);
-
-            return;
-        }
-        if (tbxDenomination.getText() == null || tbxDenomination.getText().equals("")) {
-            return;
-        } else {
-            String _amount = tbxDenomination.getText();
-            List items = (List) lbxDenominations.getItems();
-            for (int i = 0; i < items.size(); i++) {
-                ProductDenomination denomination = new ProductDenomination();
-                Float amount = Float.parseFloat(_amount);
-                Listitem item = (Listitem) items.get(i);
-                if (item.getChildren() != null && item.getChildren().get(0) != null) {
-                    item.getChildren().get(1);
-                    denomination = (ProductDenomination) ((Listcell) item.getChildren().get(0)).getValue();
-
-                    if (amount.equals(denomination.getAmount())) {
-                        return;
-                    }
-                }
-            }
-
-            Listitem listItem = new Listitem();
-            Listcell cell = new Listcell(_amount);
-            ProductDenomination denomination = new ProductDenomination();
-            denomination.setAmount(tbxDenomination.getValue().floatValue());
-            denomination.setCurrency(((Currency) cmbCurrency.getSelectedItem().getValue()));
-            cell.setValue(denomination);
-            listItem.appendChild(cell);
-            listItem.appendChild(new Listcell(((Currency) cmbCurrency.getSelectedItem().getValue()).getSymbol()));
-            listItem.appendChild(initDeleteButton(listItem));
-            listItem.setParent(lbxDenominations);
-            tbxDenomination.setText("");
-        }
-    }
-
-    private void loadCurrencies(Enterprise enterprise) {
-
-        try {
-            cmbCurrency.getItems().clear();
-            Currency c = enterprise.getCurrency();
-            System.out.println("Cuur" + c.getName());
-            Comboitem cmbItem = new Comboitem();
-            cmbItem.setLabel(c.getName());
-            cmbItem.setDescription(c.getSymbol());
-            cmbItem.setValue(c);
-            cmbItem.setParent(cmbCurrency);
-            cmbCurrency.setSelectedItem(cmbItem);
-        } catch (Exception ex) {
-            showError(ex);
-
-        }
-
-    }
 
     private void loadEnterprises(Enterprise enterprise) {
         try {
@@ -265,109 +244,31 @@ public class AdminProductController extends GenericAbstractAdminController {
                     cmbEnterprise.setSelectedIndex(0);
                 }
             }
-            onChange$cmbEnterprise();
         } catch (Exception ex) {
             showError(ex);
         }
     }
 
-    private void loadCategories(Category category) {
-        try {
-            cmbCategory.getItems().clear();
-            categories = productEJB.getCategories(request);
-            for (Category c : categories) {
-                Comboitem cmbItem = new Comboitem();
-                cmbItem.setLabel(c.getName());
-                cmbItem.setValue(c);
-                cmbItem.setParent(cmbCategory);
-                if (category != null && category.getId().equals(c.getId())) {
-                    cmbCategory.setSelectedItem(cmbItem);
-                }
-            }
-        } catch (Exception ex) {
-            showError(ex);
-        }
-    }
 
-    private void loadDenominations() {
-
-        List<ProductDenomination> denominations = null;
-        if (productParam != null) {
-//            denominations = productParam.getProductDenominations();
-        }
-
-        if (denominations != null || denominations.size() > 0) {
-            for (ProductDenomination denomination : denominations) {
-                Listitem listItem = new Listitem();
-                Listcell cell = new Listcell(denomination.getAmount().toString());
-                cell.setValue(denomination);
-                listItem.appendChild(cell);
-                listItem.appendChild(new Listcell(denomination.getCurrency().getSymbol()));
-                listItem.appendChild(eventType!=null && !eventType.equals(WebConstants.EVENT_VIEW)?initDeleteButton(listItem):new Listcell());
-                listItem.setParent(lbxDenominations);
-            }
-        }
-    }
 
     private void saveProduct(Product _product) {
         Product product = new Product();
         try {
-            product.setDescription(txtName.getText());
-//            product.setReferenceCode(txtReferenceCode.getText());
-//            product.setAccessNumberUrl(txtAccessNumbers.getText());
-//            product.setRatesUrl(txtURLRates.getText());
+            product.setDescription(txtDescription.getText());
+            product.setAmount(Float.valueOf(txtAmount.getText()));
+            product.setActNpNsn(txtactNpNsn.getText());
+            product.setBatchNumber(txtBachNumber.getText());
             product.setEnabled(cbxEnabled.isChecked());
-//            product.setIsFree(cbxFree.isChecked());
-//            product.setTaxInclude(cbxTaxInclude.isChecked());
+            product.setInictialAmount(Float.valueOf(txtInitialAmount.getText()));
+            product.setPartNumber(txtPartNumber.getText());
+            product.setRealAmount(Float.valueOf(txtRealAmount.getText()));
+            product.setUbicationBox(txtUbicationBox.getText());
+            product.setUbicationFolder(txtUbicationFolder.getText());
+            product.setStockMax(intStockMin.getValue());
+            product.setStockMin(intStockMin.getValue());
             Enterprise e = new Enterprise();
             e.setId(((Enterprise) cmbEnterprise.getSelectedItem().getValue()).getId());
             product.setEnterprise(e);
-//            product.setCategory((Category) cmbCategory.getSelectedItem().getValue());
-
-            if (_product != null) {
-                product.setId(_product.getId());
-//                List<ProductData> productDatas = productParam.getProductData();
-//                for (ProductData productData : productDatas) {
-//                    productData.setAlias(productData.getLanguage().getId().equals(Language.SPANISH) ? txtAliasES.getText() : txtAliasEN.getText());
-//                    productData.setDescription(productData.getLanguage().getId().equals(Language.SPANISH) ? txtDescriptionES.getText() : txtDescriptionEN.getText());
-//
-//                }
-            } else {
-                //ESPAÑOL
-                List<ProductData> productDatas = new ArrayList<ProductData>();
-                ProductData productData1 = new ProductData();
-                productData1.setAlias(txtAliasES.getText());
-                productData1.setDescription(txtDescriptionES.getText());
-                request.setParam(Language.SPANISH);
-                productData1.setLanguage(utilsEJB.loadLanguage(request));
-                productData1.setProduct(product);
-                productDatas.add(productData1);
-                //INGLÉS
-                ProductData productData2 = new ProductData();
-                productData2 = new ProductData();
-                productData2.setAlias(txtAliasEN.getText());
-                productData2.setDescription(txtDescriptionEN.getText());
-                request.setParam(Language.ENGLISH);
-                productData2.setLanguage(utilsEJB.loadLanguage(request));
-                productData2.setProduct(product);
-                productDatas.add(productData2);
-//                product.setProductData(productDatas);
-            }
-            // Denominaciones: se debe eliminar las anteriores
-            List<ProductDenomination> productDenominations = new ArrayList<ProductDenomination>();
-            List items = (List) lbxDenominations.getItems();
-            for (int i = 0; i < items.size(); i++) {
-                ProductDenomination denomination = new ProductDenomination();
-
-                Listitem item = (Listitem) items.get(i);
-                if (item.getChildren() != null && item.getChildren().get(0) != null) {
-                    denomination = (ProductDenomination) ((Listcell) item.getChildren().get(0)).getValue();
-                    denomination.setId(null);
-                    denomination.setProduct(product);
-                    productDenominations.add(denomination);
-                }
-            }
-
             request.setParam(product);
             request.setAuditData(null);
             product = productEJB.saveProduct(request);
