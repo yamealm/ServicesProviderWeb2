@@ -152,13 +152,13 @@ public class AdminProductController extends GenericAbstractAdminController {
         }if (intStockMin.getValue()>intStockMax.getValue()) {
         	intStockMin.setFocus(true);
             this.showMessage("sp.common.stock.min.error", true, null);
-        }if (GeneralUtils.isNumeric(txtAmount.getText())) {
+        }if (!GeneralUtils.isNumeric(txtAmount.getText())) {
         	txtAmount.setFocus(true);
             this.showMessage("sp.error.field.number", true, null);
-        }if (GeneralUtils.isNumeric(txtRealAmount.getText())) {
+        }if (!GeneralUtils.isNumeric(txtRealAmount.getText())) {
         	txtAmount.setFocus(true);
             this.showMessage("sp.error.field.number", true, null);
-        }if (GeneralUtils.isNumeric(txtInitialAmount.getText())) {
+        }if (!GeneralUtils.isNumeric(txtInitialAmount.getText())) {
         	txtInitialAmount.setFocus(true);
             this.showMessage("sp.error.field.number", true, null);
         }
