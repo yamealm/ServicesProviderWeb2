@@ -254,6 +254,9 @@ public class AdminProductController extends GenericAbstractAdminController {
     private void saveProduct(Product _product) {
         Product product = new Product();
         try {
+
+            if (_product != null) 
+                product.setId(_product.getId());
             product.setDescription(txtDescription.getText());
             product.setAmount(Float.valueOf(txtAmount.getText()));
             product.setActNpNsn(txtactNpNsn.getText());
