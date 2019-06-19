@@ -18,6 +18,7 @@ import com.alodiga.services.provider.web.components.ListcellEditButton;
 import com.alodiga.services.provider.web.components.ListcellViewButton;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractListController;
 import com.alodiga.services.provider.web.utils.AccessControl;
+import com.alodiga.services.provider.web.utils.PDFUtil;
 import com.alodiga.services.provider.web.utils.Utils;
 import com.alodiga.services.provider.web.utils.WebConstants;
 import java.util.ArrayList;
@@ -185,13 +186,7 @@ public class ListProductsController extends GenericAbstractListController<Produc
         }
     }
 
-    public void onClick$btnDownload() throws InterruptedException {
-        try {
-            Utils.exportExcel(lbxRecords, Labels.getLabel("sp.crud.provider.list"));
-        } catch (Exception ex) {
-            showError(ex);
-        }
-    }
+  
 
     public void onClick$btnClear() throws InterruptedException {
         txtAlias.setText("");
@@ -204,4 +199,21 @@ public class ListProductsController extends GenericAbstractListController<Produc
             showError(ex);
         }
     }
+    
+    public void onClick$btnExportPdf() throws InterruptedException {
+        try {
+        	PDFUtil.exportPdf((Labels.getLabel("sp.common.product"))+".pdf", Labels.getLabel("sp.crud.product.list.reporte"), lbxRecords,3);
+        } catch (Exception ex) {
+            showError(ex);
+        }
+    }
+    
+    public void onClick$btnDownload() throws InterruptedException {
+        try {
+            Utils.exportExcel(lbxRecords, Labels.getLabel("sp.crud.provider.list"));
+        } catch (Exception ex) {
+            showError(ex);
+        }
+    }
+    
 }
