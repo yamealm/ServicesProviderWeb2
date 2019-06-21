@@ -78,7 +78,6 @@
                                                         <row>
                                                             <label value="${c:l('sp.common.actNpNsn')}" sclass="lblbold"/>
                                                             <hlayout>
-                                                              
                                                                <textbox id="txtactNpNsn" maxlength="45" width="320px" constraint="no empty: ${c:l('error.field.required')}"/>
                                                                <label value="*" sclass="lblreq" />
                                                                <label value="${c:l('sp.common.max45')}" sclass="lblexample"/>
@@ -109,58 +108,9 @@
                                                             <label value="${c:l('sp.common.max45')}" sclass="lblexample"/>
                                                           </hlayout>
                                                         </row>
-                                                        <row>
-                                                        <label value="${c:l('sp.common.enabled')}" sclass="lblbold"/>
-                                                          <hlayout>
-                                                            <checkbox id="cbxEnabled" checked="true"/>
-                                                          </hlayout>
-                                                        </row>
                                                     </rows>
                                                 </grid>
-                                                
-
-
-<!--  -->
-<!--  -->
-
-                                                
-                                                
-                                                
-                                               <label value="${c:l('sp.common.amounts.values')}" sclass="lblbold"/>
-                                                <grid fixedLayout="true">
-                                                    <columns>
-                                                        <column label="" width="200px"/>
-                                                        <column label="" width="690px"/>
-                                                    </columns>
-                                                    <rows>
-                                                        <group label="${c:l('sp.common.amounts.values')}" />
-                                                        <row>
-                                                            <label value="${c:l('sp.common.inictialAmount')}" sclass="lblbold"/>
-                                                            <hlayout>
-                                                                <textbox id="txtInitialAmount" width="320px" maxlength="45" constraint="no empty: ${c:l('error.field.required')}"/>
-                                                                <label value="*" sclass="lblreq" />
-                                                                <label value="${c:l('sp.common.max45')}" sclass="lblexample"/>
-                                                            </hlayout>
-                                                        </row>
-                                                          <row>
-                                                            <label value="${c:l('sp.common.realAmount.product')}" sclass="lblbold"/>
-                                                            <hlayout>
-                                                                <textbox id="txtRealAmount" width="320px" maxlength="45" constraint="no empty: ${c:l('error.field.required')}"/>
-                                                                <label value="*" sclass="lblreq" />
-                                                                <label value="${c:l('sp.common.max45')}" sclass="lblexample"/>
-                                                            </hlayout>
-                                                        </row>
-                                                       <row>
-                                                            <label value="${c:l('sp.common.amount')}" sclass="lblbold"/>
-                                                            <hlayout>
-                                                                <textbox id="txtAmount" width="320px" maxlength="45" constraint="no empty: ${c:l('error.field.required')}"/>
-                                                                <label value="*" sclass="lblreq" />
-                                                                <label value="${c:l('sp.common.max45')}" sclass="lblexample"/>
-                                                            </hlayout>
-                                                        </row>
-                                                    </rows>
-                                                </grid>
-                                                
+                                        
                                                 
                                                 <label value="${c:l('sp.common.stock')}" sclass="lblbold"/>
                                                 <grid fixedLayout="true">
@@ -186,6 +136,80 @@
                                                                 <label value="${c:l('sp.common.max45')}" sclass="lblexample"/>
                                                             </hlayout>
                                                         </row>
+                                                         <row>
+                                                            <label value="${c:l('sp.common.amount')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <textbox id="txtAmount" width="320px" maxlength="45" constraint="no empty: ${c:l('error.field.required')}"/>
+                                                                <label value="*" sclass="lblreq" />
+                                                                <label value="${c:l('sp.common.max45')}" sclass="lblexample"/>
+                                                            </hlayout>
+                                                        </row>
+                                                                                                                  <row>
+                                                            <label value="${c:l('sp.common.quantity')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <intbox id="intQuantity" width="320px" maxlength="45" constraint="no empty: ${c:l('error.field.required')}"/>
+                                                                <label value="*" sclass="lblreq" />
+                                                                <label value="${c:l('sp.common.max45')}" sclass="lblexample"/>
+                                                            </hlayout>
+                                                        </row>
+                                                        <row>
+                                                        <label value="${c:l('sp.common.serial')}" sclass="lblbold"/>
+                                                          <hlayout>
+                                                            <checkbox id="cbxSerial" checked="true"/>
+                                                            <textbox id="txtSerial" maxlength="45" width="320px" disable="true"/>
+                                                          </hlayout>
+                                                        </row>
+                                                         <row>
+                                                            <label value="${c:l('sp.common.category')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <combobox id="cmbCategory" width="190px" mold="rounded" readonly="true"/>
+                                                                <label value="*" sclass="lblreq" />
+                                                            </hlayout>
+                                                        </row>
+                                                       <row>
+                                                            <label value="${c:l('sp.common.condition')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <combobox id="cmbCondition" width="190px" mold="rounded" readonly="true"/>
+                                                                <label value="*" sclass="lblreq" />
+                                                            </hlayout>
+                                                        </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.common.provider')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <combobox id="cmbProvider" width="190px" mold="rounded" readonly="true"/>
+                                                                <label value="*" sclass="lblreq" />
+                                                            </hlayout>
+                                                        </row>
+                                                      <row>
+                                                            <label value="${c:l('sp.common.customer')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <combobox id="cmbCustomer" width="190px" mold="rounded" readonly="true"/>
+                                                                <label value="*" sclass="lblreq" />
+                                                            </hlayout>
+                                                        </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.common.page.invoice')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                               <textbox id="txtInvoice" maxlength="45" width="320px"/>                                 
+                                                            </hlayout>
+                                                        </row>
+                                                         <row>
+                                                            <label value="${c:l('sp.common.observations')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                               <textbox id="txtObservation"  rows="4" maxlength="45" width="320px"/>                                 
+                                                            </hlayout>
+                                                        </row>
+                                                         <row>
+                                                            <label value="${c:l('sp.common.date')}" sclass="lblbold"/>
+                                                            <checkbox id="cbxExpiration" checked="true"/>
+                                                            <datebox id="dtxExpiration" width="320px" maxlength="45"/>
+                                                        </row>
+                                                        <row >
+                                                            <label value="${c:l('sp.common.date')}" sclass="lblbold"/>
+                                                            <checkbox id="cbxCure" checked="true"/>
+                                                            <datebox id="dtxCure" width="320px" maxlength="45"/>
+                                                        </row>
+                                                    </rows>
                                                     </rows>
                                                 </grid>
 

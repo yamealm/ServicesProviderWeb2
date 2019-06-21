@@ -298,4 +298,7 @@ INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `a
 INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('180', '91', '1', 'Stock de Productos', 'Stock de Productos');
 INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1476', '91', '1');
 
+ALTER TABLE `services`.`product_history` 
+ADD COLUMN `currentAmount` FLOAT(10,2) NULL DEFAULT 0.00 AFTER `creationDate`,
+ADD COLUMN `oldAmount` FLOAT(10,2) NULL DEFAULT 0.00 AFTER `currentAmount`;
 
