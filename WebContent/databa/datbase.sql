@@ -288,3 +288,14 @@ ADD CONSTRAINT `Fk_product_transactionType`
   ON DELETE NO ACTION
   ON UPDATE NO ACTION;
 
+  
+  //Yamelis 20-06-2019
+UPDATE `services`.`provider` SET `name` = 'provider1', `address` = 'CABA' WHERE (`id` = '1');
+UPDATE `services`.`provider` SET `name` = 'provider2', `address` = 'Cordoba', `enabled` = '1' WHERE (`id` = '2');
+
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('91', '1', 'listStock', 'product', 'listStock', '1');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('179', '91', '1', 'Stock Product', 'Stock Product');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('180', '91', '1', 'Stock de Productos', 'Stock de Productos');
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1476', '91', '1');
+
+
