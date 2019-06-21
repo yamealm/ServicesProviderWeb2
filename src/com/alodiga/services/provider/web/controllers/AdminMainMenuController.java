@@ -163,20 +163,20 @@ public class AdminMainMenuController extends GenericForwardComposer {
 
     private void loadOperationalManagementGroup(PermissionGroup permissionGroup) {
         Listgroup listgroup = createListGroup(permissionGroup);
-        createCell(Permission.LIST_ACCOUNTS, "listAccounts.zul", permissionGroup, listgroup);
-        createCell(Permission.LIST_MOBILE_OPERATORS, "listMobileOperators.zul", permissionGroup, listgroup);
+//        createCell(Permission.LIST_ACCOUNTS, "listAccounts.zul", permissionGroup, listgroup);
+        createCell(Permission.LIST_STOCK, "listStock.zul", permissionGroup, listgroup);
         createCell(Permission.LIST_COUNTRIES, "listCountries.zul", permissionGroup, listgroup);
         createCell(Permission.LIST_PRODUCTS, "listProducts.zul", permissionGroup, listgroup);
         createCell(Permission.LIST_PROVIDERS, "listProviders.zul", permissionGroup, listgroup);
-        createCell(Permission.LIST_SMS, "listSMS.zul", permissionGroup, listgroup);
-        createCell(Permission.CHANGE_IP_ADRESS, "changeIpAdress.zul", permissionGroup, listgroup);
+//        createCell(Permission.LIST_SMS, "listSMS.zul", permissionGroup, listgroup);
+//        createCell(Permission.CHANGE_IP_ADRESS, "changeIpAdress.zul", permissionGroup, listgroup);
         createCell(Permission.LIST_REPORTS, "listReports.zul", permissionGroup, listgroup);
-        createCell(Permission.LIST_BLACKIP, "listBlackIp.zul", permissionGroup, listgroup);
+//        createCell(Permission.LIST_BLACKIP, "listBlackIp.zul", permissionGroup, listgroup);
         createCell(Permission.REPORT_EXECUTE, "managementReport.zul", permissionGroup, listgroup);
         createCell(Permission.LIST_TRANSACTION, "listTransactions.zul", permissionGroup, listgroup);
         createCell(Permission.TOP_UP_CALCULATION_LIST, "commissionAccounts.zul", permissionGroup, listgroup);
-        createCell(Permission.LIST_BILL_PAYMENT_CALCULATION, "billPaymentCommissionAccounts.zul", permissionGroup, listgroup);
-        createCell(Permission.LIST_BILL_PAYMENT, "listBillPayments.zul", permissionGroup, listgroup);
+//        createCell(Permission.LIST_BILL_PAYMENT_CALCULATION, "billPaymentCommissionAccounts.zul", permissionGroup, listgroup);
+//        createCell(Permission.LIST_BILL_PAYMENT, "listBillPayments.zul", permissionGroup, listgroup);
 
     }
 

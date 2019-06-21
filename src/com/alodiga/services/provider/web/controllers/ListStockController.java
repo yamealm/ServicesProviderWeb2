@@ -1,6 +1,18 @@
 package com.alodiga.services.provider.web.controllers;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import org.zkoss.util.resource.Labels;
+import org.zkoss.zk.ui.Component;
+import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listcell;
+import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Textbox;
+
 import com.alodiga.services.provider.commons.ejbs.ProductEJB;
+import com.alodiga.services.provider.commons.ejbs.TransactionEJB;
 import com.alodiga.services.provider.commons.exceptions.EmptyListException;
 import com.alodiga.services.provider.commons.exceptions.GeneralException;
 import com.alodiga.services.provider.commons.exceptions.NullParameterException;
@@ -8,39 +20,26 @@ import com.alodiga.services.provider.commons.managers.PermissionManager;
 import com.alodiga.services.provider.commons.models.Enterprise;
 import com.alodiga.services.provider.commons.models.Permission;
 import com.alodiga.services.provider.commons.models.Product;
+import com.alodiga.services.provider.commons.models.ProductHistory;
 import com.alodiga.services.provider.commons.models.Profile;
 import com.alodiga.services.provider.commons.models.Provider;
 import com.alodiga.services.provider.commons.models.User;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
-import com.alodiga.services.provider.web.components.ChangeStatusButton;
-import com.alodiga.services.provider.web.components.ListcellEditButton;
-import com.alodiga.services.provider.web.components.ListcellViewButton;
+import com.alodiga.services.provider.web.components.ListcellAddButton;
+import com.alodiga.services.provider.web.components.ListcellRemoveButton;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractListController;
 import com.alodiga.services.provider.web.utils.AccessControl;
 import com.alodiga.services.provider.web.utils.PDFUtil;
 import com.alodiga.services.provider.web.utils.Utils;
-import com.alodiga.services.provider.web.utils.WebConstants;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import org.zkoss.util.resource.Labels;
-import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.Executions;
-import org.zkoss.zk.ui.Sessions;
-import org.zkoss.zk.ui.event.Event;
-import org.zkoss.zk.ui.event.EventListener;
-import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listcell;
-import org.zkoss.zul.Listitem;
-import org.zkoss.zul.Textbox;
 
-public class ListProductsController extends GenericAbstractListController<Product> {
+public class ListStockController extends GenericAbstractListController<Product> {
 
     private static final long serialVersionUID = -9145887024839938515L;
     private Listbox lbxRecords;
     private Textbox txtAlias;
     private ProductEJB productEJB = null;
+    private TransactionEJB transactionEJB = null;
     private List<Product> products = null;
     private User currentUser;
     private Profile currentProfile;
@@ -54,10 +53,8 @@ public class ListProductsController extends GenericAbstractListController<Produc
     @Override
     public void checkPermissions() {
         try {
-            btnAdd.setVisible(PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.ADD_PRODUCT));
             permissionEdit = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.EDIT_PRODUCT);
             permissionRead = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.VIEW_PRODUCT);
-            permissionChangeStatus = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.CHANGE_PRODUCT_STATUS);
         } catch (Exception ex) {
             showError(ex);
         }
@@ -74,8 +71,9 @@ public class ListProductsController extends GenericAbstractListController<Produc
             currentUser = AccessControl.loadCurrentUser();
             currentProfile = currentUser.getCurrentProfile(Enterprise.ALODIGA_USA);
             checkPermissions();
-            adminPage = "adminProduct.zul";
+            adminPage = "adminAddStock.zul";
             productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
+            transactionEJB = (TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
             loadPermission(new Provider());
             startListener();
             getData();
@@ -85,23 +83,23 @@ public class ListProductsController extends GenericAbstractListController<Produc
         }
     }
 
-    private Listcell initEnabledButton(final Boolean enabled, final Listitem listItem) {
-
-        Listcell cell = new Listcell();
-        cell.setValue("");
-        final ChangeStatusButton button = new ChangeStatusButton(enabled);
-        button.setTooltiptext(Labels.getLabel("sp.common.actions.changeStatus"));
-        button.setClass("open orange");
-        button.addEventListener("onClick", new EventListener() {
-
-            public void onEvent(Event event) throws Exception {
-                changeStatus(button, listItem);
-            }
-        });
-
-        button.setParent(cell);
-        return cell;
-    }
+//    private Listcell initEnabledButton(final Boolean enabled, final Listitem listItem) {
+//
+//        Listcell cell = new Listcell();
+//        cell.setValue("");
+//        final ChangeStatusButton button = new ChangeStatusButton(enabled);
+//        button.setTooltiptext(Labels.getLabel("sp.common.actions.changeStatus"));
+//        button.setClass("open orange");
+//        button.addEventListener("onClick", new EventListener() {
+//
+//            public void onEvent(Event event) throws Exception {
+//                changeStatus(button, listItem);
+//            }
+//        });
+//
+//        button.setParent(cell);
+//        return cell;
+//    }
 
     public List<Product> getFilteredList(String filter) {
         List<Product> auxList = new ArrayList<Product>();
@@ -115,45 +113,44 @@ public class ListProductsController extends GenericAbstractListController<Produc
         return auxList;
     }
 
-    public void onClick$btnAdd() throws InterruptedException {
-        Sessions.getCurrent().setAttribute("eventType", WebConstants.EVENT_ADD);
-        Sessions.getCurrent().removeAttribute("object");
-        Executions.getCurrent().sendRedirect(adminPage);
 
-    }
-
-    private void changeStatus(ChangeStatusButton button, Listitem listItem) {
-        try {
-            Product product = (Product) listItem.getValue();
-            button.changeImageStatus(product.getEnabled());
-            product.setEnabled(!product.getEnabled());
-            listItem.setValue(product);
-            request.setParam(product);
-            productEJB.saveProduct(request);
-            AccessControl.saveAction(Permission.CHANGE_PRODUCT_STATUS, "changeStatus product = " + product.getId() + " to status = " + !product.getEnabled());
-        } catch (Exception ex) {
-            showError(ex);
-        }
-    }
+//    private void changeStatus(ChangeStatusButton button, Listitem listItem) {
+//        try {
+//            Product product = (Product) listItem.getValue();
+//            button.changeImageStatus(product.getEnabled());
+//            product.setEnabled(!product.getEnabled());
+//            listItem.setValue(product);
+//            request.setParam(product);
+//            productEJB.saveProduct(request);
+//            AccessControl.saveAction(Permission.CHANGE_PRODUCT_STATUS, "changeStatus product = " + product.getId() + " to status = " + !product.getEnabled());
+//        } catch (Exception ex) {
+//            showError(ex);
+//        }
+//    }
 
     public void loadList(List<Product> list) {
         try {
             lbxRecords.getItems().clear();
             Listitem item = null;
+            int stock = 0;
             if (list != null && !list.isEmpty()) {
                 btnDownload.setVisible(true);
                 for (Product product : list) {
-
+                	try {
+                		ProductHistory  productHistory = transactionEJB.loadLastProductHistoryByProductId(product.getId());
+                		stock = productHistory.getCurrentQuantity();
+                	} catch (Exception ex) {
+                        
+                    }
                     item = new Listitem();
                     item.setValue(product);
                     item.appendChild(new Listcell(product.getPartNumber()));
                     item.appendChild(new Listcell(product.getDescription()));
+                    item.appendChild(new Listcell(product.getUbicationBox()));
                     item.appendChild(new Listcell(String.valueOf(product.getAmount())));
-                    item.appendChild(new Listcell(String.valueOf(product.getStockMin())));
-                    item.appendChild(new Listcell(String.valueOf(product.getStockMax())));
-                    item.appendChild(permissionChangeStatus ? initEnabledButton(product.getEnabled(), item) : new Listcell());
-                    item.appendChild(permissionEdit ? new ListcellEditButton(adminPage, product,Permission.EDIT_PRODUCT) : new Listcell());
-                    item.appendChild(permissionRead ? new ListcellViewButton(adminPage, product,Permission.VIEW_PRODUCT) : new Listcell());
+                    item.appendChild(new Listcell(String.valueOf(stock)));
+                    item.appendChild(permissionEdit ? new ListcellAddButton(adminPage, product,Permission.EDIT_PRODUCT) : new Listcell());
+                    item.appendChild(permissionRead ? new ListcellRemoveButton(adminPage, product,Permission.EDIT_PRODUCT) : new Listcell());
                     item.setParent(lbxRecords);
                 }
             } else {
@@ -215,5 +212,10 @@ public class ListProductsController extends GenericAbstractListController<Produc
             showError(ex);
         }
     }
+
+	@Override
+	public void onClick$btnAdd() throws InterruptedException {
+		
+	}
     
 }
