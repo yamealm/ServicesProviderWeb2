@@ -125,9 +125,7 @@ public class AdminEnterpriseController extends GenericAbstractAdminController {
         } else if (txtATCNumber.getText().isEmpty()) {
             txtATCNumber.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        }  else if (lbxTinTypes.getSelectedCount() == 0) {
-            this.showMessage("sp.error.tinType.notSelected", true, null);
-        } else {
+        }  else {
             return true;
         }
         return false;
@@ -147,22 +145,22 @@ public class AdminEnterpriseController extends GenericAbstractAdminController {
             enterprise.setInvoiceAddress(txtInvoiceAddress.getText());
             enterprise.setUrl(txtURL.getText());
             enterprise.setEnabled(cbxEnabled.isChecked());
-            List<EnterpriseHasTinType> enterpriseHasTinTypes = new ArrayList<EnterpriseHasTinType>();
-            Set items = lbxTinTypes.getSelectedItems();
-            List al = new ArrayList(items);
-            for (Iterator it = al.iterator(); it.hasNext();) {
-                EnterpriseHasTinType ehtt = new EnterpriseHasTinType();
-                Listitem li = (Listitem) it.next();
-                 TinType tinType = (TinType) li.getValue();
-                ehtt.setTinType(tinType);
-                ehtt.setEnterprise(enterprise);
-                enterpriseHasTinTypes.add(ehtt);
-            }
+//            List<EnterpriseHasTinType> enterpriseHasTinTypes = new ArrayList<EnterpriseHasTinType>();
+//            Set items = lbxTinTypes.getSelectedItems();
+//            List al = new ArrayList(items);
+//            for (Iterator it = al.iterator(); it.hasNext();) {
+//                EnterpriseHasTinType ehtt = new EnterpriseHasTinType();
+//                Listitem li = (Listitem) it.next();
+//                 TinType tinType = (TinType) li.getValue();
+//                ehtt.setTinType(tinType);
+//                ehtt.setEnterprise(enterprise);
+//                enterpriseHasTinTypes.add(ehtt);
+//            }
 //            enterprise.setEnterpriseHasTinTypes(enterpriseHasTinTypes);
             
             if (_enterprise != null) {
                 enterprise.setId(_enterprise.getId());
-                utilsEJB.deleteEnterpriseHasTinType(_enterprise.getId());
+//                utilsEJB.deleteEnterpriseHasTinType(_enterprise.getId());
             }
             request.setParam(enterprise);
             enterprise = utilsEJB.saveEnterprise(request);
@@ -195,18 +193,15 @@ public class AdminEnterpriseController extends GenericAbstractAdminController {
                 loadFields(enterpriseParam);
                 loadCurrencies(false);
                 loadCountries(false);
-                loadTinTypes(enterpriseParam);
                 break;
             case WebConstants.EVENT_VIEW:
                 loadFields(enterpriseParam);
                 loadCurrencies(false);
                 loadCountries(false);
-                loadTinTypes(enterpriseParam);
                 break;
             case WebConstants.EVENT_ADD:
                 loadCurrencies(true);
                 loadCountries(true);
-                loadTinTypes(null);
                 break;
             default:
                 break;
@@ -259,43 +254,7 @@ public class AdminEnterpriseController extends GenericAbstractAdminController {
         }
     }
 
-     private void loadTinTypes(Enterprise enterprise) {
-
-        List<TinType> tinTypes = new ArrayList<TinType>();
-        try {
-            request.setFirst(0);
-            request.setFirst(null);
-            request.setAuditData(null);
-            tinTypes = utilsEJB.getTinTypes();
-            lbxTinTypes.getItems().clear();
-//            if (tinTypes != null && !tinTypes.isEmpty()) {
-//                for (TinType tinType : tinTypes) {
-//
-//                        Listitem item = new Listitem();
-//                        if (enterprise != null) {
-//                            List<EnterpriseHasTinType> enterpriseHasTinType = enterprise.getEnterpriseHasTinTypes();
-//                            for (int y = 0; y < enterpriseHasTinType.size(); y++) {
-//                                TinType tt = enterpriseHasTinType.get(y).getTinType();
-//                                if (tt.getId().equals(tinType.getId())) {
-//                                    item.setSelected(true);
-//                                }
-//                            }
-//                        }
-//                        item.setValue(tinType);
-//                        item.appendChild(new Listcell());
-//                        item.appendChild(new Listcell(tinType.getName()));
-//                        item.appendChild(new Listcell(tinType.getIsNatural() ? Labels.getLabel("sp.common.yes") : Labels.getLabel("sp.common.no")));
-//                        item.appendChild(new Listcell(tinType.getPrefix()));
-//                        item.setParent(lbxTinTypes);
-//
-//
-//                }
-//            }
-
-        } catch (Exception ex) {
-            showError(ex);
-        }
-    }
+   
    
 
 }

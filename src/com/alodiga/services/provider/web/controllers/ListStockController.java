@@ -140,13 +140,14 @@ public class ListStockController extends GenericAbstractListController<Product> 
                 		ProductHistory  productHistory = transactionEJB.loadLastProductHistoryByProductId(product.getId());
                 		stock = productHistory.getCurrentQuantity();
                 	} catch (Exception ex) {
-                        
+                		stock = 0;
                     }
                     item = new Listitem();
                     item.setValue(product);
                     item.appendChild(new Listcell(product.getPartNumber()));
                     item.appendChild(new Listcell(product.getDescription()));
                     item.appendChild(new Listcell(product.getUbicationBox()));
+                    item.appendChild(new Listcell(product.getUbicationFolder()));
                     item.appendChild(new Listcell(String.valueOf(product.getAmount())));
                     item.appendChild(new Listcell(String.valueOf(stock)));
                     item.appendChild(permissionEdit ? new ListcellAddButton(adminPage, product,Permission.EDIT_PRODUCT) : new Listcell());

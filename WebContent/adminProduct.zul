@@ -115,6 +115,7 @@
                                                             <checkbox id="cbxEnabled" checked="true"/>
                                                           </hlayout>
                                                         </row>
+                           
                                                     </rows>
                                                 </grid>
                                                 

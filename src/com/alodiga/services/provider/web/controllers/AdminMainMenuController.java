@@ -163,20 +163,12 @@ public class AdminMainMenuController extends GenericForwardComposer {
 
     private void loadOperationalManagementGroup(PermissionGroup permissionGroup) {
         Listgroup listgroup = createListGroup(permissionGroup);
-//        createCell(Permission.LIST_ACCOUNTS, "listAccounts.zul", permissionGroup, listgroup);
-        createCell(Permission.LIST_STOCK, "listStock.zul", permissionGroup, listgroup);
-        createCell(Permission.LIST_COUNTRIES, "listCountries.zul", permissionGroup, listgroup);
-        createCell(Permission.LIST_PRODUCTS, "listProducts.zul", permissionGroup, listgroup);
-        createCell(Permission.LIST_PROVIDERS, "listProviders.zul", permissionGroup, listgroup);
-//        createCell(Permission.LIST_SMS, "listSMS.zul", permissionGroup, listgroup);
-//        createCell(Permission.CHANGE_IP_ADRESS, "changeIpAdress.zul", permissionGroup, listgroup);
-        createCell(Permission.LIST_REPORTS, "listReports.zul", permissionGroup, listgroup);
-//        createCell(Permission.LIST_BLACKIP, "listBlackIp.zul", permissionGroup, listgroup);
-        createCell(Permission.REPORT_EXECUTE, "managementReport.zul", permissionGroup, listgroup);
-        createCell(Permission.LIST_TRANSACTION, "listTransactions.zul", permissionGroup, listgroup);
-        createCell(Permission.TOP_UP_CALCULATION_LIST, "commissionAccounts.zul", permissionGroup, listgroup);
-//        createCell(Permission.LIST_BILL_PAYMENT_CALCULATION, "billPaymentCommissionAccounts.zul", permissionGroup, listgroup);
-//        createCell(Permission.LIST_BILL_PAYMENT, "listBillPayments.zul", permissionGroup, listgroup);
+        createCell(Permission.LIST_PRODUCTS,"listProducts.zul", permissionGroup, listgroup);
+        createCell(Permission.STOCK, "listStock.zul", permissionGroup, listgroup);
+        createCell(Permission.TRANSIT, "listTransit.zul", permissionGroup, listgroup);
+        createCell(Permission.QUARANTINE, "listQuaratine.zul", permissionGroup, listgroup);
+        createCell(Permission.WAIT, "listWait.zul", permissionGroup, listgroup);
+        createCell(Permission.METEOROLOGICAL_CONTROL, "Meteorological.zul", permissionGroup, listgroup);
 
     }
 
@@ -191,21 +183,20 @@ public class AdminMainMenuController extends GenericForwardComposer {
     private void loadConfigurationsManagementGroup(PermissionGroup permissionGroup) {
         Listgroup listgroup = createListGroup(permissionGroup);
         createCell(Permission.LIST_ENTERPRISES, "listEnterprises.zul", permissionGroup, listgroup);
-        createCell(Permission.ADMIN_SETTINGS, "adminSettings.zul", permissionGroup, listgroup);
-        createCell(Permission.SMS_TESTING, "smsTesting.zul", permissionGroup, listgroup);
-        createCell(Permission.EMAIL_TESTING, "emailTesting.zul", permissionGroup, listgroup);
-        createCell(Permission.SearchAccessNumber, "accessNumber.zul", permissionGroup, listgroup);
+        createCell(Permission.LIST_PROVIDERS, "listProviders.zul", permissionGroup, listgroup);
+        createCell(Permission.LIST_CUSTOMER, "listCustomers.zul", permissionGroup, listgroup);
+        createCell(Permission.LIST_COUNTRIES, "listCountries.zul", permissionGroup, listgroup);
         createCell(Permission.AUTOMATIC_PROCESS, "adminAutomaticServices.zul", permissionGroup, listgroup);
-        createCell(Permission.LIST_BANNERS, "listBanners.zul", permissionGroup, listgroup);
-        createCell(Permission.BALANCE_ADJUSMENT, "balanceAdjusmentView.zul", permissionGroup, listgroup);
-        
     }
 
       private void loadConfigurationsPaymentGroup(PermissionGroup permissionGroup) {
         Listgroup listgroup = createListGroup(permissionGroup);
-        createCell(Permission.LIST_INVOICE, "listInvoices.zul", permissionGroup, listgroup);
-        createCell(Permission.RECHARGE_BALANCE, "adminBalanceRecharge.zul", permissionGroup, listgroup);
-        createCell(Permission.FORCE_INVOICE, "forceAdmin.zul", permissionGroup, listgroup);
+        createCell(Permission.MONITORING, "monitoring.zul", permissionGroup, listgroup);
+        createCell(Permission.REPORT_STOCK, "reportStock.zul", permissionGroup, listgroup);
+        createCell(Permission.REPORT_TRANSIT, "reportTransit.zul", permissionGroup, listgroup);
+        createCell(Permission.REPORT_QUARANTINE, "reportQuarantine.zul", permissionGroup, listgroup);
+        createCell(Permission.REPORT_WAIT, "reportWait.zul", permissionGroup, listgroup);
+        createCell(Permission.REPORT_METEOROLOGICAL_CONTROL, "ReportMeteorological.zul", permissionGroup, listgroup);
     }
 
     

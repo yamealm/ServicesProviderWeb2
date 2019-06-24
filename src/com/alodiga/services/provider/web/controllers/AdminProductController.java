@@ -49,12 +49,10 @@ public class AdminProductController extends GenericAbstractAdminController {
     private Intbox intStockMax;
     private Intbox intStockMin;
 
-    private Listbox lbxDenominations;
     private ProductEJB productEJB = null;
     private UtilsEJB utilsEJB = null;
     private Product productParam;
     private List<Enterprise> enterprises;
-    private List<Category> categories;
     private Button btnAddDenomination;
     private Button btnSave;
     @Override

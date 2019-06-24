@@ -302,3 +302,194 @@ ALTER TABLE `services`.`product_history`
 ADD COLUMN `currentAmount` FLOAT(10,2) NULL DEFAULT 0.00 AFTER `creationDate`,
 ADD COLUMN `oldAmount` FLOAT(10,2) NULL DEFAULT 0.00 AFTER `currentAmount`;
 
+//Yamelis Almea 22-06-2019
+ALTER TABLE `services`.`product_expiration` 
+ADD COLUMN `cure` DATETIME NULL AFTER `expirationDate`;
+
+ALTER TABLE `services`.`product` 
+ADD COLUMN `isSerial` TINYINT(1) NULL AFTER `enabled`,
+ADD COLUMN `isExpiration` TINYINT(1) NULL AFTER `isSerial`;
+
+ALTER TABLE `services`.`transaction` 
+DROP COLUMN `isSerial`;
+
+ALTER TABLE `services`.`product_serie` 
+CHANGE COLUMN `expirationDate` `expirationDate` DATETIME NULL DEFAULT NULL ;
+
+DROP TABLE `services`.`product_expiration`;
+
+ALTER TABLE `services`.`product_serie` 
+CHARACTER SET = latin1 , COLLATE = latin1_bin ,
+ADD COLUMN `quantity` INT(5) NOT NULL DEFAULT 0 AFTER `cure`;
+
+ALTER TABLE `services`.`product_serie` 
+ADD COLUMN `enabled` TINYINT(1) NOT NULL DEFAULT 0 AFTER `quantity`;
+
+
+ALTER TABLE `services`.`product_serie` 
+ADD COLUMN `creationDate` DATETIME NOT NULL AFTER `endingTransactionId`,
+CHANGE COLUMN `amount` `amount` FLOAT(10,2) NOT NULL AFTER `creationDate`,
+CHANGE COLUMN `enabled` `endingDate` DATETIME NULL AFTER `amount`,
+CHANGE COLUMN `quantity` `quantity` INT(5) NOT NULL DEFAULT '0' AFTER `endingDate`,
+CHANGE COLUMN `serie` `serie` VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NULL ;
+
+
+ALTER TABLE `services`.`product_serie` 
+CHANGE COLUMN `endingDate` `endingDate` DATETIME NULL DEFAULT NULL AFTER `creationDate`;
+
+ALTER TABLE `services`.`product_serie` 
+CHANGE COLUMN `serie` `serie` VARCHAR(45) CHARACTER SET 'latin1' COLLATE 'latin1_bin' NULL DEFAULT NULL ;
+
+
+ALTER TABLE `services`.`transaction` 
+ADD COLUMN `amount` FLOAT(10,2) NOT NULL DEFAULT 0.00 AFTER `quarantineReason`;
+
+UPDATE `services`.`condition` SET `enabled` = '1' WHERE (`id` = '1');
+UPDATE `services`.`condition` SET `enabled` = '1' WHERE (`id` = '2');
+UPDATE `services`.`condition` SET `enabled` = '1' WHERE (`id` = '3');
+UPDATE `services`.`condition` SET `enabled` = '1' WHERE (`id` = '4');
+
+
+ALTER TABLE `services`.`condition` 
+CHANGE COLUMN `enabled` `enabled` TINYINT(1) NOT NULL ;
+
+ALTER TABLE `services`.`transaction` 
+DROP FOREIGN KEY `FK_product_category`;
+ALTER TABLE `services`.`transaction` 
+CHANGE COLUMN `categoryIdl` `categoryId` INT(3) NOT NULL ;
+ALTER TABLE `services`.`transaction` 
+ADD CONSTRAINT `FK_product_category`
+  FOREIGN KEY (`categoryId`)
+  REFERENCES `services`.`category` (`id`);
+
+ALTER TABLE `services`.`condition` 
+RENAME TO  `services`.`condicion` ;  
+
+DELETE FROM `services`.`currency` WHERE (`id` = '2');
+UPDATE `services`.`currency` SET `name` = 'PESOS' WHERE (`id` = '1');
+
+ALTER TABLE `services`.`transaction` 
+CHANGE COLUMN `observation` `observation` VARCHAR(45) CHARACTER SET 'latin1' COLLATE 'latin1_bin' NULL ;
+
+ALTER TABLE `services`.`transaction` 
+CHANGE COLUMN `orderWord` `orderWord` VARCHAR(45) CHARACTER SET 'latin1' COLLATE 'latin1_bin' NULL ,
+CHANGE COLUMN `quarantineReason` `quarantineReason` VARCHAR(45) CHARACTER SET 'latin1' COLLATE 'latin1_bin' NULL ;
+
+ALTER TABLE `services`.`product_serie` 
+CHANGE COLUMN `id` `id` BIGINT(10) NOT NULL ;
+
+ALTER TABLE `services`.`product_serie` 
+CHANGE COLUMN `id` `id` BIGINT(10) NOT NULL AUTO_INCREMENT ;
+
+
+ALTER TABLE `services`.`transaction` 
+;
+ALTER TABLE `services`.`transaction` ALTER INDEX `FK_product_customer` INVISIBLE;
+ALTER TABLE `services`.`transaction` 
+ADD CONSTRAINT `FK_product_customer`
+  FOREIGN KEY (`customerId`)
+  REFERENCES `services`.`customer` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+  
+  ALTER TABLE `services`.`transaction` 
+DROP FOREIGN KEY `Fk_product_transactionType`;
+ALTER TABLE `services`.`transaction` 
+CHANGE COLUMN `transactionTypeId` `transactionTypeId` INT(3) NOT NULL ;
+ALTER TABLE `services`.`transaction` 
+ADD CONSTRAINT `Fk_product_transactionType`
+  FOREIGN KEY (`transactionTypeId`)
+  REFERENCES `services`.`transaction_type` (`id`);
+  
+  ALTER TABLE `services`.`product` 
+DROP COLUMN `isExpiration`,
+DROP COLUMN `isSerial`;
+  
+  
+ UPDATE `services`.`condicion` SET `name` = 'NEW' WHERE (`id` = '1');
+UPDATE `services`.`condicion` SET `name` = 'REPAIRED' WHERE (`id` = '2');
+UPDATE `services`.`condicion` SET `name` = 'OVERHAULD' WHERE (`id` = '3');
+UPDATE `services`.`condicion` SET `name` = 'INPECTED' WHERE (`id` = '4');
+ 
+ UPDATE `services`.`permission_data` SET `alias` = 'Add Stock', `description` = 'Add Stock' WHERE (`id` = '179');
+UPDATE `services`.`permission_data` SET `alias` = 'Agregar Stock', `description` = 'Agregar Stock' WHERE (`id` = '180');
+ UPDATE `services`.`permission` SET `action` = 'addStock', `name` = 'addStock' WHERE (`id` = '91');
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('92', '1', 'removeStock', 'product', 'removeStock', '1');
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('93', '1', 'addTransist', 'product', 'addTransist', '1');
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('94', '1', 'removeTransist', 'product', 'removeTransist', '1');
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('95', '1', 'addQuarantine', 'product', 'addQuarantine', '1');
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('96', '1', 'removeQuarantine', 'product', 'removeQuarantine', '1');
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('97', '1', 'addWait', 'product', 'addWait', '1');
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('98', '1', 'removeWait', 'product', 'removeWait', '1');
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('99', '1', 'metereological_control', 'product', 'metereological_control', '1');
+ 
+ INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('100', '1', 'monitoring', 'product', 'monitoring', '1');
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('101', '1', 'reportStock', 'product', 'reportStock', '1');
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('102', '1', 'reportTransit', 'product', 'reportTransit', '1');
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('103', '1', 'reportQuarantine', 'product', 'reportQuarantine', '1');
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('104', '1', 'reportWait', 'product', 'reportWait', '1');
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('105', '1', 'reportMeteorologicalControl', 'product', 'reportMeteorologicalControl', '1');
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('106', '1', 'Stock', 'product', 'Stock', '1');
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('107', '1', 'Transit', 'product', 'Transit', '1');
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('108', '1', 'Quarantine', 'product', 'Quarantine', '1');
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('109', '1', 'Wait', 'product', 'Wait', '1');
+ 
+ INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('181', '92', '1', 'Egress Stock', 'Egress Stock');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('182', '92', '2', 'Egreso de Stock', 'Egreso de Stock');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('183', '93', '1', 'Add Transit', 'Add Transit');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('184', '93', '2', 'Agregar Transito', 'Agregar Transito');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('185', '94', '1', 'Egress Transit', 'Egress Transit');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('186', '94', '2', 'Egresar Transito', 'Egresar Transito');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('187', '95', '1', 'Add Quarantine', 'Add Quarantine');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('188', '95', '2', 'Agregar Cuarentena', 'Agregar Cuarentena');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('189', '96', '1', 'Egress Quarantine', 'Egress Quarantine');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('190', '96', '2', 'Egresar Cuarentena', 'Egresar Cuarentena');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('191', '97', '1', 'Add Wait', 'Add Wait');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('192', '97', '2', 'Agregar Espera', 'Agregar Espera');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('193', '98', '1', 'Egress Wait', 'Egress Wait');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('194', '98', '2', 'Egresar Espera', 'Egresar Espera');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('195', '99', '1', 'Meteorological Control', 'Meteorological Control');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('196', '99', '2', 'Control Meteorologico', 'Control Meteorologico');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('197', '100', '1', 'Monotoring', 'Monotoring');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('198', '100', '2', 'Monitoreo', 'Monitoreo');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('199', '101', '1', 'Report Stock', 'Report Stock');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('200', '101', '2', 'Reporte de Stock', 'Reporte de Stoc');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('201', '102', '1', 'Report Transit', 'Report Transit');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('202', '102', '2', 'Reporte de Transito', 'Reporte de Transito');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('203', '103', '1', 'Report Quarantine', 'Report Quarantine');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('204', '103', '2', 'Reporte de Cuarentena', 'Reporte de Cuarentena');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('205', '104', '1', 'Report Wait', 'Report Wait');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('206', '104', '2', 'Reporte de Espera', 'Reporte de Espera');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('207', '105', '1', 'Report Meteorological Control', 'Report Meteorological Control');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('208', '105', '2', 'Reporte de Control Meteorologico', 'Reporte de Control Meteorologico');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('209', '106', '1', 'Stock', 'Stock');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('210', '106', '2', 'Stock', 'Stock');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('211', '107', '1', 'Transit', 'Transit');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('212', '107', '2', 'Transito', 'Transito');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('213', '108', '1', 'Quarantine', 'Quarantine');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('214', '108', '2', 'Cuarentena', 'Cuarentena');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('215', '109', '1', 'Wait', 'Wait');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('216', '109', '2', 'Espera', 'Espera');
+ 
+ UPDATE `services`.`permission_group_data` SET `alias` = 'Report Management', `description` = 'Report Management' WHERE (`id` = '7');
+UPDATE `services`.`permission_group_data` SET `alias` = 'Gestión  Reportes', `description` = 'Gestión  Reportes' WHERE (`id` = '8');
+ 
+ INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1477', '92', '1');
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1478', '93', '1');
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1479', '94', '1');
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1480', '95', '1');
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1481', '96', '1');
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1482', '97', '1');
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1483', '98', '1');
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1484', '99', '1');
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1485', '100', '1');
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1486', '101', '1');
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1487', '102', '1');
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1488', '103', '1');
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1489', '104', '1');
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1490', '105', '1');
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1491', '106', '1');
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1492', '107', '1');
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1493', '108', '1');
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1494', '109', '1');
+ 

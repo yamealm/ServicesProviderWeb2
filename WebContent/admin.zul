@@ -86,10 +86,7 @@
                             <label value="${c:l('sp.common.page.copyright1')}" style="color:#837E76;"/>
                             <separator/>
                             <label value="${c:l('sp.common.page.copyright2')}" style="color:#837E76;"/>
-                            <hlayout>
-                                <label value="${c:l('page.powerby')}" style="color:#837E76;"/>
-                                <label value="Alodiga" style="color:#CDA869;"/>
-                            </hlayout>
+                            
                         </div>
                     </vlayout>
                 </div>
@@ -103,7 +100,7 @@
                                 <label value="${c:l('sp.common.page.copyright')}" style="color:#CDA869;"/>
                                 <separator orient="vertical" bar="true"/>
                                 <label value="${c:l('sp.common.page.powerby')}" style="color:#837E76;"/>
-                                <label value="CG Turbines, C.A." style="color:#CDA869; cursor:pointer;" onClick="Executions.sendRedirect(&quot;https://cgturbines.com.ar/&quot;)"/>
+                                <label value="CG TURBINES C.A." style="color:#CDA869; cursor:pointer;" onClick="Executions.sendRedirect(&quot;https://cgturbines.com.ar/&quot;)"/>
                                 <separator/>
                                 <separator/>
                                 <separator/>
