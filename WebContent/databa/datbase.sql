@@ -492,4 +492,33 @@ INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileI
 INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1492', '107', '1');
 INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1493', '108', '1');
 INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1494', '109', '1');
+
+//Yamelis 24-006-2019
+INSERT INTO `services`.`customer` (`id`, `firstName`, `lastName`, `creationDate`, `email`, `phoneNumber`, `dni`, `enabled`, `address`) VALUES ('2', 'Luis', 'Ramos', '2013-09-09 11:39:17', 'luisrafa@hotmail.com', '9113562536', '95369258', '1', 'CABA');
+
+ALTER TABLE `services`.`product_serie` 
+ADD COLUMN `categoryId` INT(3) NULL AFTER `cure`,
+ADD COLUMN `conditionId` INT(3) NULL AFTER `categoryId`;
+
+ALTER TABLE `services`.`product_serie` 
+ADD INDEX `fk_product_serie_category_idx` (`categoryId` ASC) VISIBLE,
+ADD INDEX `fk_product_serie_condition_idx` (`conditionId` ASC) VISIBLE;
+ALTER TABLE `services`.`product_serie` ALTER INDEX `fk_product_serie_transaction2` INVISIBLE;
+ALTER TABLE `services`.`product_serie` 
+ADD CONSTRAINT `fk_product_serie_category`
+  FOREIGN KEY (`categoryId`)
+  REFERENCES `services`.`category` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_product_serie_condition`
+  FOREIGN KEY (`conditionId`)
+  REFERENCES `services`.`condicion` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+  
+  UPDATE `services`.`category` SET `name` = ' TRANSIT' WHERE (`id` = '2');
+UPDATE `services`.`category` SET `name` = 'QUARANTINE' WHERE (`id` = '3');
+UPDATE `services`.`category` SET `name` = 'WAIT' WHERE (`id` = '4');
+UPDATE `services`.`category` SET `name` = 'METEOROLOGICAL CONTROL' WHERE (`id` = '5');
+
  

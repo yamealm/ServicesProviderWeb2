@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
@@ -15,6 +16,9 @@ import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Intbox;
+import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listcell;
+import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Radio;
 import org.zkoss.zul.Radiogroup;
 import org.zkoss.zul.Row;
@@ -30,9 +34,11 @@ import com.alodiga.services.provider.commons.models.Category;
 import com.alodiga.services.provider.commons.models.Condicion;
 import com.alodiga.services.provider.commons.models.Customer;
 import com.alodiga.services.provider.commons.models.Enterprise;
+import com.alodiga.services.provider.commons.models.Permission;
 import com.alodiga.services.provider.commons.models.Product;
 import com.alodiga.services.provider.commons.models.ProductHistory;
 import com.alodiga.services.provider.commons.models.ProductSerie;
+import com.alodiga.services.provider.commons.models.Profile;
 import com.alodiga.services.provider.commons.models.Provider;
 import com.alodiga.services.provider.commons.models.Transaction;
 import com.alodiga.services.provider.commons.models.TransactionType;
@@ -40,17 +46,17 @@ import com.alodiga.services.provider.commons.models.User;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
 import com.alodiga.services.provider.commons.utils.GeneralUtils;
+import com.alodiga.services.provider.web.components.ListcellEditButton;
+import com.alodiga.services.provider.web.components.ListcellViewButton;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractAdminController;
 import com.alodiga.services.provider.web.utils.AccessControl;
 import com.alodiga.services.provider.web.utils.WebConstants;
 
-public class AdminAddStockController extends GenericAbstractAdminController {
+public class AdminEgressStockController extends GenericAbstractAdminController {
 
     private static final long serialVersionUID = -9145887024839938515L;
     private Combobox cmbEnterprise;
     private Combobox cmbCategory;
-    private Combobox cmbProvider;
-    private Combobox cmbCondition;
     private Combobox cmbCustomer;
 //    private Checkbox cbxSerial;
     private Checkbox cbxSerialVarius;
@@ -63,7 +69,7 @@ public class AdminAddStockController extends GenericAbstractAdminController {
     private Textbox txtactNpNsn;
     private Textbox txtDescription;
     private Textbox txtPartNumber;
-    private Textbox txtSerial;
+    private Textbox txtWorkOrder;
     private Textbox txtInvoice;
     private Textbox txtObservation;
     private Intbox intStockMax;
@@ -79,6 +85,7 @@ public class AdminAddStockController extends GenericAbstractAdminController {
     private Radiogroup radiogroup;
     private Grid gridSerials;
     private Rows rows;
+    private Listbox lbxRecords;
 
     private ProductEJB productEJB = null;
     private UtilsEJB utilsEJB = null;
@@ -130,7 +137,7 @@ public class AdminAddStockController extends GenericAbstractAdminController {
 		txtBachNumber.setRawValue(null);
 		txtUbicationFolder.setRawValue(null);
 		txtUbicationBox.setRawValue(null);
-		txtSerial.setRawValue(null);
+		txtWorkOrder.setRawValue(null);
 		txtactNpNsn.setRawValue(null);
 		txtDescription.setRawValue(null);
 		txtPartNumber.setRawValue(null);
@@ -238,9 +245,9 @@ public class AdminAddStockController extends GenericAbstractAdminController {
             case WebConstants.EVENT_ADD:
             	loadFields(productParam);
                 loadEnterprises(productParam.getEnterprise());
-                loadCondition(null);
-                loadCategory(null);
-                loadProvider(null);
+                Category category = new Category();
+                category.setId(Category.STOCK);
+                loadCategory(category);
                 loadCustomer(null);
                 blockFields();
                 break;
@@ -266,6 +273,42 @@ public class AdminAddStockController extends GenericAbstractAdminController {
     		intStock.setValue(productHistory.getCurrentQuantity());
     	} catch (Exception ex) {
     		intStock.setValue(0);
+        }
+		try {
+    		List<ProductSerie>  productSeries = transactionEJB.searchProductSerieByProductId(product.getId());
+    		loadList(productSeries);
+    	} catch (Exception ex) {
+    		
+        }
+		
+    }
+    
+    public void loadList(List<ProductSerie> list) {
+        try {
+            lbxRecords.getItems().clear();
+            Listitem item = null;
+            if (list != null && !list.isEmpty()) {
+                for (ProductSerie productSerie : list) {
+                    item = new Listitem();
+                    item.setValue(productSerie);
+                    item.appendChild(new Listcell(productSerie.getSerie()));
+                    item.appendChild(new Listcell(productSerie.getProvider().getName()));
+                    item.appendChild(new Listcell(productSerie.getCondition().getName()));
+                    item.appendChild(new Listcell(String.valueOf(productSerie.getQuantity())));
+                    item.appendChild(new Textbox());
+                    item.setParent(lbxRecords);
+                }
+            } else {
+                item = new Listitem();
+                item.appendChild(new Listcell(Labels.getLabel("sp.error.empty.list")));
+                item.appendChild(new Listcell());
+                item.appendChild(new Listcell());
+                item.appendChild(new Listcell());
+                item.setParent(lbxRecords);
+            }
+
+        } catch (Exception ex) {
+            showError(ex);
         }
     }
 
@@ -312,46 +355,7 @@ public class AdminAddStockController extends GenericAbstractAdminController {
         }
     }
     
-    private void loadCondition(Condicion condition) {
-        try {
-        	cmbCondition.getItems().clear();
-        	conditions = transactionEJB.getConditions();
-            for (Condicion e : conditions) {
-                Comboitem cmbItem = new Comboitem();
-                cmbItem.setLabel(e.getName());
-                cmbItem.setValue(e);
-                cmbItem.setParent(cmbCondition);
-                if (condition != null && condition.getId().equals(e.getId())) {
-                	cmbCondition.setSelectedItem(cmbItem);
-                } else {
-                	cmbCondition.setSelectedIndex(0);
-                }
-            }
-        } catch (Exception ex) {
-            showError(ex);
-        }
-    }
-    
-    private void loadProvider(Provider provider) {
-        try {
-        	cmbProvider.getItems().clear();
-        	EJBRequest request = new EJBRequest();
-        	providers = productEJB.getProviders(request);
-            for (Provider e : providers) {
-                Comboitem cmbItem = new Comboitem();
-                cmbItem.setLabel(e.getName());
-                cmbItem.setValue(e);
-                cmbItem.setParent(cmbProvider);
-                if (provider != null && provider.getId().equals(e.getId())) {
-                	cmbProvider.setSelectedItem(cmbItem);
-                } else {
-                	cmbProvider.setSelectedIndex(0);
-                }
-            }
-        } catch (Exception ex) {
-            showError(ex);
-        }
-    }
+
 
     private void loadCustomer(Customer customer) {
         try {
@@ -384,67 +388,44 @@ public class AdminAddStockController extends GenericAbstractAdminController {
             Category category = new Category();
             category.setId(((Category) cmbCategory.getSelectedItem().getValue()).getId());
             transaction.setCategory(category);
-            Condicion condition = new Condicion();
-            condition.setId(((Condicion) cmbCondition.getSelectedItem().getValue()).getId());
-            transaction.setCondition(condition);
-//            Customer customer = new Customer();
-//            customer.setId(((Customer) cmbCustomer.getSelectedItem().getValue()).getId());
+//            Condicion condition = new Condicion();
+//            condition.setId(((Condicion) cmbCondition.getSelectedItem().getValue()).getId());
+            transaction.setCondition(null);
+            Customer customer = new Customer();
+            customer.setId(((Customer) cmbCustomer.getSelectedItem().getValue()).getId());
             transaction.setCustomer(null);
-            Provider provider = new Provider();
-            provider.setId(((Provider) cmbProvider.getSelectedItem().getValue()).getId());
-            transaction.setProvider(provider);
+//            Provider provider = new Provider();
+//            provider.setId(((Provider) cmbProvider.getSelectedItem().getValue()).getId());
+//            transaction.setProvider(provider);
             transaction.setUser(user);
             transaction.setCreationDate(new Timestamp((new java.util.Date().getTime())));
             transaction.setQuantity(intQuantity.getValue());
             TransactionType transactionType = new TransactionType();
-            transactionType.setId(TransactionType.ADD);
+            transactionType.setId(TransactionType.REMOVE);
             transaction.setTransactionType(transactionType);
             transaction.setAmount(Float.valueOf(txtAmount.getText()));
-//            transaction.setSerial(cbxSerial.isChecked());
             transaction.setInvoice(txtInvoice.getText());
             productParam.setAmount(Float.valueOf(txtAmount.getText()));
             List<ProductSerie> productSeries = new ArrayList<ProductSerie>();
-			if (ra1.isChecked() || ra2.isChecked() || cbxExpiration.isChecked() || cbxCure.isChecked()) {
-				if (ra2.isChecked()) {
-					for (int i = 0; i < intQuantity.getValue(); i++) {
-						ProductSerie productSerie = new ProductSerie();
-						productSerie.setProduct(productParam);
-						productSerie.setProvider(provider);
-						productSerie.setBeginTransactionId(transaction);
-						productSerie.setCreationDate(new Timestamp((new java.util.Date().getTime())));
-						productSerie.setAmount(Float.valueOf(txtAmount.getText()));
-						productSerie.setQuantity(1);
-						productSerie.setCondition(condition);
-						productSerie.setCategory(category);
-						Row row = (Row)gridSerials.getRows().getChildren().get(i);
-						Textbox textbox = (Textbox)row.getChildren().get(0);
-						productSerie.setSerie(textbox.getText());
-						if (cbxExpiration.isChecked())
-							productSerie.setExpirationDate(new Timestamp(dtxExpiration.getValue().getTime()));
-						if (cbxCure.isChecked())
-							productSerie.setCure(new Timestamp(dtxCure.getValue().getTime()));
-						productSeries.add(productSerie);
-					}
-				}else {
-					ProductSerie productSerie = new ProductSerie();
-					productSerie.setProduct(productParam);
-					productSerie.setProvider(provider);
-					productSerie.setBeginTransactionId(transaction);
-					productSerie.setCreationDate(new Timestamp((new java.util.Date().getTime())));
-					productSerie.setAmount(Float.valueOf(txtAmount.getText()));
-					productSerie.setQuantity(intQuantity.getValue());
-					productSerie.setCondition(condition);
-					productSerie.setCategory(category);
-					if (ra1.isChecked()) {
-						productSerie.setSerie(txtSerial.getText());
-					}
-					if (cbxExpiration.isChecked())
-						productSerie.setExpirationDate(new Timestamp(dtxExpiration.getValue().getTime()));
-					if (cbxCure.isChecked())
-						productSerie.setCure(new Timestamp(dtxCure.getValue().getTime()));
-					productSeries.add(productSerie);
-				}
+
+			for (int i = 0; i < intQuantity.getValue(); i++) {
+				ProductSerie productSerie = new ProductSerie();
+				productSerie.setProduct(productParam);
+				productSerie.setProvider(null);
+				productSerie.setBeginTransactionId(transaction);
+				productSerie.setCreationDate(new Timestamp((new java.util.Date().getTime())));
+				productSerie.setAmount(Float.valueOf(txtAmount.getText()));
+				productSerie.setQuantity(1);
+				Row row = (Row) gridSerials.getRows().getChildren().get(i);
+				Textbox textbox = (Textbox) row.getChildren().get(0);
+				productSerie.setSerie(textbox.getText());
+				if (cbxExpiration.isChecked())
+					productSerie.setExpirationDate(new Timestamp(dtxExpiration.getValue().getTime()));
+				if (cbxCure.isChecked())
+					productSerie.setCure(new Timestamp(dtxCure.getValue().getTime()));
+				productSeries.add(productSerie);
 			}
+
             transaction = transactionEJB.saveTransactionStock(transaction,productSeries);
 //            productParam = product;
 //            eventType = WebConstants.EVENT_EDIT;

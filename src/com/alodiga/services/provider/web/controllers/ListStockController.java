@@ -151,7 +151,7 @@ public class ListStockController extends GenericAbstractListController<Product> 
                     item.appendChild(new Listcell(String.valueOf(product.getAmount())));
                     item.appendChild(new Listcell(String.valueOf(stock)));
                     item.appendChild(permissionEdit ? new ListcellAddButton(adminPage, product,Permission.EDIT_PRODUCT) : new Listcell());
-                    item.appendChild(permissionRead ? new ListcellRemoveButton(adminPage, product,Permission.EDIT_PRODUCT) : new Listcell());
+                    item.appendChild(permissionRead ? new ListcellRemoveButton("adminEgressStock.zul", product,Permission.EDIT_PRODUCT) : new Listcell());
                     item.setParent(lbxRecords);
                 }
             } else {
