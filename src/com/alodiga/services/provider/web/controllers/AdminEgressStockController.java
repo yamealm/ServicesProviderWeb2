@@ -3,12 +3,15 @@ package com.alodiga.services.provider.web.controllers;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
@@ -16,6 +19,7 @@ import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Intbox;
+import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
@@ -46,6 +50,7 @@ import com.alodiga.services.provider.commons.models.User;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
 import com.alodiga.services.provider.commons.utils.GeneralUtils;
+import com.alodiga.services.provider.web.components.ChangeStatusButton;
 import com.alodiga.services.provider.web.components.ListcellEditButton;
 import com.alodiga.services.provider.web.components.ListcellViewButton;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractAdminController;
@@ -122,8 +127,6 @@ public class AdminEgressStockController extends GenericAbstractAdminController {
             utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
             transactionEJB = (TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
             customerEJB = (CustomerEJB) EJBServiceLocator.getInstance().get(EjbConstants.CUSTOMER_EJB);
-            dtxExpiration.setValue(new Timestamp(new Date().getTime()));
-            dtxCure.setValue(new Timestamp(new Date().getTime()));
         } catch (Exception ex) {
             showError(ex);
         }
@@ -151,6 +154,7 @@ public class AdminEgressStockController extends GenericAbstractAdminController {
 
     	intStock.setReadonly(true);
 		txtBachNumber.setReadonly(true);
+		txtAmount.setReadonly(true);
 		txtUbicationFolder.setReadonly(true);
 		txtUbicationBox.setReadonly(true);
 		txtactNpNsn.setReadonly(true);
@@ -158,6 +162,7 @@ public class AdminEgressStockController extends GenericAbstractAdminController {
 		txtPartNumber.setReadonly(true);
     	intStockMax.setReadonly(true);
     	intStockMin.setReadonly(true);
+    	intQuantity.setReadonly(true);
     }
 
     public Boolean validateEmpty() {
@@ -211,31 +216,31 @@ public class AdminEgressStockController extends GenericAbstractAdminController {
 
 
     public void onClick$btnSave() {
-        if (validateEmpty()) {
             switch (eventType) {
-                case WebConstants.EVENT_ADD:
-                    saveProduct(null);
-                    break;
-                case WebConstants.EVENT_EDIT:
+                case WebConstants.EVENT_DELETE:
                     saveProduct(null);
                     break;
                 default:
                     break;
             }
-        }
     }
 
     
 
     public void onClick$btnBack() {
-    	 Executions.sendRedirect("./listProducts.zul");
+    	 Executions.sendRedirect("./listStock.zul");
     }
     
     public void loadData() {
+    	Category category = new Category();
+    	category.setId(Category.STOCK);
         switch (eventType) {
             case WebConstants.EVENT_DELETE:
                 loadFields(productParam);
                 loadEnterprises(productParam.getEnterprise());
+                loadCategory(category);
+                loadCustomer(null);
+                blockFields();
                 break;
             case WebConstants.EVENT_VIEW:
                 loadFields(productParam);
@@ -245,8 +250,6 @@ public class AdminEgressStockController extends GenericAbstractAdminController {
             case WebConstants.EVENT_ADD:
             	loadFields(productParam);
                 loadEnterprises(productParam.getEnterprise());
-                Category category = new Category();
-                category.setId(Category.STOCK);
                 loadCategory(category);
                 loadCustomer(null);
                 blockFields();
@@ -283,6 +286,29 @@ public class AdminEgressStockController extends GenericAbstractAdminController {
 		
     }
     
+    private Listcell addIntbox( final int quantity, final Listitem listItem) {
+
+        Listcell cell = new Listcell();
+        Intbox textbox = new Intbox();
+        textbox.setWidth("100px");
+        cell.appendChild(textbox);
+        textbox.setTooltiptext(Labels.getLabel("sp.common.quantity"));
+        textbox.addEventListener("onChange", new EventListener() {
+
+            public void onEvent(Event event) throws Exception {
+            	if(textbox.getValue()> quantity) {
+            		textbox.setFocus(true);
+            		textbox.setText("");
+            		textbox.setErrorMessage(Labels.getLabel("sp.error.value.quantity"));
+            	}else
+            		intQuantity.setValue(textbox.getValue());
+            }
+        });
+
+        textbox.setParent(cell);
+        return cell;
+    }
+    
     public void loadList(List<ProductSerie> list) {
         try {
             lbxRecords.getItems().clear();
@@ -295,7 +321,9 @@ public class AdminEgressStockController extends GenericAbstractAdminController {
                     item.appendChild(new Listcell(productSerie.getProvider().getName()));
                     item.appendChild(new Listcell(productSerie.getCondition().getName()));
                     item.appendChild(new Listcell(String.valueOf(productSerie.getQuantity())));
-                    item.appendChild(new Textbox());
+                    item.appendChild(addIntbox(productSerie.getQuantity(),item));
+                    
+                    
                     item.setParent(lbxRecords);
                 }
             } else {
@@ -393,7 +421,7 @@ public class AdminEgressStockController extends GenericAbstractAdminController {
             transaction.setCondition(null);
             Customer customer = new Customer();
             customer.setId(((Customer) cmbCustomer.getSelectedItem().getValue()).getId());
-            transaction.setCustomer(null);
+            transaction.setCustomer(customer);
 //            Provider provider = new Provider();
 //            provider.setId(((Provider) cmbProvider.getSelectedItem().getValue()).getId());
 //            transaction.setProvider(provider);
@@ -404,21 +432,14 @@ public class AdminEgressStockController extends GenericAbstractAdminController {
             transactionType.setId(TransactionType.REMOVE);
             transaction.setTransactionType(transactionType);
             transaction.setAmount(Float.valueOf(txtAmount.getText()));
-            transaction.setInvoice(txtInvoice.getText());
             productParam.setAmount(Float.valueOf(txtAmount.getText()));
             List<ProductSerie> productSeries = new ArrayList<ProductSerie>();
 
-			for (int i = 0; i < intQuantity.getValue(); i++) {
-				ProductSerie productSerie = new ProductSerie();
-				productSerie.setProduct(productParam);
-				productSerie.setProvider(null);
-				productSerie.setBeginTransactionId(transaction);
-				productSerie.setCreationDate(new Timestamp((new java.util.Date().getTime())));
-				productSerie.setAmount(Float.valueOf(txtAmount.getText()));
+            List<Listitem> listitems = lbxRecords.getItems();
+    		for (Listitem lml: listitems){
+    			ProductSerie productSerie = (ProductSerie )lml.getValue();
+				productSerie.setEndingDate(new Timestamp((new java.util.Date().getTime())));
 				productSerie.setQuantity(1);
-				Row row = (Row) gridSerials.getRows().getChildren().get(i);
-				Textbox textbox = (Textbox) row.getChildren().get(0);
-				productSerie.setSerie(textbox.getText());
 				if (cbxExpiration.isChecked())
 					productSerie.setExpirationDate(new Timestamp(dtxExpiration.getValue().getTime()));
 				if (cbxCure.isChecked())
@@ -426,7 +447,7 @@ public class AdminEgressStockController extends GenericAbstractAdminController {
 				productSeries.add(productSerie);
 			}
 
-            transaction = transactionEJB.saveTransactionStock(transaction,productSeries);
+//            transaction = transactionEJB.saveTransactionStock(transaction,productSeries);
 //            productParam = product;
 //            eventType = WebConstants.EVENT_EDIT;
             this.showMessage("sp.common.save.success", false, null);

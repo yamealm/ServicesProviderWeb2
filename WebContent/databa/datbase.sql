@@ -521,4 +521,11 @@ UPDATE `services`.`category` SET `name` = 'QUARANTINE' WHERE (`id` = '3');
 UPDATE `services`.`category` SET `name` = 'WAIT' WHERE (`id` = '4');
 UPDATE `services`.`category` SET `name` = 'METEOROLOGICAL CONTROL' WHERE (`id` = '5');
 
+UPDATE `services`.`product_serie` SET `categoryId` = '1', `conditionId` = '1' WHERE (`id` = '2');
+UPDATE `services`.`product_serie` SET `categoryId` = '1', `conditionId` = '1' WHERE (`id` = '3');
+UPDATE `services`.`product_serie` SET `categoryId` = '1', `conditionId` = '1' WHERE (`id` = '4');
+
+ALTER TABLE `services`.`transaction` 
+CHANGE COLUMN `invoice` `invoice` VARCHAR(45) CHARACTER SET 'latin1' COLLATE 'latin1_bin' NULL ;
+
  

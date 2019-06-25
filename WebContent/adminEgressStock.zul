@@ -151,7 +151,7 @@
                                                                 <label value="*" sclass="lblreq" />
                                                             </hlayout>
                                                         </row>
-                                                      <row id="rowCustomer" visible="false">
+                                                      <row id="rowCustomer" >
                                                             <label value="${c:l('sp.common.customer')}" sclass="lblbold"/>
                                                             <hlayout>
                                                                 <combobox id="cmbCustomer" width="190px" mold="rounded" readonly="true"/>
@@ -159,9 +159,16 @@
                                                             </hlayout>
                                                         </row>
                                                		   <row>
-                                                            <label value="${c:l('sp.common.work.order')}" sclass="lblbold"/>
+                                                            <label value="${c:l('sp.common.amount')}" sclass="lblbold"/>
                                                             <hlayout>
-                                                               <textbox id="txtAmount"  rows="4" maxlength="45" width="320px"/>                                 
+                                                               <textbox id="txtAmount"  maxlength="45" width="320px"/>                                 
+                                                            </hlayout>
+                                                        </row>
+                                                         <row>
+                                                            <label value="${c:l('sp.common.quantity')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <intbox id="intQuantity" width="320px" maxlength="45" constraint="no empty: ${c:l('error.field.required')}"/>
+                                                                <label value="*" sclass="lblreq" />
                                                             </hlayout>
                                                         </row>
                                                          <row>
@@ -176,19 +183,18 @@
                                                                <textbox id="txtObservation"  rows="4" maxlength="45" width="320px"/>                                 
                                                             </hlayout>
                                                         </row>
-                                                        <row>
-                                                        <row id="rowSerials" visible="false">
+                                                       
+                                                        <row id="rowSerials" >
                                                           <label value="${c:l('sp.common.serials')}" sclass="lblbold"/>
-                                     				    	      <separator/>
                                             			<!--Record Listbox-->
-			                                            <listbox id="lbxRecords" fixedLayout="true" width="895px" height="530px">
-			                                            <custom-attributes org.zkoss.zul.listbox.groupSelect="true" />
+			                                            <listbox id="lbxRecords" fixedLayout="true" width="600px" height="200px" checkmark="true" multiple="true">
+
 			                                                <listhead>
-			                                                    <listheader label="${c:l('sp.common.serial')}" width="755px" sort="auto"/>
-			                                                    <listheader label="${c:l('sp.common.provider')}" width="755px" sort="auto"/>
-			                                                    <listheader label="${c:l('sp.common.condition')}" width="755px" sort="auto"/>
-			                                                    <listheader label="${c:l('sp.common.stock')}" width="755px" sort="auto"/>
-			                                                    <listheader label="${c:l('sp.common.quantity')}" width="755px" sort="auto"/>
+			                                                    <listheader label="${c:l('sp.common.serial')}" width="110px" />
+			                                                    <listheader label="${c:l('sp.common.provider')}" width="150px" />
+			                                                    <listheader label="${c:l('sp.common.condition')}" width="110px" />
+			                                                    <listheader label="${c:l('sp.common.stock')}" width="110px" />
+			                                                    <listheader label="${c:l('sp.common.quantity')}" width="120px" />
 			                                                </listhead>
 			                                            </listbox>
 		                                                 </row>

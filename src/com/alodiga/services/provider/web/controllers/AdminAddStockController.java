@@ -221,7 +221,7 @@ public class AdminAddStockController extends GenericAbstractAdminController {
     
 
     public void onClick$btnBack() {
-    	 Executions.sendRedirect("./listProducts.zul");
+    	 Executions.sendRedirect("./listStock.zul");
     }
     
     public void loadData() {
@@ -400,51 +400,49 @@ public class AdminAddStockController extends GenericAbstractAdminController {
             transactionType.setId(TransactionType.ADD);
             transaction.setTransactionType(transactionType);
             transaction.setAmount(Float.valueOf(txtAmount.getText()));
-//            transaction.setSerial(cbxSerial.isChecked());
             transaction.setInvoice(txtInvoice.getText());
             productParam.setAmount(Float.valueOf(txtAmount.getText()));
-            List<ProductSerie> productSeries = new ArrayList<ProductSerie>();
-			if (ra1.isChecked() || ra2.isChecked() || cbxExpiration.isChecked() || cbxCure.isChecked()) {
-				if (ra2.isChecked()) {
-					for (int i = 0; i < intQuantity.getValue(); i++) {
-						ProductSerie productSerie = new ProductSerie();
-						productSerie.setProduct(productParam);
-						productSerie.setProvider(provider);
-						productSerie.setBeginTransactionId(transaction);
-						productSerie.setCreationDate(new Timestamp((new java.util.Date().getTime())));
-						productSerie.setAmount(Float.valueOf(txtAmount.getText()));
-						productSerie.setQuantity(1);
-						productSerie.setCondition(condition);
-						productSerie.setCategory(category);
-						Row row = (Row)gridSerials.getRows().getChildren().get(i);
-						Textbox textbox = (Textbox)row.getChildren().get(0);
-						productSerie.setSerie(textbox.getText());
-						if (cbxExpiration.isChecked())
-							productSerie.setExpirationDate(new Timestamp(dtxExpiration.getValue().getTime()));
-						if (cbxCure.isChecked())
-							productSerie.setCure(new Timestamp(dtxCure.getValue().getTime()));
-						productSeries.add(productSerie);
-					}
-				}else {
+			List<ProductSerie> productSeries = new ArrayList<ProductSerie>();
+			if (ra2.isChecked()) {
+				for (int i = 0; i < intQuantity.getValue(); i++) {
 					ProductSerie productSerie = new ProductSerie();
 					productSerie.setProduct(productParam);
 					productSerie.setProvider(provider);
 					productSerie.setBeginTransactionId(transaction);
 					productSerie.setCreationDate(new Timestamp((new java.util.Date().getTime())));
 					productSerie.setAmount(Float.valueOf(txtAmount.getText()));
-					productSerie.setQuantity(intQuantity.getValue());
+					productSerie.setQuantity(1);
 					productSerie.setCondition(condition);
 					productSerie.setCategory(category);
-					if (ra1.isChecked()) {
-						productSerie.setSerie(txtSerial.getText());
-					}
+					Row row = (Row) gridSerials.getRows().getChildren().get(i);
+					Textbox textbox = (Textbox) row.getChildren().get(0);
+					productSerie.setSerie(textbox.getText());
 					if (cbxExpiration.isChecked())
 						productSerie.setExpirationDate(new Timestamp(dtxExpiration.getValue().getTime()));
 					if (cbxCure.isChecked())
 						productSerie.setCure(new Timestamp(dtxCure.getValue().getTime()));
 					productSeries.add(productSerie);
 				}
+			} else {
+				ProductSerie productSerie = new ProductSerie();
+				productSerie.setProduct(productParam);
+				productSerie.setProvider(provider);
+				productSerie.setBeginTransactionId(transaction);
+				productSerie.setCreationDate(new Timestamp((new java.util.Date().getTime())));
+				productSerie.setAmount(Float.valueOf(txtAmount.getText()));
+				productSerie.setQuantity(intQuantity.getValue());
+				productSerie.setCondition(condition);
+				productSerie.setCategory(category);
+				if (ra1.isChecked()) {
+					productSerie.setSerie(txtSerial.getText());
+				}
+				if (cbxExpiration.isChecked())
+					productSerie.setExpirationDate(new Timestamp(dtxExpiration.getValue().getTime()));
+				if (cbxCure.isChecked())
+					productSerie.setCure(new Timestamp(dtxCure.getValue().getTime()));
+				productSeries.add(productSerie);
 			}
+
             transaction = transactionEJB.saveTransactionStock(transaction,productSeries);
 //            productParam = product;
 //            eventType = WebConstants.EVENT_EDIT;
