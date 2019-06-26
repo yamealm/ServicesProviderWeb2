@@ -2,8 +2,6 @@ package com.alodiga.services.provider.web.controllers;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import org.zkoss.util.resource.Labels;
@@ -19,7 +17,6 @@ import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Intbox;
-import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
@@ -38,11 +35,9 @@ import com.alodiga.services.provider.commons.models.Category;
 import com.alodiga.services.provider.commons.models.Condicion;
 import com.alodiga.services.provider.commons.models.Customer;
 import com.alodiga.services.provider.commons.models.Enterprise;
-import com.alodiga.services.provider.commons.models.Permission;
 import com.alodiga.services.provider.commons.models.Product;
 import com.alodiga.services.provider.commons.models.ProductHistory;
 import com.alodiga.services.provider.commons.models.ProductSerie;
-import com.alodiga.services.provider.commons.models.Profile;
 import com.alodiga.services.provider.commons.models.Provider;
 import com.alodiga.services.provider.commons.models.Transaction;
 import com.alodiga.services.provider.commons.models.TransactionType;
@@ -50,9 +45,6 @@ import com.alodiga.services.provider.commons.models.User;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
 import com.alodiga.services.provider.commons.utils.GeneralUtils;
-import com.alodiga.services.provider.web.components.ChangeStatusButton;
-import com.alodiga.services.provider.web.components.ListcellEditButton;
-import com.alodiga.services.provider.web.components.ListcellViewButton;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractAdminController;
 import com.alodiga.services.provider.web.utils.AccessControl;
 import com.alodiga.services.provider.web.utils.WebConstants;
@@ -80,7 +72,6 @@ public class AdminEgressStockController extends GenericAbstractAdminController {
     private Intbox intStockMax;
     private Intbox intStockMin;
     private Intbox intStock;
-    private Intbox intQuantity;
     private Datebox dtxExpiration;
     private Datebox dtxCure;
     private Radio ra1;
@@ -136,7 +127,7 @@ public class AdminEgressStockController extends GenericAbstractAdminController {
 		cbxExpiration.setChecked(false);
 		cbxCure.setChecked(false);
 		cbxSerialVarius.setChecked(false);
-		intQuantity.setRawValue(null);
+//		intQuantity.setRawValue(null);
 		txtBachNumber.setRawValue(null);
 		txtUbicationFolder.setRawValue(null);
 		txtUbicationBox.setRawValue(null);
@@ -162,7 +153,7 @@ public class AdminEgressStockController extends GenericAbstractAdminController {
 		txtPartNumber.setReadonly(true);
     	intStockMax.setReadonly(true);
     	intStockMin.setReadonly(true);
-    	intQuantity.setReadonly(true);
+//    	intQuantity.setReadonly(true);
     }
 
     public Boolean validateEmpty() {
@@ -199,13 +190,8 @@ public class AdminEgressStockController extends GenericAbstractAdminController {
         }if (!GeneralUtils.isNumeric(txtAmount.getText())) {
         	txtAmount.setFocus(true);
             this.showMessage("sp.error.field.number", true, null);
-        }if (!GeneralUtils.isNumeric(intQuantity.getText())) {
-        	intQuantity.setFocus(true);
-            this.showMessage("sp.error.field.number", true, null);
-        }if (intQuantity.getText().isEmpty()) {
-        	intQuantity.setFocus(true);
-            this.showMessage("sp.error.field.cannotNull", true, null);
         }
+       
         
         
         else {
@@ -300,8 +286,9 @@ public class AdminEgressStockController extends GenericAbstractAdminController {
             		textbox.setFocus(true);
             		textbox.setText("");
             		textbox.setErrorMessage(Labels.getLabel("sp.error.value.quantity"));
-            	}else
-            		intQuantity.setValue(textbox.getValue());
+            	}
+//            	else
+//            		intQuantity.setValue(textbox.getValue());
             }
         });
 
@@ -416,36 +403,38 @@ public class AdminEgressStockController extends GenericAbstractAdminController {
             Category category = new Category();
             category.setId(((Category) cmbCategory.getSelectedItem().getValue()).getId());
             transaction.setCategory(category);
-//            Condicion condition = new Condicion();
-//            condition.setId(((Condicion) cmbCondition.getSelectedItem().getValue()).getId());
-            transaction.setCondition(null);
             Customer customer = new Customer();
             customer.setId(((Customer) cmbCustomer.getSelectedItem().getValue()).getId());
             transaction.setCustomer(customer);
-//            Provider provider = new Provider();
-//            provider.setId(((Provider) cmbProvider.getSelectedItem().getValue()).getId());
-//            transaction.setProvider(provider);
             transaction.setUser(user);
             transaction.setCreationDate(new Timestamp((new java.util.Date().getTime())));
-            transaction.setQuantity(intQuantity.getValue());
             TransactionType transactionType = new TransactionType();
             transactionType.setId(TransactionType.REMOVE);
             transaction.setTransactionType(transactionType);
             transaction.setAmount(Float.valueOf(txtAmount.getText()));
             productParam.setAmount(Float.valueOf(txtAmount.getText()));
             List<ProductSerie> productSeries = new ArrayList<ProductSerie>();
-
+            int totalQuantity = 0;
             List<Listitem> listitems = lbxRecords.getItems();
     		for (Listitem lml: listitems){
+    			Listcell cell = (Listcell) lml.getChildren().get(4);
+    			Intbox intVal = (Intbox)(cell.getChildren().get(0));
+    			int quantity = intVal.getValue()!=null?intVal.getValue():0;
+    			totalQuantity = totalQuantity + quantity;
     			ProductSerie productSerie = (ProductSerie )lml.getValue();
+    			ProductSerie productSerie2 = (ProductSerie )lml.getValue();
 				productSerie.setEndingDate(new Timestamp((new java.util.Date().getTime())));
-				productSerie.setQuantity(1);
-				if (cbxExpiration.isChecked())
-					productSerie.setExpirationDate(new Timestamp(dtxExpiration.getValue().getTime()));
-				if (cbxCure.isChecked())
-					productSerie.setCure(new Timestamp(dtxCure.getValue().getTime()));
+				int oldQuantity = productSerie.getQuantity();
+				productSerie.setQuantity(quantity);
+				transaction.setCondition(productSerie.getCondition());
+				transaction.setProvider(productSerie.getProvider());
 				productSeries.add(productSerie);
+				productSerie.setEndingTransactionId(transaction);
+				if ((oldQuantity-quantity)!=0) {
+					productSerie2.setQuantity(oldQuantity-quantity);
+				}
 			}
+    		transaction.setQuantity(totalQuantity);
 
 //            transaction = transactionEJB.saveTransactionStock(transaction,productSeries);
 //            productParam = product;
@@ -456,44 +445,6 @@ public class AdminEgressStockController extends GenericAbstractAdminController {
         }
     }
     
-    public void onCheck$cbxExpiration(){
-    	if (cbxExpiration.isChecked())
-    		dtxExpiration.setVisible(true);
-    	else
-    		dtxExpiration.setVisible(false);
-    }
+   
     
-    public void onCheck$cbxCure(){
-    	if (cbxCure.isChecked())
-    		dtxCure.setVisible(true);
-    	else
-    		dtxCure.setVisible(false);
-    }
-    
-    
-    public void onCheck$radiogroup(){
-    	if (intQuantity.getText().isEmpty()) {
-    		ra1.setChecked(false);
-    		ra2.setChecked(false);
-    		intQuantity.setFocus(true);
-    		 this.showMessage("sp.error.field.cannotNull", true, null);
-		} else {
-			if (ra1.isChecked()) {
-				rowSerial.setVisible(true);
-				rowSerials.setVisible(false);
-			} else if (ra2.isChecked()) {
-				rows.getChildren().clear();
-				rows.setParent(gridSerials);
-				for (int i = 0; i < intQuantity.getValue(); i++) {
-					Row row = new Row();
-					row.setHeight("40px");
-					Textbox textbox = new Textbox();
-					textbox.setParent(row);
-					row.setParent(rows);
-				}
-				rowSerials.setVisible(true);
-				rowSerial.setVisible(false);
-			}
-		}
-    }
-}
+} 

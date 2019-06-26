@@ -489,6 +489,9 @@ public class AdminAddStockController extends GenericAbstractAdminController {
 				}
 				rowSerials.setVisible(true);
 				rowSerial.setVisible(false);
+			}else if (ra1.isChecked()) {
+				rowSerials.setVisible(false);
+				rowSerial.setVisible(false);
 			}
 		}
     }

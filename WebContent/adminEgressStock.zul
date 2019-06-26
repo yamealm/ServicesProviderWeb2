@@ -165,22 +165,15 @@
                                                             </hlayout>
                                                         </row>
                                                          <row>
-                                                            <label value="${c:l('sp.common.quantity')}" sclass="lblbold"/>
-                                                            <hlayout>
-                                                                <intbox id="intQuantity" width="320px" maxlength="45" constraint="no empty: ${c:l('error.field.required')}"/>
-                                                                <label value="*" sclass="lblreq" />
-                                                            </hlayout>
-                                                        </row>
-                                                         <row>
                                                             <label value="${c:l('sp.common.work.order')}" sclass="lblbold"/>
                                                             <hlayout>
-                                                               <textbox id="txtWorkOrder"  rows="4" maxlength="45" width="320px"/>                                 
+                                                               <textbox id="txtWorkOrder"  maxlength="45" width="320px"/>                                 
                                                             </hlayout>
                                                         </row>
                                                          <row>
                                                             <label value="${c:l('sp.common.observations')}" sclass="lblbold"/>
                                                             <hlayout>
-                                                               <textbox id="txtObservation"  rows="4" maxlength="45" width="320px"/>                                 
+                                                               <textbox id="txtObservation"  rows="3" maxlength="45" width="320px"/>                                 
                                                             </hlayout>
                                                         </row>
                                                        
@@ -196,6 +189,11 @@
 			                                                    <listheader label="${c:l('sp.common.stock')}" width="110px" />
 			                                                    <listheader label="${c:l('sp.common.quantity')}" width="120px" />
 			                                                </listhead>
+			                                                <listfoot>
+											                    <listfooter span="2" id="subtotalFooter"></listfooter>
+											                    <listfooter><button id="submitOrderBtn" label="submit"/></listfooter>
+											                    <listfooter><button id="clearBtn" label="clear"/></listfooter>
+											                </listfoot>
 			                                            </listbox>
 		                                                 </row>
                                                                                                   
