@@ -71,43 +71,8 @@ ALTER TABLE `services`.`category`
 CHANGE COLUMN `id` `id` INT(3) NOT NULL ;
 
 
-CREATE TABLE `services`.`stock` (
-  `id` BIGINT(5) NOT NULL,
-  `productId` BIGINT(5) NOT NULL,
-  `providerId` BIGINT(3) NOT NULL,
-  `categoryIdl` INT(3) NOT NULL,
-  `quantity` INT NOT NULL,
-  `invoice` VARCHAR(45) NOT NULL,
-  `serial` VARCHAR(45) NULL,
-  `creationDate` DATETIME NOT NULL,
-  `EndingDate` DATETIME NULL DEFAULT NULL,
-  `conditionId` INT(3) NOT NULL,
-  `observation` VARCHAR(255) NULL,
-  `form` BLOB NULL,
-  PRIMARY KEY (`id`),
-  INDEX `FK_product_category` (`categoryIdl` ASC) INVISIBLE,
-  INDEX `FK_product_provider` (`providerId` ASC) INVISIBLE,
-  INDEX `FK_product_product` (`productId` ASC) INVISIBLE,
-  CONSTRAINT `FK_product_category`
-    FOREIGN KEY (`categoryIdl`)
-    REFERENCES `services`.`category` (`id`)
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT,
-  CONSTRAINT `FK_product_provider`
-    FOREIGN KEY (`providerId`)
-    REFERENCES `services`.`provider` (`id`)
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT,
-  CONSTRAINT `FK_product_product`
-    FOREIGN KEY (`productId`)
-    REFERENCES `services`.`product` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
 
-	ALTER TABLE `services`.`stock` 
-ADD COLUMN `userId` BIGINT(10) NULL AFTER `form`,
-ADD INDEX `FK_product_user` (`userId` ASC) VISIBLE;
-;
+
 ALTER TABLE `services`.`stock` 
 ADD CONSTRAINT `FK_product_user`
   FOREIGN KEY (`userId`)
@@ -472,7 +437,7 @@ INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `a
 INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('216', '109', '2', 'Espera', 'Espera');
  
  UPDATE `services`.`permission_group_data` SET `alias` = 'Report Management', `description` = 'Report Management' WHERE (`id` = '7');
-UPDATE `services`.`permission_group_data` SET `alias` = 'Gestión  Reportes', `description` = 'Gestión  Reportes' WHERE (`id` = '8');
+UPDATE `services`.`permission_group_data` SET `alias` = 'Gesti\F3n  Reportes', `description` = 'Gesti\F3n  Reportes' WHERE (`id` = '8');
  
  INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1477', '92', '1');
 INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1478', '93', '1');
@@ -527,5 +492,7 @@ UPDATE `services`.`product_serie` SET `categoryId` = '1', `conditionId` = '1' WH
 
 ALTER TABLE `services`.`transaction` 
 CHANGE COLUMN `invoice` `invoice` VARCHAR(45) CHARACTER SET 'latin1' COLLATE 'latin1_bin' NULL ;
+
+// revisado con kerwin 25-06-2019
 
  
