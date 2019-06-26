@@ -495,4 +495,12 @@ CHANGE COLUMN `invoice` `invoice` VARCHAR(45) CHARACTER SET 'latin1' COLLATE 'la
 
 // revisado con kerwin 25-06-2019
 
+ALTER TABLE `services`.`transaction` 
+ADD COLUMN `enabled` TINYINT(1) NOT NULL DEFAULT 0 AFTER `amount`;
+
+ALTER TABLE `services`.`product_serie` 
+ADD COLUMN `enabled` TINYINT(1) NOT NULL DEFAULT 0 AFTER `conditionId`;
+
+
+
  

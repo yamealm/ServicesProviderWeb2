@@ -1,7 +1,15 @@
 package com.alodiga.services.provider.web.controllers;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Executions;
+import org.zkoss.zul.Groupbox;
+import org.zkoss.zul.Textbox;
+
 import com.alodiga.services.provider.commons.ejbs.UserEJB;
-import com.alodiga.services.provider.commons.exceptions.DisabledDistributorException;
+import com.alodiga.services.provider.commons.exceptions.DisabledUserException;
 import com.alodiga.services.provider.commons.exceptions.RegisterNotFoundException;
 import com.alodiga.services.provider.commons.models.User;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
@@ -9,14 +17,6 @@ import com.alodiga.services.provider.commons.utils.EjbConstants;
 import com.alodiga.services.provider.commons.utils.QueryConstants;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractController;
 import com.alodiga.services.provider.web.utils.AccessControl;
-import com.alodiga.services.provider.web.utils.WebConstants;
-import java.util.HashMap;
-import java.util.Map;
-import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.Executions;
-import org.zkoss.zk.ui.Sessions;
-import org.zkoss.zul.Groupbox;
-import org.zkoss.zul.Textbox;
 
 public class IndexAdminController extends GenericAbstractController {
 
@@ -85,7 +85,7 @@ public class IndexAdminController extends GenericAbstractController {
             try {
                 AccessControl.validateUser(txtLogin.getText(), txtPassword.getText());
                 return true;
-            } catch (DisabledDistributorException ex) {
+            } catch (DisabledUserException ex) {
                 this.showMessage("sp.error.disableAccount", true, null);
             } catch (RegisterNotFoundException ex) {
                 this.showMessage("sp.error.invalid.login", true, null);

@@ -436,7 +436,7 @@ public class AdminEgressStockController extends GenericAbstractAdminController {
 			}
     		transaction.setQuantity(totalQuantity);
 
-//            transaction = transactionEJB.saveTransactionStock(transaction,productSeries);
+            transaction = transactionEJB.saveTransactionStock(transaction,productSeries);
 //            productParam = product;
 //            eventType = WebConstants.EVENT_EDIT;
             this.showMessage("sp.common.save.success", false, null);

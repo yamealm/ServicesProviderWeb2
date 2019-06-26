@@ -19,7 +19,7 @@ import com.alodiga.services.provider.commons.ejbs.AccessControlEJB;
 import com.alodiga.services.provider.commons.ejbs.AuditoryEJB;
 import com.alodiga.services.provider.commons.ejbs.UserEJB;
 import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
-import com.alodiga.services.provider.commons.exceptions.DisabledDistributorException;
+import com.alodiga.services.provider.commons.exceptions.DisabledUserException;
 import com.alodiga.services.provider.commons.exceptions.GeneralException;
 import com.alodiga.services.provider.commons.exceptions.NullParameterException;
 import com.alodiga.services.provider.commons.exceptions.RegisterNotFoundException;
@@ -95,7 +95,7 @@ public class AccessControl {
         return false;
     }
 
-    public static boolean validateUser(String login, String password) throws RegisterNotFoundException, GeneralException, NoSuchAlgorithmException, UnsupportedEncodingException, NullParameterException, DisabledDistributorException {
+    public static boolean validateUser(String login, String password) throws RegisterNotFoundException, GeneralException, NoSuchAlgorithmException, UnsupportedEncodingException, NullParameterException, DisabledUserException {
         boolean valid = false;
         User user = null;
         accessEjb = (AccessControlEJB) EJBServiceLocator.getInstance().get(EjbConstants.ACCESS_CONTROL_EJB);

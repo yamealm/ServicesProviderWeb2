@@ -25,6 +25,7 @@ import com.alodiga.services.provider.commons.ejbs.CustomerEJB;
 import com.alodiga.services.provider.commons.ejbs.ProductEJB;
 import com.alodiga.services.provider.commons.ejbs.TransactionEJB;
 import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
+import com.alodiga.services.provider.commons.exceptions.NullParameterException;
 import com.alodiga.services.provider.commons.genericEJB.EJBRequest;
 import com.alodiga.services.provider.commons.models.Category;
 import com.alodiga.services.provider.commons.models.Condicion;
@@ -401,6 +402,7 @@ public class AdminAddStockController extends GenericAbstractAdminController {
             transaction.setTransactionType(transactionType);
             transaction.setAmount(Float.valueOf(txtAmount.getText()));
             transaction.setInvoice(txtInvoice.getText());
+            transaction.setEnabled(true);
             productParam.setAmount(Float.valueOf(txtAmount.getText()));
 			List<ProductSerie> productSeries = new ArrayList<ProductSerie>();
 			if (ra2.isChecked()) {
@@ -414,8 +416,11 @@ public class AdminAddStockController extends GenericAbstractAdminController {
 					productSerie.setQuantity(1);
 					productSerie.setCondition(condition);
 					productSerie.setCategory(category);
+					productSerie.setEnabled(true);
 					Row row = (Row) gridSerials.getRows().getChildren().get(i);
 					Textbox textbox = (Textbox) row.getChildren().get(0);
+					if (textbox.getText().isEmpty())
+						throw  new NullParameterException("Serial vacio");
 					productSerie.setSerie(textbox.getText());
 					if (cbxExpiration.isChecked())
 						productSerie.setExpirationDate(new Timestamp(dtxExpiration.getValue().getTime()));
@@ -434,6 +439,8 @@ public class AdminAddStockController extends GenericAbstractAdminController {
 				productSerie.setCondition(condition);
 				productSerie.setCategory(category);
 				if (ra1.isChecked()) {
+					if (txtSerial.getText().isEmpty())
+						throw  new NullParameterException("Serial vacio");
 					productSerie.setSerie(txtSerial.getText());
 				}
 				if (cbxExpiration.isChecked())
@@ -447,6 +454,8 @@ public class AdminAddStockController extends GenericAbstractAdminController {
 //            productParam = product;
 //            eventType = WebConstants.EVENT_EDIT;
             this.showMessage("sp.common.save.success", false, null);
+        } catch (NullParameterException ex) {
+        	showMessage("sp.error.field.number", true, null);
         } catch (Exception ex) {
             showError(ex);
         }
