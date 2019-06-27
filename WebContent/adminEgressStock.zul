@@ -46,8 +46,8 @@
                                                 <label value="${c:l('sp.common.data.basic')}" sclass="lblbold"/>
                                                 <grid fixedLayout="true">
                                                     <columns>
-                                                        <column label="" width="200px"/>
-                                                        <column label="" width="690px"/>
+                                                        <column label="" width="150px"/>
+                                                        <column label="" width="740px"/>
                                                     </columns>
                                                     <rows>
                                                         
@@ -139,8 +139,8 @@
                                                 <label value="${c:l('sp.common.actions.add')}" sclass="lblbold"/>
                                                 <grid fixedLayout="true">
                                                     <columns>
-                                                        <column label="" width="200px"/>
-                                                        <column label="" width="690px"/>
+                                                        <column label="" width="150px"/>
+                                                        <column label="" width="740px"/>
                                                     </columns>
                                                     <rows>
                                                         <group label="${c:l('sp.common.stock')}" />
@@ -180,21 +180,17 @@
                                                         <row id="rowSerials" >
                                                           <label value="${c:l('sp.common.serials')}" sclass="lblbold"/>
                                             			<!--Record Listbox-->
-			                                            <listbox id="lbxRecords" fixedLayout="true" width="600px" height="200px" checkmark="true" multiple="true">
+			                                            <listbox id="lbxRecords" fixedLayout="true" width="720px" height="200px" >
 
 			                                                <listhead>
 			                                                    <listheader label="${c:l('sp.common.serial')}" width="110px" />
 			                                                    <listheader label="${c:l('sp.common.provider')}" width="150px" />
-			                                                    <listheader label="${c:l('sp.common.condition')}" width="110px" />
-			                                                    <listheader label="${c:l('sp.common.stock')}" width="110px" />
+			                                                    <listheader label="${c:l('sp.common.condition')}" width="90px" />
+			                                                    <listheader label="${c:l('sp.common.date.expiration')}"  width="150px" />
+			                                                    <listheader label="${c:l('sp.common.stock')}" width="90px" />
 			                                                    <listheader label="${c:l('sp.common.quantity')}" width="120px" />
 			                                                </listhead>
-			                                                <listfoot>
-											                    <listfooter span="2" id="subtotalFooter"></listfooter>
-											                    <listfooter><button id="submitOrderBtn" label="submit"/></listfooter>
-											                    <listfooter><button id="clearBtn" label="clear"/></listfooter>
-											                </listfoot>
-			                                            </listbox>
+			                                              			                                            </listbox>
 		                                                 </row>
                                                                                                   
                                                     </rows>

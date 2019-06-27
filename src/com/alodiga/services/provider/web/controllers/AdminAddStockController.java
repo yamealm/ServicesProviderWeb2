@@ -75,6 +75,7 @@ public class AdminAddStockController extends GenericAbstractAdminController {
     private Datebox dtxCure;
     private Radio ra1;
     private Radio ra2;
+    private Radio ra3;
     private Row rowSerial;
     private Row rowSerials;
     private Radiogroup radiogroup;
@@ -144,14 +145,8 @@ public class AdminAddStockController extends GenericAbstractAdminController {
     public void blockFields() {
 
     	intStock.setReadonly(true);
-		txtBachNumber.setReadonly(true);
-		txtUbicationFolder.setReadonly(true);
-		txtUbicationBox.setReadonly(true);
-		txtactNpNsn.setReadonly(true);
 		txtDescription.setReadonly(true);
 		txtPartNumber.setReadonly(true);
-    	intStockMax.setReadonly(true);
-    	intStockMin.setReadonly(true);
     }
 
     public Boolean validateEmpty() {
@@ -263,8 +258,8 @@ public class AdminAddStockController extends GenericAbstractAdminController {
 		txtDescription.setText(product.getDescription());
 		txtPartNumber.setText(product.getPartNumber());
 		try {
-    		ProductHistory  productHistory = transactionEJB.loadLastProductHistoryByProductId(product.getId());
-    		intStock.setValue(productHistory.getCurrentQuantity());
+    		int  quantity = transactionEJB.loadQuantityByProductId(product.getId());
+    		intStock.setValue(quantity);
     	} catch (Exception ex) {
     		intStock.setValue(0);
         }
@@ -381,7 +376,6 @@ public class AdminAddStockController extends GenericAbstractAdminController {
 
             if (_transaction != null) 
             	transaction.setId(_transaction.getId());
-            transaction.setProduct(productParam);
             Category category = new Category();
             category.setId(((Category) cmbCategory.getSelectedItem().getValue()).getId());
             transaction.setCategory(category);
@@ -402,8 +396,16 @@ public class AdminAddStockController extends GenericAbstractAdminController {
             transaction.setTransactionType(transactionType);
             transaction.setAmount(Float.valueOf(txtAmount.getText()));
             transaction.setInvoice(txtInvoice.getText());
-            transaction.setEnabled(true);
+            productParam.setInictialAmount(productParam.getAmount());
             productParam.setAmount(Float.valueOf(txtAmount.getText()));
+            productParam.setActNpNsn(txtactNpNsn.getText());
+            productParam.setBatchNumber(txtBachNumber.getText());
+            productParam.setRealAmount(Float.valueOf(txtAmount.getText()));
+            productParam.setUbicationBox(txtUbicationBox.getText());
+            productParam.setUbicationFolder(txtUbicationFolder.getText());
+            productParam.setStockMax(intStockMin.getValue());
+            productParam.setStockMin(intStockMin.getValue());
+            transaction.setProduct(productParam);
 			List<ProductSerie> productSeries = new ArrayList<ProductSerie>();
 			if (ra2.isChecked()) {
 				for (int i = 0; i < intQuantity.getValue(); i++) {
@@ -416,7 +418,6 @@ public class AdminAddStockController extends GenericAbstractAdminController {
 					productSerie.setQuantity(1);
 					productSerie.setCondition(condition);
 					productSerie.setCategory(category);
-					productSerie.setEnabled(true);
 					Row row = (Row) gridSerials.getRows().getChildren().get(i);
 					Textbox textbox = (Textbox) row.getChildren().get(0);
 					if (textbox.getText().isEmpty())
@@ -498,10 +499,33 @@ public class AdminAddStockController extends GenericAbstractAdminController {
 				}
 				rowSerials.setVisible(true);
 				rowSerial.setVisible(false);
-			}else if (ra1.isChecked()) {
+			}else if (ra3.isChecked()) {
 				rowSerials.setVisible(false);
 				rowSerial.setVisible(false);
 			}
 		}
     }
+    
+	public void onChange$intQuantity() {
+		if (ra1.isChecked()) {
+			rowSerial.setVisible(true);
+			rowSerials.setVisible(false);
+		} else if (ra2.isChecked()) {
+			rows.getChildren().clear();
+			rows.setParent(gridSerials);
+			for (int i = 0; i < intQuantity.getValue(); i++) {
+				Row row = new Row();
+				row.setHeight("40px");
+				Textbox textbox = new Textbox();
+				textbox.setParent(row);
+				row.setParent(rows);
+			}
+			rowSerials.setVisible(true);
+			rowSerial.setVisible(false);
+		} else if (ra3.isChecked()) {
+			rowSerials.setVisible(false);
+			rowSerial.setVisible(false);
+		}
+
+	}
 }

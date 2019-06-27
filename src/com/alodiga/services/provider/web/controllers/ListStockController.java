@@ -137,8 +137,8 @@ public class ListStockController extends GenericAbstractListController<Product> 
                 btnDownload.setVisible(true);
                 for (Product product : list) {
                 	try {
-                		ProductHistory  productHistory = transactionEJB.loadLastProductHistoryByProductId(product.getId());
-                		stock = productHistory.getCurrentQuantity();
+                		int  currentQuantity = transactionEJB.loadQuantityByProductId(product.getId());
+                		stock = currentQuantity;
                 	} catch (Exception ex) {
                 		stock = 0;
                     }
@@ -151,7 +151,7 @@ public class ListStockController extends GenericAbstractListController<Product> 
                     item.appendChild(new Listcell(String.valueOf(product.getAmount())));
                     item.appendChild(new Listcell(String.valueOf(stock)));
                     item.appendChild(permissionEdit ? new ListcellAddButton(adminPage, product,Permission.EDIT_PRODUCT) : new Listcell());
-                    item.appendChild(permissionRead ? new ListcellRemoveButton("adminEgressStock.zul", product,Permission.EDIT_PRODUCT) : new Listcell());
+                    item.appendChild(permissionRead && stock>0? new ListcellRemoveButton("adminEgressStock.zul", product,Permission.EDIT_PRODUCT) : new Listcell());
                     item.setParent(lbxRecords);
                 }
             } else {
@@ -175,7 +175,7 @@ public class ListStockController extends GenericAbstractListController<Product> 
             request.setFirst(0);
             request.setLimit(null);
             request.setAuditData(null);
-            products = productEJB.getProducts(request);
+            products = transactionEJB.listProducts();
         } catch (NullParameterException ex) {
             showError(ex);
         } catch (EmptyListException ex) {

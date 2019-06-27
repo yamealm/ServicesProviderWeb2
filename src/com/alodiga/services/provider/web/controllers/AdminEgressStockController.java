@@ -1,6 +1,7 @@
 package com.alodiga.services.provider.web.controllers;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -258,8 +259,8 @@ public class AdminEgressStockController extends GenericAbstractAdminController {
 		txtDescription.setText(product.getDescription());
 		txtPartNumber.setText(product.getPartNumber());
 		try {
-    		ProductHistory  productHistory = transactionEJB.loadLastProductHistoryByProductId(product.getId());
-    		intStock.setValue(productHistory.getCurrentQuantity());
+    		int  quantity = transactionEJB.loadQuantityByProductId(product.getId());
+    		intStock.setValue(quantity);
     	} catch (Exception ex) {
     		intStock.setValue(0);
         }
@@ -307,6 +308,12 @@ public class AdminEgressStockController extends GenericAbstractAdminController {
                     item.appendChild(new Listcell(productSerie.getSerie()));
                     item.appendChild(new Listcell(productSerie.getProvider().getName()));
                     item.appendChild(new Listcell(productSerie.getCondition().getName()));
+                    String dateExp = null;
+					if (productSerie.getExpirationDate() != null) {
+						SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+						dateExp = df.format(productSerie.getExpirationDate().getTime());
+					}
+                    item.appendChild(new Listcell(dateExp));
                     item.appendChild(new Listcell(String.valueOf(productSerie.getQuantity())));
                     item.appendChild(addIntbox(productSerie.getQuantity(),item));
                     
@@ -417,29 +424,35 @@ public class AdminEgressStockController extends GenericAbstractAdminController {
             int totalQuantity = 0;
             List<Listitem> listitems = lbxRecords.getItems();
     		for (Listitem lml: listitems){
-    			Listcell cell = (Listcell) lml.getChildren().get(4);
+    			Listcell cell = (Listcell) lml.getChildren().get(5);
     			Intbox intVal = (Intbox)(cell.getChildren().get(0));
-    			int quantity = intVal.getValue()!=null?intVal.getValue():0;
-    			totalQuantity = totalQuantity + quantity;
-    			ProductSerie productSerie = (ProductSerie )lml.getValue();
-    			ProductSerie productSerie2 = (ProductSerie )lml.getValue();
-				productSerie.setEndingDate(new Timestamp((new java.util.Date().getTime())));
-				int oldQuantity = productSerie.getQuantity();
-				productSerie.setQuantity(quantity);
-				transaction.setCondition(productSerie.getCondition());
-				transaction.setProvider(productSerie.getProvider());
-				productSeries.add(productSerie);
-				productSerie.setEndingTransactionId(transaction);
-				if ((oldQuantity-quantity)!=0) {
-					productSerie2.setQuantity(oldQuantity-quantity);
+				if (intVal.getValue() != null) {
+					int quantity = intVal.getValue();
+					totalQuantity = totalQuantity + quantity;
+					ProductSerie productSerie = (ProductSerie) lml.getValue();
+					ProductSerie productSerie2 = (ProductSerie) lml.getValue();
+					productSerie.setEndingDate(new Timestamp((new java.util.Date().getTime())));
+					int oldQuantity = productSerie.getQuantity();
+					productSerie.setQuantity(quantity);
+					transaction.setCondition(productSerie.getCondition());
+					transaction.setProvider(productSerie.getProvider());
+					productSerie.setEndingTransactionId(transaction);
+					productSeries.add(productSerie);
+					if ((oldQuantity - quantity) > 0) {
+						productSerie2.setId(null);
+						productSerie2.setQuantity(oldQuantity - quantity);
+						productSeries.add(productSerie2);
+					}
 				}
 			}
-    		transaction.setQuantity(totalQuantity);
-
-            transaction = transactionEJB.saveTransactionStock(transaction,productSeries);
+    		if (totalQuantity>0) {
+    			transaction.setQuantity(totalQuantity);
+    			transaction = transactionEJB.saveEgressStock(transaction,productSeries);
 //            productParam = product;
 //            eventType = WebConstants.EVENT_EDIT;
-            this.showMessage("sp.common.save.success", false, null);
+    			this.showMessage(Labels.getLabel("sp.common.save.success"), false, null);
+    		}else
+    			 showError(Labels.getLabel("sp.error.validate.transaction"));
         } catch (Exception ex) {
             showError(ex);
         }
