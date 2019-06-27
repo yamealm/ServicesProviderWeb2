@@ -9,6 +9,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Filedownload;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
@@ -158,27 +159,24 @@ public class PDFUtil {
             }
             x++;
         }
-        
-        
-        
-  
         subCatPart.add(table);
     }
     
     
     
     private static Image getLogo() throws BadElementException {
-        String imageUrl = "http://mxl4361xd8:8080/ServicesProviderWeb/images/logo_header.png";
-        Image image2 = null;
-		try {
-			image2 = Image.getInstance(new URL(imageUrl));
+        //String imageUrl = "http://mxl4361xd8:8080/ServicesProviderWeb/images/logo_header.png";
+    	 String webPath = Sessions.getCurrent().getWebApp().getRealPath("");
+         webPath += "/images/logo_header.png";
+    	Image image2 = null;
+		try {       			
+		    image2 = Image.getInstance(webPath);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return image2;
-		
     }
     
     private static void createTableTitle(Paragraph subCatParTitle,String title)
