@@ -495,6 +495,28 @@ CHANGE COLUMN `invoice` `invoice` VARCHAR(45) CHARACTER SET 'latin1' COLLATE 'la
 
 // revisado con kerwin 25-06-2019
 
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('110', '1', 'viewStock', 'product', 'viewStock', '1');
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('111', '1', 'editStock', 'product', 'editStock', '1');
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('112', '1', 'viewTransit', 'product', 'viewTransit', '1');
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('113', '1', 'editTransit', 'product', 'editTransit', '1');
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('114', '1', 'viewQuarantine', 'product', 'viewQuarantine', '1');
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('115', '1', 'editQuarantine', 'product', 'editQuarantine', '1');
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('116', '1', 'viewWait', 'producut', 'viewWait', '1');
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('117', '1', 'editWait', 'product', 'editWait', '1');
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('118', '1', 'viewMeterologicalControl', 'prodcut', 'viewMeterologicalControl', '1');
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('119', '1', 'editMeterologicalControl', 'product', 'editMeterologicalControl', '1');
+
+
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1495', '110', '1');
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1496', '111', '1');
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1497', '112', '1');
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1498', '113', '1');
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1499', '114', '1');
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1500', '115', '1');
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1501', '116', '1');
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1502', '117', '1');
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1503', '118', '1');
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1504', '119', '1');
 
 
 

@@ -26,7 +26,9 @@
                                             <hlayout>
                                                 <toolbarbutton label="${c:l('sp.bread.crumb.home')}" onClick='Executions.sendRedirect(&quot;home-admin.zul&quot;)'/>
                                                  |
-                                                <toolbarbutton label="${c:l('sp.crud.product.list')}" />
+                                                 <toolbarbutton label="${c:l('sp.crud.product.list.stock')}" />
+                                                 |
+                                                <toolbarbutton label="${c:l('sp.crud.product.detail.stock')}" />
                                             </hlayout>
                                         </div>
                                         <div height="5px" width="100%" style="background:#333;" align="left"></div>
@@ -38,9 +40,10 @@
                                                 <listhead>
                                                     <listheader label="${c:l('sp.common.PartNumber')}" width="135px" sort="auto"/>
                                                     <listheader label="${c:l('sp.common.descripton')}" width="240px" sort="auto"/>
-                                                     <listheader label="${c:l('sp.common.serial')}" width="95px" sort="auto"/>
+                                                     <listheader label="${c:l('sp.common.provider')}" width="110px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.common.serial')}" width="95px" sort="auto"/>
                                                     <listheader label="${c:l('sp.common.stock')}" width="95px" sort="auto"/>
-                                                    <listheader label="${c:l('sp.common.creationDate')}" width="95px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.common.creationDate')}" width="120px" sort="auto"/>
                                                     <listheader label="-" width="45px"/>
                                                     <listheader label="-" width="45px"/>
                                                     

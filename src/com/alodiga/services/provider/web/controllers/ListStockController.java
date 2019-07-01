@@ -28,6 +28,7 @@ import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
 import com.alodiga.services.provider.web.components.ListcellAddButton;
 import com.alodiga.services.provider.web.components.ListcellRemoveButton;
+import com.alodiga.services.provider.web.components.ListcellViewButton;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractListController;
 import com.alodiga.services.provider.web.utils.AccessControl;
 import com.alodiga.services.provider.web.utils.PDFUtil;
@@ -53,8 +54,10 @@ public class ListStockController extends GenericAbstractListController<Product> 
     @Override
     public void checkPermissions() {
         try {
-            permissionEdit = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.EDIT_PRODUCT);
-            permissionRead = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.VIEW_PRODUCT);
+            permissionAdd = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.ADD_STOCK);
+            permissionDelete = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.REMOVE_STOCK);
+            permissionRead = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.VIEW_STOCK);
+//            permissionEdit = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.EDIT_STOCK);
         } catch (Exception ex) {
             showError(ex);
         }
@@ -150,8 +153,9 @@ public class ListStockController extends GenericAbstractListController<Product> 
                     item.appendChild(new Listcell(product.getUbicationFolder()));
                     item.appendChild(new Listcell(String.valueOf(product.getAmount())));
                     item.appendChild(new Listcell(String.valueOf(stock)));
-                    item.appendChild(permissionEdit ? new ListcellAddButton(adminPage, product,Permission.EDIT_PRODUCT) : new Listcell());
-                    item.appendChild(permissionRead && stock>0? new ListcellRemoveButton("adminEgressStock.zul", product,Permission.EDIT_PRODUCT) : new Listcell());
+                    item.appendChild(permissionAdd ? new ListcellAddButton(adminPage, product,Permission.ADD_STOCK) : new Listcell());
+                    item.appendChild(permissionDelete && stock>0? new ListcellRemoveButton("adminEgressStock.zul", product,Permission.REMOVE_STOCK) : new Listcell());
+                    item.appendChild(permissionRead ? new ListcellViewButton("listAddStock.zul", product,Permission.VIEW_STOCK) : new Listcell());
                     item.setParent(lbxRecords);
                 }
             } else {

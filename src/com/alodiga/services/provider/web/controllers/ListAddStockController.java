@@ -1,5 +1,6 @@
 package com.alodiga.services.provider.web.controllers;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -19,6 +20,7 @@ import com.alodiga.services.provider.commons.exceptions.EmptyListException;
 import com.alodiga.services.provider.commons.exceptions.GeneralException;
 import com.alodiga.services.provider.commons.exceptions.NullParameterException;
 import com.alodiga.services.provider.commons.managers.PermissionManager;
+import com.alodiga.services.provider.commons.models.Category;
 import com.alodiga.services.provider.commons.models.Enterprise;
 import com.alodiga.services.provider.commons.models.Permission;
 import com.alodiga.services.provider.commons.models.Product;
@@ -29,8 +31,10 @@ import com.alodiga.services.provider.commons.models.Provider;
 import com.alodiga.services.provider.commons.models.User;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
+import com.alodiga.services.provider.web.components.ChangeStatusButton;
 import com.alodiga.services.provider.web.components.DeleteButton;
 import com.alodiga.services.provider.web.components.ListcellAddButton;
+import com.alodiga.services.provider.web.components.ListcellDeleteButton;
 import com.alodiga.services.provider.web.components.ListcellEditButton;
 import com.alodiga.services.provider.web.components.ListcellRemoveButton;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractListController;
@@ -62,8 +66,8 @@ public class ListAddStockController extends GenericAbstractListController<Produc
     @Override
     public void checkPermissions() {
         try {
-              permissionRead = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.VIEW_PRODUCT);
-              permissionChangeStatus = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.CHANGE_PRODUCT_STATUS);
+            permissionEdit = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.EDIT_STOCK);   
+            permissionDelete = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.REMOVE_STOCK);
         } catch (Exception ex) {
             showError(ex);
         }
@@ -99,7 +103,7 @@ public class ListAddStockController extends GenericAbstractListController<Produc
         button.addEventListener("onClick", new EventListener() {
 
             public void onEvent(Event event) throws Exception {
-                changeStatus( listItem);
+                deleteProductSerie( listItem);
             }
         });
 
@@ -120,37 +124,29 @@ public class ListAddStockController extends GenericAbstractListController<Produc
     }
 
 
-    private void changeStatus( Listitem listItem) {
-        try {
-        	List<ProductSerie> producSeries = new ArrayList<ProductSerie>();
-        	ProductSerie productSerie = (ProductSerie) listItem.getValue();
-        	producSeries.add(productSerie);
-            transactionEJB.deleteStock(null, producSeries);
-            loadList(productSerie.getProduct());
-        } catch (Exception ex) {
-            showError(ex);
-        }
-    }
-
     public void loadList(Product product) {
         try {
             lbxRecords.getItems().clear();
             Listitem item = null;
-            int stock = 0;
             if (product != null ) {
                 btnDownload.setVisible(true);
-                
-                List<ProductSerie> producSeries = transactionEJB.searchProductSerieByProductId(product.getId());
+                List<ProductSerie> producSeries = transactionEJB.searchProductSerieByProductId(product.getId(), Category.STOCK);
                 for (ProductSerie productSerie : producSeries) {
                     item = new Listitem();
                     item.setValue(product);
                     item.appendChild(new Listcell(productSerie.getProduct().getPartNumber()));
                     item.appendChild(new Listcell(productSerie.getProduct().getDescription()));
+                    item.appendChild(new Listcell(productSerie.getProvider().getName()));
                     item.appendChild(new Listcell(productSerie.getSerie()));
                     item.appendChild(new Listcell(String.valueOf(productSerie.getQuantity())));
-                    item.appendChild(new Listcell(productSerie.getCreationDate().toString()));
-                    item.appendChild(permissionChangeStatus ? initEnabledButton( item) : new Listcell());
-                    item.appendChild(permissionEdit ? new ListcellEditButton(adminPage, product,Permission.EDIT_PRODUCT) : new Listcell());
+                    String date = null;
+					if (productSerie.getExpirationDate() != null) {
+						SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+						date = df.format(productSerie.getCreationDate().getTime());
+					}
+                    item.appendChild(new Listcell(date));
+                    item.appendChild(permissionEdit ? new ListcellEditButton("viewStock.zul", productSerie,Permission.EDIT_STOCK) : new Listcell());
+                    item.appendChild(permissionDelete ? initDeleteButton(item) : new Listcell());
                     item.setParent(lbxRecords);
                 }
             } else {
@@ -167,6 +163,35 @@ public class ListAddStockController extends GenericAbstractListController<Produc
             showError(ex);
         }
     }
+    
+    private Listcell initDeleteButton(final Listitem listItem) {
+
+        Listcell cell = new Listcell();
+        cell.setValue("");
+        final DeleteButton button = new DeleteButton();
+        button.setTooltiptext(Labels.getLabel("sp.common.actions.changeStatus"));
+        button.setClass("open orange");
+        button.addEventListener("onClick", new EventListener() {
+
+            public void onEvent(Event event) throws Exception {
+            	deleteProductSerie( listItem);
+            }
+        });
+
+        button.setParent(cell);
+        return cell;
+    }
+    
+    private void deleteProductSerie( Listitem listItem) {
+        try {
+            ProductSerie productSerie = (ProductSerie) listItem.getValue();
+            transactionEJB.deleteStock(productSerie.getBeginTransactionId(), productSerie);
+            AccessControl.saveAction(Permission.REMOVE_STOCK, "product = " + productSerie.getProduct().getId() + " and product serie = " + productSerie.getSerie());
+        } catch (Exception ex) {
+            showError(ex);
+        }
+    }
+
 
     public void getData() {
         products = new ArrayList<Product>();
