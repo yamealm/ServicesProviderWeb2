@@ -117,20 +117,6 @@ public class ListStockController extends GenericAbstractListController<Product> 
     }
 
 
-//    private void changeStatus(ChangeStatusButton button, Listitem listItem) {
-//        try {
-//            Product product = (Product) listItem.getValue();
-//            button.changeImageStatus(product.getEnabled());
-//            product.setEnabled(!product.getEnabled());
-//            listItem.setValue(product);
-//            request.setParam(product);
-//            productEJB.saveProduct(request);
-//            AccessControl.saveAction(Permission.CHANGE_PRODUCT_STATUS, "changeStatus product = " + product.getId() + " to status = " + !product.getEnabled());
-//        } catch (Exception ex) {
-//            showError(ex);
-//        }
-//    }
-
     public void loadList(List<Product> list) {
         try {
             lbxRecords.getItems().clear();

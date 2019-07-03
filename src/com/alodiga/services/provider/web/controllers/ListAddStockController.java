@@ -133,7 +133,7 @@ public class ListAddStockController extends GenericAbstractListController<Produc
                 List<ProductSerie> producSeries = transactionEJB.searchProductSerieByProductId(product.getId(), Category.STOCK);
                 for (ProductSerie productSerie : producSeries) {
                     item = new Listitem();
-                    item.setValue(product);
+                    item.setValue(productSerie);
                     item.appendChild(new Listcell(productSerie.getProduct().getPartNumber()));
                     item.appendChild(new Listcell(productSerie.getProduct().getDescription()));
                     item.appendChild(new Listcell(productSerie.getProvider().getName()));
@@ -169,7 +169,7 @@ public class ListAddStockController extends GenericAbstractListController<Produc
         Listcell cell = new Listcell();
         cell.setValue("");
         final DeleteButton button = new DeleteButton();
-        button.setTooltiptext(Labels.getLabel("sp.common.actions.changeStatus"));
+        button.setTooltiptext(Labels.getLabel("sp.common.actions.delete"));
         button.setClass("open orange");
         button.addEventListener("onClick", new EventListener() {
 
@@ -187,6 +187,7 @@ public class ListAddStockController extends GenericAbstractListController<Produc
             ProductSerie productSerie = (ProductSerie) listItem.getValue();
             transactionEJB.deleteStock(productSerie.getBeginTransactionId(), productSerie);
             AccessControl.saveAction(Permission.REMOVE_STOCK, "product = " + productSerie.getProduct().getId() + " and product serie = " + productSerie.getSerie());
+            loadList(productParam);
         } catch (Exception ex) {
             showError(ex);
         }
