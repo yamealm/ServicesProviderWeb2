@@ -4,7 +4,7 @@
 <?link rel="icon" tye="image/x-icon" href="/images/favicon.ico"?>
 <?init class="com.alodiga.services.provider.web.security.InitiatorLoggedUser" ?>
 <zk xmlns:n="native">
-    <window width="100%" height="100%" apply="com.alodiga.services.provider.web.controllers.ListProductSerieController" class="general-window">
+    <window width="100%" height="100%" apply="com.alodiga.services.provider.web.controllers.MunitoringController" class="general-window">
         <style src="/css/general.css"/>
         <borderlayout width="100%" height="100%" class="content-transparent">
             <north border="none" size="52px" class="content-transparent">
@@ -67,16 +67,7 @@
                                             <separator/>
                                             <separator/>
                                             <!--Filters for Searching-->
-                                            <vlayout>
-                                                <hlayout id="hParams" style="text-align:left">
-                                                    <label value="${c:l('sp.munitoring.expirate.day')}" sclass="lblbold"/>
-                                                    <intbox id="intDay" width="160px" />
-                                                </hlayout>
-                                                <hlayout>
-                                                    <button id="btnSearch" label="${c:l('sp.common.actions.search')}" width="80px" class="open orange" tooltiptext="${c:l('sp.common.actions.search.filter.tooltip')}"/>
-                                                    <button id="btnClear" label="${c:l('sp.common.actions.cancel')}"  width="80px" class="open gray" tooltiptext="${c:l('sp.common.actions.cancel.filter.tooltip')}"/>
-                                                </hlayout>
-                                            </vlayout>
+                                            
                                             <separator/>
                                             <div id="divInfo" height="20px" width="100%" style="background:#B6E59E;" align="left" visible="false"/>
                                                    <!--Record Listbox-->
@@ -88,6 +79,49 @@
 <!--                                                        <listheader label="${c:l('sp.common.login')}" width="80px"/>-->
                                                         <listheader label="${c:l('sp.common.name')}" width="200px"/>
                                                         <listheader label="${c:l('sp.common.provider')}" width="115px"/>
+                                                        <listheader label="${c:l('sp.common.label.expirationDate')}" width="140px"/>
+                                                        <listheader label="${c:l('sp.transaction.amount')}" width="110px"/>
+                                                        <listheader label="${c:l('sp.common.quantity')}" width="145px"/>
+                                                    </listhead>
+                                                </listbox>
+                                            </div>
+                                        </div>
+                                                  <div align="right">
+                                           				   <button id="btnDownload" label="${c:l('sp.common.actions.download')}"  width="80px" class="open gray" tooltiptext="${c:l('sp.common.actions.download.tooltip')}"/>
+                                          				  <button id="btnExportPdf" label="${c:l('sp.common.actions.download.pdf')}"  width="80px" class="open orange" tooltiptext="${c:l('sp.common.actions.download.pdf')}"/>
+                                        			</div>
+                                                 
+                                                </vlayout>
+                                            </tabpanel>
+                                           
+                                           <tabpanel >
+                                                 <vlayout>
+                                                 
+                                                 
+                                                  <div align="left">
+                                            <separator/>
+                                            <separator/>
+                                            <!--Filters for Searching-->
+                                            <vlayout>
+                                                <hlayout id="hParams2" style="text-align:left">
+                                                    <label value="${c:l('sp.munitoring.expirate.day')}" sclass="lblbold"/>
+                                                    <intbox id="intDay" width="160px" constraint="no empty: ${c:l('error.field.required')}"/>
+                                                </hlayout>
+                                                <hlayout>
+                                                    <button id="btnSearch" label="${c:l('sp.common.actions.search')}" width="80px" class="open orange" tooltiptext="${c:l('sp.common.actions.search.filter.tooltip')}"/>
+                                                </hlayout>
+                                            </vlayout>
+                                            <separator/>
+                                            <div id="divInfoT2" height="20px" width="100%" style="background:#B6E59E;" align="left" visible="false"/>
+                                                   <!--Record Listbox-->
+                                            <separator/>
+                                            <div align="left">
+                                                <listbox id="lbxReport2" width="790px" height="330px" mold="paging">
+                                                    <listhead>
+                                                        <listheader label="#" width="40px"/>
+<!--                                                    <listheader label="${c:l('sp.common.login')}" width="80px"/>-->
+                                                        <listheader label="${c:l('sp.common.name')}" width="200px"/>
+                                                        <listheader label="${c:l('sp.common.provider')}" width="115px"/>
                                                         <listheader label="${c:l('sp.common.creationDate')}" width="140px"/>
                                                         <listheader label="${c:l('sp.transaction.amount')}" width="110px"/>
                                                         <listheader label="${c:l('sp.common.quantity')}" width="145px"/>
@@ -95,65 +129,98 @@
                                                 </listbox>
                                             </div>
                                         </div>
-                                                 
+                                                   <div align="right">
+                                           				   <button id="btnDownload2" label="${c:l('sp.common.actions.download')}"  width="80px" class="open gray" tooltiptext="${c:l('sp.common.actions.download.tooltip')}"/>
+                                          				  <button id="btnExportPdf2" label="${c:l('sp.common.actions.download.pdf')}"  width="80px" class="open orange" tooltiptext="${c:l('sp.common.actions.download.pdf')}"/>
+                                        			</div>
                                                  
                                                 </vlayout>
+                                               
                                             </tabpanel>
-                                            <tabpanel >
-                                                <vlayout>
-                                                    <grid fixedLayout="true" width="960px">
-                                                        <columns>
-                                                            <column label="" width="360px"/>
-                                                            <column label="" width="570px"/>
-                                                        </columns>
-                                                        <rows>
-                                                            <row id="rowTransactionNumber" visible="false">
-                                                                <label id="lblSummaryTransactionNumber" value="${c:l('purchase.balance.transactionNumber')}" width="150px" sclass="lblbold"/>
-                                                                <label id="lblSummaryTransactionNumberValue" value="" width="150px"/>
-                                                            </row>
-                                                            <row>
-                                                                <label value="${c:l('common.country')}" width="100px" sclass="lblbold"/>
-                                                                <label id="lblCountryValue" width="550px"/>
-                                                            </row>
-                                                            <row>
-                                                                <label value="${c:l('common.mobileOperator')}" width="100px" sclass="lblbold"/>
-                                                                <label id="lblMobileOperatorValue" width="550px"/>
-                                                            </row>
-                                                            <row>
-                                                                <label value="${c:l('product.title')}" width="100px" sclass="lblbold"/>
-                                                                <label id="lblProductValue" width="550px"/>
-                                                            </row>
-                                                            <row>
-                                                                <label value="${c:l('common.phoneNumber')}" width="100px" sclass="lblbold"/>
-                                                                <label id="lblPhoneNumberValue" width="550px"/>
-                                                            </row>
-                                                            <row>
-                                                                <label value="${c:l('recharge.product.facialAmount')}" width="100px" sclass="lblbold"/>
-                                                                <label id="lblAmountValue" width="550px"/>
-                                                            </row>
-                                                            <row>
-                                                                <label value="${c:l('recharge.product.RealAmount')}" width="100px" sclass="lblbold"/>
-                                                                <label id="lblRealAmountValue" width="550px"/>
-                                                            </row>
-                                                            <row id="rowAdditional" visible="false">
-                                                                <label value="${c:l('recharge.product.additional')}" width="100px" sclass="lblbold"/>
-                                                                <label id="lblAdditional" width="550px"/>
-                                                            </row>
-                                                        </rows>
-                                                    </grid>
-                                                
-                                                    <div align="center">
-                                                        <button id="btnInvoce" visible="true" label="${c:l('common.printableInvoice')}" class="medium gray"/>
-                                                        <button  id="btnBack1" label ="${c:l('common.gotoHome')}" class="medium gray"/>
-                                                        <button id="btnNewPurchase" visible="false" label="${c:l('common.newPurchase')}" class="medium orange"/>
-                                                    </div>
+                                              <tabpanel >
+                                                 <vlayout>
+                                                 
+                                                 
+                                                  <div align="left">
+                                            <separator/>
+                                            <separator/>
+                                            <!--Filters for Searching-->
+                                            <vlayout>
+                                                <hlayout id="hParams3" style="text-align:left">
+                                                    <label value="${c:l('sp.munitoring.expirate.day')}" sclass="lblbold"/>
+                                                    <intbox id="intMinStock" width="160px" />
+                                                </hlayout>
+                                                <hlayout>
+                                                    <button id="btnSearch3" label="${c:l('sp.common.actions.search')}" width="80px" class="open orange" tooltiptext="${c:l('sp.common.actions.search.filter.tooltip')}"/>
+                                                    <button id="btnClear3" label="${c:l('sp.common.actions.cancel')}"  width="80px" class="open gray" tooltiptext="${c:l('sp.common.actions.cancel.filter.tooltip')}"/>
+                                                </hlayout>
+                                            </vlayout>
+                                            <separator/>
+                                            <div id="divInfoT3" height="20px" width="100%" style="background:#B6E59E;" align="left" visible="true"/>
+                                                   <!--Record Listbox-->
+                                            <separator/>
+                                            <div align="left">
+                                                <listbox id="lbxReport3" width="790px" height="360px" mold="paging">
+                                                    <listhead>
+                                                        <listheader label="#" width="40px"/>
+<!--                                                    <listheader label="${c:l('sp.common.login')}" width="80px"/>-->
+                                                        <listheader label="${c:l('sp.common.name')}" width="200px"/>
+                                                        <listheader label="${c:l('sp.common.provider')}" width="115px"/>
+                                                        <listheader label="${c:l('sp.common.creationDate')}" width="140px"/>
+                                                        <listheader label="${c:l('sp.transaction.amount')}" width="110px"/>
+                                                        <listheader label="${c:l('sp.common.quantity')}" width="145px"/>
+                                                    </listhead>
+                                                </listbox>
+                                            </div>
+                                        </div>
+                                                   <div align="right">
+                                           				   <button id="btnDownload23" label="${c:l('sp.common.actions.download')}"  width="80px" class="open gray" tooltiptext="${c:l('sp.common.actions.download.tooltip')}"/>
+                                          				  <button id="btnExportPdf23" label="${c:l('sp.common.actions.download.pdf')}"  width="80px" class="open orange" tooltiptext="${c:l('sp.common.actions.download.pdf')}"/>
+                                        			</div>
                                                 </vlayout>
                                             </tabpanel>
+                                               <tabpanel >
+                                                 <vlayout>
+                                                  <div align="left">
+                                            <separator/>
+                                            <separator/>
+                                            <!--Filters for Searching-->
+                                            <vlayout>
+                                                <hlayout id="hParams4" style="text-align:left">
+                                                    <label value="${c:l('sp.munitoring.expirate.day')}" sclass="lblbold"/>
+                                                    <intbox id="intCuradoStock4" width="160px" />
+                                                </hlayout>
+                                                <hlayout>
+                                                    <button id="btnSearch4" label="${c:l('sp.common.actions.search')}" width="80px" class="open orange" tooltiptext="${c:l('sp.common.actions.search.filter.tooltip')}"/>
+                                                    <button id="btnClear4" label="${c:l('sp.common.actions.cancel')}"  width="80px" class="open gray" tooltiptext="${c:l('sp.common.actions.cancel.filter.tooltip')}"/>
+                                                </hlayout>
+                                            </vlayout>
+                                            <separator/>
+                                            <div id="divInfoT4" height="20px" width="100%" style="background:#B6E59E;" align="left" visible="false"/>
+                                                   <!--Record Listbox-->
+                                            <separator/>
+                                            <div align="left">
+                                                <listbox id="lbxReport4" width="790px" height="360px" mold="paging">
+                                                    <listhead>
+                                                        <listheader label="#" width="40px"/>
+<!--                                                    <listheader label="${c:l('sp.common.login')}" width="80px"/>-->
+                                                        <listheader label="${c:l('sp.common.name')}" width="200px"/>
+                                                        <listheader label="${c:l('sp.common.provider')}" width="115px"/>
+                                                        <listheader label="${c:l('sp.common.creationDate')}" width="140px"/>
+                                                        <listheader label="${c:l('sp.transaction.amount')}" width="110px"/>
+                                                        <listheader label="${c:l('sp.common.quantity')}" width="145px"/>
+                                                    </listhead>
+                                                </listbox>
+                                            </div>
+                                        </div>
+                                                   <div align="right">
+                                           				   <button id="btnDownload4" label="${c:l('sp.common.actions.download')}"  width="80px" class="open gray" tooltiptext="${c:l('sp.common.actions.download.tooltip')}"/>
+                                          				  <button id="btnExportPdf4" label="${c:l('sp.common.actions.download.pdf')}"  width="80px" class="open orange" tooltiptext="${c:l('sp.common.actions.download.pdf')}"/>
+                                        			</div>
+                                                </vlayout>
+                                            </tabpanel>                                 
                                         </tabpanels>
                                     </tabbox>
-                                       
-                                       
-                                     
                                     </vlayout>
                                 </div>
                                 <div></div>

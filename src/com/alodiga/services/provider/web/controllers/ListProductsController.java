@@ -86,14 +86,12 @@ public class ListProductsController extends GenericAbstractListController<Produc
     }
 
     private Listcell initEnabledButton(final Boolean enabled, final Listitem listItem) {
-
         Listcell cell = new Listcell();
         cell.setValue("");
         final ChangeStatusButton button = new ChangeStatusButton(enabled);
         button.setTooltiptext(Labels.getLabel("sp.common.actions.changeStatus"));
         button.setClass("open orange");
         button.addEventListener("onClick", new EventListener() {
-
             public void onEvent(Event event) throws Exception {
                 changeStatus(button, listItem);
             }
@@ -119,7 +117,6 @@ public class ListProductsController extends GenericAbstractListController<Produc
         Sessions.getCurrent().setAttribute("eventType", WebConstants.EVENT_ADD);
         Sessions.getCurrent().removeAttribute("object");
         Executions.getCurrent().sendRedirect(adminPage);
-
     }
 
     private void changeStatus(ChangeStatusButton button, Listitem listItem) {
@@ -143,7 +140,6 @@ public class ListProductsController extends GenericAbstractListController<Produc
             if (list != null && !list.isEmpty()) {
                 btnDownload.setVisible(true);
                 for (Product product : list) {
-
                     item = new Listitem();
                     item.setValue(product);
                     item.appendChild(new Listcell(product.getPartNumber()));
@@ -165,7 +161,6 @@ public class ListProductsController extends GenericAbstractListController<Produc
                 item.appendChild(new Listcell());
                 item.setParent(lbxRecords);
             }
-
         } catch (Exception ex) {
             showError(ex);
         }
@@ -185,8 +180,6 @@ public class ListProductsController extends GenericAbstractListController<Produc
             showError(ex);
         }
     }
-
-  
 
     public void onClick$btnClear() throws InterruptedException {
         txtAlias.setText("");
