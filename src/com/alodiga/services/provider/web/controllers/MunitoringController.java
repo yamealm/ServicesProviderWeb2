@@ -460,7 +460,7 @@ public class MunitoringController extends GenericAbstractListController<ProductS
     
     public void onClick$btnDownload23() throws InterruptedException {
         try {
-            Utils.exportExcel(lbxReport2, Labels.getLabel("sp.report.title"));
+            Utils.exportExcel(lbxReport3, Labels.getLabel("sp.report.title"));
         } catch (Exception ex) {
             showError(ex);
         }
@@ -468,7 +468,7 @@ public class MunitoringController extends GenericAbstractListController<ProductS
 
     public void onClick$btnExportPdf23() throws InterruptedException {
         try {
-        	PDFUtil.exportPdf((Labels.getLabel("sp.common.stock"))+".pdf", Labels.getLabel("sp.crud.product.list.reporte"), lbxReport2,0);
+        	PDFUtil.exportPdf((Labels.getLabel("sp.common.stock"))+".pdf", Labels.getLabel("sp.crud.product.list.reporte"), lbxReport3,0);
         } catch (Exception ex) {
             showError(ex);
         }
@@ -477,7 +477,7 @@ public class MunitoringController extends GenericAbstractListController<ProductS
     
     public void onClick$btnDownload4() throws InterruptedException {
         try {
-            Utils.exportExcel(lbxReport2, Labels.getLabel("sp.report.title"));
+            Utils.exportExcel(lbxReport4, Labels.getLabel("sp.report.title"));
         } catch (Exception ex) {
             showError(ex);
         }
@@ -485,7 +485,7 @@ public class MunitoringController extends GenericAbstractListController<ProductS
 
     public void onClick$btnExportPdf4() throws InterruptedException {
         try {
-        	PDFUtil.exportPdf((Labels.getLabel("sp.common.stock"))+".pdf", Labels.getLabel("sp.crud.product.list.reporte"), lbxReport2,0);
+        	PDFUtil.exportPdf((Labels.getLabel("sp.common.stock"))+".pdf", Labels.getLabel("sp.crud.product.list.reporte"), lbxReport4,0);
         } catch (Exception ex) {
             showError(ex);
         }
