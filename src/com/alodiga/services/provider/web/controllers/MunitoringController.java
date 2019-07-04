@@ -1,6 +1,7 @@
 package com.alodiga.services.provider.web.controllers;
 
 import com.alodiga.services.provider.commons.ejbs.ProductEJB;
+import com.alodiga.services.provider.commons.ejbs.TransactionEJB;
 import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
 import com.alodiga.services.provider.commons.exceptions.EmptyListException;
 import com.alodiga.services.provider.commons.exceptions.GeneralException;
@@ -15,6 +16,8 @@ import com.alodiga.services.provider.commons.utils.QueryConstants;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractListController;
 import com.alodiga.services.provider.web.utils.PDFUtil;
 import com.alodiga.services.provider.web.utils.Utils;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.sql.Timestamp;
@@ -37,18 +40,27 @@ public class MunitoringController extends GenericAbstractListController<ProductS
     private static final long serialVersionUID = -9145887024839938515L;
     private Listbox lbxReport;
     private Listbox lbxReport2;
+    private Listbox lbxReport3;
+    private Listbox lbxReport4;
     private Combobox cmbProvider;
     private Button btnExportPdf;
-    private Combobox cmbProduct;
     private Datebox dtbBeginningDate;
     private Button btnExportPdf2;
     private Button btnDownload2;
+    private Button btnDownload23;
+    private Button btnExportPdf23;
+    private Button btnDownload4;
+    private Button btnExportPdf4;
+     
+     
     
 
     private Datebox dtbEndingDate;
     private UtilsEJB utilsEJB = null;
     private ProductEJB productEJB = null;
+    private TransactionEJB transactionEJB = null;
     private Intbox intDay;
+    private Intbox intCuradoStock4;
     Boolean isStoreAll = false;
     List<ProductSerie> productSeries = null;
     private Label lblInfo;
@@ -70,15 +82,11 @@ public class MunitoringController extends GenericAbstractListController<ProductS
             adminPage = "adminTransaction.zul";
             utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
             productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
+            transactionEJB = (TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
             
             getData();
             
-            
 
-            
-            
-            
-            
         } catch (Exception ex) {
             showError(ex);
         }
@@ -106,6 +114,66 @@ public class MunitoringController extends GenericAbstractListController<ProductS
     	
     }
  
+    
+	public void onClick$tabMinStock() {
+		try {
+			EJBRequest request2 = new EJBRequest();
+			List<Product> products = new ArrayList<Product>();
+			products = productEJB.getProducts(request2);
+			List<Product> productsReturn = new ArrayList<Product>();
+			for (Product p : products) {
+				int quantity = transactionEJB.loadQuantityByProductId(p.getId());
+				if (quantity < p.getStockMin()) {
+					p.setStockMax(quantity);
+					productsReturn.add(p);
+				}
+			}
+			loadList3(productsReturn);
+		} catch (GeneralException e) {
+			e.printStackTrace();
+		} catch (NullParameterException e) {
+			e.printStackTrace();
+		} catch (EmptyListException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+    public void onClick$tabCure() {
+    	try {
+			productSeries = productEJB.getProductDefeated(5);
+			intCuradoStock4.setValue(5);
+			loadList4(productSeries);
+		} catch (GeneralException e) {
+			e.printStackTrace();
+		} catch (NullParameterException e) {
+			e.printStackTrace();
+		} catch (EmptyListException e) {
+			e.printStackTrace();
+		}
+    	
+    }
+	
+    
+
+    public void onClick$btnSearch4() {
+        try {
+        	productSeries = productEJB.getProductDefeatedCure(intCuradoStock4.getValue());
+        	loadList4(productSeries);
+        } catch (GeneralException ex) {
+            showError(ex);
+        } catch (NullParameterException ex) {
+            showError(ex);
+        } catch (EmptyListException ex) {
+            loadList(null);
+        }
+    }
+
+	
+ 
+    
+    
+    
 
     public void onClick$btnSearch() {
         try {
@@ -252,6 +320,101 @@ public class MunitoringController extends GenericAbstractListController<ProductS
             showError(ex);
         }
     }
+    
+    public void loadList4(List<ProductSerie> list) {
+        try {
+        	lbxReport4.getItems().clear();
+            Listitem item = null;
+            if (list != null && !list.isEmpty()) {
+                for (ProductSerie productSerie : list) {
+                	
+                	try {
+                		productSerie.getCure().toString();
+					} catch (NullPointerException e) {
+					    System.out.println("entro en el nullpointer");
+						continue;
+					}
+                	
+                    item = new Listitem();
+                    item.setValue(productSerie);
+                    item.appendChild(new Listcell(productSerie.getId().toString()));
+                    item.appendChild(new Listcell(productSerie.getProduct().getDescription()));
+                    item.appendChild(new Listcell(productSerie.getProvider().getName()));
+              
+                    Listcell listCellEnding = new Listcell(productSerie.getCure().toString());
+                    
+                    if(productSerie.getCure().getTime()< new Date().getTime()) {
+                    	 listCellEnding.setStyle("color:red");
+                    }
+                    item.appendChild(listCellEnding);
+                    item.appendChild(new Listcell(productSerie.getAmount().toString()));
+                    item.appendChild(new Listcell(String.valueOf(productSerie.getQuantity())));
+                    //item.appendChild(new ListcellViewButton(adminPage, transaction, Permission.VIEW_TRANSACTION));
+                    item.setParent(lbxReport4);
+                }
+                btnDownload4.setVisible(true);
+                btnExportPdf4.setVisible(true);
+            } else {
+                btnDownload4.setVisible(false);
+                btnExportPdf4.setVisible(false);
+                item = new Listitem();
+                item.appendChild(new Listcell());
+                item.appendChild(new Listcell(Labels.getLabel("sp.error.empty.list")));
+                item.appendChild(new Listcell());
+                item.appendChild(new Listcell());
+                item.appendChild(new Listcell());
+                item.appendChild(new Listcell());
+                item.appendChild(new Listcell());
+                item.appendChild(new Listcell());
+                item.appendChild(new Listcell());
+                item.setParent(lbxReport4);
+            }
+        } catch (Exception ex) {
+            showError(ex);
+        }
+    }
+    
+    
+    
+    public void loadList3(List<Product> list) {
+        try {
+        	lbxReport3.getItems().clear();
+            Listitem item = null;
+            if (list != null && !list.isEmpty()) {
+                for (Product product : list) {
+                	
+                    item = new Listitem();
+                    item.setValue(product);
+                    item.appendChild(new Listcell(product.getId().toString()));
+                    item.appendChild(new Listcell(product.getDescription()));
+                    item.appendChild(new Listcell(product.getPartNumber()));
+                    item.appendChild(new Listcell(product.getUbicationBox()));
+                    item.appendChild(new Listcell(String.valueOf(product.getStockMin())));
+                    item.appendChild(new Listcell(String.valueOf(product.getStockMax())));
+                    //item.appendChild(new ListcellViewButton(adminPage, transaction, Permission.VIEW_TRANSACTION));
+                    item.setParent(lbxReport3);
+                }
+                btnDownload23.setVisible(true);
+                btnExportPdf23.setVisible(true);
+            } else {
+                btnDownload23.setVisible(false);
+                btnExportPdf23.setVisible(false);
+                item = new Listitem();
+                item.appendChild(new Listcell());
+                item.appendChild(new Listcell(Labels.getLabel("sp.error.empty.list")));
+                item.appendChild(new Listcell());
+                item.appendChild(new Listcell());
+                item.appendChild(new Listcell());
+                item.appendChild(new Listcell());
+                item.appendChild(new Listcell());
+                item.appendChild(new Listcell());
+                item.appendChild(new Listcell());
+                item.setParent(lbxReport3);
+            }
+        } catch (Exception ex) {
+            showError(ex);
+        }
+    }
 
     public void onClick$btnClear() throws InterruptedException {
         cmbProvider.setSelectedIndex(0);
@@ -295,6 +458,40 @@ public class MunitoringController extends GenericAbstractListController<ProductS
     }
     
     
+    public void onClick$btnDownload23() throws InterruptedException {
+        try {
+            Utils.exportExcel(lbxReport2, Labels.getLabel("sp.report.title"));
+        } catch (Exception ex) {
+            showError(ex);
+        }
+    }
+
+    public void onClick$btnExportPdf23() throws InterruptedException {
+        try {
+        	PDFUtil.exportPdf((Labels.getLabel("sp.common.stock"))+".pdf", Labels.getLabel("sp.crud.product.list.reporte"), lbxReport2,0);
+        } catch (Exception ex) {
+            showError(ex);
+        }
+    }
+    
+    
+    public void onClick$btnDownload4() throws InterruptedException {
+        try {
+            Utils.exportExcel(lbxReport2, Labels.getLabel("sp.report.title"));
+        } catch (Exception ex) {
+            showError(ex);
+        }
+    }
+
+    public void onClick$btnExportPdf4() throws InterruptedException {
+        try {
+        	PDFUtil.exportPdf((Labels.getLabel("sp.common.stock"))+".pdf", Labels.getLabel("sp.crud.product.list.reporte"), lbxReport2,0);
+        } catch (Exception ex) {
+            showError(ex);
+        }
+    }
+    
+
     
     public void getData() {
     	try {
