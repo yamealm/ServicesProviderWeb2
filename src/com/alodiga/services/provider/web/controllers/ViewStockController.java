@@ -249,7 +249,7 @@ public class ViewStockController extends GenericAbstractAdminController {
 		txtInvoice.setText(productSerie.getBeginTransactionId().getInvoice() );
 		txtPartNumber.setText(productSerie.getProduct().getPartNumber());
 		try {
-    		int  quantity = transactionEJB.loadQuantityByProductId(productSerie.getProduct().getId());
+    		int  quantity = transactionEJB.loadQuantityByProductId(productSerie.getProduct().getId(),productSerie.getCategory().getId());
     		intStock.setValue(quantity);
     	} catch (Exception ex) {
     		intStock.setValue(0);
@@ -355,7 +355,7 @@ public class ViewStockController extends GenericAbstractAdminController {
     }
 
     private void saveProductSerie(ProductSerie productSerie) {
-        Transaction transaction = productSerie.getEndingTransactionId();
+        Transaction transaction = productSerie.getBeginTransactionId();
 		try {
 			int quantity = productSerie.getBeginTransactionId().getQuantity();
 			quantity = quantity - productSerie.getQuantity() + intQuantity.getValue();

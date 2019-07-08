@@ -258,7 +258,7 @@ public class AdminAddMeterologicalControlController extends GenericAbstractAdmin
 		txtDescription.setText(product.getDescription());
 		txtPartNumber.setText(product.getPartNumber());
 		try {
-    		int  quantity = transactionEJB.loadQuantityByProductId(product.getId());
+    		int  quantity = transactionEJB.loadQuantityByProductId(product.getId(), Category.METEOROLOGICAL_CONTROL);
     		intStock.setValue(quantity);
     	} catch (Exception ex) {
     		intStock.setValue(0);

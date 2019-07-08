@@ -17,6 +17,7 @@ import com.alodiga.services.provider.commons.exceptions.EmptyListException;
 import com.alodiga.services.provider.commons.exceptions.GeneralException;
 import com.alodiga.services.provider.commons.exceptions.NullParameterException;
 import com.alodiga.services.provider.commons.managers.PermissionManager;
+import com.alodiga.services.provider.commons.models.Category;
 import com.alodiga.services.provider.commons.models.Enterprise;
 import com.alodiga.services.provider.commons.models.Permission;
 import com.alodiga.services.provider.commons.models.Product;
@@ -126,7 +127,7 @@ public class ListWaitController extends GenericAbstractListController<Product> {
                 btnDownload.setVisible(true);
                 for (Product product : list) {
                 	try {
-                		int  currentQuantity = transactionEJB.loadQuantityByProductId(product.getId());
+                		int  currentQuantity = transactionEJB.loadQuantityByProductId(product.getId(),Category.WAIT);
                 		stock = currentQuantity;
                 	} catch (Exception ex) {
                 		stock = 0;

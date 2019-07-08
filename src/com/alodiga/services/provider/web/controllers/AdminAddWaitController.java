@@ -258,7 +258,7 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
 		txtDescription.setText(product.getDescription());
 		txtPartNumber.setText(product.getPartNumber());
 		try {
-    		int  quantity = transactionEJB.loadQuantityByProductId(product.getId());
+    		int  quantity = transactionEJB.loadQuantityByProductId(product.getId(), Category.WAIT);
     		intStock.setValue(quantity);
     	} catch (Exception ex) {
     		intStock.setValue(0);

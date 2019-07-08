@@ -1,51 +1,33 @@
 package com.alodiga.services.provider.web.controllers;
 
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
-import org.zkoss.zk.ui.event.Event;
-import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Datebox;
-import org.zkoss.zul.Grid;
 import org.zkoss.zul.Intbox;
-import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listcell;
-import org.zkoss.zul.Listitem;
-import org.zkoss.zul.Radio;
-import org.zkoss.zul.Radiogroup;
-import org.zkoss.zul.Row;
-import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Toolbarbutton;
 
-import com.alodiga.services.provider.commons.ejbs.CustomerEJB;
 import com.alodiga.services.provider.commons.ejbs.ProductEJB;
 import com.alodiga.services.provider.commons.ejbs.TransactionEJB;
 import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
 import com.alodiga.services.provider.commons.genericEJB.EJBRequest;
-import com.alodiga.services.provider.commons.managers.PermissionManager;
 import com.alodiga.services.provider.commons.models.Category;
 import com.alodiga.services.provider.commons.models.Condicion;
 import com.alodiga.services.provider.commons.models.Customer;
 import com.alodiga.services.provider.commons.models.Enterprise;
-import com.alodiga.services.provider.commons.models.Permission;
-import com.alodiga.services.provider.commons.models.Product;
-import com.alodiga.services.provider.commons.models.ProductHistory;
 import com.alodiga.services.provider.commons.models.ProductSerie;
 import com.alodiga.services.provider.commons.models.Profile;
 import com.alodiga.services.provider.commons.models.Provider;
 import com.alodiga.services.provider.commons.models.Transaction;
-import com.alodiga.services.provider.commons.models.TransactionType;
 import com.alodiga.services.provider.commons.models.User;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
@@ -249,7 +231,7 @@ public class ViewTransitController extends GenericAbstractAdminController {
 		txtInvoice.setText(productSerie.getBeginTransactionId().getInvoice() );
 		txtPartNumber.setText(productSerie.getProduct().getPartNumber());
 		try {
-    		int  quantity = transactionEJB.loadQuantityByProductId(productSerie.getProduct().getId());
+    		int  quantity = transactionEJB.loadQuantityByProductId(productSerie.getProduct().getId(),productSerie.getCategory().getId());
     		intStock.setValue(quantity);
     	} catch (Exception ex) {
     		intStock.setValue(0);
@@ -303,7 +285,7 @@ public class ViewTransitController extends GenericAbstractAdminController {
                 if (category != null && category.getId().equals(e.getId())) {
                 	cmbCategory.setSelectedItem(cmbItem);
                 } else {
-                	cmbCategory.setSelectedIndex(0);
+                	cmbCategory.setSelectedIndex(1);
                 }
             }
             cmbCategory.setReadonly(true);
@@ -349,13 +331,13 @@ public class ViewTransitController extends GenericAbstractAdminController {
                 	cmbProvider.setSelectedIndex(0);
                 }
             }
-        } catch (Exception ex) {
+        } catch (Exception ex) {	
             showError(ex);
         }
     }
 
     private void saveProductSerie(ProductSerie productSerie) {
-        Transaction transaction = productSerie.getEndingTransactionId();
+        Transaction transaction = productSerie.getBeginTransactionId();
 		try {
 			int quantity = productSerie.getBeginTransactionId().getQuantity();
 			quantity = quantity - productSerie.getQuantity() + intQuantity.getValue();

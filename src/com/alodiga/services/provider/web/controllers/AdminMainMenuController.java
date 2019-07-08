@@ -166,9 +166,9 @@ public class AdminMainMenuController extends GenericForwardComposer {
         createCell(Permission.LIST_PRODUCTS,"listProducts.zul", permissionGroup, listgroup);
         createCell(Permission.STOCK, "listStock.zul", permissionGroup, listgroup);
         createCell(Permission.TRANSIT, "listTransit.zul", permissionGroup, listgroup);
-        createCell(Permission.QUARANTINE, "listQuaratine.zul", permissionGroup, listgroup);
+        createCell(Permission.QUARANTINE, "listQuarantine.zul", permissionGroup, listgroup);
         createCell(Permission.WAIT, "listWait.zul", permissionGroup, listgroup);
-        createCell(Permission.METEOROLOGICAL_CONTROL, "Meteorological.zul", permissionGroup, listgroup);
+        createCell(Permission.METEOROLOGICAL_CONTROL, "listMeterologicalControl.zul", permissionGroup, listgroup);
 
     }
 

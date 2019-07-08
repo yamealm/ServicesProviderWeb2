@@ -258,7 +258,7 @@ public class AdminAddQuarantineController extends GenericAbstractAdminController
 		txtDescription.setText(product.getDescription());
 		txtPartNumber.setText(product.getPartNumber());
 		try {
-    		int  quantity = transactionEJB.loadQuantityByProductId(product.getId());
+    		int  quantity = transactionEJB.loadQuantityByProductId(product.getId(), Category.QUARANTINE);
     		intStock.setValue(quantity);
     	} catch (Exception ex) {
     		intStock.setValue(0);

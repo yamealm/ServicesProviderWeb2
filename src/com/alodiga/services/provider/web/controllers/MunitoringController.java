@@ -7,6 +7,7 @@ import com.alodiga.services.provider.commons.exceptions.EmptyListException;
 import com.alodiga.services.provider.commons.exceptions.GeneralException;
 import com.alodiga.services.provider.commons.exceptions.NullParameterException;
 import com.alodiga.services.provider.commons.genericEJB.EJBRequest;
+import com.alodiga.services.provider.commons.models.Category;
 import com.alodiga.services.provider.commons.models.Product;
 import com.alodiga.services.provider.commons.models.ProductSerie;
 import com.alodiga.services.provider.commons.models.Provider;
@@ -122,7 +123,7 @@ public class MunitoringController extends GenericAbstractListController<ProductS
 			products = productEJB.getProducts(request2);
 			List<Product> productsReturn = new ArrayList<Product>();
 			for (Product p : products) {
-				int quantity = transactionEJB.loadQuantityByProductId(p.getId());
+				int quantity = transactionEJB.loadQuantityByProductId(p.getId(), Category.STOCK);
 				if (quantity < p.getStockMin()) {
 					p.setStockMax(quantity);
 					productsReturn.add(p);
