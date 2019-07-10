@@ -209,17 +209,17 @@ public class ViewMeterologicalControlController extends GenericAbstractAdminCont
 
     public void onClick$btnBack() {
     	Sessions.getCurrent().setAttribute("object",productSerieParam.getProduct());
-    	Executions.sendRedirect("./listAddStock.zul");
+    	Executions.sendRedirect("./listAddMeteorologicalControl.zul");
     }
     
     public void onClick$viewDetail() {
     	Sessions.getCurrent().setAttribute("object",productSerieParam.getProduct());
-    	Executions.sendRedirect("./listAddStock.zul");
+    	Executions.sendRedirect("./listAddMeteorologicalControl.zul");
     }
     
     public void loadData() {
     	Category category = new Category();
-    	category.setId(Category.STOCK);
+    	category.setId(Category.METEOROLOGICAL_CONTROL);
         switch (eventType) {
             case WebConstants.EVENT_EDIT:
                 loadFields(productSerieParam);
@@ -302,8 +302,8 @@ public class ViewMeterologicalControlController extends GenericAbstractAdminCont
                 cmbItem.setParent(cmbCategory);
                 if (category != null && category.getId().equals(e.getId())) {
                 	cmbCategory.setSelectedItem(cmbItem);
-                } else {
-                	cmbCategory.setSelectedIndex(4);
+                } else if(e.getId().equals(Category.METEOROLOGICAL_CONTROL)){
+                	cmbCategory.setSelectedItem(cmbItem);
                 }
             }
             cmbCategory.setReadonly(true);

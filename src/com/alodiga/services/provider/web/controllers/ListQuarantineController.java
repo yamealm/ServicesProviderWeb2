@@ -58,7 +58,6 @@ public class ListQuarantineController extends GenericAbstractListController<Prod
             permissionAdd = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.ADD_STOCK);
             permissionDelete = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.REMOVE_STOCK);
             permissionRead = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.VIEW_STOCK);
-//            permissionEdit = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.EDIT_STOCK);
         } catch (Exception ex) {
             showError(ex);
         }
@@ -86,24 +85,6 @@ public class ListQuarantineController extends GenericAbstractListController<Prod
             showError(ex);
         }
     }
-
-//    private Listcell initEnabledButton(final Boolean enabled, final Listitem listItem) {
-//
-//        Listcell cell = new Listcell();
-//        cell.setValue("");
-//        final ChangeStatusButton button = new ChangeStatusButton(enabled);
-//        button.setTooltiptext(Labels.getLabel("sp.common.actions.changeStatus"));
-//        button.setClass("open orange");
-//        button.addEventListener("onClick", new EventListener() {
-//
-//            public void onEvent(Event event) throws Exception {
-//                changeStatus(button, listItem);
-//            }
-//        });
-//
-//        button.setParent(cell);
-//        return cell;
-//    }
 
     public List<Product> getFilteredList(String filter) {
         List<Product> auxList = new ArrayList<Product>();
@@ -140,9 +121,9 @@ public class ListQuarantineController extends GenericAbstractListController<Prod
                     item.appendChild(new Listcell(product.getUbicationFolder()));
                     item.appendChild(new Listcell(String.valueOf(product.getAmount())));
                     item.appendChild(new Listcell(String.valueOf(stock)));
-                    item.appendChild(permissionAdd ? new ListcellAddButton(adminPage, product,Permission.ADD_STOCK) : new Listcell());
-                    item.appendChild(permissionDelete && stock>0? new ListcellRemoveButton("adminEgressStock.zul", product,Permission.REMOVE_STOCK) : new Listcell());
-                    item.appendChild(permissionRead ? new ListcellViewButton("listAddStock.zul", product,Permission.VIEW_STOCK) : new Listcell());
+                    item.appendChild(permissionAdd ? new ListcellAddButton("adminAddQuarantine.zul", product,Permission.ADD_QUARANTINE) : new Listcell());
+                    item.appendChild(permissionDelete && stock>0? new ListcellRemoveButton("adminEgressQuarantine.zul", product,Permission.REMOVE_QUARANTINE) : new Listcell());
+                    item.appendChild(permissionRead  && stock>0? new ListcellViewButton("listAddQuarantine.zul", product,Permission.VIEW_QUARANTINE) : new Listcell());
                     item.setParent(lbxRecords);
                 }
             } else {

@@ -67,6 +67,7 @@ public class AdminAddQuarantineController extends GenericAbstractAdminController
     private Textbox txtSerial;
     private Textbox txtInvoice;
     private Textbox txtObservation;
+    private Textbox txtQuarantine;
     private Intbox intStockMax;
     private Intbox intStockMin;
     private Intbox intStock;
@@ -119,6 +120,7 @@ public class AdminAddQuarantineController extends GenericAbstractAdminController
             customerEJB = (CustomerEJB) EJBServiceLocator.getInstance().get(EjbConstants.CUSTOMER_EJB);
             dtxExpiration.setValue(new Timestamp(new Date().getTime()));
             dtxCure.setValue(new Timestamp(new Date().getTime()));
+            loadData();
         } catch (Exception ex) {
             showError(ex);
         }
@@ -140,6 +142,7 @@ public class AdminAddQuarantineController extends GenericAbstractAdminController
     	intStockMin.setRawValue(null);
     	txtInvoice.setRawValue(null);
     	txtObservation.setRawValue(null);
+    	txtQuarantine.setRawValue(null);
     }
 
     public void blockFields() {
@@ -217,7 +220,7 @@ public class AdminAddQuarantineController extends GenericAbstractAdminController
     
 
     public void onClick$btnBack() {
-    	 Executions.sendRedirect("./listStock.zul");
+    	 Executions.sendRedirect("./listQuarantine.zul");
     }
     
     public void loadData() {
@@ -297,8 +300,8 @@ public class AdminAddQuarantineController extends GenericAbstractAdminController
                 cmbItem.setParent(cmbCategory);
                 if (category != null && category.getId().equals(e.getId())) {
                 	cmbCategory.setSelectedItem(cmbItem);
-                } else {
-                	cmbCategory.setSelectedIndex(0);
+                } else if(e.getId().equals(Category.QUARANTINE)){
+                	cmbCategory.setSelectedItem(cmbItem);
                 }
             }
             cmbCategory.setReadonly(true);
@@ -396,6 +399,7 @@ public class AdminAddQuarantineController extends GenericAbstractAdminController
             transaction.setTransactionType(transactionType);
             transaction.setAmount(Float.valueOf(txtAmount.getText()));
             transaction.setInvoice(txtInvoice.getText());
+            transaction.setQuarantineReason(txtQuarantine.getText());
             productParam.setInictialAmount(productParam.getAmount());
             productParam.setAmount(Float.valueOf(txtAmount.getText()));
             productParam.setActNpNsn(txtactNpNsn.getText());
@@ -418,6 +422,7 @@ public class AdminAddQuarantineController extends GenericAbstractAdminController
 					productSerie.setQuantity(1);
 					productSerie.setCondition(condition);
 					productSerie.setCategory(category);
+					productSerie.setQuarantineReason(txtQuarantine.getText());
 					Row row = (Row) gridSerials.getRows().getChildren().get(i);
 					Textbox textbox = (Textbox) row.getChildren().get(0);
 					if (textbox.getText().isEmpty())
@@ -439,6 +444,7 @@ public class AdminAddQuarantineController extends GenericAbstractAdminController
 				productSerie.setQuantity(intQuantity.getValue());
 				productSerie.setCondition(condition);
 				productSerie.setCategory(category);
+				productSerie.setQuarantineReason(txtQuarantine.getText());
 				if (ra1.isChecked()) {
 					if (txtSerial.getText().isEmpty())
 						throw  new NullParameterException("Serial vacio");

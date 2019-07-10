@@ -119,6 +119,7 @@ public class AdminAddStockController extends GenericAbstractAdminController {
             customerEJB = (CustomerEJB) EJBServiceLocator.getInstance().get(EjbConstants.CUSTOMER_EJB);
             dtxExpiration.setValue(new Timestamp(new Date().getTime()));
             dtxCure.setValue(new Timestamp(new Date().getTime()));
+            loadData();
         } catch (Exception ex) {
             showError(ex);
         }

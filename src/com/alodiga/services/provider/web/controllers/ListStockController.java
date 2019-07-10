@@ -58,7 +58,6 @@ public class ListStockController extends GenericAbstractListController<Product> 
             permissionAdd = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.ADD_STOCK);
             permissionDelete = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.REMOVE_STOCK);
             permissionRead = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.VIEW_STOCK);
-//            permissionEdit = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.EDIT_STOCK);
         } catch (Exception ex) {
             showError(ex);
         }
@@ -87,23 +86,7 @@ public class ListStockController extends GenericAbstractListController<Product> 
         }
     }
 
-//    private Listcell initEnabledButton(final Boolean enabled, final Listitem listItem) {
-//
-//        Listcell cell = new Listcell();
-//        cell.setValue("");
-//        final ChangeStatusButton button = new ChangeStatusButton(enabled);
-//        button.setTooltiptext(Labels.getLabel("sp.common.actions.changeStatus"));
-//        button.setClass("open orange");
-//        button.addEventListener("onClick", new EventListener() {
-//
-//            public void onEvent(Event event) throws Exception {
-//                changeStatus(button, listItem);
-//            }
-//        });
-//
-//        button.setParent(cell);
-//        return cell;
-//    }
+
 
     public List<Product> getFilteredList(String filter) {
         List<Product> auxList = new ArrayList<Product>();

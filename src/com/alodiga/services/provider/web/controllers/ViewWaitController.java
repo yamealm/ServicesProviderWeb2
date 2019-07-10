@@ -191,17 +191,17 @@ public class ViewWaitController extends GenericAbstractAdminController {
 
     public void onClick$btnBack() {
     	Sessions.getCurrent().setAttribute("object",productSerieParam.getProduct());
-    	Executions.sendRedirect("./listAddStock.zul");
+    	Executions.sendRedirect("./listAddWait.zul");
     }
     
     public void onClick$viewDetail() {
     	Sessions.getCurrent().setAttribute("object",productSerieParam.getProduct());
-    	Executions.sendRedirect("./listAddStock.zul");
+    	Executions.sendRedirect("./listAddWait.zul");
     }
     
     public void loadData() {
     	Category category = new Category();
-    	category.setId(Category.STOCK);
+    	category.setId(Category.WAIT);
         switch (eventType) {
             case WebConstants.EVENT_EDIT:
                 loadFields(productSerieParam);
@@ -284,8 +284,8 @@ public class ViewWaitController extends GenericAbstractAdminController {
                 cmbItem.setParent(cmbCategory);
                 if (category != null && category.getId().equals(e.getId())) {
                 	cmbCategory.setSelectedItem(cmbItem);
-                } else {
-                	cmbCategory.setSelectedIndex(3);
+                } else if(e.getId().equals(Category.WAIT)){
+                	cmbCategory.setSelectedItem(cmbItem);
                 }
             }
             cmbCategory.setReadonly(true);

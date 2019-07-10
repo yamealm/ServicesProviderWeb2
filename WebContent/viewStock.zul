@@ -26,9 +26,9 @@
                                             <hlayout>
                                                 <toolbarbutton label="${c:l('sp.bread.crumb.home')}" onClick='Executions.sendRedirect(&quot;home-admin.zul&quot;)'/>
                                                  |
-                                                 <toolbarbutton label="${c:l('sp.crud.product.list.stock')}" />
+                                                 <toolbarbutton label="${c:l('sp.crud.product.list.stock')}" onClick='Executions.sendRedirect(&quot;listStock.zul&quot;)'/>
                                                  |
-                                                <toolbarbutton id ="viewDetail" label="${c:l('sp.crud.product.detail.stock')}" />
+                                                <toolbarbutton id ="viewDetail" label="${c:l('sp.crud.product.detail.stock')}" onClick='Executions.sendRedirect(&quot;listAddStock.zul&quot;)'/>
                                                   |
                                                 <toolbarbutton  label="${c:l('sp.common.stock.edit')}" />
                                             </hlayout>

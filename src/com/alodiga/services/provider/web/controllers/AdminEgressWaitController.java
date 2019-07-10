@@ -3,6 +3,7 @@ package com.alodiga.services.provider.web.controllers;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.zkoss.util.resource.Labels;
@@ -73,26 +74,14 @@ public class AdminEgressWaitController extends GenericAbstractAdminController {
     private Intbox intStockMax;
     private Intbox intStockMin;
     private Intbox intStock;
-    private Datebox dtxExpiration;
-    private Datebox dtxCure;
-    private Radio ra1;
-    private Radio ra2;
-    private Row rowSerial;
-    private Row rowSerials;
-    private Radiogroup radiogroup;
-    private Grid gridSerials;
-    private Rows rows;
+    private Datebox dtxExit;
     private Listbox lbxRecords;
-
-    private ProductEJB productEJB = null;
     private UtilsEJB utilsEJB = null;
     private TransactionEJB transactionEJB = null;
     private CustomerEJB customerEJB = null;
     private Product productParam;
     private List<Enterprise> enterprises;
     private List<Category> categories;
-    private List<Provider> providers;
-    private List<Condicion> conditions;
     private List<Customer> customers;
     private User user;
     private Button btnSave;
@@ -114,11 +103,10 @@ public class AdminEgressWaitController extends GenericAbstractAdminController {
     public void initialize() {
         super.initialize();
         try {
-
-            productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
             utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
             transactionEJB = (TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
             customerEJB = (CustomerEJB) EJBServiceLocator.getInstance().get(EjbConstants.CUSTOMER_EJB);
+            dtxExit.setValue(new Timestamp(new Date().getTime()));
         } catch (Exception ex) {
             showError(ex);
         }
@@ -215,12 +203,12 @@ public class AdminEgressWaitController extends GenericAbstractAdminController {
     
 
     public void onClick$btnBack() {
-    	 Executions.sendRedirect("./listStock.zul");
+    	 Executions.sendRedirect("./listWait.zul");
     }
     
     public void loadData() {
     	Category category = new Category();
-    	category.setId(Category.STOCK);
+    	category.setId(Category.WAIT);
         switch (eventType) {
             case WebConstants.EVENT_DELETE:
                 loadFields(productParam);
@@ -265,7 +253,7 @@ public class AdminEgressWaitController extends GenericAbstractAdminController {
     		intStock.setValue(0);
         }
 		try {
-    		List<ProductSerie>  productSeries = transactionEJB.searchProductSerieByProductId(product.getId(), Category.STOCK);
+    		List<ProductSerie>  productSeries = transactionEJB.searchProductSerieByProductId(product.getId(), Category.WAIT);
     		loadList(productSeries);
     	} catch (Exception ex) {
     		
@@ -366,8 +354,8 @@ public class AdminEgressWaitController extends GenericAbstractAdminController {
                 cmbItem.setParent(cmbCategory);
                 if (category != null && category.getId().equals(e.getId())) {
                 	cmbCategory.setSelectedItem(cmbItem);
-                } else {
-                	cmbCategory.setSelectedIndex(0);
+                } else if(e.getId().equals(Category.WAIT)){
+                	cmbCategory.setSelectedItem(cmbItem);
                 }
             }
             cmbCategory.setReadonly(true);
@@ -431,7 +419,7 @@ public class AdminEgressWaitController extends GenericAbstractAdminController {
 					totalQuantity = totalQuantity + quantity;
 					ProductSerie productSerie = (ProductSerie) lml.getValue();
 					ProductSerie productSerie2 = (ProductSerie) lml.getValue();
-					productSerie.setEndingDate(new Timestamp((new java.util.Date().getTime())));
+					productSerie.setEndingDate(new Timestamp(dtxExit.getValue().getTime()));
 					int oldQuantity = productSerie.getQuantity();
 					productSerie.setQuantity(quantity);
 					transaction.setCondition(productSerie.getCondition());

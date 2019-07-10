@@ -28,7 +28,7 @@
                                                  |
                                                 <toolbarbutton label="${c:l('sp.crud.product.list')}" onClick='Executions.sendRedirect(&quot;listProducts.zul&quot;)'/>
                                                  |
-                                                <toolbarbutton id="tbbCurrentAction" />
+                                                 <toolbarbutton label="${c:l('sp.common.stock.add')}" />
                                             </hlayout>
                                         </div>
                                         <div height="5px" width="100%" style="background:#333;" align="left"></div>

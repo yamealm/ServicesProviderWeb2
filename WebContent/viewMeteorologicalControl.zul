@@ -4,7 +4,7 @@
 <?link rel="icon" tye="image/x-icon" href="/images/favicon.ico"?>
 <?init class="com.alodiga.services.provider.web.security.InitiatorLoggedUser" ?>
 <zk xmlns:n="native">
-    <window width="100%" height="100%" apply="com.alodiga.services.provider.web.controllers.AdminAddMeterologicalControlController" class="general-window" >
+    <window width="100%" height="100%" apply="com.alodiga.services.provider.web.controllers.ViewMeterologicalControlController" class="general-window" >
         <style src="/css/general.css"/>
         <borderlayout width="100%" height="100%" class="content-transparent">
             <north border="none" size="52px" class="content-transparent">
@@ -26,9 +26,11 @@
                                             <hlayout>
                                                 <toolbarbutton label="${c:l('sp.bread.crumb.home')}" onClick='Executions.sendRedirect(&quot;home-admin.zul&quot;)'/>
                                                  |
-                                                <toolbarbutton label="${c:l('sp.crud.product.list')}" onClick='Executions.sendRedirect(&quot;listProducts.zul&quot;)'/>
+                                                 <toolbarbutton label="${c:l('sp.crud.product.list.meteorological')}" onClick='Executions.sendRedirect(&quot;listMeteorologicalControl.zul&quot;)'/>
                                                  |
-                                                <toolbarbutton id="tbbCurrentAction" />
+                                                <toolbarbutton id ="viewDetail" label="${c:l('sp.crud.product.detail.meteorological')}" onClick='Executions.sendRedirect(&quot;listAddMeteorologicalControl.zul&quot;)'/>
+                                                  |
+                                                <toolbarbutton  label="${c:l('sp.common.meteorological.edit')}" />
                                             </hlayout>
                                         </div>
                                         <div height="5px" width="100%" style="background:#333;" align="left"></div>
@@ -165,13 +167,6 @@
                                                                 <label value="*" sclass="lblreq" />
                                                             </hlayout>
                                                         </row>
-                                                      <row id="rowCustomer" visible="false">
-                                                            <label value="${c:l('sp.common.customer')}" sclass="lblbold"/>
-                                                            <hlayout>
-                                                                <combobox id="cmbCustomer" width="190px" mold="rounded" readonly="true"/>
-                                                                <label value="*" sclass="lblreq" />
-                                                            </hlayout>
-                                                        </row>
                                                         <row>
                                                             <label value="${c:l('sp.common.page.invoice')}" sclass="lblbold"/>
                                                             <hlayout>
@@ -212,32 +207,11 @@
                                                                <textbox id="txtObservation"  rows="4" maxlength="45" width="320px"/>                                 
                                                             </hlayout>
                                                         </row>
-                                                        <row>
-                                                        <label value="${c:l('sp.common.select')}" sclass="lblbold"/>
-                                                          <hlayout>
-                                                          <radiogroup id="radiogroup" >
-                                                               <radio id="ra1" label="${c:l('sp.common.lot')}"   />
-                											   <radio id="ra2" label="${c:l('sp.common.serial')}"   />
-                											   <radio id="ra3" label="${c:l('sp.common.any')}"   />
-                                                           </radiogroup> 
-                                                          </hlayout>
-                                                        </row>
-                                                       <row id="rowSerial" visible="false">
+
+                                                       <row id="rowSerial" >
                                                         <label value="${c:l('sp.common.lot')}" sclass="lblbold"/>
                                                         <textbox id="txtSerial" maxlength="45" width="320px" />
-                                                         </row>
-                                                        <row id="rowSerials" visible="false">
-                                                          <label value="${c:l('sp.common.serials')}" sclass="lblbold"/>
-                                     				    	<grid fixedLayout="true" id="gridSerials" height="200px" width="330px">
-															<columns >
-																<column width="300px" label="${c:l('sp.common.serial')}" />
-															</columns>
-															 <rows id="rows">
-																										       
-															 </rows> 													            
-													     </grid>
-		                                                 </row>
-                                                                                                   
+                                                         </row>                                
                                                     </rows>
                                                 </grid>
                                                

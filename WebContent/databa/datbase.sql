@@ -518,6 +518,34 @@ INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileI
 INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1503', '118', '1');
 INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1504', '119', '1');
 
+//YAMELIS 08/07/2019
+UPDATE `services`.`permission` SET `action` = 'metereologicalControl', `name` = 'metereologicalControl' WHERE (`id` = '99');
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('120', '1', 'addMetereologicalControl', 'product', 'addMetereologicalControl', '1');
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('121', '1', 'removeMetereologicalControl', 'product', 'removeMetereologicalControl', '1');
+
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('217', '110', '1', 'Add Meteorological Control', 'Add Meteorological Control');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('218', '110', '2', 'Agregar Control Meteorologico', 'Agregar Control Meteorologico');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('219', '111', '1', 'Egress Meteorological Control', 'Egress Meteorological Control');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('220', '112', '2', 'Egresar Control Meteorologico', 'Egresar Control Meteorologico');
+
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1505', '120', '1');
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1506', '121', '1');
+
+ALTER TABLE `services`.`product_serie` 
+ADD COLUMN `customerId` BIGINT(5) NULL DEFAULT NULL AFTER `conditionId`,
+ADD COLUMN `orderWord` VARCHAR(150) CHARACTER SET 'latin1' COLLATE 'latin1_bin' NULL DEFAULT NULL AFTER `customerId`,
+ADD INDEX `fk_product_serie_customer_idx` (`customerId` ASC) VISIBLE;
+ALTER TABLE `services`.`product_serie` ALTER INDEX `fk_product_serie_condition_idx` INVISIBLE;
+ALTER TABLE `services`.`product_serie` 
+ADD CONSTRAINT `fk_product_serie_customer`
+  FOREIGN KEY (`customerId`)
+  REFERENCES `services`.`customer` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+
+ALTER TABLE `services`.`product_serie` 
+ADD COLUMN `quarantineReason` VARCHAR(250) NULL DEFAULT NULL AFTER `orderWord`;
 
 
 

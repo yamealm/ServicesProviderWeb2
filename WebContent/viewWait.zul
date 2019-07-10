@@ -26,11 +26,11 @@
                                             <hlayout>
                                                 <toolbarbutton label="${c:l('sp.bread.crumb.home')}" onClick='Executions.sendRedirect(&quot;home-admin.zul&quot;)'/>
                                                  |
-                                                 <toolbarbutton label="${c:l('sp.crud.product.list.stock')}" />
+                                                 <toolbarbutton label="${c:l('sp.crud.product.list.wait')}" onClick='Executions.sendRedirect(&quot;listWait.zul&quot;)'/>
                                                  |
-                                                <toolbarbutton id ="viewDetail" label="${c:l('sp.crud.product.detail.stock')}" />
-                                                  |
-                                                <toolbarbutton  label="${c:l('sp.common.stock.edit')}" />
+                                                <toolbarbutton id ="viewDetail" label="${c:l('sp.crud.product.detail.wait')}" onClick='Executions.sendRedirect(&quot;listAddWait.zul&quot;)'/>
+                                                 |
+                                                <toolbarbutton  label="${c:l('sp.common.wait.edit')}" />
                                             </hlayout>
                                         </div>
                                         <div height="5px" width="100%" style="background:#333;" align="left"></div>

@@ -119,6 +119,7 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
             customerEJB = (CustomerEJB) EJBServiceLocator.getInstance().get(EjbConstants.CUSTOMER_EJB);
             dtxExpiration.setValue(new Timestamp(new Date().getTime()));
             dtxCure.setValue(new Timestamp(new Date().getTime()));
+            loadData();
         } catch (Exception ex) {
             showError(ex);
         }
@@ -217,7 +218,7 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
     
 
     public void onClick$btnBack() {
-    	 Executions.sendRedirect("./listStock.zul");
+    	 Executions.sendRedirect("./listWait.zul");
     }
     
     public void loadData() {
@@ -297,8 +298,8 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
                 cmbItem.setParent(cmbCategory);
                 if (category != null && category.getId().equals(e.getId())) {
                 	cmbCategory.setSelectedItem(cmbItem);
-                } else {
-                	cmbCategory.setSelectedIndex(0);
+                } else if(e.getId().equals(Category.WAIT)){
+                	cmbCategory.setSelectedItem(cmbItem);
                 }
             }
             cmbCategory.setReadonly(true);

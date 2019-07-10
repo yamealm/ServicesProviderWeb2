@@ -58,7 +58,6 @@ public class ListTransitController extends GenericAbstractListController<Product
             permissionAdd = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.ADD_STOCK);
             permissionDelete = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.REMOVE_STOCK);
             permissionRead = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.VIEW_STOCK);
-//            permissionEdit = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.EDIT_STOCK);
         } catch (Exception ex) {
             showError(ex);
         }
@@ -75,7 +74,6 @@ public class ListTransitController extends GenericAbstractListController<Product
             currentUser = AccessControl.loadCurrentUser();
             currentProfile = currentUser.getCurrentProfile(Enterprise.ALODIGA_USA);
             checkPermissions();
-            adminPage = "adminAddStock.zul";
             productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
             transactionEJB = (TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
             loadPermission(new Provider());
@@ -86,24 +84,6 @@ public class ListTransitController extends GenericAbstractListController<Product
             showError(ex);
         }
     }
-
-//    private Listcell initEnabledButton(final Boolean enabled, final Listitem listItem) {
-//
-//        Listcell cell = new Listcell();
-//        cell.setValue("");
-//        final ChangeStatusButton button = new ChangeStatusButton(enabled);
-//        button.setTooltiptext(Labels.getLabel("sp.common.actions.changeStatus"));
-//        button.setClass("open orange");
-//        button.addEventListener("onClick", new EventListener() {
-//
-//            public void onEvent(Event event) throws Exception {
-//                changeStatus(button, listItem);
-//            }
-//        });
-//
-//        button.setParent(cell);
-//        return cell;
-//    }
 
     public List<Product> getFilteredList(String filter) {
         List<Product> auxList = new ArrayList<Product>();
@@ -140,9 +120,9 @@ public class ListTransitController extends GenericAbstractListController<Product
                     item.appendChild(new Listcell(product.getUbicationFolder()));
                     item.appendChild(new Listcell(String.valueOf(product.getAmount())));
                     item.appendChild(new Listcell(String.valueOf(stock)));
-                    item.appendChild(permissionAdd ? new ListcellAddButton(adminPage, product,Permission.ADD_STOCK) : new Listcell());
-                    item.appendChild(permissionDelete && stock>0? new ListcellRemoveButton("adminEgressStock.zul", product,Permission.REMOVE_STOCK) : new Listcell());
-                    item.appendChild(permissionRead ? new ListcellViewButton("listAddStock.zul", product,Permission.VIEW_STOCK) : new Listcell());
+                    item.appendChild(permissionAdd ? new ListcellAddButton("adminAddTransit.zul", product,Permission.ADD_TRANSIT) : new Listcell());
+                    item.appendChild(permissionDelete && stock>0? new ListcellRemoveButton("adminEgressTransit.zul", product,Permission.REMOVE_TRANSIT) : new Listcell());
+                    item.appendChild(permissionRead  && stock>0? new ListcellViewButton("listAddTransit.zul", product,Permission.VIEW_TRANSIT) : new Listcell());
                     item.setParent(lbxRecords);
                 }
             } else {

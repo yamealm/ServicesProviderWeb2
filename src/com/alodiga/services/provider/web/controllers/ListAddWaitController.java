@@ -130,7 +130,7 @@ public class ListAddWaitController extends GenericAbstractListController<Product
             Listitem item = null;
             if (product != null ) {
                 btnDownload.setVisible(true);
-                List<ProductSerie> producSeries = transactionEJB.searchProductSerieByProductId(product.getId(), Category.STOCK);
+                List<ProductSerie> producSeries = transactionEJB.searchProductSerieByProductId(product.getId(), Category.WAIT);
                 for (ProductSerie productSerie : producSeries) {
                     item = new Listitem();
                     item.setValue(productSerie);
@@ -145,7 +145,7 @@ public class ListAddWaitController extends GenericAbstractListController<Product
 						date = df.format(productSerie.getCreationDate().getTime());
 					}
                     item.appendChild(new Listcell(date));
-                    item.appendChild(permissionEdit ? new ListcellEditButton("viewStock.zul", productSerie,Permission.EDIT_STOCK) : new Listcell());
+                    item.appendChild(permissionEdit ? new ListcellEditButton("viewWait.zul", productSerie,Permission.EDIT_STOCK) : new Listcell());
                     item.appendChild(permissionDelete ? initDeleteButton(item) : new Listcell());
                     item.setParent(lbxRecords);
                 }
@@ -223,7 +223,7 @@ public class ListAddWaitController extends GenericAbstractListController<Product
     
     public void onClick$btnDownload() throws InterruptedException {
         try {
-            Utils.exportExcel(lbxRecords, Labels.getLabel("sp.crud.product.list"));
+            Utils.exportExcel(lbxRecords, Labels.getLabel("sp.crud.product.list.wait"));
         } catch (Exception ex) {
             showError(ex);
         }

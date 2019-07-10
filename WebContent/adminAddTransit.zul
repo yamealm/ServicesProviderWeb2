@@ -26,9 +26,9 @@
                                             <hlayout>
                                                 <toolbarbutton label="${c:l('sp.bread.crumb.home')}" onClick='Executions.sendRedirect(&quot;home-admin.zul&quot;)'/>
                                                  |
-                                                <toolbarbutton label="${c:l('sp.crud.product.list')}" onClick='Executions.sendRedirect(&quot;listProducts.zul&quot;)'/>
+                                                <toolbarbutton label="${c:l('sp.crud.product.list.transit')}" onClick='Executions.sendRedirect(&quot;listTransit.zul&quot;)'/>
                                                  |
-                                                <toolbarbutton id="tbbCurrentAction" />
+                                                <toolbarbutton label="${c:l('sp.common.transit.add')}" />
                                             </hlayout>
                                         </div>
                                         <div height="5px" width="100%" style="background:#333;" align="left"></div>
@@ -143,7 +143,7 @@
                                                         <column label="" width="690px"/>
                                                     </columns>
                                                     <rows>
-                                                        <group label="${c:l('sp.common.stock')}" />
+                                                        <group label="${c:l('sp.common.transit')}" />
                                                          <row>
                                                             <label value="${c:l('sp.common.category')}" sclass="lblbold"/>
                                                             <hlayout>
@@ -165,11 +165,17 @@
                                                                 <label value="*" sclass="lblreq" />
                                                             </hlayout>
                                                         </row>
-                                                      <row id="rowCustomer" visible="false">
+                                                      <row id="rowCustomer" >
                                                             <label value="${c:l('sp.common.customer')}" sclass="lblbold"/>
                                                             <hlayout>
                                                                 <combobox id="cmbCustomer" width="190px" mold="rounded" readonly="true"/>
                                                                 <label value="*" sclass="lblreq" />
+                                                            </hlayout>
+                                                        </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.common.work.order')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                               <textbox id="txtWorkOrder" maxlength="45" width="320px"/>                                 
                                                             </hlayout>
                                                         </row>
                                                         <row>

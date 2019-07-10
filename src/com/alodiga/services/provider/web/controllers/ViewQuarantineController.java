@@ -70,7 +70,7 @@ public class ViewQuarantineController extends GenericAbstractAdminController {
     private Textbox txtactNpNsn;
     private Textbox txtDescription;
     private Textbox txtPartNumber;
-    private Textbox txtWorkOrder;
+    private Textbox txtQuarantine;
     private Textbox txtInvoice;
     private Textbox txtObservation;
     private Textbox txtSerial;
@@ -209,17 +209,17 @@ public class ViewQuarantineController extends GenericAbstractAdminController {
 
     public void onClick$btnBack() {
     	Sessions.getCurrent().setAttribute("object",productSerieParam.getProduct());
-    	Executions.sendRedirect("./listAddStock.zul");
+    	Executions.sendRedirect("./listAddQuarantine.zul");
     }
     
     public void onClick$viewDetail() {
     	Sessions.getCurrent().setAttribute("object",productSerieParam.getProduct());
-    	Executions.sendRedirect("./listAddStock.zul");
+    	Executions.sendRedirect("./listAddQuarantine.zul");
     }
     
     public void loadData() {
     	Category category = new Category();
-    	category.setId(Category.STOCK);
+    	category.setId(Category.QUARANTINE);
         switch (eventType) {
             case WebConstants.EVENT_EDIT:
                 loadFields(productSerieParam);
@@ -248,6 +248,7 @@ public class ViewQuarantineController extends GenericAbstractAdminController {
 		txtDescription.setText(productSerie.getProduct().getDescription());
 		txtInvoice.setText(productSerie.getBeginTransactionId().getInvoice() );
 		txtPartNumber.setText(productSerie.getProduct().getPartNumber());
+		txtQuarantine.setText(productSerie.getQuarantineReason());
 		try {
     		int  quantity = transactionEJB.loadQuantityByProductId(productSerie.getProduct().getId(),productSerie.getCategory().getId());
     		intStock.setValue(quantity);
@@ -302,8 +303,8 @@ public class ViewQuarantineController extends GenericAbstractAdminController {
                 cmbItem.setParent(cmbCategory);
                 if (category != null && category.getId().equals(e.getId())) {
                 	cmbCategory.setSelectedItem(cmbItem);
-                } else {
-                	cmbCategory.setSelectedIndex(2);
+                } else if(e.getId().equals(Category.QUARANTINE)){
+                	cmbCategory.setSelectedItem(cmbItem);
                 }
             }
             cmbCategory.setReadonly(true);

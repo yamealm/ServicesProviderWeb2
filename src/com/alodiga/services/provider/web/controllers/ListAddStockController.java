@@ -223,7 +223,7 @@ public class ListAddStockController extends GenericAbstractListController<Produc
     
     public void onClick$btnDownload() throws InterruptedException {
         try {
-            Utils.exportExcel(lbxRecords, Labels.getLabel("sp.crud.product.list"));
+            Utils.exportExcel(lbxRecords, Labels.getLabel("sp.crud.product.list.stock"));
         } catch (Exception ex) {
             showError(ex);
         }

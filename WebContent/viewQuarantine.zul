@@ -26,11 +26,11 @@
                                             <hlayout>
                                                 <toolbarbutton label="${c:l('sp.bread.crumb.home')}" onClick='Executions.sendRedirect(&quot;home-admin.zul&quot;)'/>
                                                  |
-                                                 <toolbarbutton label="${c:l('sp.crud.product.list.stock')}" />
+                                                 <toolbarbutton label="${c:l('sp.crud.product.list.quaranatine')}" onClick='Executions.sendRedirect(&quot;home-admin.zul&quot;)'/>
                                                  |
-                                                <toolbarbutton id ="viewDetail" label="${c:l('sp.crud.product.detail.stock')}" />
+                                                <toolbarbutton id ="viewDetail" label="${c:l('sp.crud.product.detail.quarantine')}" onClick='Executions.sendRedirect(&quot;listAddQuarantine.zul&quot;)'/>
                                                   |
-                                                <toolbarbutton  label="${c:l('sp.common.stock.edit')}" />
+                                                <toolbarbutton  label="${c:l('sp.common.quarantine.edit')}" />
                                             </hlayout>
                                         </div>
                                         <div height="5px" width="100%" style="background:#333;" align="left"></div>
@@ -200,6 +200,12 @@
                                                             	<checkbox id="cbxCure" checked="true"/>
                                                             	<datebox id="dtxCure" width="120px" format="dd-MM-yyyy"/>
                                                              </hlayout>
+                                                        </row>
+                                                          <row>
+                                                            <label value="${c:l('sp.common.quaratine.reason')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                               <textbox id="txtQuarantine"  rows="4" maxlength="45" width="320px"/>                                 
+                                                            </hlayout>
                                                         </row>
                                                          <row>
                                                             <label value="${c:l('sp.common.observations')}" sclass="lblbold"/>

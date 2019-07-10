@@ -26,9 +26,9 @@
                                             <hlayout>
                                                 <toolbarbutton label="${c:l('sp.bread.crumb.home')}" onClick='Executions.sendRedirect(&quot;home-admin.zul&quot;)'/>
                                                  |
-                                                <toolbarbutton label="${c:l('sp.crud.product.list')}" onClick='Executions.sendRedirect(&quot;listProducts.zul&quot;)'/>
+                                                <toolbarbutton label="${c:l('sp.crud.product.list.wait')}" onClick='Executions.sendRedirect(&quot;listWait.zul&quot;)'/>
                                                  |
-                                                <toolbarbutton id="tbbCurrentAction" />
+                                                <toolbarbutton label="${c:l('sp.common.wait.egress')}" />
                                             </hlayout>
                                         </div>
                                         <div height="5px" width="100%" style="background:#333;" align="left"></div>
@@ -136,19 +136,25 @@
                                                 </grid>
                                         
                                                 
-                                                <label value="${c:l('sp.common.actions.add')}" sclass="lblbold"/>
+                                                <label value="${c:l('sp.common.actions.egress')}" sclass="lblbold"/>
                                                 <grid fixedLayout="true">
                                                     <columns>
                                                         <column label="" width="150px"/>
                                                         <column label="" width="740px"/>
                                                     </columns>
                                                     <rows>
-                                                        <group label="${c:l('sp.common.stock')}" />
+                                                        <group label="${c:l('sp.common.wait')}" />
                                                          <row>
                                                             <label value="${c:l('sp.common.category')}" sclass="lblbold"/>
                                                             <hlayout>
                                                                 <combobox id="cmbCategory" width="190px" mold="rounded" readonly="true"/>
                                                                 <label value="*" sclass="lblreq" />
+                                                            </hlayout>
+                                                        </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.common.departure.date')}" sclass="lblbold"/>
+                                                             <hlayout>
+                                                             <datebox id="dtxExit" width="120px" format="dd-MM-yyyy"/>
                                                             </hlayout>
                                                         </row>
                                                       <row id="rowCustomer" >

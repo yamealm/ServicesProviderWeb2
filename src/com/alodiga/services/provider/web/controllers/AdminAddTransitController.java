@@ -67,6 +67,7 @@ public class AdminAddTransitController extends GenericAbstractAdminController {
     private Textbox txtSerial;
     private Textbox txtInvoice;
     private Textbox txtObservation;
+    private Textbox txtWorkOrder;
     private Intbox intStockMax;
     private Intbox intStockMin;
     private Intbox intStock;
@@ -119,6 +120,7 @@ public class AdminAddTransitController extends GenericAbstractAdminController {
             customerEJB = (CustomerEJB) EJBServiceLocator.getInstance().get(EjbConstants.CUSTOMER_EJB);
             dtxExpiration.setValue(new Timestamp(new Date().getTime()));
             dtxCure.setValue(new Timestamp(new Date().getTime()));
+            loadData();
         } catch (Exception ex) {
             showError(ex);
         }
@@ -140,6 +142,7 @@ public class AdminAddTransitController extends GenericAbstractAdminController {
     	intStockMin.setRawValue(null);
     	txtInvoice.setRawValue(null);
     	txtObservation.setRawValue(null);
+    	txtWorkOrder.setRawValue(null);
     }
 
     public void blockFields() {
@@ -217,7 +220,7 @@ public class AdminAddTransitController extends GenericAbstractAdminController {
     
 
     public void onClick$btnBack() {
-    	 Executions.sendRedirect("./listStock.zul");
+    	 Executions.sendRedirect("./listTransit.zul");
     }
     
     public void loadData() {
@@ -297,8 +300,8 @@ public class AdminAddTransitController extends GenericAbstractAdminController {
                 cmbItem.setParent(cmbCategory);
                 if (category != null && category.getId().equals(e.getId())) {
                 	cmbCategory.setSelectedItem(cmbItem);
-                } else {
-                	cmbCategory.setSelectedIndex(0);
+                } else if(e.getId().equals(Category.TRANSIT)){
+                	cmbCategory.setSelectedItem(cmbItem);
                 }
             }
             cmbCategory.setReadonly(true);
@@ -382,9 +385,9 @@ public class AdminAddTransitController extends GenericAbstractAdminController {
             Condicion condition = new Condicion();
             condition.setId(((Condicion) cmbCondition.getSelectedItem().getValue()).getId());
             transaction.setCondition(condition);
-//            Customer customer = new Customer();
-//            customer.setId(((Customer) cmbCustomer.getSelectedItem().getValue()).getId());
-            transaction.setCustomer(null);
+            Customer customer = new Customer();
+            customer.setId(((Customer) cmbCustomer.getSelectedItem().getValue()).getId());
+            transaction.setCustomer(customer);
             Provider provider = new Provider();
             provider.setId(((Provider) cmbProvider.getSelectedItem().getValue()).getId());
             transaction.setProvider(provider);
@@ -396,6 +399,7 @@ public class AdminAddTransitController extends GenericAbstractAdminController {
             transaction.setTransactionType(transactionType);
             transaction.setAmount(Float.valueOf(txtAmount.getText()));
             transaction.setInvoice(txtInvoice.getText());
+            transaction.setOrderWord(txtWorkOrder.getText());
             productParam.setInictialAmount(productParam.getAmount());
             productParam.setAmount(Float.valueOf(txtAmount.getText()));
             productParam.setActNpNsn(txtactNpNsn.getText());
@@ -418,6 +422,8 @@ public class AdminAddTransitController extends GenericAbstractAdminController {
 					productSerie.setQuantity(1);
 					productSerie.setCondition(condition);
 					productSerie.setCategory(category);
+					productSerie.setCustomer(customer);
+					productSerie.setOrderWord(txtWorkOrder.getText());
 					Row row = (Row) gridSerials.getRows().getChildren().get(i);
 					Textbox textbox = (Textbox) row.getChildren().get(0);
 					if (textbox.getText().isEmpty())
@@ -439,6 +445,8 @@ public class AdminAddTransitController extends GenericAbstractAdminController {
 				productSerie.setQuantity(intQuantity.getValue());
 				productSerie.setCondition(condition);
 				productSerie.setCategory(category);
+				productSerie.setCustomer(customer);
+				productSerie.setOrderWord(txtWorkOrder.getText());
 				if (ra1.isChecked()) {
 					if (txtSerial.getText().isEmpty())
 						throw  new NullParameterException("Serial vacio");

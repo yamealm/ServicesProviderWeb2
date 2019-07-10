@@ -140,9 +140,9 @@ public class ListMeterologicalControlController extends GenericAbstractListContr
                     item.appendChild(new Listcell(product.getUbicationFolder()));
                     item.appendChild(new Listcell(String.valueOf(product.getAmount())));
                     item.appendChild(new Listcell(String.valueOf(stock)));
-                    item.appendChild(permissionAdd ? new ListcellAddButton(adminPage, product,Permission.ADD_STOCK) : new Listcell());
-                    item.appendChild(permissionDelete && stock>0? new ListcellRemoveButton("adminEgressStock.zul", product,Permission.REMOVE_STOCK) : new Listcell());
-                    item.appendChild(permissionRead ? new ListcellViewButton("listAddStock.zul", product,Permission.VIEW_STOCK) : new Listcell());
+                    item.appendChild(permissionAdd ? new ListcellAddButton("adminAddMeteorologicalControl.zul", product,Permission.ADD_METEOROLOGICAL_CONTROL) : new Listcell());
+                    item.appendChild(permissionDelete && stock>0? new ListcellRemoveButton("adminEgressMeteorologicalControl.zul", product,Permission.REMOVE_METEOROLOGICAL_CONTROL) : new Listcell());
+                    item.appendChild(permissionRead  && stock>0? new ListcellViewButton("listAddMeteorologicalControl.zul", product,Permission.VIEW_METEOROLOGICAL_CONTROL) : new Listcell());
                     item.setParent(lbxRecords);
                 }
             } else {

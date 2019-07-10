@@ -84,7 +84,6 @@ public class ListAddTransitController extends GenericAbstractListController<Prod
             currentUser = AccessControl.loadCurrentUser();
             currentProfile = currentUser.getCurrentProfile(Enterprise.ALODIGA_USA);
             checkPermissions();
-            adminPage = "adminAddStock.zul";
             productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
             transactionEJB = (TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
             loadList(productParam);
@@ -130,7 +129,7 @@ public class ListAddTransitController extends GenericAbstractListController<Prod
             Listitem item = null;
             if (product != null ) {
                 btnDownload.setVisible(true);
-                List<ProductSerie> producSeries = transactionEJB.searchProductSerieByProductId(product.getId(), Category.STOCK);
+                List<ProductSerie> producSeries = transactionEJB.searchProductSerieByProductId(product.getId(), Category.TRANSIT);
                 for (ProductSerie productSerie : producSeries) {
                     item = new Listitem();
                     item.setValue(productSerie);
@@ -145,7 +144,7 @@ public class ListAddTransitController extends GenericAbstractListController<Prod
 						date = df.format(productSerie.getCreationDate().getTime());
 					}
                     item.appendChild(new Listcell(date));
-                    item.appendChild(permissionEdit ? new ListcellEditButton("viewStock.zul", productSerie,Permission.EDIT_STOCK) : new Listcell());
+                    item.appendChild(permissionEdit ? new ListcellEditButton("viewTransit.zul", productSerie,Permission.EDIT_STOCK) : new Listcell());
                     item.appendChild(permissionDelete ? initDeleteButton(item) : new Listcell());
                     item.setParent(lbxRecords);
                 }
@@ -223,7 +222,7 @@ public class ListAddTransitController extends GenericAbstractListController<Prod
     
     public void onClick$btnDownload() throws InterruptedException {
         try {
-            Utils.exportExcel(lbxRecords, Labels.getLabel("sp.crud.product.list"));
+            Utils.exportExcel(lbxRecords, Labels.getLabel("sp.crud.product.list.transit"));
         } catch (Exception ex) {
             showError(ex);
         }

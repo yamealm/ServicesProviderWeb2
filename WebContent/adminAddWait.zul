@@ -26,9 +26,9 @@
                                             <hlayout>
                                                 <toolbarbutton label="${c:l('sp.bread.crumb.home')}" onClick='Executions.sendRedirect(&quot;home-admin.zul&quot;)'/>
                                                  |
-                                                <toolbarbutton label="${c:l('sp.crud.product.list')}" onClick='Executions.sendRedirect(&quot;listProducts.zul&quot;)'/>
+                                                <toolbarbutton label="${c:l('sp.crud.product.list.wait')}" onClick='Executions.sendRedirect(&quot;listWait.zul&quot;)'/>
                                                  |
-                                                <toolbarbutton id="tbbCurrentAction" />
+                                                <toolbarbutton label="${c:l('sp.common.wait.add')}" />
                                             </hlayout>
                                         </div>
                                         <div height="5px" width="100%" style="background:#333;" align="left"></div>
@@ -143,7 +143,7 @@
                                                         <column label="" width="690px"/>
                                                     </columns>
                                                     <rows>
-                                                        <group label="${c:l('sp.common.stock')}" />
+                                                        <group label="${c:l('sp.common.wait')}" />
                                                          <row>
                                                             <label value="${c:l('sp.common.category')}" sclass="lblbold"/>
                                                             <hlayout>
