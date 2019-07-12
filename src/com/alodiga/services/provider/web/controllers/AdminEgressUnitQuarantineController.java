@@ -51,12 +51,13 @@ import com.alodiga.services.provider.web.generic.controllers.GenericAbstractAdmi
 import com.alodiga.services.provider.web.utils.AccessControl;
 import com.alodiga.services.provider.web.utils.WebConstants;
 
-public class AdminEgressWaitController extends GenericAbstractAdminController {
+public class AdminEgressUnitQuarantineController extends GenericAbstractAdminController {
 
     private static final long serialVersionUID = -9145887024839938515L;
     private Combobox cmbEnterprise;
     private Combobox cmbCategory;
     private Combobox cmbCustomer;
+//    private Checkbox cbxSerial;
     private Checkbox cbxSerialVarius;
     private Checkbox cbxExpiration;
     private Checkbox cbxCure;
@@ -70,7 +71,6 @@ public class AdminEgressWaitController extends GenericAbstractAdminController {
     private Textbox txtWorkOrder;
     private Textbox txtInvoice;
     private Textbox txtObservation;
-    private Textbox txtWork;
     private Intbox intStockMax;
     private Intbox intStockMin;
     private Intbox intStock;
@@ -79,7 +79,7 @@ public class AdminEgressWaitController extends GenericAbstractAdminController {
     private UtilsEJB utilsEJB = null;
     private TransactionEJB transactionEJB = null;
     private CustomerEJB customerEJB = null;
-    private Product productParam;
+    private ProductSerie productSerieParam;
     private List<Enterprise> enterprises;
     private List<Category> categories;
     private List<Customer> customers;
@@ -88,7 +88,7 @@ public class AdminEgressWaitController extends GenericAbstractAdminController {
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
-        productParam = (Sessions.getCurrent().getAttribute("object") != null) ? (Product) Sessions.getCurrent().getAttribute("object") : null;
+        productSerieParam = (Sessions.getCurrent().getAttribute("object") != null) ? (ProductSerie) Sessions.getCurrent().getAttribute("object") : null;
         user = AccessControl.loadCurrentUser();
         initialize();
         initView(eventType, "sp.crud.product");
@@ -128,7 +128,6 @@ public class AdminEgressWaitController extends GenericAbstractAdminController {
     	intStockMin.setRawValue(null);
     	txtInvoice.setRawValue(null);
     	txtObservation.setRawValue(null);
-    	txtWork.setRawValue(null);
     }
 
     public void blockFields() {
@@ -204,28 +203,28 @@ public class AdminEgressWaitController extends GenericAbstractAdminController {
     
 
     public void onClick$btnBack() {
-    	 Executions.sendRedirect("./listWait.zul");
+    	 Executions.sendRedirect("./listQuarantine.zul");
     }
     
     public void loadData() {
     	Category category = new Category();
-    	category.setId(Category.WAIT);
+    	category.setId(Category.QUARANTINE);
         switch (eventType) {
             case WebConstants.EVENT_DELETE:
-                loadFields(productParam);
-                loadEnterprises(productParam.getEnterprise());
+                loadFields(productSerieParam);
+                loadEnterprises(productSerieParam.getProduct().getEnterprise());
                 loadCategory(category);
                 loadCustomer(null);
                 blockFields();
                 break;
             case WebConstants.EVENT_VIEW:
-                loadFields(productParam);
-                loadEnterprises(productParam.getEnterprise());
+                loadFields(productSerieParam);
+                loadEnterprises(productSerieParam.getProduct().getEnterprise());
                 blockFields();
                 break;
             case WebConstants.EVENT_ADD:
-            	loadFields(productParam);
-                loadEnterprises(productParam.getEnterprise());
+            	loadFields(productSerieParam);
+                loadEnterprises(productSerieParam.getProduct().getEnterprise());
                 loadCategory(category);
                 loadCustomer(null);
                 blockFields();
@@ -236,96 +235,22 @@ public class AdminEgressWaitController extends GenericAbstractAdminController {
     }
 
     
-    public void loadFields(Product product) {
+    public void loadFields(ProductSerie productSerie) {
     	
-    	intStockMax.setValue(product.getStockMax());
-    	intStockMin.setValue(product.getStockMin());
-    	txtAmount.setText(String.valueOf(product.getAmount()));
-		txtBachNumber.setText(product.getBatchNumber());
-		txtUbicationFolder.setText(product.getUbicationFolder());
-		txtUbicationBox.setText(product.getUbicationBox());
-		txtactNpNsn.setText(product.getActNpNsn());
-		txtDescription.setText(product.getDescription());
-		txtPartNumber.setText(product.getPartNumber());
-//		txtWorkOrder.setText(product.getPartNumber());
-//		txtWork.setText(product.getPartNumber());
-		try {
-    		int  quantity = transactionEJB.loadQuantityByProductId(product.getId(), Category.WAIT);
-    		intStock.setValue(quantity);
-    	} catch (Exception ex) {
-    		intStock.setValue(0);
-        }
-		try {
-    		List<ProductSerie>  productSeries = transactionEJB.searchProductSerieByProductId(product.getId(), Category.WAIT);
-    		loadList(productSeries);
-    	} catch (Exception ex) {
-    		
-        }
-		
+    	intStockMax.setValue(productSerie.getProduct().getStockMax());
+    	intStockMin.setValue(productSerie.getProduct().getStockMin());
+    	txtAmount.setText(String.valueOf(productSerie.getProduct().getAmount()));
+		txtBachNumber.setText(productSerie.getProduct().getBatchNumber());
+		txtUbicationFolder.setText(productSerie.getProduct().getUbicationFolder());
+		txtUbicationBox.setText(productSerie.getProduct().getUbicationBox());
+		txtactNpNsn.setText(productSerie.getProduct().getActNpNsn());
+		txtDescription.setText(productSerie.getProduct().getDescription());
+		txtPartNumber.setText(productSerie.getProduct().getPartNumber());
+		intStock.setValue(productSerie.getQuantity());
+
+
     }
     
-    private Listcell addIntbox( final int quantity, final Listitem listItem) {
-
-        Listcell cell = new Listcell();
-        Intbox textbox = new Intbox();
-        textbox.setWidth("100px");
-        cell.appendChild(textbox);
-        textbox.setTooltiptext(Labels.getLabel("sp.common.quantity"));
-        textbox.addEventListener("onChange", new EventListener() {
-
-            public void onEvent(Event event) throws Exception {
-            	if(textbox.getValue()> quantity) {
-            		textbox.setFocus(true);
-            		textbox.setText("");
-            		textbox.setErrorMessage(Labels.getLabel("sp.error.value.quantity"));
-            	}
-//            	else
-//            		intQuantity.setValue(textbox.getValue());
-            }
-        });
-
-        textbox.setParent(cell);
-        return cell;
-    }
-    
-    public void loadList(List<ProductSerie> list) {
-        try {
-            lbxRecords.getItems().clear();
-            Listitem item = null;
-            if (list != null && !list.isEmpty()) {
-                for (ProductSerie productSerie : list) {
-                    item = new Listitem();
-                    item.setValue(productSerie);
-                    item.appendChild(new Listcell(productSerie.getSerie()));
-                    item.appendChild(new Listcell(productSerie.getProvider().getName()));
-                    item.appendChild(new Listcell(productSerie.getCondition().getName()));
-                    String dateExp = null;
-					if (productSerie.getExpirationDate() != null) {
-						SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-						dateExp = df.format(productSerie.getExpirationDate().getTime());
-					}
-                    item.appendChild(new Listcell(dateExp));
-                    item.appendChild(new Listcell(String.valueOf(productSerie.getQuantity())));
-                    item.appendChild(addIntbox(productSerie.getQuantity(),item));
-                    
-                    
-                    item.setParent(lbxRecords);
-                }
-            } else {
-                item = new Listitem();
-                item.appendChild(new Listcell(Labels.getLabel("sp.error.empty.list")));
-                item.appendChild(new Listcell());
-                item.appendChild(new Listcell());
-                item.appendChild(new Listcell());
-                item.setParent(lbxRecords);
-            }
-
-        } catch (Exception ex) {
-            showError(ex);
-        }
-    }
-
-
     private void loadEnterprises(Enterprise enterprise) {
         try {
             cmbEnterprise.getItems().clear();
@@ -357,7 +282,7 @@ public class AdminEgressWaitController extends GenericAbstractAdminController {
                 cmbItem.setParent(cmbCategory);
                 if (category != null && category.getId().equals(e.getId())) {
                 	cmbCategory.setSelectedItem(cmbItem);
-                } else if(e.getId().equals(Category.WAIT)){
+                } else if(e.getId().equals(Category.QUARANTINE)){
                 	cmbCategory.setSelectedItem(cmbItem);
                 }
             }
@@ -397,7 +322,7 @@ public class AdminEgressWaitController extends GenericAbstractAdminController {
 
             if (_transaction != null) 
             	transaction.setId(_transaction.getId());
-            transaction.setProduct(productParam);
+            transaction.setProduct(productSerieParam.getProduct());
             Category category = new Category();
             category.setId(((Category) cmbCategory.getSelectedItem().getValue()).getId());
             transaction.setCategory(category);
@@ -410,45 +335,17 @@ public class AdminEgressWaitController extends GenericAbstractAdminController {
             transactionType.setId(TransactionType.REMOVE);
             transaction.setTransactionType(transactionType);
             transaction.setAmount(Float.valueOf(txtAmount.getText()));
-            productParam.setAmount(Float.valueOf(txtAmount.getText()));
-            transaction.setOrderWord(txtWorkOrder.getText());
-//          transaction.setWork(txtWork.getText());// agregar campo base da datos trabajo a realizar
+            productSerieParam.getProduct().setAmount(Float.valueOf(txtAmount.getText()));
             List<ProductSerie> productSeries = new ArrayList<ProductSerie>();
-            int totalQuantity = 0;
-            List<Listitem> listitems = lbxRecords.getItems();
-    		for (Listitem lml: listitems){
-    			Listcell cell = (Listcell) lml.getChildren().get(5);
-    			Intbox intVal = (Intbox)(cell.getChildren().get(0));
-				if (intVal.getValue() != null) {
-					int quantity = intVal.getValue();
-					totalQuantity = totalQuantity + quantity;
-					ProductSerie productSerie = (ProductSerie) lml.getValue();
-					ProductSerie productSerie2 = (ProductSerie) lml.getValue();
-					productSerie.setEndingDate(new Timestamp(dtxExit.getValue().getTime()));
-					int oldQuantity = productSerie.getQuantity();
-					productSerie.setQuantity(quantity);
-					transaction.setCondition(productSerie.getCondition());
-					transaction.setProvider(productSerie.getProvider());
-					productSerie.setEndingTransactionId(transaction);
-					productSerie.setCustomer(customer);
-					productSerie.setOrderWord(txtWorkOrder.getText());
-//			          productSerie.setWork(txtWork.getText());// agregar campo base da datos trabajo a realizar
-					productSeries.add(productSerie);
-					if ((oldQuantity - quantity) > 0) {
-						productSerie2.setId(null);
-						productSerie2.setQuantity(oldQuantity - quantity);
-						productSeries.add(productSerie2);
-					}
-				}
-			}
-    		if (totalQuantity>0) {
-    			transaction.setQuantity(totalQuantity);
-    			transaction = transactionEJB.saveEgressStock(transaction,productSeries);
-//            productParam = product;
-//            eventType = WebConstants.EVENT_EDIT;
-    			this.showMessage(Labels.getLabel("sp.common.save.success"), false, null);
-    		}else
-    			 showError(Labels.getLabel("sp.error.validate.transaction"));
+			productSerieParam.setEndingDate(new Timestamp(dtxExit.getValue().getTime()));
+			transaction.setCondition(productSerieParam.getCondition());
+			transaction.setProvider(productSerieParam.getProvider());
+			productSerieParam.setEndingTransactionId(transaction);
+			productSeries.add(productSerieParam);
+    		transaction.setQuantity(intStock.getValue());
+    		transaction = transactionEJB.saveEgressStock(transaction,productSeries);
+    		this.showMessage(Labels.getLabel("sp.common.save.success"), false, null);
+    		
         } catch (Exception ex) {
             showError(ex);
         }

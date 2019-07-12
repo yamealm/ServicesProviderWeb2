@@ -8,7 +8,6 @@ import java.util.List;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
-import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
@@ -16,7 +15,6 @@ import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Radio;
-import org.zkoss.zul.Radiogroup;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
@@ -32,7 +30,6 @@ import com.alodiga.services.provider.commons.models.Condicion;
 import com.alodiga.services.provider.commons.models.Customer;
 import com.alodiga.services.provider.commons.models.Enterprise;
 import com.alodiga.services.provider.commons.models.Product;
-import com.alodiga.services.provider.commons.models.ProductHistory;
 import com.alodiga.services.provider.commons.models.ProductSerie;
 import com.alodiga.services.provider.commons.models.Provider;
 import com.alodiga.services.provider.commons.models.Transaction;
@@ -67,6 +64,8 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
     private Textbox txtSerial;
     private Textbox txtInvoice;
     private Textbox txtObservation;
+    private Textbox txtWorkOrder;
+    private Textbox txtWork;
     private Intbox intStockMax;
     private Intbox intStockMin;
     private Intbox intStock;
@@ -78,7 +77,6 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
     private Radio ra3;
     private Row rowSerial;
     private Row rowSerials;
-    private Radiogroup radiogroup;
     private Grid gridSerials;
     private Rows rows;
 
@@ -93,7 +91,6 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
     private List<Condicion> conditions;
     private List<Customer> customers;
     private User user;
-    private Button btnSave;
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
@@ -141,6 +138,8 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
     	intStockMin.setRawValue(null);
     	txtInvoice.setRawValue(null);
     	txtObservation.setRawValue(null);
+    	txtWorkOrder.setRawValue(null);
+    	txtWork.setRawValue(null);
     }
 
     public void blockFields() {
@@ -383,9 +382,9 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
             Condicion condition = new Condicion();
             condition.setId(((Condicion) cmbCondition.getSelectedItem().getValue()).getId());
             transaction.setCondition(condition);
-//            Customer customer = new Customer();
-//            customer.setId(((Customer) cmbCustomer.getSelectedItem().getValue()).getId());
-            transaction.setCustomer(null);
+            Customer customer = new Customer();
+            customer.setId(((Customer) cmbCustomer.getSelectedItem().getValue()).getId());
+            transaction.setCustomer(customer);
             Provider provider = new Provider();
             provider.setId(((Provider) cmbProvider.getSelectedItem().getValue()).getId());
             transaction.setProvider(provider);
@@ -397,6 +396,8 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
             transaction.setTransactionType(transactionType);
             transaction.setAmount(Float.valueOf(txtAmount.getText()));
             transaction.setInvoice(txtInvoice.getText());
+            transaction.setOrderWord(txtWorkOrder.getText());
+//            transaction.setWork(txtWork.getText());// agregar campo base da datos  trabajo a realizar
             productParam.setInictialAmount(productParam.getAmount());
             productParam.setAmount(Float.valueOf(txtAmount.getText()));
             productParam.setActNpNsn(txtactNpNsn.getText());
@@ -418,6 +419,9 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
 					productSerie.setAmount(Float.valueOf(txtAmount.getText()));
 					productSerie.setQuantity(1);
 					productSerie.setCondition(condition);
+					productSerie.setCustomer(customer);
+					productSerie.setOrderWord(txtWorkOrder.getText());
+//					   productSerie.setWork(txtWork.getText());// agregar campo base da datos  trabajo a realizar
 					productSerie.setCategory(category);
 					Row row = (Row) gridSerials.getRows().getChildren().get(i);
 					Textbox textbox = (Textbox) row.getChildren().get(0);
@@ -440,6 +444,9 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
 				productSerie.setQuantity(intQuantity.getValue());
 				productSerie.setCondition(condition);
 				productSerie.setCategory(category);
+				productSerie.setCustomer(customer);
+				productSerie.setOrderWord(txtWorkOrder.getText());
+//				   productSerie.setWork(txtWork.getText());// agregar campo base da datos
 				if (ra1.isChecked()) {
 					if (txtSerial.getText().isEmpty())
 						throw  new NullParameterException("Serial vacio");
