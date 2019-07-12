@@ -165,7 +165,7 @@
                                                                 <label value="*" sclass="lblreq" />
                                                             </hlayout>
                                                         </row>
-                                                      <row id="rowCustomer" visible="false">
+                                                      <row id="rowCustomer" >
                                                             <label value="${c:l('sp.common.customer')}" sclass="lblbold"/>
                                                             <hlayout>
                                                                 <combobox id="cmbCustomer" width="190px" mold="rounded" readonly="true"/>
@@ -205,6 +205,18 @@
                                                             	<checkbox id="cbxCure" checked="true"/>
                                                             	<datebox id="dtxCure" width="120px" format="dd-MM-yyyy"/>
                                                              </hlayout>
+                                                        </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.common.work.to.do')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                               <textbox id="txtWork"  rows="4" maxlength="45" width="320px"/>                                 
+                                                            </hlayout>
+                                                        </row>
+                                                         <row>
+                                                            <label value="${c:l('sp.common.work.order')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                               <textbox id="txtWorkOrder" maxlength="45" width="320px"/>                                 
+                                                            </hlayout>
                                                         </row>
                                                          <row>
                                                             <label value="${c:l('sp.common.observations')}" sclass="lblbold"/>
