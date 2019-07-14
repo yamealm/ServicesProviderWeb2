@@ -1,7 +1,6 @@
 package com.alodiga.services.provider.web.controllers;
 
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -10,22 +9,11 @@ import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
-import org.zkoss.zk.ui.event.Event;
-import org.zkoss.zk.ui.event.EventListener;
-import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Datebox;
-import org.zkoss.zul.Grid;
 import org.zkoss.zul.Intbox;
-import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listcell;
-import org.zkoss.zul.Listitem;
-import org.zkoss.zul.Radio;
-import org.zkoss.zul.Radiogroup;
-import org.zkoss.zul.Row;
-import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 
 import com.alodiga.services.provider.commons.ejbs.CustomerEJB;
@@ -37,8 +25,6 @@ import com.alodiga.services.provider.commons.models.Category;
 import com.alodiga.services.provider.commons.models.Condicion;
 import com.alodiga.services.provider.commons.models.Customer;
 import com.alodiga.services.provider.commons.models.Enterprise;
-import com.alodiga.services.provider.commons.models.Product;
-import com.alodiga.services.provider.commons.models.ProductHistory;
 import com.alodiga.services.provider.commons.models.ProductSerie;
 import com.alodiga.services.provider.commons.models.Provider;
 import com.alodiga.services.provider.commons.models.Transaction;
@@ -57,7 +43,8 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
     private Combobox cmbEnterprise;
     private Combobox cmbCategory;
     private Combobox cmbCustomer;
-//    private Checkbox cbxSerial;
+    private Combobox cmbProvider;
+    private Combobox cmbCondition;
     private Checkbox cbxSerialVarius;
     private Checkbox cbxExpiration;
     private Checkbox cbxCure;
@@ -68,14 +55,19 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
     private Textbox txtactNpNsn;
     private Textbox txtDescription;
     private Textbox txtPartNumber;
-    private Textbox txtWorkOrder;
+    private Textbox txtQuarantine;
     private Textbox txtInvoice;
     private Textbox txtObservation;
+    private Textbox txtSerial;
     private Intbox intStockMax;
     private Intbox intStockMin;
     private Intbox intStock;
+    private Intbox intQuantity;
     private Datebox dtxExit;
-    private Listbox lbxRecords;
+    private Datebox dtxExpiration;
+    private Datebox dtxCure;
+    private Datebox dtxCreation;
+    private ProductEJB productEJB = null;
     private UtilsEJB utilsEJB = null;
     private TransactionEJB transactionEJB = null;
     private CustomerEJB customerEJB = null;
@@ -83,8 +75,9 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
     private List<Enterprise> enterprises;
     private List<Category> categories;
     private List<Customer> customers;
+    private List<Provider> providers;
+    private List<Condicion> conditions;
     private User user;
-    private Button btnSave;
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
@@ -103,10 +96,12 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
     public void initialize() {
         super.initialize();
         try {
+        	productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
             utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
             transactionEJB = (TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
             customerEJB = (CustomerEJB) EJBServiceLocator.getInstance().get(EjbConstants.CUSTOMER_EJB);
             dtxExit.setValue(new Timestamp(new Date().getTime()));
+            loadData();
         } catch (Exception ex) {
             showError(ex);
         }
@@ -116,11 +111,11 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
 		cbxExpiration.setChecked(false);
 		cbxCure.setChecked(false);
 		cbxSerialVarius.setChecked(false);
-//		intQuantity.setRawValue(null);
+		txtSerial.setRawValue(null);
 		txtBachNumber.setRawValue(null);
 		txtUbicationFolder.setRawValue(null);
 		txtUbicationBox.setRawValue(null);
-		txtWorkOrder.setRawValue(null);
+		txtQuarantine.setRawValue(null);
 		txtactNpNsn.setRawValue(null);
 		txtDescription.setRawValue(null);
 		txtPartNumber.setRawValue(null);
@@ -128,6 +123,8 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
     	intStockMin.setRawValue(null);
     	txtInvoice.setRawValue(null);
     	txtObservation.setRawValue(null);
+    	intQuantity.setRawValue(null);
+    	txtSerial.setRawValue(null);
     }
 
     public void blockFields() {
@@ -142,7 +139,22 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
 		txtPartNumber.setReadonly(true);
     	intStockMax.setReadonly(true);
     	intStockMin.setReadonly(true);
-//    	intQuantity.setReadonly(true);
+    	dtxExpiration.setReadonly(true);
+    	dtxCure.setReadonly(true);
+    	dtxCreation.setReadonly(true);
+    	txtQuarantine.setReadonly(true);
+    	dtxExpiration.setDisabled(true);
+    	dtxCure.setDisabled(true);
+    	dtxCreation.setDisabled(true);
+    	txtQuarantine.setReadonly(true);
+    	txtSerial.setReadonly(true);
+    	cmbCategory.setReadonly(true);
+    	cmbCondition.setReadonly(true);
+    	cmbProvider.setReadonly(true);
+    	cmbCategory.setDisabled(true);
+    	cmbCondition.setDisabled(true);
+    	cmbProvider.setDisabled(true);
+    	
     }
 
     public Boolean validateEmpty() {
@@ -193,7 +205,7 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
     public void onClick$btnSave() {
             switch (eventType) {
                 case WebConstants.EVENT_DELETE:
-                    saveProduct(null);
+                    saveProduct();
                     break;
                 default:
                     break;
@@ -203,36 +215,19 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
     
 
     public void onClick$btnBack() {
-    	 Executions.sendRedirect("./listQuarantine.zul");
+    	 Executions.sendRedirect("./listEgressQuarantine.zul");
     }
     
-    public void loadData() {
-    	Category category = new Category();
-    	category.setId(Category.QUARANTINE);
-        switch (eventType) {
-            case WebConstants.EVENT_DELETE:
-                loadFields(productSerieParam);
-                loadEnterprises(productSerieParam.getProduct().getEnterprise());
-                loadCategory(category);
-                loadCustomer(null);
-                blockFields();
-                break;
-            case WebConstants.EVENT_VIEW:
-                loadFields(productSerieParam);
-                loadEnterprises(productSerieParam.getProduct().getEnterprise());
-                blockFields();
-                break;
-            case WebConstants.EVENT_ADD:
-            	loadFields(productSerieParam);
-                loadEnterprises(productSerieParam.getProduct().getEnterprise());
-                loadCategory(category);
-                loadCustomer(null);
-                blockFields();
-                break;
-            default:
-                break;
-        }
-    }
+	public void loadData() {
+		loadFields(productSerieParam);
+		loadEnterprises(productSerieParam.getProduct().getEnterprise());
+		loadCategory(productSerieParam.getCategory());
+		loadProvider(productSerieParam.getProvider());
+		loadCondition(productSerieParam.getCondition());
+		loadCustomer(productSerieParam.getCustomer());
+		blockFields();
+
+	}
 
     
     public void loadFields(ProductSerie productSerie) {
@@ -246,8 +241,25 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
 		txtactNpNsn.setText(productSerie.getProduct().getActNpNsn());
 		txtDescription.setText(productSerie.getProduct().getDescription());
 		txtPartNumber.setText(productSerie.getProduct().getPartNumber());
-		intStock.setValue(productSerie.getQuantity());
-
+		txtQuarantine.setText(productSerie.getQuarantineReason());
+		txtSerial.setText(productSerie.getSerie());
+		txtObservation.setText(productSerie.getBeginTransactionId().getObservation());
+		if (productSerie.getExpirationDate()!=null) {
+			dtxExpiration.setValue(productSerie.getExpirationDate());
+		}
+		if (productSerie.getCure()!=null) {
+			dtxCure.setValue(productSerie.getCure());
+		}
+		if (productSerie.getCure()!=null) {
+			dtxCreation.setValue(productSerie.getCreationDate());
+		}
+		try {
+    		int  quantity = transactionEJB.loadQuantityByProductId(productSerie.getProduct().getId(),productSerie.getCategory().getId());
+    		intStock.setValue(quantity);
+    	} catch (Exception ex) {
+    		intStock.setValue(0);
+        }
+		intQuantity.setValue(productSerie.getQuantity());
 
     }
     
@@ -300,15 +312,58 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
         	cmbCustomer.getItems().clear();
         	EJBRequest request = new EJBRequest();
         	customers = customerEJB.getCustomers(request);
+        	 Comboitem cmbItem = new Comboitem();
+             cmbItem.setLabel("Seleccione");
+             cmbItem.setValue(null);
+             cmbItem.setParent(cmbCustomer);
             for (Customer e : customers) {
-                Comboitem cmbItem = new Comboitem();
+                cmbItem = new Comboitem();
                 cmbItem.setLabel(e.getFirstName() + " " + e.getLastName());
                 cmbItem.setValue(e);
                 cmbItem.setParent(cmbCustomer);
                 if (customer != null && customer.getId().equals(e.getId())) {
                 	cmbCustomer.setSelectedItem(cmbItem);
+                }  
+            }
+        } catch (Exception ex) {
+            showError(ex);
+        }
+    }
+    
+    private void loadCondition(Condicion condition) {
+        try {
+        	cmbCondition.getItems().clear();
+        	conditions = transactionEJB.getConditions();
+            for (Condicion e : conditions) {
+                Comboitem cmbItem = new Comboitem();
+                cmbItem.setLabel(e.getName());
+                cmbItem.setValue(e);
+                cmbItem.setParent(cmbCondition);
+                if (condition != null && condition.getId().equals(e.getId())) {
+                	cmbCondition.setSelectedItem(cmbItem);
                 } else {
-                	cmbCustomer.setSelectedIndex(0);
+                	cmbCondition.setSelectedIndex(0);
+                }
+            }
+        } catch (Exception ex) {
+            showError(ex);
+        }
+    }
+    
+    private void loadProvider(Provider provider) {
+        try {
+        	cmbProvider.getItems().clear();
+        	EJBRequest request = new EJBRequest();
+        	providers = productEJB.getProviders(request);
+            for (Provider e : providers) {
+                Comboitem cmbItem = new Comboitem();
+                cmbItem.setLabel(e.getName());
+                cmbItem.setValue(e);
+                cmbItem.setParent(cmbProvider);
+                if (provider != null && provider.getId().equals(e.getId())) {
+                	cmbProvider.setSelectedItem(cmbItem);
+                } else {
+                	cmbProvider.setSelectedIndex(0);
                 }
             }
         } catch (Exception ex) {
@@ -316,19 +371,21 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
         }
     }
 
-    private void saveProduct(Transaction _transaction) {
+
+    private void saveProduct() {
         Transaction transaction = new Transaction();
         try {
 
-            if (_transaction != null) 
-            	transaction.setId(_transaction.getId());
             transaction.setProduct(productSerieParam.getProduct());
             Category category = new Category();
             category.setId(((Category) cmbCategory.getSelectedItem().getValue()).getId());
             transaction.setCategory(category);
-            Customer customer = new Customer();
-            customer.setId(((Customer) cmbCustomer.getSelectedItem().getValue()).getId());
-            transaction.setCustomer(customer);
+			if (cmbCustomer.getSelectedItem() != null) {
+				Customer customer = new Customer();
+				customer.setId(((Customer) cmbCustomer.getSelectedItem().getValue()).getId());
+				transaction.setCustomer(customer);
+			}else
+				transaction.setCustomer(null);
             transaction.setUser(user);
             transaction.setCreationDate(new Timestamp((new java.util.Date().getTime())));
             TransactionType transactionType = new TransactionType();
@@ -340,9 +397,12 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
 			productSerieParam.setEndingDate(new Timestamp(dtxExit.getValue().getTime()));
 			transaction.setCondition(productSerieParam.getCondition());
 			transaction.setProvider(productSerieParam.getProvider());
+			transaction.setObservation(txtObservation.getText());
+			transaction.setQuarantineReason(txtQuarantine.getText());
+			productSerieParam.setQuarantineReason(txtQuarantine.getText());
 			productSerieParam.setEndingTransactionId(transaction);
 			productSeries.add(productSerieParam);
-    		transaction.setQuantity(intStock.getValue());
+    		transaction.setQuantity(intQuantity.getValue());
     		transaction = transactionEJB.saveEgressStock(transaction,productSeries);
     		this.showMessage(Labels.getLabel("sp.common.save.success"), false, null);
     		

@@ -215,7 +215,7 @@
                                                         </row>
 
                                                        <row id="rowSerial" >
-                                                        <label value="${c:l('sp.common.lot')}" sclass="lblbold"/>
+                                                        <label value="${c:l('sp.common.serial')}" sclass="lblbold"/>
                                                         <textbox id="txtSerial" maxlength="45" width="320px" />
                                                          </row>                                
                                                     </rows>

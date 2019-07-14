@@ -7,8 +7,8 @@ import java.util.List;
 
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
@@ -24,30 +24,24 @@ import com.alodiga.services.provider.commons.models.Category;
 import com.alodiga.services.provider.commons.models.Enterprise;
 import com.alodiga.services.provider.commons.models.Permission;
 import com.alodiga.services.provider.commons.models.Product;
-import com.alodiga.services.provider.commons.models.ProductHistory;
 import com.alodiga.services.provider.commons.models.ProductSerie;
 import com.alodiga.services.provider.commons.models.Profile;
-import com.alodiga.services.provider.commons.models.Provider;
 import com.alodiga.services.provider.commons.models.User;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
-import com.alodiga.services.provider.web.components.ChangeStatusButton;
 import com.alodiga.services.provider.web.components.DeleteButton;
-import com.alodiga.services.provider.web.components.ListcellAddButton;
-import com.alodiga.services.provider.web.components.ListcellDeleteButton;
 import com.alodiga.services.provider.web.components.ListcellEditButton;
 import com.alodiga.services.provider.web.components.ListcellRemoveButton;
-import com.alodiga.services.provider.web.components.ListcellViewButton;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractListController;
 import com.alodiga.services.provider.web.utils.AccessControl;
 import com.alodiga.services.provider.web.utils.PDFUtil;
 import com.alodiga.services.provider.web.utils.Utils;
-import org.zkoss.zk.ui.event.EventListener;
 
 public class ListEgressQuarantineController extends GenericAbstractListController<Product> {
 
     private static final long serialVersionUID = -9145887024839938515L;
     private Listbox lbxRecords;
+    private Textbox txtAlias;
     private ProductEJB productEJB = null;
     private TransactionEJB transactionEJB = null;
     private List<Product> products = null;
@@ -67,6 +61,7 @@ public class ListEgressQuarantineController extends GenericAbstractListControlle
         try {
             permissionEdit = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.EDIT_STOCK);   
             permissionDelete = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.REMOVE_STOCK);
+            permissionRead = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.VIEW_QUARANTINE);
         } catch (Exception ex) {
             showError(ex);
         }
@@ -91,24 +86,18 @@ public class ListEgressQuarantineController extends GenericAbstractListControlle
         }
     }
 
-    private Listcell initEnabledButton(final Listitem listItem) {
-
-        Listcell cell = new Listcell();
-        cell.setValue("");
-        final DeleteButton button = new DeleteButton();
-        button.setTooltiptext(Labels.getLabel("sp.common.actions.delete"));
-        button.setClass("open orange");
-        button.addEventListener("onClick", new EventListener() {
-
-            public void onEvent(Event event) throws Exception {
-                deleteProductSerie( listItem);
-            }
-        });
-
-        button.setParent(cell);
-        return cell;
+    public void onClick$btnClear() throws InterruptedException {
+        txtAlias.setText("");
     }
 
+    public void onClick$btnSearch() throws InterruptedException {
+        try {
+            loadList(getFilteredList(txtAlias.getText()));
+        } catch (Exception ex) {
+            showError(ex);
+        }
+    }
+   
     public List<Product> getFilteredList(String filter) {
         List<Product> auxList = new ArrayList<Product>();
         for (Iterator<Product> i = products.iterator(); i.hasNext();) {
@@ -144,7 +133,7 @@ public class ListEgressQuarantineController extends GenericAbstractListControlle
 					}
                     item.appendChild(new Listcell(date));
                     item.appendChild(permissionEdit ? new ListcellEditButton("viewQuarantine.zul", productSerie,Permission.EDIT_STOCK) : new Listcell());
-                    item.appendChild(permissionRead  ? new ListcellViewButton("adminEgressInitQuarantine.zul", productSerie,Permission.VIEW_QUARANTINE) : new Listcell());
+                    item.appendChild(permissionDelete  ? new ListcellRemoveButton ("adminEgressInitQuarantine.zul", productSerie,Permission.REMOVE_QUARANTINE) : new Listcell());
                     item.appendChild(permissionDelete ? initDeleteButton(item) : new Listcell());
                     item.setParent(lbxRecords);
                 }
@@ -230,18 +219,6 @@ public class ListEgressQuarantineController extends GenericAbstractListControlle
 
 	@Override
 	public void onClick$btnAdd() throws InterruptedException {
-		
-	}
-
-	@Override
-	public void onClick$btnClear() throws InterruptedException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onClick$btnSearch() throws InterruptedException {
-		// TODO Auto-generated method stub
 		
 	}
 

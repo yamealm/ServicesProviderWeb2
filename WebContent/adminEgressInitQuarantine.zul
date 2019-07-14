@@ -151,6 +151,38 @@
                                                                 <label value="*" sclass="lblreq" />
                                                             </hlayout>
                                                         </row>
+                                                         <row>
+                                                            <label value="${c:l('sp.common.condition')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <combobox id="cmbCondition" width="190px" mold="rounded" readonly="true"/>
+                                                                <label value="*" sclass="lblreq" />
+                                                            </hlayout>
+                                                        </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.common.provider')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <combobox id="cmbProvider" width="190px" mold="rounded" readonly="true"/>
+                                                                <label value="*" sclass="lblreq" />
+                                                            </hlayout>
+                                                        </row>
+                                                           <row>
+                                                            <label value="${c:l('sp.common.date.add')}" sclass="lblbold"/>
+                                                             <hlayout>
+                                                            <datebox id="dtxCreation" width="120px" format="dd-MM-yyyy"/>
+                                                            </hlayout>
+                                                        </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.common.date.expiration')}" sclass="lblbold"/>
+                                                             <hlayout>
+                                                                <datebox id="dtxExpiration" width="120px" format="dd-MM-yyyy"/>
+                                                            </hlayout>
+                                                        </row>
+                                                        <row >
+                                                            <label value="${c:l('sp.common.date.cure')}" sclass="lblbold"/>
+                                                             <hlayout>
+                                                               	<datebox id="dtxCure" width="120px" format="dd-MM-yyyy"/>
+                                                             </hlayout>
+                                                        </row>
                                                         <row>
                                                             <label value="${c:l('sp.common.departure.date')}" sclass="lblbold"/>
                                                              <hlayout>
@@ -170,12 +202,12 @@
                                                                <textbox id="txtAmount"  maxlength="45" width="320px"/>                                 
                                                             </hlayout>
                                                         </row>
-                                                         <row>
-                                                            <label value="${c:l('sp.common.work.order')}" sclass="lblbold"/>
-                                                            <hlayout>
-                                                               <textbox id="txtWorkOrder"  maxlength="45" width="320px"/>                                 
-                                                            </hlayout>
-                                                        </row>
+<!--                                                          <row> -->
+<!--                                                             <label value="${c:l('sp.common.work.order')}" sclass="lblbold"/> -->
+<!--                                                             <hlayout> -->
+<!--                                                                <textbox id="txtWorkOrder"  maxlength="45" width="320px"/>                                  -->
+<!--                                                             </hlayout> -->
+<!--                                                         </row> -->
                                                         <row>
                                                             <label value="${c:l('sp.common.quaratine.reason')}" sclass="lblbold"/>
                                                             <hlayout>
@@ -188,23 +220,19 @@
                                                                <textbox id="txtObservation"  rows="3" maxlength="45" width="320px"/>                                 
                                                             </hlayout>
                                                         </row>
-                                                       
-                                                        <row id="rowSerials" >
-                                                          <label value="${c:l('sp.common.serials')}" sclass="lblbold"/>
-                                            			<!--Record Listbox-->
-			                                            <listbox id="lbxRecords" fixedLayout="true" width="720px" height="200px" >
-
-			                                                <listhead>
-			                                                    <listheader label="${c:l('sp.common.serial')}" width="110px" />
-			                                                    <listheader label="${c:l('sp.common.provider')}" width="150px" />
-			                                                    <listheader label="${c:l('sp.common.condition')}" width="90px" />
-			                                                    <listheader label="${c:l('sp.common.date.expiration')}"  width="150px" />
-			                                                    <listheader label="${c:l('sp.common.stock')}" width="90px" />
-			                                                    <listheader label="${c:l('sp.common.quantity')}" width="120px" />
-			                                                </listhead>
-			                                              			                                            </listbox>
-		                                                 </row>
-                                                                                                  
+                                                        <row>
+                                                            <label value="${c:l('sp.common.quantity')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <intbox id="intQuantity" width="320px" constraint="no empty: ${c:l('error.field.required')}"/>
+                                                                <label value="*" sclass="lblreq" />
+                                                                <label value="${c:l('sp.common.max45')}" sclass="lblexample"/>
+                                                            </hlayout>
+                                                        </row>                                               
+                                            			<row id="rowSerial" >
+                                                        	<label value="${c:l('sp.common.serial')}" sclass="lblbold"/>
+                                                        	<textbox id="txtSerial" maxlength="45" width="320px" />
+                                                        </row>  
+			                                              	                                                                                                 
                                                     </rows>
                                                 </grid>
                                                 

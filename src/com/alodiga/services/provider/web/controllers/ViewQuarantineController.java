@@ -209,12 +209,12 @@ public class ViewQuarantineController extends GenericAbstractAdminController {
 
     public void onClick$btnBack() {
     	Sessions.getCurrent().setAttribute("object",productSerieParam.getProduct());
-    	Executions.sendRedirect("./listAddQuarantine.zul");
+    	Executions.sendRedirect("./listEgressQuarantine.zul");
     }
     
     public void onClick$viewDetail() {
     	Sessions.getCurrent().setAttribute("object",productSerieParam.getProduct());
-    	Executions.sendRedirect("./listAddQuarantine.zul");
+    	Executions.sendRedirect("./listEgressQuarantine.zul");
     }
     
     public void loadData() {
