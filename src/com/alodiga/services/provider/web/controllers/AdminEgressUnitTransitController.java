@@ -37,7 +37,7 @@ import com.alodiga.services.provider.web.generic.controllers.GenericAbstractAdmi
 import com.alodiga.services.provider.web.utils.AccessControl;
 import com.alodiga.services.provider.web.utils.WebConstants;
 
-public class AdminEgressUnitQuarantineController extends GenericAbstractAdminController {
+public class AdminEgressUnitTransitController extends GenericAbstractAdminController {
 
     private static final long serialVersionUID = -9145887024839938515L;
     private Combobox cmbEnterprise;
@@ -59,6 +59,7 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
     private Textbox txtInvoice;
     private Textbox txtObservation;
     private Textbox txtSerial;
+    private Textbox txtWorkOrder;
     private Intbox intStockMax;
     private Intbox intStockMin;
     private Intbox intStock;
@@ -215,7 +216,7 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
     
 
     public void onClick$btnBack() {
-    	 Executions.sendRedirect("./listEgressQuarantine.zul");
+    	 Executions.sendRedirect("./listEgressTransit.zul");
     }
     
 	public void loadData() {
@@ -244,6 +245,7 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
 		txtQuarantine.setText(productSerie.getQuarantineReason());
 		txtSerial.setText(productSerie.getSerie());
 		txtObservation.setText(productSerie.getBeginTransactionId().getObservation());
+		
 		if (productSerie.getExpirationDate()!=null) {
 			dtxExpiration.setValue(productSerie.getExpirationDate());
 		}
@@ -251,7 +253,6 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
 			dtxCure.setValue(productSerie.getCure());
 		}
 		dtxCreation.setValue(productSerie.getCreationDate());
-
 		try {
     		int  quantity = transactionEJB.loadQuantityByProductId(productSerie.getProduct().getId(),productSerie.getCategory().getId());
     		intStock.setValue(quantity);
@@ -259,6 +260,7 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
     		intStock.setValue(0);
         }
 		intQuantity.setValue(productSerie.getQuantity());
+		txtWorkOrder.setText(productSerie.getOrderWord());
 
     }
     
@@ -293,7 +295,7 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
                 cmbItem.setParent(cmbCategory);
                 if (category != null && category.getId().equals(e.getId())) {
                 	cmbCategory.setSelectedItem(cmbItem);
-                } else if(e.getId().equals(Category.QUARANTINE)){
+                } else if(e.getId().equals(Category.TRANSIT)){
                 	cmbCategory.setSelectedItem(cmbItem);
                 }
             }
@@ -398,8 +400,10 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
 			transaction.setProvider(productSerieParam.getProvider());
 			transaction.setObservation(txtObservation.getText());
 			transaction.setQuarantineReason(txtQuarantine.getText());
+			transaction.setOrderWord(txtWorkOrder.getText());
 			productSerieParam.setQuarantineReason(txtQuarantine.getText());
 			productSerieParam.setEndingTransactionId(transaction);
+			productSerieParam.setOrderWord(txtWorkOrder.getText());
 			productSeries.add(productSerieParam);
     		transaction.setQuantity(intQuantity.getValue());
     		transaction = transactionEJB.saveEgressStock(transaction,productSeries);

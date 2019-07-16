@@ -121,8 +121,8 @@ public class ListTransitController extends GenericAbstractListController<Product
                     item.appendChild(new Listcell(String.valueOf(product.getAmount())));
                     item.appendChild(new Listcell(String.valueOf(stock)));
                     item.appendChild(permissionAdd ? new ListcellAddButton("adminAddTransit.zul", product,Permission.ADD_TRANSIT) : new Listcell());
-                    item.appendChild(permissionDelete && stock>0? new ListcellRemoveButton("adminEgressTransit.zul", product,Permission.REMOVE_TRANSIT) : new Listcell());
-                    item.appendChild(permissionRead  && stock>0? new ListcellViewButton("listAddTransit.zul", product,Permission.VIEW_TRANSIT) : new Listcell());
+//                    item.appendChild(permissionDelete && stock>0? new ListcellRemoveButton("adminEgressTransit.zul", product,Permission.REMOVE_TRANSIT) : new Listcell());
+//                    item.appendChild(permissionRead  && stock>0? new ListcellViewButton("listAddTransit.zul", product,Permission.VIEW_TRANSIT) : new Listcell());
                     item.setParent(lbxRecords);
                 }
             } else {

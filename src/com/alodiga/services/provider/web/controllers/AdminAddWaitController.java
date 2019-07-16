@@ -72,6 +72,7 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
     private Intbox intQuantity;
     private Datebox dtxExpiration;
     private Datebox dtxCure;
+    private Datebox dtxCreation;
     private Radio ra1;
     private Radio ra2;
     private Radio ra3;
@@ -116,6 +117,7 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
             customerEJB = (CustomerEJB) EJBServiceLocator.getInstance().get(EjbConstants.CUSTOMER_EJB);
             dtxExpiration.setValue(new Timestamp(new Date().getTime()));
             dtxCure.setValue(new Timestamp(new Date().getTime()));
+            dtxCreation.setValue(new Timestamp(new Date().getTime()));
             loadData();
         } catch (Exception ex) {
             showError(ex);
@@ -389,7 +391,7 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
             provider.setId(((Provider) cmbProvider.getSelectedItem().getValue()).getId());
             transaction.setProvider(provider);
             transaction.setUser(user);
-            transaction.setCreationDate(new Timestamp((new java.util.Date().getTime())));
+            transaction.setCreationDate(new Timestamp(dtxCreation.getValue().getTime()));
             transaction.setQuantity(intQuantity.getValue());
             TransactionType transactionType = new TransactionType();
             transactionType.setId(TransactionType.ADD);
@@ -415,7 +417,7 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
 					productSerie.setProduct(productParam);
 					productSerie.setProvider(provider);
 					productSerie.setBeginTransactionId(transaction);
-					productSerie.setCreationDate(new Timestamp((new java.util.Date().getTime())));
+					productSerie.setCreationDate(new Timestamp(dtxCreation.getValue().getTime()));
 					productSerie.setAmount(Float.valueOf(txtAmount.getText()));
 					productSerie.setQuantity(1);
 					productSerie.setCondition(condition);
@@ -439,7 +441,7 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
 				productSerie.setProduct(productParam);
 				productSerie.setProvider(provider);
 				productSerie.setBeginTransactionId(transaction);
-				productSerie.setCreationDate(new Timestamp((new java.util.Date().getTime())));
+				productSerie.setCreationDate(new Timestamp(dtxCreation.getValue().getTime()));
 				productSerie.setAmount(Float.valueOf(txtAmount.getText()));
 				productSerie.setQuantity(intQuantity.getValue());
 				productSerie.setCondition(condition);

@@ -5,26 +5,34 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Datebox;
+import org.zkoss.zul.Grid;
 import org.zkoss.zul.Intbox;
+import org.zkoss.zul.Radio;
+import org.zkoss.zul.Radiogroup;
+import org.zkoss.zul.Row;
+import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 
 import com.alodiga.services.provider.commons.ejbs.CustomerEJB;
 import com.alodiga.services.provider.commons.ejbs.ProductEJB;
 import com.alodiga.services.provider.commons.ejbs.TransactionEJB;
 import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
+import com.alodiga.services.provider.commons.exceptions.NullParameterException;
 import com.alodiga.services.provider.commons.genericEJB.EJBRequest;
 import com.alodiga.services.provider.commons.models.Category;
 import com.alodiga.services.provider.commons.models.Condicion;
 import com.alodiga.services.provider.commons.models.Customer;
 import com.alodiga.services.provider.commons.models.Enterprise;
+import com.alodiga.services.provider.commons.models.Product;
+import com.alodiga.services.provider.commons.models.ProductHistory;
 import com.alodiga.services.provider.commons.models.ProductSerie;
 import com.alodiga.services.provider.commons.models.Provider;
 import com.alodiga.services.provider.commons.models.Transaction;
@@ -37,14 +45,15 @@ import com.alodiga.services.provider.web.generic.controllers.GenericAbstractAdmi
 import com.alodiga.services.provider.web.utils.AccessControl;
 import com.alodiga.services.provider.web.utils.WebConstants;
 
-public class AdminEgressUnitQuarantineController extends GenericAbstractAdminController {
+public class AdminAddMetrologicalControlController extends GenericAbstractAdminController {
 
     private static final long serialVersionUID = -9145887024839938515L;
     private Combobox cmbEnterprise;
     private Combobox cmbCategory;
-    private Combobox cmbCustomer;
     private Combobox cmbProvider;
     private Combobox cmbCondition;
+    private Combobox cmbCustomer;
+//    private Checkbox cbxSerial;
     private Checkbox cbxSerialVarius;
     private Checkbox cbxExpiration;
     private Checkbox cbxCure;
@@ -55,33 +64,41 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
     private Textbox txtactNpNsn;
     private Textbox txtDescription;
     private Textbox txtPartNumber;
-    private Textbox txtQuarantine;
+    private Textbox txtSerial;
     private Textbox txtInvoice;
     private Textbox txtObservation;
-    private Textbox txtSerial;
     private Intbox intStockMax;
     private Intbox intStockMin;
     private Intbox intStock;
     private Intbox intQuantity;
-    private Datebox dtxExit;
     private Datebox dtxExpiration;
     private Datebox dtxCure;
     private Datebox dtxCreation;
+    private Radio ra1;
+    private Radio ra2;
+    private Radio ra3;
+    private Row rowSerial;
+    private Row rowSerials;
+    private Radiogroup radiogroup;
+    private Grid gridSerials;
+    private Rows rows;
+
     private ProductEJB productEJB = null;
     private UtilsEJB utilsEJB = null;
     private TransactionEJB transactionEJB = null;
     private CustomerEJB customerEJB = null;
-    private ProductSerie productSerieParam;
+    private Product productParam;
     private List<Enterprise> enterprises;
     private List<Category> categories;
-    private List<Customer> customers;
     private List<Provider> providers;
     private List<Condicion> conditions;
+    private List<Customer> customers;
     private User user;
+    private Button btnSave;
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
-        productSerieParam = (Sessions.getCurrent().getAttribute("object") != null) ? (ProductSerie) Sessions.getCurrent().getAttribute("object") : null;
+        productParam = (Sessions.getCurrent().getAttribute("object") != null) ? (Product) Sessions.getCurrent().getAttribute("object") : null;
         user = AccessControl.loadCurrentUser();
         initialize();
         initView(eventType, "sp.crud.product");
@@ -96,11 +113,14 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
     public void initialize() {
         super.initialize();
         try {
-        	productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
+
+            productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
             utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
             transactionEJB = (TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
             customerEJB = (CustomerEJB) EJBServiceLocator.getInstance().get(EjbConstants.CUSTOMER_EJB);
-            dtxExit.setValue(new Timestamp(new Date().getTime()));
+            dtxExpiration.setValue(new Timestamp(new Date().getTime()));
+            dtxCure.setValue(new Timestamp(new Date().getTime()));
+            dtxCreation.setValue(new Timestamp(new Date().getTime()));
             loadData();
         } catch (Exception ex) {
             showError(ex);
@@ -111,11 +131,11 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
 		cbxExpiration.setChecked(false);
 		cbxCure.setChecked(false);
 		cbxSerialVarius.setChecked(false);
-		txtSerial.setRawValue(null);
+		intQuantity.setRawValue(null);
 		txtBachNumber.setRawValue(null);
 		txtUbicationFolder.setRawValue(null);
 		txtUbicationBox.setRawValue(null);
-		txtQuarantine.setRawValue(null);
+		txtSerial.setRawValue(null);
 		txtactNpNsn.setRawValue(null);
 		txtDescription.setRawValue(null);
 		txtPartNumber.setRawValue(null);
@@ -123,38 +143,13 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
     	intStockMin.setRawValue(null);
     	txtInvoice.setRawValue(null);
     	txtObservation.setRawValue(null);
-    	intQuantity.setRawValue(null);
-    	txtSerial.setRawValue(null);
     }
 
     public void blockFields() {
 
     	intStock.setReadonly(true);
-		txtBachNumber.setReadonly(true);
-		txtAmount.setReadonly(true);
-		txtUbicationFolder.setReadonly(true);
-		txtUbicationBox.setReadonly(true);
-		txtactNpNsn.setReadonly(true);
 		txtDescription.setReadonly(true);
 		txtPartNumber.setReadonly(true);
-    	intStockMax.setReadonly(true);
-    	intStockMin.setReadonly(true);
-    	dtxExpiration.setReadonly(true);
-    	dtxCure.setReadonly(true);
-    	dtxCreation.setReadonly(true);
-    	txtQuarantine.setReadonly(true);
-    	dtxExpiration.setDisabled(true);
-    	dtxCure.setDisabled(true);
-    	dtxCreation.setDisabled(true);
-    	txtQuarantine.setReadonly(true);
-    	txtSerial.setReadonly(true);
-    	cmbCategory.setReadonly(true);
-    	cmbCondition.setReadonly(true);
-    	cmbProvider.setReadonly(true);
-    	cmbCategory.setDisabled(true);
-    	cmbCondition.setDisabled(true);
-    	cmbProvider.setDisabled(true);
-    	
     }
 
     public Boolean validateEmpty() {
@@ -191,8 +186,13 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
         }if (!GeneralUtils.isNumeric(txtAmount.getText())) {
         	txtAmount.setFocus(true);
             this.showMessage("sp.error.field.number", true, null);
+        }if (!GeneralUtils.isNumeric(intQuantity.getText())) {
+        	intQuantity.setFocus(true);
+            this.showMessage("sp.error.field.number", true, null);
+        }if (intQuantity.getText().isEmpty()) {
+        	intQuantity.setFocus(true);
+            this.showMessage("sp.error.field.cannotNull", true, null);
         }
-       
         
         
         else {
@@ -203,65 +203,72 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
 
 
     public void onClick$btnSave() {
+        if (validateEmpty()) {
             switch (eventType) {
-                case WebConstants.EVENT_DELETE:
-                    saveProduct();
+                case WebConstants.EVENT_ADD:
+                    saveProduct(null);
+                    break;
+                case WebConstants.EVENT_EDIT:
+                    saveProduct(null);
                     break;
                 default:
                     break;
             }
+        }
     }
 
     
 
     public void onClick$btnBack() {
-    	 Executions.sendRedirect("./listEgressQuarantine.zul");
+    	 Executions.sendRedirect("./listMetrologicalControl.zul");
     }
     
-	public void loadData() {
-		loadFields(productSerieParam);
-		loadEnterprises(productSerieParam.getProduct().getEnterprise());
-		loadCategory(productSerieParam.getCategory());
-		loadProvider(productSerieParam.getProvider());
-		loadCondition(productSerieParam.getCondition());
-		loadCustomer(productSerieParam.getCustomer());
-		blockFields();
-
-	}
+    public void loadData() {
+        switch (eventType) {
+            case WebConstants.EVENT_DELETE:
+                loadFields(productParam);
+                loadEnterprises(productParam.getEnterprise());
+                break;
+            case WebConstants.EVENT_VIEW:
+                loadFields(productParam);
+                loadEnterprises(productParam.getEnterprise());
+                blockFields();
+                break;
+            case WebConstants.EVENT_ADD:
+            	loadFields(productParam);
+                loadEnterprises(productParam.getEnterprise());
+                loadCondition(null);
+                loadCategory(null);
+                loadProvider(null);
+                loadCustomer(null);
+                blockFields();
+                break;
+            default:
+                break;
+        }
+    }
 
     
-    public void loadFields(ProductSerie productSerie) {
+    public void loadFields(Product product) {
     	
-    	intStockMax.setValue(productSerie.getProduct().getStockMax());
-    	intStockMin.setValue(productSerie.getProduct().getStockMin());
-    	txtAmount.setText(String.valueOf(productSerie.getProduct().getAmount()));
-		txtBachNumber.setText(productSerie.getProduct().getBatchNumber());
-		txtUbicationFolder.setText(productSerie.getProduct().getUbicationFolder());
-		txtUbicationBox.setText(productSerie.getProduct().getUbicationBox());
-		txtactNpNsn.setText(productSerie.getProduct().getActNpNsn());
-		txtDescription.setText(productSerie.getProduct().getDescription());
-		txtPartNumber.setText(productSerie.getProduct().getPartNumber());
-		txtQuarantine.setText(productSerie.getQuarantineReason());
-		txtSerial.setText(productSerie.getSerie());
-		txtObservation.setText(productSerie.getBeginTransactionId().getObservation());
-		if (productSerie.getExpirationDate()!=null) {
-			dtxExpiration.setValue(productSerie.getExpirationDate());
-		}
-		if (productSerie.getCure()!=null) {
-			dtxCure.setValue(productSerie.getCure());
-		}
-		dtxCreation.setValue(productSerie.getCreationDate());
-
+    	intStockMax.setValue(product.getStockMax());
+    	intStockMin.setValue(product.getStockMin());
+    	txtAmount.setText(String.valueOf(product.getAmount()));
+		txtBachNumber.setText(product.getBatchNumber());
+		txtUbicationFolder.setText(product.getUbicationFolder());
+		txtUbicationBox.setText(product.getUbicationBox());
+		txtactNpNsn.setText(product.getActNpNsn());
+		txtDescription.setText(product.getDescription());
+		txtPartNumber.setText(product.getPartNumber());
 		try {
-    		int  quantity = transactionEJB.loadQuantityByProductId(productSerie.getProduct().getId(),productSerie.getCategory().getId());
+    		int  quantity = transactionEJB.loadQuantityByProductId(product.getId(), Category.METEOROLOGICAL_CONTROL);
     		intStock.setValue(quantity);
     	} catch (Exception ex) {
     		intStock.setValue(0);
         }
-		intQuantity.setValue(productSerie.getQuantity());
-
     }
-    
+
+
     private void loadEnterprises(Enterprise enterprise) {
         try {
             cmbEnterprise.getItems().clear();
@@ -293,37 +300,12 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
                 cmbItem.setParent(cmbCategory);
                 if (category != null && category.getId().equals(e.getId())) {
                 	cmbCategory.setSelectedItem(cmbItem);
-                } else if(e.getId().equals(Category.QUARANTINE)){
+                } else if(e.getId().equals(Category.METEOROLOGICAL_CONTROL)){
                 	cmbCategory.setSelectedItem(cmbItem);
                 }
             }
             cmbCategory.setReadonly(true);
             cmbCategory.setDisabled(true);
-        } catch (Exception ex) {
-            showError(ex);
-        }
-    }
-    
-
-
-    private void loadCustomer(Customer customer) {
-        try {
-        	cmbCustomer.getItems().clear();
-        	EJBRequest request = new EJBRequest();
-        	customers = customerEJB.getCustomers(request);
-        	 Comboitem cmbItem = new Comboitem();
-             cmbItem.setLabel("Seleccione");
-             cmbItem.setValue(null);
-             cmbItem.setParent(cmbCustomer);
-            for (Customer e : customers) {
-                cmbItem = new Comboitem();
-                cmbItem.setLabel(e.getFirstName() + " " + e.getLastName());
-                cmbItem.setValue(e);
-                cmbItem.setParent(cmbCustomer);
-                if (customer != null && customer.getId().equals(e.getId())) {
-                	cmbCustomer.setSelectedItem(cmbItem);
-                }  
-            }
         } catch (Exception ex) {
             showError(ex);
         }
@@ -370,46 +352,183 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
         }
     }
 
+    private void loadCustomer(Customer customer) {
+        try {
+        	cmbCustomer.getItems().clear();
+        	EJBRequest request = new EJBRequest();
+        	customers = customerEJB.getCustomers(request);
+            for (Customer e : customers) {
+                Comboitem cmbItem = new Comboitem();
+                cmbItem.setLabel(e.getFirstName() + " " + e.getLastName());
+                cmbItem.setValue(e);
+                cmbItem.setParent(cmbCustomer);
+                if (customer != null && customer.getId().equals(e.getId())) {
+                	cmbCustomer.setSelectedItem(cmbItem);
+                } else {
+                	cmbCustomer.setSelectedIndex(0);
+                }
+            }
+        } catch (Exception ex) {
+            showError(ex);
+        }
+    }
 
-    private void saveProduct() {
+    private void saveProduct(Transaction _transaction) {
         Transaction transaction = new Transaction();
         try {
 
-            transaction.setProduct(productSerieParam.getProduct());
+            if (_transaction != null) 
+            	transaction.setId(_transaction.getId());
             Category category = new Category();
             category.setId(((Category) cmbCategory.getSelectedItem().getValue()).getId());
             transaction.setCategory(category);
-			if (cmbCustomer.getSelectedItem() != null) {
-				Customer customer = new Customer();
-				customer.setId(((Customer) cmbCustomer.getSelectedItem().getValue()).getId());
-				transaction.setCustomer(customer);
-			}else
-				transaction.setCustomer(null);
+            Condicion condition = new Condicion();
+            condition.setId(((Condicion) cmbCondition.getSelectedItem().getValue()).getId());
+            transaction.setCondition(condition);
+//            Customer customer = new Customer();
+//            customer.setId(((Customer) cmbCustomer.getSelectedItem().getValue()).getId());
+            transaction.setCustomer(null);
+            Provider provider = new Provider();
+            provider.setId(((Provider) cmbProvider.getSelectedItem().getValue()).getId());
+            transaction.setProvider(provider);
             transaction.setUser(user);
-            transaction.setCreationDate(new Timestamp(dtxExit.getValue().getTime()));
+            transaction.setCreationDate(new Timestamp(dtxCreation.getValue().getTime()));
+            transaction.setQuantity(intQuantity.getValue());
             TransactionType transactionType = new TransactionType();
-            transactionType.setId(TransactionType.REMOVE);
+            transactionType.setId(TransactionType.ADD);
             transaction.setTransactionType(transactionType);
             transaction.setAmount(Float.valueOf(txtAmount.getText()));
-            productSerieParam.getProduct().setAmount(Float.valueOf(txtAmount.getText()));
-            List<ProductSerie> productSeries = new ArrayList<ProductSerie>();
-			productSerieParam.setEndingDate(new Timestamp(dtxExit.getValue().getTime()));
-			transaction.setCondition(productSerieParam.getCondition());
-			transaction.setProvider(productSerieParam.getProvider());
-			transaction.setObservation(txtObservation.getText());
-			transaction.setQuarantineReason(txtQuarantine.getText());
-			productSerieParam.setQuarantineReason(txtQuarantine.getText());
-			productSerieParam.setEndingTransactionId(transaction);
-			productSeries.add(productSerieParam);
-    		transaction.setQuantity(intQuantity.getValue());
-    		transaction = transactionEJB.saveEgressStock(transaction,productSeries);
-    		this.showMessage(Labels.getLabel("sp.common.save.success"), false, null);
-    		
+            transaction.setInvoice(txtInvoice.getText());
+            productParam.setInictialAmount(productParam.getAmount());
+            productParam.setAmount(Float.valueOf(txtAmount.getText()));
+            productParam.setActNpNsn(txtactNpNsn.getText());
+            productParam.setBatchNumber(txtBachNumber.getText());
+            productParam.setRealAmount(Float.valueOf(txtAmount.getText()));
+            productParam.setUbicationBox(txtUbicationBox.getText());
+            productParam.setUbicationFolder(txtUbicationFolder.getText());
+            productParam.setStockMax(intStockMin.getValue());
+            productParam.setStockMin(intStockMin.getValue());
+            transaction.setProduct(productParam);
+			List<ProductSerie> productSeries = new ArrayList<ProductSerie>();
+			if (ra2.isChecked()) {
+				for (int i = 0; i < intQuantity.getValue(); i++) {
+					ProductSerie productSerie = new ProductSerie();
+					productSerie.setProduct(productParam);
+					productSerie.setProvider(provider);
+					productSerie.setBeginTransactionId(transaction);
+					productSerie.setCreationDate(new Timestamp(dtxCreation.getValue().getTime()));
+					productSerie.setAmount(Float.valueOf(txtAmount.getText()));
+					productSerie.setQuantity(1);
+					productSerie.setCondition(condition);
+					productSerie.setCategory(category);
+					Row row = (Row) gridSerials.getRows().getChildren().get(i);
+					Textbox textbox = (Textbox) row.getChildren().get(0);
+					if (textbox.getText().isEmpty())
+						throw  new NullParameterException("Serial vacio");
+					productSerie.setSerie(textbox.getText());
+					if (cbxExpiration.isChecked())
+						productSerie.setExpirationDate(new Timestamp(dtxExpiration.getValue().getTime()));
+					if (cbxCure.isChecked())
+						productSerie.setCure(new Timestamp(dtxCure.getValue().getTime()));
+					productSeries.add(productSerie);
+				}
+			} else {
+				ProductSerie productSerie = new ProductSerie();
+				productSerie.setProduct(productParam);
+				productSerie.setProvider(provider);
+				productSerie.setBeginTransactionId(transaction);
+				productSerie.setCreationDate(new Timestamp(dtxCreation.getValue().getTime()));
+				productSerie.setAmount(Float.valueOf(txtAmount.getText()));
+				productSerie.setQuantity(intQuantity.getValue());
+				productSerie.setCondition(condition);
+				productSerie.setCategory(category);
+				if (ra1.isChecked()) {
+					if (txtSerial.getText().isEmpty())
+						throw  new NullParameterException("Serial vacio");
+					productSerie.setSerie(txtSerial.getText());
+				}
+				if (cbxExpiration.isChecked())
+					productSerie.setExpirationDate(new Timestamp(dtxExpiration.getValue().getTime()));
+				if (cbxCure.isChecked())
+					productSerie.setCure(new Timestamp(dtxCure.getValue().getTime()));
+				productSeries.add(productSerie);
+			}
+
+            transaction = transactionEJB.saveTransactionStock(transaction,productSeries);
+//            productParam = product;
+//            eventType = WebConstants.EVENT_EDIT;
+            this.showMessage("sp.common.save.success", false, null);
+        } catch (NullParameterException ex) {
+        	showMessage("sp.error.field.number", true, null);
         } catch (Exception ex) {
             showError(ex);
         }
     }
     
-   
+    public void onCheck$cbxExpiration(){
+    	if (cbxExpiration.isChecked())
+    		dtxExpiration.setVisible(true);
+    	else
+    		dtxExpiration.setVisible(false);
+    }
     
-} 
+    public void onCheck$cbxCure(){
+    	if (cbxCure.isChecked())
+    		dtxCure.setVisible(true);
+    	else
+    		dtxCure.setVisible(false);
+    }
+    
+    
+    public void onCheck$radiogroup(){
+    	if (intQuantity.getText().isEmpty()) {
+    		ra1.setChecked(false);
+    		ra2.setChecked(false);
+    		intQuantity.setFocus(true);
+    		 this.showMessage("sp.error.field.cannotNull", true, null);
+		} else {
+			if (ra1.isChecked()) {
+				rowSerial.setVisible(true);
+				rowSerials.setVisible(false);
+			} else if (ra2.isChecked()) {
+				rows.getChildren().clear();
+				rows.setParent(gridSerials);
+				for (int i = 0; i < intQuantity.getValue(); i++) {
+					Row row = new Row();
+					row.setHeight("40px");
+					Textbox textbox = new Textbox();
+					textbox.setParent(row);
+					row.setParent(rows);
+				}
+				rowSerials.setVisible(true);
+				rowSerial.setVisible(false);
+			}else if (ra3.isChecked()) {
+				rowSerials.setVisible(false);
+				rowSerial.setVisible(false);
+			}
+		}
+    }
+    
+	public void onChange$intQuantity() {
+		if (ra1.isChecked()) {
+			rowSerial.setVisible(true);
+			rowSerials.setVisible(false);
+		} else if (ra2.isChecked()) {
+			rows.getChildren().clear();
+			rows.setParent(gridSerials);
+			for (int i = 0; i < intQuantity.getValue(); i++) {
+				Row row = new Row();
+				row.setHeight("40px");
+				Textbox textbox = new Textbox();
+				textbox.setParent(row);
+				row.setParent(rows);
+			}
+			rowSerials.setVisible(true);
+			rowSerial.setVisible(false);
+		} else if (ra3.isChecked()) {
+			rowSerials.setVisible(false);
+			rowSerial.setVisible(false);
+		}
+
+	}
+}

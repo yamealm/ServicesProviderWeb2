@@ -166,11 +166,13 @@ public class AdminMainMenuController extends GenericForwardComposer {
         createCell(Permission.LIST_PRODUCTS,"listProducts.zul", permissionGroup, listgroup);
         createCell(Permission.STOCK, "listStock.zul", permissionGroup, listgroup);
         createCell(Permission.TRANSIT, "listTransit.zul", permissionGroup, listgroup);
+        createCell(Permission.REMOVE_TRANSIT, "listEgressTransist.zul", permissionGroup, listgroup);
         createCell(Permission.QUARANTINE, "listQuarantine.zul", permissionGroup, listgroup);
         createCell(Permission.REMOVE_QUARANTINE, "listEgressQuarantine.zul", permissionGroup, listgroup);
         createCell(Permission.WAIT, "listWait.zul", permissionGroup, listgroup);
-        createCell(Permission.METEOROLOGICAL_CONTROL, "listMeteorologicalControl.zul", permissionGroup, listgroup);
-
+        createCell(Permission.REMOVE_WAIT, "listEgressWait.zul", permissionGroup, listgroup);
+        createCell(Permission.METEOROLOGICAL_CONTROL, "listMetrologicalControl.zul", permissionGroup, listgroup);
+        createCell(Permission.REMOVE_METEOROLOGICAL_CONTROL, "listEgressMetrologicalControl.zul", permissionGroup, listgroup);
     }
 
     private void loadSecurityManagementGroup(PermissionGroup permissionGroup) {
@@ -197,7 +199,7 @@ public class AdminMainMenuController extends GenericForwardComposer {
         createCell(Permission.REPORT_TRANSIT, "reportTransit.zul", permissionGroup, listgroup);
         createCell(Permission.REPORT_QUARANTINE, "reportQuarantine.zul", permissionGroup, listgroup);
         createCell(Permission.REPORT_WAIT, "reportWait.zul", permissionGroup, listgroup);
-        createCell(Permission.REPORT_METEOROLOGICAL_CONTROL, "ReportMeteorological.zul", permissionGroup, listgroup);
+        createCell(Permission.REPORT_METEOROLOGICAL_CONTROL, "ReportMetrological.zul", permissionGroup, listgroup);
     }
 
     

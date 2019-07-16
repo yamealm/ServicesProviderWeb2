@@ -26,9 +26,7 @@
                                             <hlayout>
                                                 <toolbarbutton label="${c:l('sp.bread.crumb.home')}" onClick='Executions.sendRedirect(&quot;home-admin.zul&quot;)'/>
                                                  |
-                                                 <toolbarbutton label="${c:l('sp.crud.product.list.transit')}" onClick='Executions.sendRedirect(&quot;listTransit.zul&quot;)'/>
-                                                 |
-                                                <toolbarbutton id ="viewDetail" label="${c:l('sp.crud.product.detail.transit')}" onClick='Executions.sendRedirect(&quot;listAddTransit.zul&quot;)'/>
+                                                 <toolbarbutton label="${c:l('sp.crud.product.list.transit')}" onClick='Executions.sendRedirect(&quot;listEgressTransit.zul&quot;)'/>
                                                  |
                                                 <toolbarbutton  label="${c:l('sp.common.transit.edit')}" />
                                             </hlayout>
@@ -167,10 +165,23 @@
                                                                 <label value="*" sclass="lblreq" />
                                                             </hlayout>
                                                         </row>
+                                                       <row id="rowCustomer" >
+                                                            <label value="${c:l('sp.common.customer')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <combobox id="cmbCustomer" width="190px" mold="rounded" readonly="true"/>
+                                                                <label value="*" sclass="lblreq" />
+                                                            </hlayout>
+                                                        </row>
                                                         <row>
                                                             <label value="${c:l('sp.common.page.invoice')}" sclass="lblbold"/>
                                                             <hlayout>
                                                                <textbox id="txtInvoice" maxlength="45" width="320px"/>                                 
+                                                            </hlayout>
+                                                        </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.common.work.order')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                               <textbox id="txtWorkOrder"  maxlength="45" width="320px"/>                                 
                                                             </hlayout>
                                                         </row>
                                                          <row>
@@ -187,6 +198,12 @@
                                                                 <label value="*" sclass="lblreq" />
                                                             </hlayout>
                                                         </row>
+                                                          <row>
+                                                            <label value="${c:l('sp.common.date.add')}" sclass="lblbold"/>
+                                                             <hlayout>
+                                                            <datebox id="dtxCreation" width="120px" format="dd-MM-yyyy"/>
+                                                            </hlayout>
+                                                        </row>
                                                          <row>
                                                             <label value="${c:l('sp.common.date.expiration')}" sclass="lblbold"/>
                                                              <hlayout>
@@ -201,6 +218,7 @@
                                                             	<datebox id="dtxCure" width="120px" format="dd-MM-yyyy"/>
                                                              </hlayout>
                                                         </row>
+
                                                          <row>
                                                             <label value="${c:l('sp.common.observations')}" sclass="lblbold"/>
                                                             <hlayout>

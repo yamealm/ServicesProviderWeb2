@@ -61,8 +61,6 @@
                                                     <listheader label="${c:l('sp.common.amount')}" width="85px" sort="auto"/>
                                                     <listheader label="${c:l('sp.common.stock')}" width="85px" sort="auto"/>
                                                     <listheader label="-" width="45px"/>
-                                                    <listheader label="-" width="45px"/>
-                                                    <listheader label="-" width="45px"/>
                                                     
                                                 </listhead>
                                             </listbox>

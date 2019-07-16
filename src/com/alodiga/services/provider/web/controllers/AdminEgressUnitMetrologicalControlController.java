@@ -37,7 +37,7 @@ import com.alodiga.services.provider.web.generic.controllers.GenericAbstractAdmi
 import com.alodiga.services.provider.web.utils.AccessControl;
 import com.alodiga.services.provider.web.utils.WebConstants;
 
-public class AdminEgressUnitQuarantineController extends GenericAbstractAdminController {
+public class AdminEgressUnitMetrologicalControlController extends GenericAbstractAdminController {
 
     private static final long serialVersionUID = -9145887024839938515L;
     private Combobox cmbEnterprise;
@@ -215,7 +215,7 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
     
 
     public void onClick$btnBack() {
-    	 Executions.sendRedirect("./listEgressQuarantine.zul");
+    	 Executions.sendRedirect("./listEgressMetrologicalControl.zul");
     }
     
 	public void loadData() {
@@ -293,7 +293,7 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
                 cmbItem.setParent(cmbCategory);
                 if (category != null && category.getId().equals(e.getId())) {
                 	cmbCategory.setSelectedItem(cmbItem);
-                } else if(e.getId().equals(Category.QUARANTINE)){
+                } else if(e.getId().equals(Category.METEOROLOGICAL_CONTROL)){
                 	cmbCategory.setSelectedItem(cmbItem);
                 }
             }

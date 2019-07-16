@@ -193,6 +193,12 @@
                                                             </hlayout>
                                                         </row>
                                                          <row>
+                                                            <label value="${c:l('sp.common.date.add')}" sclass="lblbold"/>
+                                                             <hlayout>
+                                                            <datebox id="dtxCreation" width="120px" format="dd-MM-yyyy"/>
+                                                            </hlayout>
+                                                        </row>
+                                                         <row>
                                                             <label value="${c:l('sp.common.date.expiration')}" sclass="lblbold"/>
                                                              <hlayout>
                                                             <checkbox id="cbxExpiration" checked="true"/>

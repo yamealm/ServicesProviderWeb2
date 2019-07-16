@@ -80,7 +80,7 @@ public class ViewQuarantineController extends GenericAbstractAdminController {
     private Intbox intQuantity;
     private Datebox dtxExpiration;
     private Datebox dtxCure;
-    private Toolbarbutton viewDetail;
+    private Datebox dtxCreation;
 
 
     private ProductEJB productEJB = null;
@@ -266,6 +266,7 @@ public class ViewQuarantineController extends GenericAbstractAdminController {
 			dtxCure.setValue(productSerie.getCure());
 		}else
 			cbxCure.setChecked(true);
+		dtxCreation.setValue(productSerie.getCreationDate());
 		txtObservation.setText(productSerie.getBeginTransactionId().getObservation());
 		txtSerial.setText(productSerie.getSerie());
     }
@@ -369,11 +370,13 @@ public class ViewQuarantineController extends GenericAbstractAdminController {
 			transaction.setProvider(provider);
 			transaction.setObservation(txtObservation.getText());
 			transaction.setInvoice(txtInvoice.getText());
+			transaction.setCreationDate(new Timestamp(dtxCreation.getValue().getTime()));
 			productSerie.setProvider(provider);
 			productSerie.setAmount(Float.valueOf(txtAmount.getText()));
 			productSerie.setQuantity(intQuantity.getValue());
 			productSerie.setCondition(condition);
 			productSerie.setSerie(txtSerial.getText());
+			productSerie.setCreationDate(new Timestamp(dtxCreation.getValue().getTime()));
 			if (cbxExpiration.isChecked())
 				productSerie.setExpirationDate(new Timestamp(dtxExpiration.getValue().getTime()));
 			if (cbxCure.isChecked())

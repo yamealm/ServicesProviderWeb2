@@ -4,7 +4,7 @@
 <?link rel="icon" tye="image/x-icon" href="/images/favicon.ico"?>
 <?init class="com.alodiga.services.provider.web.security.InitiatorLoggedUser" ?>
 <zk xmlns:n="native">
-    <window width="100%" height="100%" apply="com.alodiga.services.provider.web.controllers.ListMeterologicalControlController" class="general-window">
+    <window width="100%" height="100%" apply="com.alodiga.services.provider.web.controllers.ListEgressTransitController" class="general-window">
         <style src="/css/general.css"/>
         <borderlayout width="100%" height="100%" class="content-transparent">
             <north border="none" size="52px" class="content-transparent">
@@ -26,10 +26,10 @@
                                             <hlayout>
                                                 <toolbarbutton label="${c:l('sp.bread.crumb.home')}" onClick='Executions.sendRedirect(&quot;home-admin.zul&quot;)'/>
                                                  |
-                                                <toolbarbutton label="${c:l('sp.crud.product.list.meteorological')}" />
+                                                <toolbarbutton label="${c:l('sp.crud.product.list.transit')}" />
                                             </hlayout>
                                         </div>
-                                        <div height="5px" width="100%" style="background:#333;" align="left"></div>
+ <div height="5px" width="100%" style="background:#333;" align="left"></div>
                                         <div>
                                             <!--Filters for Searching-->
                                             <vlayout>
@@ -51,19 +51,17 @@
 
                                             </vlayout>
                                             <separator/>
-                                            <!--Record Listbox-->
                                             <listbox id="lbxRecords" fixedLayout="true" width="895px" height="530px">
                                                 <listhead>
                                                     <listheader label="${c:l('sp.common.PartNumber')}" width="125px" sort="auto"/>
-                                                    <listheader label="${c:l('sp.common.descripton')}" width="225px" sort="auto"/>
-                                                    <listheader label="${c:l('sp.common.ubicationBox')}" width="120px" sort="auto"/>
-                                                    <listheader label="${c:l('sp.common.ubicationFolder')}" width="125px" sort="auto"/>
-                                                    <listheader label="${c:l('sp.common.amount')}" width="85px" sort="auto"/>
-                                                    <listheader label="${c:l('sp.common.stock')}" width="85px" sort="auto"/>
-                                                    <listheader label="-" width="45px"/>
-                                                    <listheader label="-" width="45px"/>
-                                                    <listheader label="-" width="45px"/>
-                                                    
+                                                    <listheader label="${c:l('sp.common.descripton')}" width="220px" sort="auto"/>
+                                                     <listheader label="${c:l('sp.common.provider')}" width="110px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.common.serial')}" width="95px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.common.stock')}" width="80px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.common.creationDate')}" width="120px" sort="auto"/>
+                                                    <listheader label="-" width="45px" align="center"/>
+                                                    <listheader label="-" width="45px" align="center"/>
+                                                    <listheader label="-" width="45px" align="center"/>
                                                 </listhead>
                                             </listbox>
                                             

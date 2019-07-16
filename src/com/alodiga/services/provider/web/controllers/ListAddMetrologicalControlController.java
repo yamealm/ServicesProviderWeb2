@@ -1,11 +1,14 @@
 package com.alodiga.services.provider.web.controllers;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
@@ -22,43 +25,49 @@ import com.alodiga.services.provider.commons.models.Enterprise;
 import com.alodiga.services.provider.commons.models.Permission;
 import com.alodiga.services.provider.commons.models.Product;
 import com.alodiga.services.provider.commons.models.ProductHistory;
+import com.alodiga.services.provider.commons.models.ProductSerie;
 import com.alodiga.services.provider.commons.models.Profile;
 import com.alodiga.services.provider.commons.models.Provider;
 import com.alodiga.services.provider.commons.models.User;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
+import com.alodiga.services.provider.web.components.ChangeStatusButton;
+import com.alodiga.services.provider.web.components.DeleteButton;
 import com.alodiga.services.provider.web.components.ListcellAddButton;
+import com.alodiga.services.provider.web.components.ListcellDeleteButton;
+import com.alodiga.services.provider.web.components.ListcellEditButton;
 import com.alodiga.services.provider.web.components.ListcellRemoveButton;
-import com.alodiga.services.provider.web.components.ListcellViewButton;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractListController;
 import com.alodiga.services.provider.web.utils.AccessControl;
 import com.alodiga.services.provider.web.utils.PDFUtil;
 import com.alodiga.services.provider.web.utils.Utils;
+import org.zkoss.zk.ui.event.EventListener;
 
-public class ListWaitController extends GenericAbstractListController<Product> {
+public class ListAddMetrologicalControlController extends GenericAbstractListController<Product> {
 
     private static final long serialVersionUID = -9145887024839938515L;
     private Listbox lbxRecords;
-    private Textbox txtAlias;
     private ProductEJB productEJB = null;
     private TransactionEJB transactionEJB = null;
     private List<Product> products = null;
     private User currentUser;
     private Profile currentProfile;
+    private Product productParam;
+    private User user;
 
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
+        productParam = (Sessions.getCurrent().getAttribute("object") != null) ? (Product) Sessions.getCurrent().getAttribute("object") : null;
+        user = AccessControl.loadCurrentUser();
         initialize();
     }
 
     @Override
     public void checkPermissions() {
         try {
-            permissionAdd = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.ADD_STOCK);
+            permissionEdit = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.EDIT_STOCK);   
             permissionDelete = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.REMOVE_STOCK);
-            permissionRead = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.VIEW_STOCK);
-//            permissionEdit = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.EDIT_STOCK);
         } catch (Exception ex) {
             showError(ex);
         }
@@ -75,15 +84,31 @@ public class ListWaitController extends GenericAbstractListController<Product> {
             currentUser = AccessControl.loadCurrentUser();
             currentProfile = currentUser.getCurrentProfile(Enterprise.ALODIGA_USA);
             checkPermissions();
+            adminPage = "adminAddStock.zul";
             productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
             transactionEJB = (TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
-            loadPermission(new Provider());
-            startListener();
-            getData();
-            loadList(products);
+            loadList(productParam);
         } catch (Exception ex) {
             showError(ex);
         }
+    }
+
+    private Listcell initEnabledButton(final Listitem listItem) {
+
+        Listcell cell = new Listcell();
+        cell.setValue("");
+        final DeleteButton button = new DeleteButton();
+        button.setTooltiptext(Labels.getLabel("sp.common.actions.delete"));
+        button.setClass("open orange");
+        button.addEventListener("onClick", new EventListener() {
+
+            public void onEvent(Event event) throws Exception {
+                deleteProductSerie( listItem);
+            }
+        });
+
+        button.setParent(cell);
+        return cell;
     }
 
     public List<Product> getFilteredList(String filter) {
@@ -99,31 +124,29 @@ public class ListWaitController extends GenericAbstractListController<Product> {
     }
 
 
-    public void loadList(List<Product> list) {
+    public void loadList(Product product) {
         try {
             lbxRecords.getItems().clear();
             Listitem item = null;
-            int stock = 0;
-            if (list != null && !list.isEmpty()) {
+            if (product != null ) {
                 btnDownload.setVisible(true);
-                for (Product product : list) {
-                	try {
-                		int  currentQuantity = transactionEJB.loadQuantityByProductId(product.getId(),Category.WAIT);
-                		stock = currentQuantity;
-                	} catch (Exception ex) {
-                		stock = 0;
-                    }
+                List<ProductSerie> producSeries = transactionEJB.searchProductSerieByProductId(product.getId(), Category.METEOROLOGICAL_CONTROL);
+                for (ProductSerie productSerie : producSeries) {
                     item = new Listitem();
-                    item.setValue(product);
-                    item.appendChild(new Listcell(product.getPartNumber()));
-                    item.appendChild(new Listcell(product.getDescription()));
-                    item.appendChild(new Listcell(product.getUbicationBox()));
-                    item.appendChild(new Listcell(product.getUbicationFolder()));
-                    item.appendChild(new Listcell(String.valueOf(product.getAmount())));
-                    item.appendChild(new Listcell(String.valueOf(stock)));
-                    item.appendChild(permissionAdd ? new ListcellAddButton("adminAddWait.zul", product,Permission.ADD_WAIT) : new Listcell());
-//                    item.appendChild(permissionDelete && stock>0? new ListcellRemoveButton("adminEgressWait.zul", product,Permission.REMOVE_WAIT) : new Listcell());
-//                    item.appendChild(permissionRead  && stock>0? new ListcellViewButton("listAddWait.zul", product,Permission.VIEW_WAIT) : new Listcell());
+                    item.setValue(productSerie);
+                    item.appendChild(new Listcell(productSerie.getProduct().getPartNumber()));
+                    item.appendChild(new Listcell(productSerie.getProduct().getDescription()));
+                    item.appendChild(new Listcell(productSerie.getProvider().getName()));
+                    item.appendChild(new Listcell(productSerie.getSerie()));
+                    item.appendChild(new Listcell(String.valueOf(productSerie.getQuantity())));
+                    String date = null;
+					if (productSerie.getExpirationDate() != null) {
+						SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+						date = df.format(productSerie.getCreationDate().getTime());
+					}
+                    item.appendChild(new Listcell(date));
+                    item.appendChild(permissionEdit ? new ListcellEditButton("viewMeteorologicalControl.zul", productSerie,Permission.EDIT_STOCK) : new Listcell());
+                    item.appendChild(permissionDelete ? initDeleteButton(item) : new Listcell());
                     item.setParent(lbxRecords);
                 }
             } else {
@@ -140,6 +163,36 @@ public class ListWaitController extends GenericAbstractListController<Product> {
             showError(ex);
         }
     }
+    
+    private Listcell initDeleteButton(final Listitem listItem) {
+
+        Listcell cell = new Listcell();
+        cell.setValue("");
+        final DeleteButton button = new DeleteButton();
+        button.setTooltiptext(Labels.getLabel("sp.common.actions.delete"));
+        button.setClass("open orange");
+        button.addEventListener("onClick", new EventListener() {
+
+            public void onEvent(Event event) throws Exception {
+            	deleteProductSerie( listItem);
+            }
+        });
+
+        button.setParent(cell);
+        return cell;
+    }
+    
+    private void deleteProductSerie( Listitem listItem) {
+        try {
+            ProductSerie productSerie = (ProductSerie) listItem.getValue();
+            transactionEJB.deleteStock(productSerie.getBeginTransactionId(), productSerie);
+            AccessControl.saveAction(Permission.REMOVE_STOCK, "product = " + productSerie.getProduct().getId() + " and product serie = " + productSerie.getSerie());
+            loadList(productParam);
+        } catch (Exception ex) {
+            showError(ex);
+        }
+    }
+
 
     public void getData() {
         products = new ArrayList<Product>();
@@ -147,7 +200,7 @@ public class ListWaitController extends GenericAbstractListController<Product> {
             request.setFirst(0);
             request.setLimit(null);
             request.setAuditData(null);
-            products = transactionEJB.listProducts();
+            products = productEJB.getProducts(request);
         } catch (NullParameterException ex) {
             showError(ex);
         } catch (EmptyListException ex) {
@@ -158,17 +211,7 @@ public class ListWaitController extends GenericAbstractListController<Product> {
 
   
 
-    public void onClick$btnClear() throws InterruptedException {
-        txtAlias.setText("");
-    }
 
-    public void onClick$btnSearch() throws InterruptedException {
-        try {
-            loadList(getFilteredList(txtAlias.getText()));
-        } catch (Exception ex) {
-            showError(ex);
-        }
-    }
     
     public void onClick$btnExportPdf() throws InterruptedException {
         try {
@@ -180,7 +223,7 @@ public class ListWaitController extends GenericAbstractListController<Product> {
     
     public void onClick$btnDownload() throws InterruptedException {
         try {
-            Utils.exportExcel(lbxRecords, Labels.getLabel("sp.crud.product.list"));
+            Utils.exportExcel(lbxRecords, Labels.getLabel("sp.crud.product.list.meteorological"));
         } catch (Exception ex) {
             showError(ex);
         }
@@ -188,6 +231,24 @@ public class ListWaitController extends GenericAbstractListController<Product> {
 
 	@Override
 	public void onClick$btnAdd() throws InterruptedException {
+		
+	}
+
+	@Override
+	public void onClick$btnClear() throws InterruptedException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onClick$btnSearch() throws InterruptedException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void loadList(List<Product> list) {
+		// TODO Auto-generated method stub
 		
 	}
     

@@ -132,7 +132,7 @@ public class ListEgressQuarantineController extends GenericAbstractListControlle
 						date = df.format(productSerie.getCreationDate().getTime());
 					}
                     item.appendChild(new Listcell(date));
-                    item.appendChild(permissionEdit ? new ListcellEditButton("viewQuarantine.zul", productSerie,Permission.EDIT_STOCK) : new Listcell());
+                    item.appendChild(permissionEdit ? new ListcellEditButton("viewQuarantine.zul", productSerie,Permission.EDIT_QUARANTINE) : new Listcell());
                     item.appendChild(permissionDelete  ? new ListcellRemoveButton ("adminEgressInitQuarantine.zul", productSerie,Permission.REMOVE_QUARANTINE) : new Listcell());
                     item.appendChild(permissionDelete ? initDeleteButton(item) : new Listcell());
                     item.setParent(lbxRecords);
@@ -174,7 +174,7 @@ public class ListEgressQuarantineController extends GenericAbstractListControlle
         try {
             ProductSerie productSerie = (ProductSerie) listItem.getValue();
             transactionEJB.deleteStock(productSerie.getBeginTransactionId(), productSerie);
-            AccessControl.saveAction(Permission.REMOVE_STOCK, "product = " + productSerie.getProduct().getId() + " and product serie = " + productSerie.getSerie());
+            AccessControl.saveAction(Permission.REMOVE_QUARANTINE, "product = " + productSerie.getProduct().getId() + " and product serie = " + productSerie.getSerie());
             loadData();
         } catch (Exception ex) {
             showError(ex);

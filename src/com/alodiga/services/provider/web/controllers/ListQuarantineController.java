@@ -122,8 +122,8 @@ public class ListQuarantineController extends GenericAbstractListController<Prod
                     item.appendChild(new Listcell(String.valueOf(product.getAmount())));
                     item.appendChild(new Listcell(String.valueOf(stock)));
                     item.appendChild(permissionAdd ? new ListcellAddButton("adminAddQuarantine.zul", product,Permission.ADD_QUARANTINE) : new Listcell());
-                    item.appendChild(permissionDelete && stock>0? new ListcellRemoveButton("adminEgressQuarantine.zul", product,Permission.REMOVE_QUARANTINE) : new Listcell());
-                    item.appendChild(permissionRead  && stock>0? new ListcellViewButton("listAddQuarantine.zul", product,Permission.VIEW_QUARANTINE) : new Listcell());
+//                    item.appendChild(permissionDelete && stock>0? new ListcellRemoveButton("adminEgressQuarantine.zul", product,Permission.REMOVE_QUARANTINE) : new Listcell());
+//                    item.appendChild(permissionRead  && stock>0? new ListcellViewButton("listAddQuarantine.zul", product,Permission.VIEW_QUARANTINE) : new Listcell());
                     item.setParent(lbxRecords);
                 }
             } else {

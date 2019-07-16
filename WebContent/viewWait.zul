@@ -26,9 +26,7 @@
                                             <hlayout>
                                                 <toolbarbutton label="${c:l('sp.bread.crumb.home')}" onClick='Executions.sendRedirect(&quot;home-admin.zul&quot;)'/>
                                                  |
-                                                 <toolbarbutton label="${c:l('sp.crud.product.list.wait')}" onClick='Executions.sendRedirect(&quot;listWait.zul&quot;)'/>
-                                                 |
-                                                <toolbarbutton id ="viewDetail" label="${c:l('sp.crud.product.detail.wait')}" onClick='Executions.sendRedirect(&quot;listAddWait.zul&quot;)'/>
+                                                 <toolbarbutton label="${c:l('sp.crud.product.list.wait')}" onClick='Executions.sendRedirect(&quot;listEgressWait.zul&quot;)'/>
                                                  |
                                                 <toolbarbutton  label="${c:l('sp.common.wait.edit')}" />
                                             </hlayout>
@@ -173,6 +171,18 @@
                                                                <textbox id="txtInvoice" maxlength="45" width="320px"/>                                 
                                                             </hlayout>
                                                         </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.common.work.order')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                               <textbox id="txtWorkOrder"  maxlength="45" width="320px"/>                                 
+                                                            </hlayout>
+                                                        </row>
+                                                         <row>
+                                                            <label value="${c:l('sp.common.work.to.do')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                               <textbox id="txtWork"  rows="4" maxlength="45" width="320px"/>                                 
+                                                            </hlayout>
+                                                        </row>
                                                          <row>
                                                             <label value="${c:l('sp.common.amount')}" sclass="lblbold"/>
                                                             <hlayout>
@@ -185,6 +195,12 @@
                                                             <hlayout>
                                                                 <intbox id="intQuantity" width="320px" maxlength="45" constraint="no empty: ${c:l('error.field.required')}"/>
                                                                 <label value="*" sclass="lblreq" />
+                                                            </hlayout>
+                                                        </row>
+                                                         <row>
+                                                            <label value="${c:l('sp.common.date.add')}" sclass="lblbold"/>
+                                                             <hlayout>
+                                                            <datebox id="dtxCreation" width="120px" format="dd-MM-yyyy"/>
                                                             </hlayout>
                                                         </row>
                                                          <row>

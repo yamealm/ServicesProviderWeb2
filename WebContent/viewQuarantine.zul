@@ -26,10 +26,8 @@
                                             <hlayout>
                                                 <toolbarbutton label="${c:l('sp.bread.crumb.home')}" onClick='Executions.sendRedirect(&quot;home-admin.zul&quot;)'/>
                                                  |
-                                                 <toolbarbutton label="${c:l('sp.crud.product.list.quaranatine')}" onClick='Executions.sendRedirect(&quot;home-admin.zul&quot;)'/>
+                                                 <toolbarbutton label="${c:l('sp.crud.product.list.quaranatine')}" onClick='Executions.sendRedirect(&quot;listEgressQuarantine.zul&quot;)'/>
                                                  |
-                                                <toolbarbutton id ="viewDetail" label="${c:l('sp.crud.product.detail.quarantine')}" onClick='Executions.sendRedirect(&quot;listAddQuarantine.zul&quot;)'/>
-                                                  |
                                                 <toolbarbutton  label="${c:l('sp.common.quarantine.edit')}" />
                                             </hlayout>
                                         </div>
@@ -185,6 +183,12 @@
                                                             <hlayout>
                                                                 <intbox id="intQuantity" width="320px" maxlength="45" constraint="no empty: ${c:l('error.field.required')}"/>
                                                                 <label value="*" sclass="lblreq" />
+                                                            </hlayout>
+                                                        </row>
+                                                         <row>
+                                                            <label value="${c:l('sp.common.date.add')}" sclass="lblbold"/>
+                                                             <hlayout>
+                                                            <datebox id="dtxCreation" width="120px" format="dd-MM-yyyy"/>
                                                             </hlayout>
                                                         </row>
                                                          <row>

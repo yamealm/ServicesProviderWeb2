@@ -4,7 +4,7 @@
 <?link rel="icon" tye="image/x-icon" href="/images/favicon.ico"?>
 <?init class="com.alodiga.services.provider.web.security.InitiatorLoggedUser" ?>
 <zk xmlns:n="native">
-    <window width="100%" height="100%" apply="com.alodiga.services.provider.web.controllers.AdminAddQuarantineController" class="general-window" >
+    <window width="100%" height="100%" apply="com.alodiga.services.provider.web.controllers.AdminEgressUnitTransitController" class="general-window" >
         <style src="/css/general.css"/>
         <borderlayout width="100%" height="100%" class="content-transparent">
             <north border="none" size="52px" class="content-transparent">
@@ -28,7 +28,7 @@
                                                  |
                                                 <toolbarbutton label="${c:l('sp.crud.product.list.quarantine')}" onClick='Executions.sendRedirect(&quot;listQuarantine.zul&quot;)'/>
                                                  |
-                                                <toolbarbutton label="${c:l('sp.common.quarantine.add')}" />
+                                                <toolbarbutton label="${c:l('sp.common.quarantine.egress')}" />
                                             </hlayout>
                                         </div>
                                         <div height="5px" width="100%" style="background:#333;" align="left"></div>
@@ -46,8 +46,8 @@
                                                 <label value="${c:l('sp.common.data.basic')}" sclass="lblbold"/>
                                                 <grid fixedLayout="true">
                                                     <columns>
-                                                        <column label="" width="200px"/>
-                                                        <column label="" width="690px"/>
+                                                        <column label="" width="150px"/>
+                                                        <column label="" width="740px"/>
                                                     </columns>
                                                     <rows>
                                                         
@@ -136,11 +136,11 @@
                                                 </grid>
                                         
                                                 
-                                                <label value="${c:l('sp.common.actions.add')}" sclass="lblbold"/>
+                                                <label value="${c:l('sp.common.actions.egress')}" sclass="lblbold"/>
                                                 <grid fixedLayout="true">
                                                     <columns>
-                                                        <column label="" width="200px"/>
-                                                        <column label="" width="690px"/>
+                                                        <column label="" width="150px"/>
+                                                        <column label="" width="740px"/>
                                                     </columns>
                                                     <rows>
                                                         <group label="${c:l('sp.common.quarantine')}" />
@@ -151,7 +151,7 @@
                                                                 <label value="*" sclass="lblreq" />
                                                             </hlayout>
                                                         </row>
-                                                       <row>
+                                                         <row>
                                                             <label value="${c:l('sp.common.condition')}" sclass="lblbold"/>
                                                             <hlayout>
                                                                 <combobox id="cmbCondition" width="190px" mold="rounded" readonly="true"/>
@@ -165,52 +165,54 @@
                                                                 <label value="*" sclass="lblreq" />
                                                             </hlayout>
                                                         </row>
-                                                      <row id="rowCustomer" visible="false">
+                                                           <row>
+                                                            <label value="${c:l('sp.common.date.add')}" sclass="lblbold"/>
+                                                             <hlayout>
+                                                            <datebox id="dtxCreation" width="120px" format="dd-MM-yyyy"/>
+                                                            </hlayout>
+                                                        </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.common.date.expiration')}" sclass="lblbold"/>
+                                                             <hlayout>
+                                                                <datebox id="dtxExpiration" width="120px" format="dd-MM-yyyy"/>
+                                                            </hlayout>
+                                                        </row>
+                                                        <row >
+                                                            <label value="${c:l('sp.common.date.cure')}" sclass="lblbold"/>
+                                                             <hlayout>
+                                                               	<datebox id="dtxCure" width="120px" format="dd-MM-yyyy"/>
+                                                             </hlayout>
+                                                        </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.common.departure.date')}" sclass="lblbold"/>
+                                                             <hlayout>
+                                                             <datebox id="dtxExit" width="120px" format="dd-MM-yyyy"/>
+                                                            </hlayout>
+                                                        </row>
+                                                      <row id="rowCustomer" >
                                                             <label value="${c:l('sp.common.customer')}" sclass="lblbold"/>
                                                             <hlayout>
                                                                 <combobox id="cmbCustomer" width="190px" mold="rounded" readonly="true"/>
                                                                 <label value="*" sclass="lblreq" />
                                                             </hlayout>
                                                         </row>
-                                                        <row>
-                                                            <label value="${c:l('sp.common.page.invoice')}" sclass="lblbold"/>
-                                                            <hlayout>
-                                                               <textbox id="txtInvoice" maxlength="45" width="320px"/>                                 
-                                                            </hlayout>
-                                                        </row>
-                                                         <row>
+                                               		   <row>
                                                             <label value="${c:l('sp.common.amount')}" sclass="lblbold"/>
                                                             <hlayout>
-                                                                <textbox id="txtAmount" width="320px" maxlength="45" constraint="no empty: ${c:l('error.field.required')}"/>
-                                                                <label value="*" sclass="lblreq" />
+                                                               <textbox id="txtAmount"  maxlength="45" width="320px"/>                                 
                                                             </hlayout>
                                                         </row>
-                                                        <row>
-                                                            <label value="${c:l('sp.common.quantity')}" sclass="lblbold"/>
+                                                         <row>
+                                                            <label value="${c:l('sp.common.work.order')}" sclass="lblbold"/>
                                                             <hlayout>
-                                                                <intbox id="intQuantity" width="320px" maxlength="45" constraint="no empty: ${c:l('error.field.required')}"/>
-                                                                <label value="*" sclass="lblreq" />
+                                                               <textbox id="txtWorkOrder"  maxlength="45" width="320px"/>                                 
                                                             </hlayout>
                                                         </row>
-                                                         <row>
-                                                            <label value="${c:l('sp.common.date.add')}" sclass="lblbold"/>
-                                                             <hlayout>
-                                                            <datebox id="dtxIntro" width="120px" format="dd-MM-yyyy"/>
+                                                          <row>
+                                                            <label value="${c:l('sp.common.work.to.do')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                               <textbox id="txtWork"  rows="4" maxlength="45" width="320px"/>                                 
                                                             </hlayout>
-                                                        </row>
-                                                         <row>
-                                                            <label value="${c:l('sp.common.date.expiration')}" sclass="lblbold"/>
-                                                             <hlayout>
-                                                            <checkbox id="cbxExpiration" checked="true"/>
-                                                            <datebox id="dtxExpiration" width="120px" format="dd-MM-yyyy"/>
-                                                            </hlayout>
-                                                        </row>
-                                                        <row >
-                                                            <label value="${c:l('sp.common.date.cure')}" sclass="lblbold"/>
-                                                             <hlayout>
-                                                            	<checkbox id="cbxCure" checked="true"/>
-                                                            	<datebox id="dtxCure" width="120px" format="dd-MM-yyyy"/>
-                                                             </hlayout>
                                                         </row>
                                                         <row>
                                                             <label value="${c:l('sp.common.quaratine.reason')}" sclass="lblbold"/>
@@ -221,37 +223,26 @@
                                                          <row>
                                                             <label value="${c:l('sp.common.observations')}" sclass="lblbold"/>
                                                             <hlayout>
-                                                               <textbox id="txtObservation"  rows="4" maxlength="45" width="320px"/>                                 
+                                                               <textbox id="txtObservation"  rows="3" maxlength="45" width="320px"/>                                 
                                                             </hlayout>
                                                         </row>
                                                         <row>
-                                                        <label value="${c:l('sp.common.select')}" sclass="lblbold"/>
-                                                          <hlayout>
-                                                          <radiogroup id="radiogroup" >
-                                                               <radio id="ra1" label="${c:l('sp.common.lot')}"   />
-                											   <radio id="ra2" label="${c:l('sp.common.serial')}"   />
-                											   <radio id="ra3" label="${c:l('sp.common.any')}"   />
-                                                           </radiogroup> 
-                                                          </hlayout>
-                                                        </row>
-                                                       <row id="rowSerial" visible="false">
-                                                        <label value="${c:l('sp.common.lot')}" sclass="lblbold"/>
-                                                        <textbox id="txtSerial" maxlength="45" width="320px" />
-                                                         </row>
-                                                        <row id="rowSerials" visible="false">
-                                                          <label value="${c:l('sp.common.serials')}" sclass="lblbold"/>
-                                     				    	<grid fixedLayout="true" id="gridSerials" height="200px" width="330px">
-															<columns >
-																<column width="300px" label="${c:l('sp.common.serial')}" />
-															</columns>
-															 <rows id="rows">
-																										       
-															 </rows> 													            
-													     </grid>
-		                                                 </row>
-                                                                                                   
+                                                            <label value="${c:l('sp.common.quantity')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <intbox id="intQuantity" width="320px" constraint="no empty: ${c:l('error.field.required')}"/>
+                                                                <label value="*" sclass="lblreq" />
+                                                                <label value="${c:l('sp.common.max45')}" sclass="lblexample"/>
+                                                            </hlayout>
+                                                        </row>                                               
+                                            			<row id="rowSerial" >
+                                                        	<label value="${c:l('sp.common.serial')}" sclass="lblbold"/>
+                                                        	<textbox id="txtSerial" maxlength="45" width="320px" />
+                                                        </row>  
+			                                              	                                                                                                 
                                                     </rows>
                                                 </grid>
+                                                
+                                           
                                                
                                             </vlayout>
                                         </div>

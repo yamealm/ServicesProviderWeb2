@@ -1,6 +1,7 @@
 package com.alodiga.services.provider.web.controllers;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import org.zkoss.util.resource.Labels;
@@ -16,6 +17,7 @@ import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Toolbarbutton;
 
+import com.alodiga.services.provider.commons.ejbs.CustomerEJB;
 import com.alodiga.services.provider.commons.ejbs.ProductEJB;
 import com.alodiga.services.provider.commons.ejbs.TransactionEJB;
 import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
@@ -43,6 +45,7 @@ public class ViewWaitController extends GenericAbstractAdminController {
     private Combobox cmbCategory;
     private Combobox cmbCondition;
     private Combobox cmbProvider;
+    private Combobox cmbCustomer;
     private Checkbox cbxExpiration;
     private Checkbox cbxCure;
     private Textbox txtAmount;
@@ -53,6 +56,7 @@ public class ViewWaitController extends GenericAbstractAdminController {
     private Textbox txtDescription;
     private Textbox txtPartNumber;
     private Textbox txtWorkOrder;
+    private Textbox txtWork;
     private Textbox txtInvoice;
     private Textbox txtObservation;
     private Textbox txtSerial;
@@ -62,12 +66,14 @@ public class ViewWaitController extends GenericAbstractAdminController {
     private Intbox intQuantity;
     private Datebox dtxExpiration;
     private Datebox dtxCure;
+    private Datebox dtxCreation;
     private Toolbarbutton viewDetail;
 
 
     private ProductEJB productEJB = null;
     private UtilsEJB utilsEJB = null;
     private TransactionEJB transactionEJB = null;
+    private CustomerEJB customerEJB = null;
     private ProductSerie productSerieParam;
     private List<Enterprise> enterprises;
     private List<Category> categories;
@@ -100,6 +106,9 @@ public class ViewWaitController extends GenericAbstractAdminController {
             productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
             utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
             transactionEJB = (TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
+            customerEJB = (CustomerEJB) EJBServiceLocator.getInstance().get(EjbConstants.CUSTOMER_EJB);
+            dtxExpiration.setValue(new Timestamp(new Date().getTime()));
+            dtxCure.setValue(new Timestamp(new Date().getTime()));
             loadData();
         } catch (Exception ex) {
             showError(ex);
@@ -209,6 +218,7 @@ public class ViewWaitController extends GenericAbstractAdminController {
                 loadCategory(productSerieParam.getCategory());
                 loadCondition(productSerieParam.getCondition());
                 loadProvider(productSerieParam.getProvider());
+                loadCustomer(productSerieParam.getCustomer());
                 blockFields();
                 break;
 
@@ -249,6 +259,8 @@ public class ViewWaitController extends GenericAbstractAdminController {
 			cbxCure.setChecked(true);
 		txtObservation.setText(productSerie.getBeginTransactionId().getObservation());
 		txtSerial.setText(productSerie.getSerie());
+		dtxCreation.setValue(productSerie.getCreationDate());
+		txtWorkOrder.setText(productSerie.getOrderWord());
     }
     
   
@@ -290,6 +302,27 @@ public class ViewWaitController extends GenericAbstractAdminController {
             }
             cmbCategory.setReadonly(true);
             cmbCategory.setDisabled(true);
+        } catch (Exception ex) {
+            showError(ex);
+        }
+    }
+    
+    private void loadCustomer(Customer customer) {
+        try {
+        	cmbCustomer.getItems().clear();
+        	EJBRequest request = new EJBRequest();
+        	customers = customerEJB.getCustomers(request);
+            for (Customer e : customers) {
+                Comboitem cmbItem = new Comboitem();
+                cmbItem.setLabel(e.getFirstName() + " " + e.getLastName());
+                cmbItem.setValue(e);
+                cmbItem.setParent(cmbCustomer);
+                if (customer != null && customer.getId().equals(e.getId())) {
+                	cmbCustomer.setSelectedItem(cmbItem);
+                } else {
+                	cmbCustomer.setSelectedIndex(0);
+                }
+            }
         } catch (Exception ex) {
             showError(ex);
         }
@@ -350,18 +383,20 @@ public class ViewWaitController extends GenericAbstractAdminController {
 			transaction.setProvider(provider);
 			transaction.setObservation(txtObservation.getText());
 			transaction.setInvoice(txtInvoice.getText());
+			transaction.setOrderWord(txtWorkOrder.getText());
+			transaction.setCreationDate(new Timestamp(dtxCreation.getValue().getTime()));
 			productSerie.setProvider(provider);
 			productSerie.setAmount(Float.valueOf(txtAmount.getText()));
 			productSerie.setQuantity(intQuantity.getValue());
 			productSerie.setCondition(condition);
 			productSerie.setSerie(txtSerial.getText());
+			productSerie.setOrderWord(txtWorkOrder.getText());
+			productSerie.setCreationDate(new Timestamp(dtxCreation.getValue().getTime()));
 			if (cbxExpiration.isChecked())
 				productSerie.setExpirationDate(new Timestamp(dtxExpiration.getValue().getTime()));
 			if (cbxCure.isChecked())
 				productSerie.setCure(new Timestamp(dtxCure.getValue().getTime()));
     		transaction = transactionEJB.modificarStock(transaction, productSerie);
-//            productParam = product;
-//            eventType = WebConstants.EVENT_EDIT;
     			this.showMessage(Labels.getLabel("sp.common.save.success"), false, null);
     		
         } catch (Exception ex) {
