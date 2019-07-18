@@ -39,7 +39,7 @@ import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Textbox;
 
-public class ListProductSerieController extends GenericAbstractListController<ProductSerie> {
+public class ReportWaitController extends GenericAbstractListController<ProductSerie> {
 
     private static final long serialVersionUID = -9145887024839938515L;
     private Listbox lbxReport;
@@ -98,7 +98,7 @@ public class ListProductSerieController extends GenericAbstractListController<Pr
             Map<String, Object> params = new HashMap<String, Object>();
             params.put(QueryConstants.PARAM_BEGINNING_DATE, dtbBeginningDate.getValue());
             params.put(QueryConstants.PARAM_ENDING_DATE, dtbEndingDate.getValue());
-            params.put(QueryConstants.PARAM_CATEGORY_ID, Category.STOCK);
+            params.put(QueryConstants.PARAM_CATEGORY_ID, Category.WAIT);
             if (dtbEndingDate.getValue().getTime() >= dtbBeginningDate.getValue().getTime()) {
               
                 if (cmbProvider.getSelectedItem() != null && cmbProvider.getSelectedIndex() != 0) {
