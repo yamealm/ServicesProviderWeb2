@@ -399,7 +399,7 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
             transaction.setAmount(Float.valueOf(txtAmount.getText()));
             transaction.setInvoice(txtInvoice.getText());
             transaction.setOrderWord(txtWorkOrder.getText());
-//            transaction.setWork(txtWork.getText());// agregar campo base da datos  trabajo a realizar
+            transaction.setWork(txtWork.getText());// agregar campo base da datos  trabajo a realizar
             productParam.setInictialAmount(productParam.getAmount());
             productParam.setAmount(Float.valueOf(txtAmount.getText()));
             productParam.setActNpNsn(txtactNpNsn.getText());
@@ -423,7 +423,7 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
 					productSerie.setCondition(condition);
 					productSerie.setCustomer(customer);
 					productSerie.setOrderWord(txtWorkOrder.getText());
-//					   productSerie.setWork(txtWork.getText());// agregar campo base da datos  trabajo a realizar
+					productSerie.setWork(txtWork.getText());// agregar campo base da datos  trabajo a realizar
 					productSerie.setCategory(category);
 					Row row = (Row) gridSerials.getRows().getChildren().get(i);
 					Textbox textbox = (Textbox) row.getChildren().get(0);

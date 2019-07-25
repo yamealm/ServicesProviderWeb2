@@ -547,6 +547,38 @@ ADD CONSTRAINT `fk_product_serie_customer`
 ALTER TABLE `services`.`product_serie` 
 ADD COLUMN `quarantineReason` VARCHAR(250) NULL DEFAULT NULL AFTER `orderWord`;
 
+ALTER TABLE `services`.`transaction` 
+ADD COLUMN `work` VARCHAR(150) CHARACTER SET 'latin1' COLLATE 'latin1_bin' NULL DEFAULT NULL AFTER `amount`;
+
+ALTER TABLE `services`.`product_serie` 
+ADD COLUMN `work` VARCHAR(150) CHARACTER SET 'latin1' COLLATE 'latin1_bin' NULL DEFAULT NULL AFTER `quarantineReason`;
+
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('221', '112', '1', 'View Transit', 'View Transit');
+UPDATE `services`.`permission_data` SET `permissionId` = '111', `alias` = 'Editar Stock', `description` = 'Editar Stock' WHERE (`id` = '220');
+UPDATE `services`.`permission_data` SET `alias` = 'View Stock', `description` = 'View Stock' WHERE (`id` = '217');
+UPDATE `services`.`permission_data` SET `alias` = 'Ver Stock', `description` = 'Ver Stock' WHERE (`id` = '218');
+UPDATE `services`.`permission_data` SET `alias` = 'Edit Stock', `description` = 'Edit Stock' WHERE (`id` = '219');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('222', '112', '2', 'Ver Transito', 'Ver Transito');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('223', '113', '1', 'Edit Transit', 'Edit Transit');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('224', '113', '2', 'Editar Transito', 'Editar Transito');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('225', '114', '1', 'View Quarantine', 'View Quarantine');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('226', '114', '2', 'Ver Cuarentena', 'Ver Cuarentena');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('227', '115', '1', 'Edit Quarantine', 'Edit Quarantine');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('228', '115', '2', 'Editar Cuarentena', 'Editar Cuarentena');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('229', '116', '1', 'View Wait', 'View Wait');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('230', '116', '2', 'Ver Espera', 'Ver Espera');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('231', '117', '1', 'Edit Wait', 'Edit Wait');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('232', '117', '2', 'Editar Espera', 'Editar Espera');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('233', '118', '1', 'View Metrological Control', 'View Metrological Control');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('234', '118', '2', 'Ver Control Metrologico', 'Ver Control Metrologico');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('235', '119', '1', 'Edit Metrological Control', 'Edit Metrological Control');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('236', '119', '2', 'Editar Control Metrologico', 'Editar Control Metrologico');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('237', '120', '1', 'Add Metrological Control', 'Add Metrological Control');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('238', '120', '2', 'Agregar Control Metrologico', 'Agregar Control Metrologico');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('239', '121', '1', 'Egress Metrological Control', 'Egress Metrological Control');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('240', '121', '2', 'Egresar Control Metrologico', 'Egresar Control Metrologico');
+
+
 
 
  

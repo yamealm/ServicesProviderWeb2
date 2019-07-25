@@ -403,9 +403,11 @@ public class AdminEgressUnitWaitController extends GenericAbstractAdminControlle
 			transaction.setObservation(txtObservation.getText());
 			transaction.setQuarantineReason(txtQuarantine.getText());
 			transaction.setOrderWord(txtWorkOrder.getText());
+			transaction.setWork(txtWork.getText());
 			productSerieParam.setQuarantineReason(txtQuarantine.getText());
 			productSerieParam.setEndingTransactionId(transaction);
 			productSerieParam.setOrderWord(txtWorkOrder.getText());
+			productSerieParam.setWork(txtWork.getText());
 			productSeries.add(productSerieParam);
     		transaction.setQuantity(intQuantity.getValue());
     		transaction = transactionEJB.saveEgressStock(transaction,productSeries);

@@ -112,9 +112,9 @@ public class ListEgressQuarantineController extends GenericAbstractListControlle
 
 
     public void loadData() {
+    	Listitem item = null;
         try {
             lbxRecords.getItems().clear();
-            Listitem item = null;
             List<ProductSerie> producSeries = transactionEJB.searchProductSerieByCategoryId(Category.QUARANTINE);
             if (producSeries != null && !producSeries.isEmpty()) {
                 btnDownload.setVisible(true);
@@ -146,7 +146,14 @@ public class ListEgressQuarantineController extends GenericAbstractListControlle
                 item.appendChild(new Listcell());
                 item.setParent(lbxRecords);
             }
-
+        } catch (EmptyListException ex) {
+        	btnDownload.setVisible(false);
+            item = new Listitem();
+            item.appendChild(new Listcell(Labels.getLabel("sp.error.empty.list")));
+            item.appendChild(new Listcell());
+            item.appendChild(new Listcell());
+            item.appendChild(new Listcell());
+            item.setParent(lbxRecords);
         } catch (Exception ex) {
             showError(ex);
         }
