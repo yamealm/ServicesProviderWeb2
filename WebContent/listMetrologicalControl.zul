@@ -41,6 +41,7 @@
                                                 <hlayout>
                                                     <!--Add button-->
                                                     <div align="left" width="495px">
+                                                        <button id="btnAdd" label="${c:l('sp.common.actions.add')}" width="80px" class="open orange" tooltiptext="${c:l('sp.common.actions.add.tooltip')}"/>
                                                     </div>
                                                     <!--Filters button-->
                                                     <div align="right" width="400px">
@@ -54,12 +55,15 @@
                                             <!--Record Listbox-->
                                             <listbox id="lbxRecords" fixedLayout="true" width="895px" height="530px">
                                                 <listhead>
-                                                    <listheader label="${c:l('sp.common.PartNumber')}" width="125px" sort="auto"/>
-                                                    <listheader label="${c:l('sp.common.descripton')}" width="225px" sort="auto"/>
-                                                    <listheader label="${c:l('sp.common.ubicationBox')}" width="120px" sort="auto"/>
-                                                    <listheader label="${c:l('sp.common.ubicationFolder')}" width="125px" sort="auto"/>
-                                                    <listheader label="${c:l('sp.common.amount')}" width="85px" sort="auto"/>
-                                                    <listheader label="${c:l('sp.common.stock')}" width="85px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.common.control.braund')}" width="125px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.common.control.model')}" width="225px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.common.control.serial')}" width="120px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.common.control.rank')}" width="125px" sort="auto"/>
+                                                     <listheader label="${c:l('sp.common.control.date.calibration')}" width="85px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.common.control.ubication')}" width="85px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.common.control.minimun.scale')}" width="85px" sort="auto"/>
+                                                    <listheader label="-" width="45px"/>
+                                                    <listheader label="-" width="45px"/>
                                                     <listheader label="-" width="45px"/>
                                                     
                                                 </listhead>

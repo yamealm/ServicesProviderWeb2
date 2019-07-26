@@ -3,8 +3,11 @@ package com.alodiga.services.provider.web.controllers;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
@@ -25,22 +28,32 @@ import com.alodiga.services.provider.commons.ejbs.CustomerEJB;
 import com.alodiga.services.provider.commons.ejbs.ProductEJB;
 import com.alodiga.services.provider.commons.ejbs.TransactionEJB;
 import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
+import com.alodiga.services.provider.commons.exceptions.EmptyListException;
 import com.alodiga.services.provider.commons.exceptions.NullParameterException;
 import com.alodiga.services.provider.commons.genericEJB.EJBRequest;
+import com.alodiga.services.provider.commons.models.Braund;
 import com.alodiga.services.provider.commons.models.Category;
 import com.alodiga.services.provider.commons.models.Condicion;
+import com.alodiga.services.provider.commons.models.ControlType;
+import com.alodiga.services.provider.commons.models.Country;
 import com.alodiga.services.provider.commons.models.Customer;
+import com.alodiga.services.provider.commons.models.EnterCalibration;
 import com.alodiga.services.provider.commons.models.Enterprise;
+import com.alodiga.services.provider.commons.models.MetrologicalControl;
+import com.alodiga.services.provider.commons.models.MetrologicalControlHistory;
+import com.alodiga.services.provider.commons.models.Model;
 import com.alodiga.services.provider.commons.models.Product;
 import com.alodiga.services.provider.commons.models.ProductHistory;
 import com.alodiga.services.provider.commons.models.ProductSerie;
 import com.alodiga.services.provider.commons.models.Provider;
+import com.alodiga.services.provider.commons.models.State;
 import com.alodiga.services.provider.commons.models.Transaction;
 import com.alodiga.services.provider.commons.models.TransactionType;
 import com.alodiga.services.provider.commons.models.User;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
 import com.alodiga.services.provider.commons.utils.GeneralUtils;
+import com.alodiga.services.provider.commons.utils.QueryConstants;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractAdminController;
 import com.alodiga.services.provider.web.utils.AccessControl;
 import com.alodiga.services.provider.web.utils.WebConstants;
@@ -48,57 +61,34 @@ import com.alodiga.services.provider.web.utils.WebConstants;
 public class AdminAddMetrologicalControlController extends GenericAbstractAdminController {
 
     private static final long serialVersionUID = -9145887024839938515L;
-    private Combobox cmbEnterprise;
-    private Combobox cmbCategory;
-    private Combobox cmbProvider;
-    private Combobox cmbCondition;
-    private Combobox cmbCustomer;
-//    private Checkbox cbxSerial;
-    private Checkbox cbxSerialVarius;
-    private Checkbox cbxExpiration;
-    private Checkbox cbxCure;
-    private Textbox txtAmount;
-    private Textbox txtBachNumber;
-    private Textbox txtUbicationFolder;
-    private Textbox txtUbicationBox;
-    private Textbox txtactNpNsn;
-    private Textbox txtDescription;
-    private Textbox txtPartNumber;
-    private Textbox txtSerial;
-    private Textbox txtInvoice;
+    private Combobox cmbBraund;
+    private Combobox cmbModel;
+    private Combobox cmbEnterCalibration;
+    private Combobox cmbType;
+    private Textbox txtSerilNumber;
+    private Textbox txtRank;
+    private Textbox txtUbication;
+    private Textbox txtScale;
     private Textbox txtObservation;
-    private Intbox intStockMax;
-    private Intbox intStockMin;
-    private Intbox intStock;
-    private Intbox intQuantity;
+    private Datebox dtxCalibration;
     private Datebox dtxExpiration;
-    private Datebox dtxCure;
     private Datebox dtxCreation;
-    private Radio ra1;
-    private Radio ra2;
-    private Radio ra3;
-    private Row rowSerial;
-    private Row rowSerials;
-    private Radiogroup radiogroup;
-    private Grid gridSerials;
-    private Rows rows;
-
+ 
     private ProductEJB productEJB = null;
     private UtilsEJB utilsEJB = null;
     private TransactionEJB transactionEJB = null;
-    private CustomerEJB customerEJB = null;
-    private Product productParam;
-    private List<Enterprise> enterprises;
-    private List<Category> categories;
-    private List<Provider> providers;
-    private List<Condicion> conditions;
-    private List<Customer> customers;
+    private MetrologicalControl metrologicalControlParam;
+    private List<Braund> braunds;
+    private List<Model> models;
+    private List<EnterCalibration> enterCalibrations;
+    private List<ControlType> controlTypes;
+
     private User user;
     private Button btnSave;
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
-        productParam = (Sessions.getCurrent().getAttribute("object") != null) ? (Product) Sessions.getCurrent().getAttribute("object") : null;
+        metrologicalControlParam = (Sessions.getCurrent().getAttribute("object") != null) ? (MetrologicalControl) Sessions.getCurrent().getAttribute("object") : null;
         user = AccessControl.loadCurrentUser();
         initialize();
         initView(eventType, "sp.crud.product");
@@ -117,9 +107,8 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
             productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
             utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
             transactionEJB = (TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
-            customerEJB = (CustomerEJB) EJBServiceLocator.getInstance().get(EjbConstants.CUSTOMER_EJB);
             dtxExpiration.setValue(new Timestamp(new Date().getTime()));
-            dtxCure.setValue(new Timestamp(new Date().getTime()));
+            dtxCalibration.setValue(new Timestamp(new Date().getTime()));
             dtxCreation.setValue(new Timestamp(new Date().getTime()));
             loadData();
         } catch (Exception ex) {
@@ -128,69 +117,39 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
     }
 
     public void clearFields() {
-		cbxExpiration.setChecked(false);
-		cbxCure.setChecked(false);
-		cbxSerialVarius.setChecked(false);
-		intQuantity.setRawValue(null);
-		txtBachNumber.setRawValue(null);
-		txtUbicationFolder.setRawValue(null);
-		txtUbicationBox.setRawValue(null);
-		txtSerial.setRawValue(null);
-		txtactNpNsn.setRawValue(null);
-		txtDescription.setRawValue(null);
-		txtPartNumber.setRawValue(null);
-    	intStockMax.setRawValue(null);
-    	intStockMin.setRawValue(null);
-    	txtInvoice.setRawValue(null);
+    	txtSerilNumber.setRawValue(null);
+    	txtScale.setRawValue(null);
+    	txtRank.setRawValue(null);
+    	txtUbication.setRawValue(null);
     	txtObservation.setRawValue(null);
-    }
+	 }
 
     public void blockFields() {
 
-    	intStock.setReadonly(true);
-		txtDescription.setReadonly(true);
-		txtPartNumber.setReadonly(true);
+
     }
 
     public Boolean validateEmpty() {
-    	if (txtBachNumber.getText().isEmpty()) {
-        	txtBachNumber.setFocus(true);
+    	if (txtRank.getText().isEmpty()) {
+    		txtRank.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        } if (txtUbicationFolder.getText().isEmpty()) {
-        	txtUbicationFolder.setFocus(true);
+        } if (txtSerilNumber.getText().isEmpty()) {
+        	txtSerilNumber.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        } if (txtUbicationBox.getText().isEmpty()) {
-        	txtUbicationBox.setFocus(true);
+        } if (cmbBraund.getText().isEmpty()) {
+        	cmbBraund.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        } if (txtactNpNsn.getText().isEmpty()) {
-        	txtactNpNsn.setFocus(true);
+        } if (cmbModel.getText().isEmpty()) {
+        	cmbModel.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        } if (txtDescription.getText().isEmpty()) {
-        	txtDescription.setFocus(true);
+        } if (cmbEnterCalibration.getText().isEmpty()) {
+        	cmbEnterCalibration.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        }if (txtPartNumber.getText().isEmpty()) {
-        	txtPartNumber.setFocus(true);
+        }if (txtUbication.getText().isEmpty()) {
+        	txtUbication.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null); 
-        }if (intStockMax.getText().isEmpty()) {
-        	intStockMax.setFocus(true);
-            this.showMessage("sp.error.field.cannotNull", true, null);
-        }if (intStockMin.getText().isEmpty()) {
-        	intStockMin.setFocus(true);
-            this.showMessage("sp.error.field.cannotNull", true, null);
-        } if (txtPartNumber.getText().isEmpty()) {
-        	txtPartNumber.setFocus(true);
-            this.showMessage("sp.error.field.cannotNull", true, null);
-        }if (intStockMin.getValue()>intStockMax.getValue()) {
-        	intStockMin.setFocus(true);
-            this.showMessage("sp.common.stock.min.error", true, null);
-        }if (!GeneralUtils.isNumeric(txtAmount.getText())) {
-        	txtAmount.setFocus(true);
-            this.showMessage("sp.error.field.number", true, null);
-        }if (!GeneralUtils.isNumeric(intQuantity.getText())) {
-        	intQuantity.setFocus(true);
-            this.showMessage("sp.error.field.number", true, null);
-        }if (intQuantity.getText().isEmpty()) {
-        	intQuantity.setFocus(true);
+        }if (cmbType.getText().isEmpty()) {
+        	cmbType.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
         }
         
@@ -209,7 +168,7 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
                     saveProduct(null);
                     break;
                 case WebConstants.EVENT_EDIT:
-                    saveProduct(null);
+                    saveProduct(metrologicalControlParam);
                     break;
                 default:
                     break;
@@ -226,21 +185,22 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
     public void loadData() {
         switch (eventType) {
             case WebConstants.EVENT_DELETE:
-                loadFields(productParam);
-                loadEnterprises(productParam.getEnterprise());
+                loadFields(metrologicalControlParam);
+                loadBraunds(metrologicalControlParam.getBraund());
                 break;
             case WebConstants.EVENT_VIEW:
-                loadFields(productParam);
-                loadEnterprises(productParam.getEnterprise());
+                loadFields(metrologicalControlParam);
+                loadBraunds(metrologicalControlParam.getBraund());
+                loadControlType(metrologicalControlParam.getControlType());
+                loadEnterCalibration(metrologicalControlParam.getEnterCalibration());
                 blockFields();
                 break;
             case WebConstants.EVENT_ADD:
-            	loadFields(productParam);
-                loadEnterprises(productParam.getEnterprise());
-                loadCondition(null);
-                loadCategory(null);
-                loadProvider(null);
-                loadCustomer(null);
+            	loadFields(metrologicalControlParam);
+            	loadBraunds(null);
+                loadControlType(null);
+                loadEnterCalibration(null);
+
                 blockFields();
                 break;
             default:
@@ -249,81 +209,105 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
     }
 
     
-    public void loadFields(Product product) {
+    public void loadFields(MetrologicalControl metrologicalControlParam) {
     	
-    	intStockMax.setValue(product.getStockMax());
-    	intStockMin.setValue(product.getStockMin());
-    	txtAmount.setText(String.valueOf(product.getAmount()));
-		txtBachNumber.setText(product.getBatchNumber());
-		txtUbicationFolder.setText(product.getUbicationFolder());
-		txtUbicationBox.setText(product.getUbicationBox());
-		txtactNpNsn.setText(product.getActNpNsn());
-		txtDescription.setText(product.getDescription());
-		txtPartNumber.setText(product.getPartNumber());
-		try {
-    		int  quantity = transactionEJB.loadQuantityByProductId(product.getId(), Category.METEOROLOGICAL_CONTROL);
-    		intStock.setValue(quantity);
-    	} catch (Exception ex) {
-    		intStock.setValue(0);
-        }
+    	loadBraunds(metrologicalControlParam.getBraund());
+    	loadControlType(metrologicalControlParam.getControlType());
+    	loadEnterCalibration(metrologicalControlParam.getEnterCalibration());
+    	txtSerilNumber.setText(metrologicalControlParam.getSerie());
+    	txtRank.setText(metrologicalControlParam.getRange());
+    	
+    	txtSerilNumber.setText(metrologicalControlParam.getSerie());
+    	dtxCreation.setValue(metrologicalControlParam.getCreationDate());
+    	//buscar el ultimo
+    	MetrologicalControlHistory history = transactionEJB.loadLastMetrologicalControlHistoryByMetrologicalControlId(metrologicalControlParam.getId());
+    	dtxCalibration.setValue(history.getCalibrationDate());
+    	dtxExpiration.setValue(history.getExpirationDate());
+    	
+    	txtUbication.setText(metrologicalControlParam.getUbication());
+    	txtScale.setText(metrologicalControlParam.getScale());
+    	txtObservation.setText(history.getObservation()); ///buscar el ultimo
+    	
+		
     }
 
 
-    private void loadEnterprises(Enterprise enterprise) {
+    private void loadBraunds(Braund braund) {
         try {
-            cmbEnterprise.getItems().clear();
-            enterprises = utilsEJB.getEnterprises();
-            for (Enterprise e : enterprises) {
+            cmbBraund.getItems().clear();
+            braunds = utilsEJB.getBraund();
+            for (Braund e : braunds) {
                 Comboitem cmbItem = new Comboitem();
                 cmbItem.setLabel(e.getName());
                 cmbItem.setValue(e);
-                cmbItem.setParent(cmbEnterprise);
-                if (enterprise != null && enterprise.getId().equals(e.getId())) {
-                    cmbEnterprise.setSelectedItem(cmbItem);
+                cmbItem.setParent(cmbBraund);
+                if (braund != null && braund.getId().equals(e.getId())) {
+                	cmbBraund.setSelectedItem(cmbItem);
                 } else {
-                    cmbEnterprise.setSelectedIndex(0);
+                	cmbBraund.setSelectedIndex(0);
                 }
             }
+            loadModel(braund, metrologicalControlParam.getModel());
         } catch (Exception ex) {
             showError(ex);
         }
     }
 
-    private void loadCategory(Category category) {
+       
+    private void loadModel(Braund braund, Model model) {
+
+
+            try {
+            	cmbModel.getItems().clear();
+                models = utilsEJB.getModelByBraund(braund.getId());
+                for (int i = 0; i < models.size(); i++) {
+                    Comboitem item = new Comboitem();
+                    item.setValue(models.get(i));
+                    item.setLabel(models.get(i).getName());
+                    item.setParent(cmbModel);
+                    if (models.get(i).getId().equals(models.getId())) {
+                    	cmbModel.setSelectedItem(item);
+                    }
+                }
+            } catch (Exception ex) {
+                ex.getStackTrace();
+            }
+        
+    }
+    
+    private void loadControlType(ControlType controlType) {
         try {
-        	cmbCategory.getItems().clear();
-        	categories = transactionEJB.getCategories();
-            for (Category e : categories) {
+        	cmbType.getItems().clear();
+        	controlTypes = utilsEJB.getControlTypes();
+            for (ControlType e : controlTypes) {
                 Comboitem cmbItem = new Comboitem();
                 cmbItem.setLabel(e.getName());
                 cmbItem.setValue(e);
-                cmbItem.setParent(cmbCategory);
-                if (category != null && category.getId().equals(e.getId())) {
-                	cmbCategory.setSelectedItem(cmbItem);
-                } else if(e.getId().equals(Category.METEOROLOGICAL_CONTROL)){
-                	cmbCategory.setSelectedItem(cmbItem);
+                cmbItem.setParent(cmbType);
+                if (controlType != null && controlType.getId().equals(e.getId())) {
+                	cmbType.setSelectedItem(cmbItem);
+                } else {
+                	cmbType.setSelectedIndex(0);
                 }
             }
-            cmbCategory.setReadonly(true);
-            cmbCategory.setDisabled(true);
         } catch (Exception ex) {
             showError(ex);
         }
     }
     
-    private void loadCondition(Condicion condition) {
+    private void loadEnterCalibration(EnterCalibration enterCalibration) {
         try {
-        	cmbCondition.getItems().clear();
-        	conditions = transactionEJB.getConditions();
-            for (Condicion e : conditions) {
+        	cmbEnterCalibration.getItems().clear();
+        	enterCalibrations = utilsEJB.getEnterCalibrations();
+            for (EnterCalibration e : enterCalibrations) {
                 Comboitem cmbItem = new Comboitem();
                 cmbItem.setLabel(e.getName());
                 cmbItem.setValue(e);
-                cmbItem.setParent(cmbCondition);
-                if (condition != null && condition.getId().equals(e.getId())) {
-                	cmbCondition.setSelectedItem(cmbItem);
+                cmbItem.setParent(cmbEnterCalibration);
+                if (enterCalibration != null && enterCalibration.getId().equals(e.getId())) {
+                	cmbEnterCalibration.setSelectedItem(cmbItem);
                 } else {
-                	cmbCondition.setSelectedIndex(0);
+                	cmbEnterCalibration.setSelectedIndex(0);
                 }
             }
         } catch (Exception ex) {
@@ -331,132 +315,37 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
         }
     }
     
-    private void loadProvider(Provider provider) {
-        try {
-        	cmbProvider.getItems().clear();
-        	EJBRequest request = new EJBRequest();
-        	providers = productEJB.getProviders(request);
-            for (Provider e : providers) {
-                Comboitem cmbItem = new Comboitem();
-                cmbItem.setLabel(e.getName());
-                cmbItem.setValue(e);
-                cmbItem.setParent(cmbProvider);
-                if (provider != null && provider.getId().equals(e.getId())) {
-                	cmbProvider.setSelectedItem(cmbItem);
-                } else {
-                	cmbProvider.setSelectedIndex(0);
-                }
-            }
-        } catch (Exception ex) {
-            showError(ex);
-        }
-    }
-
-    private void loadCustomer(Customer customer) {
-        try {
-        	cmbCustomer.getItems().clear();
-        	EJBRequest request = new EJBRequest();
-        	customers = customerEJB.getCustomers(request);
-            for (Customer e : customers) {
-                Comboitem cmbItem = new Comboitem();
-                cmbItem.setLabel(e.getFirstName() + " " + e.getLastName());
-                cmbItem.setValue(e);
-                cmbItem.setParent(cmbCustomer);
-                if (customer != null && customer.getId().equals(e.getId())) {
-                	cmbCustomer.setSelectedItem(cmbItem);
-                } else {
-                	cmbCustomer.setSelectedIndex(0);
-                }
-            }
-        } catch (Exception ex) {
-            showError(ex);
-        }
-    }
-
-    private void saveProduct(Transaction _transaction) {
-        Transaction transaction = new Transaction();
+    private void saveMtreologicalControl(MetrologicalControl _metrologicalControl) {
+    	MetrologicalControl metrologicalControl = new MetrologicalControl();
         try {
 
-            if (_transaction != null) 
-            	transaction.setId(_transaction.getId());
-            Category category = new Category();
-            category.setId(((Category) cmbCategory.getSelectedItem().getValue()).getId());
-            transaction.setCategory(category);
-            Condicion condition = new Condicion();
-            condition.setId(((Condicion) cmbCondition.getSelectedItem().getValue()).getId());
-            transaction.setCondition(condition);
-//            Customer customer = new Customer();
-//            customer.setId(((Customer) cmbCustomer.getSelectedItem().getValue()).getId());
-            transaction.setCustomer(null);
-            Provider provider = new Provider();
-            provider.setId(((Provider) cmbProvider.getSelectedItem().getValue()).getId());
-            transaction.setProvider(provider);
-            transaction.setUser(user);
-            transaction.setCreationDate(new Timestamp(dtxCreation.getValue().getTime()));
-            transaction.setQuantity(intQuantity.getValue());
-            TransactionType transactionType = new TransactionType();
-            transactionType.setId(TransactionType.ADD);
-            transaction.setTransactionType(transactionType);
-            transaction.setAmount(Float.valueOf(txtAmount.getText()));
-            transaction.setInvoice(txtInvoice.getText());
-            productParam.setInictialAmount(productParam.getAmount());
-            productParam.setAmount(Float.valueOf(txtAmount.getText()));
-            productParam.setActNpNsn(txtactNpNsn.getText());
-            productParam.setBatchNumber(txtBachNumber.getText());
-            productParam.setRealAmount(Float.valueOf(txtAmount.getText()));
-            productParam.setUbicationBox(txtUbicationBox.getText());
-            productParam.setUbicationFolder(txtUbicationFolder.getText());
-            productParam.setStockMax(intStockMin.getValue());
-            productParam.setStockMin(intStockMin.getValue());
-            transaction.setProduct(productParam);
-			List<ProductSerie> productSeries = new ArrayList<ProductSerie>();
-			if (ra2.isChecked()) {
-				for (int i = 0; i < intQuantity.getValue(); i++) {
-					ProductSerie productSerie = new ProductSerie();
-					productSerie.setProduct(productParam);
-					productSerie.setProvider(provider);
-					productSerie.setBeginTransactionId(transaction);
-					productSerie.setCreationDate(new Timestamp(dtxCreation.getValue().getTime()));
-					productSerie.setAmount(Float.valueOf(txtAmount.getText()));
-					productSerie.setQuantity(1);
-					productSerie.setCondition(condition);
-					productSerie.setCategory(category);
-					Row row = (Row) gridSerials.getRows().getChildren().get(i);
-					Textbox textbox = (Textbox) row.getChildren().get(0);
-					if (textbox.getText().isEmpty())
-						throw  new NullParameterException("Serial vacio");
-					productSerie.setSerie(textbox.getText());
-					if (cbxExpiration.isChecked())
-						productSerie.setExpirationDate(new Timestamp(dtxExpiration.getValue().getTime()));
-					if (cbxCure.isChecked())
-						productSerie.setCure(new Timestamp(dtxCure.getValue().getTime()));
-					productSeries.add(productSerie);
-				}
-			} else {
-				ProductSerie productSerie = new ProductSerie();
-				productSerie.setProduct(productParam);
-				productSerie.setProvider(provider);
-				productSerie.setBeginTransactionId(transaction);
-				productSerie.setCreationDate(new Timestamp(dtxCreation.getValue().getTime()));
-				productSerie.setAmount(Float.valueOf(txtAmount.getText()));
-				productSerie.setQuantity(intQuantity.getValue());
-				productSerie.setCondition(condition);
-				productSerie.setCategory(category);
-				if (ra1.isChecked()) {
-					if (txtSerial.getText().isEmpty())
-						throw  new NullParameterException("Serial vacio");
-					productSerie.setSerie(txtSerial.getText());
-				}
-				if (cbxExpiration.isChecked())
-					productSerie.setExpirationDate(new Timestamp(dtxExpiration.getValue().getTime()));
-				if (cbxCure.isChecked())
-					productSerie.setCure(new Timestamp(dtxCure.getValue().getTime()));
-				productSeries.add(productSerie);
-			}
+            if (_metrologicalControl != null) 
+            	metrologicalControl.setId(_metrologicalControl.getId());
+            Braund braund = new Braund();
+            braund.setId(((Braund) cmbBraund.getSelectedItem().getValue()).getId());
+            metrologicalControl.setBraund(braund);
+            Model model = new Model();
+            model.setId(((Model) cmbModel.getSelectedItem().getValue()).getId());
+            metrologicalControl.setModel(model);
+            EnterCalibration enterCalibration = new EnterCalibration();
+            enterCalibration.setId(((EnterCalibration) cmbEnterCalibration.getSelectedItem().getValue()).getId());
+            metrologicalControl.setEnterCalibration(enterCalibration);
+            ControlType controlType = new ControlType();
+            controlType.setId(((ControlType) cmbType.getSelectedItem().getValue()).getId());
+            metrologicalControl.setControlType(controlType);
+            metrologicalControl.setSerie(txtSerilNumber.getText());
+            metrologicalControl.setRange(txtRank.getText());
+            metrologicalControl.setCreationDate(new Timestamp((new java.util.Date().getTime())));
+            metrologicalControl.setScale(txtScale.getText());
+            metrologicalControl.setUbication(txtUbication.getText());
+            metrologicalControl.setEnabled(true);
 
-            transaction = transactionEJB.saveTransactionStock(transaction,productSeries);
-//            productParam = product;
-//            eventType = WebConstants.EVENT_EDIT;
+            MetrologicalControlHistory metrologicalControlHistory = new MetrologicalControlHistory();
+            metrologicalControlHistory.setCreationDate(new Timestamp((new java.util.Date().getTime())));
+            metrologicalControlHistory.setCalibrationDate(new Timestamp(dtxCalibration.getValue().getTime()));
+            metrologicalControlHistory.setExpirationDate(new Timestamp(dtxExpiration.getValue().getTime()));
+            metrologicalControl = transactionEJB.saveMetrologicalControl(metrologicalControl,metrologicalControlHistory);
+
             this.showMessage("sp.common.save.success", false, null);
         } catch (NullParameterException ex) {
         	showMessage("sp.error.field.number", true, null);
@@ -465,70 +354,5 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
         }
     }
     
-    public void onCheck$cbxExpiration(){
-    	if (cbxExpiration.isChecked())
-    		dtxExpiration.setVisible(true);
-    	else
-    		dtxExpiration.setVisible(false);
-    }
-    
-    public void onCheck$cbxCure(){
-    	if (cbxCure.isChecked())
-    		dtxCure.setVisible(true);
-    	else
-    		dtxCure.setVisible(false);
-    }
-    
-    
-    public void onCheck$radiogroup(){
-    	if (intQuantity.getText().isEmpty()) {
-    		ra1.setChecked(false);
-    		ra2.setChecked(false);
-    		intQuantity.setFocus(true);
-    		 this.showMessage("sp.error.field.cannotNull", true, null);
-		} else {
-			if (ra1.isChecked()) {
-				rowSerial.setVisible(true);
-				rowSerials.setVisible(false);
-			} else if (ra2.isChecked()) {
-				rows.getChildren().clear();
-				rows.setParent(gridSerials);
-				for (int i = 0; i < intQuantity.getValue(); i++) {
-					Row row = new Row();
-					row.setHeight("40px");
-					Textbox textbox = new Textbox();
-					textbox.setParent(row);
-					row.setParent(rows);
-				}
-				rowSerials.setVisible(true);
-				rowSerial.setVisible(false);
-			}else if (ra3.isChecked()) {
-				rowSerials.setVisible(false);
-				rowSerial.setVisible(false);
-			}
-		}
-    }
-    
-	public void onChange$intQuantity() {
-		if (ra1.isChecked()) {
-			rowSerial.setVisible(true);
-			rowSerials.setVisible(false);
-		} else if (ra2.isChecked()) {
-			rows.getChildren().clear();
-			rows.setParent(gridSerials);
-			for (int i = 0; i < intQuantity.getValue(); i++) {
-				Row row = new Row();
-				row.setHeight("40px");
-				Textbox textbox = new Textbox();
-				textbox.setParent(row);
-				row.setParent(rows);
-			}
-			rowSerials.setVisible(true);
-			rowSerial.setVisible(false);
-		} else if (ra3.isChecked()) {
-			rowSerials.setVisible(false);
-			rowSerial.setVisible(false);
-		}
-
-	}
+  
 }

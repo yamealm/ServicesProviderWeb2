@@ -579,6 +579,68 @@ INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `a
 INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('240', '121', '2', 'Egresar Control Metrologico', 'Egresar Control Metrologico');
 
 
+CREATE TABLE `services`.`braund` (
+  `id` int(5) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
+CREATE TABLE `services`. `model`(
+  `id` int(5) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  `braundI` int(5) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_braund_model` (`braundI`),
+  CONSTRAINT `fk_braund_model` FOREIGN KEY (`braundI`) REFERENCES `braund` (`id`)
+) ENGINE=InnoDB;
+
+CREATE TABLE `services`. `enter_calibration`(
+  `id` int(5) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
+CREATE TABLE `services`. `control_type`(
+  `id` int(5) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
 
 
- 
+CREATE TABLE `services`.`metrological_control` (
+  `id` bigint(3) NOT NULL AUTO_INCREMENT,
+  `braunId` int(5) NOT NULL,
+  `modelId` int(5) NOT NULL,
+  `name` varchar(75) CHARACTER SET latin1 COLLATE latin1_bin DEFAULT NULL,
+  `serie` varchar(45) CHARACTER SET latin1 COLLATE latin1_bin DEFAULT NULL,
+  `rango` varchar(45) CHARACTER SET latin1 COLLATE latin1_bin DEFAULT NULL,
+  `creationDate` datetime NOT NULL,
+  `enterCalibrationId` int(5) NOT NULL,
+  `ubication` varchar(75) CHARACTER SET latin1 COLLATE latin1_bin DEFAULT NULL,
+  `scale` varchar(75) CHARACTER SET latin1 COLLATE latin1_bin DEFAULT NULL,
+  `controlTypeId` int(5) DEFAULT NULL,
+  `enabled` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_metrological_control_braund` (`braunId`),
+  KEY `fk_metrological_control_model` (`modelId`),
+  KEY `fk_metrological_control_enterCalibration` (`enterCalibrationId`),
+  KEY `fk_metrological_control_controlType` (`controlTypeId`),
+  CONSTRAINT `fk_metrological_control_braund` FOREIGN KEY (`braunId`) REFERENCES `braund` (`id`),
+  CONSTRAINT `fk_metrological_control_model` FOREIGN KEY (`modelId`) REFERENCES `model` (`id`),
+  CONSTRAINT `fk_metrological_control_enterCalibration` FOREIGN KEY (`enterCalibrationId`) REFERENCES `enter_calibration` (`id`),
+  CONSTRAINT `fk_metrological_control_controlType` FOREIGN KEY (`controlTypeId`) REFERENCES `control_type` (`id`)
+) ENGINE=InnoDB;
+
+
+CREATE TABLE `services`.`metrological_control_history` (
+  `id` bigint(3) NOT NULL AUTO_INCREMENT,
+  `metrologicalControlId` bigint(3) NOT NULL,
+  `creationDate` datetime NOT NULL,
+  `calibrationDate` datetime NOT NULL,
+  `calibrationDateOld` datetime NOT NULL,
+  `expirationDate` datetime DEFAULT NULL,
+  `observation` varchar(150) CHARACTER SET latin1 COLLATE latin1_bin DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_metrological_control_history` (`metrologicalControlId`),
+  CONSTRAINT `fk_metrological_control_history` FOREIGN KEY (`metrologicalControlId`) REFERENCES `metrological_control` (`id`)
+) ENGINE=InnoDB;

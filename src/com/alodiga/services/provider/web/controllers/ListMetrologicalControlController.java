@@ -1,11 +1,14 @@
 package com.alodiga.services.provider.web.controllers;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
@@ -21,13 +24,17 @@ import com.alodiga.services.provider.commons.models.Category;
 import com.alodiga.services.provider.commons.models.Enterprise;
 import com.alodiga.services.provider.commons.models.Permission;
 import com.alodiga.services.provider.commons.models.Product;
+import com.alodiga.services.provider.commons.models.MetrologicalControl;
+import com.alodiga.services.provider.commons.models.MetrologicalControlHistory;
 import com.alodiga.services.provider.commons.models.ProductHistory;
 import com.alodiga.services.provider.commons.models.Profile;
 import com.alodiga.services.provider.commons.models.Provider;
 import com.alodiga.services.provider.commons.models.User;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
+import com.alodiga.services.provider.web.components.ChangeStatusButton;
 import com.alodiga.services.provider.web.components.ListcellAddButton;
+import com.alodiga.services.provider.web.components.ListcellEditButton;
 import com.alodiga.services.provider.web.components.ListcellRemoveButton;
 import com.alodiga.services.provider.web.components.ListcellViewButton;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractListController;
@@ -42,7 +49,7 @@ public class ListMetrologicalControlController extends GenericAbstractListContro
     private Textbox txtAlias;
     private ProductEJB productEJB = null;
     private TransactionEJB transactionEJB = null;
-    private List<Product> products = null;
+    private List<MetrologicalControl> metrologicalControls = null;
     private User currentUser;
     private Profile currentProfile;
 
@@ -55,10 +62,10 @@ public class ListMetrologicalControlController extends GenericAbstractListContro
     @Override
     public void checkPermissions() {
         try {
-            permissionAdd = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.ADD_STOCK);
-            permissionDelete = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.REMOVE_STOCK);
-            permissionRead = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.VIEW_STOCK);
-//            permissionEdit = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.EDIT_STOCK);
+            permissionAdd = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.ADD_METEOROLOGICAL_CONTROL);
+            permissionDelete = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.REMOVE_METEOROLOGICAL_CONTROL);
+            permissionRead = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.VIEW_METEOROLOGICAL_CONTROL);
+            permissionEdit = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.EDIT_METEOROLOGICAL_CONTROL);
         } catch (Exception ex) {
             showError(ex);
         }
@@ -81,17 +88,17 @@ public class ListMetrologicalControlController extends GenericAbstractListContro
             loadPermission(new Provider());
             startListener();
             getData();
-            loadList(products);
+            loadList(metrologicalControls);
         } catch (Exception ex) {
             showError(ex);
         }
     }
 
-    public List<Product> getFilteredList(String filter) {
-        List<Product> auxList = new ArrayList<Product>();
-        for (Iterator<Product> i = products.iterator(); i.hasNext();) {
-            Product tmp = i.next();
-            String field = tmp.getDescription().toLowerCase();
+    public List<MetrologicalControl> getFilteredList(String filter) {
+        List<MetrologicalControl> auxList = new ArrayList<MetrologicalControl>();
+        for (Iterator<MetrologicalControl> i = metrologicalControls.iterator(); i.hasNext();) {
+        	MetrologicalControl tmp = i.next();
+            String field = tmp.getBraund().toLowerCase();
             if (field.indexOf(filter.trim().toLowerCase()) >= 0) {
                 auxList.add(tmp);
             }
@@ -100,31 +107,33 @@ public class ListMetrologicalControlController extends GenericAbstractListContro
     }
 
 
-    public void loadList(List<Product> list) {
+    public void loadList(List<MetrologicalControl> list) {
         try {
             lbxRecords.getItems().clear();
             Listitem item = null;
             int stock = 0;
             if (list != null && !list.isEmpty()) {
                 btnDownload.setVisible(true);
-                for (Product product : list) {
-                	try {
-                		int  currentQuantity = transactionEJB.loadQuantityByProductId(product.getId(), Category.METEOROLOGICAL_CONTROL);
-                		stock = currentQuantity;
-                	} catch (Exception ex) {
-                		stock = 0;
-                    }
+                for (MetrologicalControl metrologicalControl : list) {
+                
                     item = new Listitem();
-                    item.setValue(product);
-                    item.appendChild(new Listcell(product.getPartNumber()));
-                    item.appendChild(new Listcell(product.getDescription()));
-                    item.appendChild(new Listcell(product.getUbicationBox()));
-                    item.appendChild(new Listcell(product.getUbicationFolder()));
-                    item.appendChild(new Listcell(String.valueOf(product.getAmount())));
-                    item.appendChild(new Listcell(String.valueOf(stock)));
-                    item.appendChild(permissionAdd ? new ListcellAddButton("adminAddMetrologicalControl.zul", product,Permission.ADD_METEOROLOGICAL_CONTROL) : new Listcell());
-//                    item.appendChild(permissionDelete && stock>0? new ListcellRemoveButton("adminEgressMeteorologicalControl.zul", product,Permission.REMOVE_METEOROLOGICAL_CONTROL) : new Listcell());
-//                    item.appendChild(permissionRead  && stock>0? new ListcellViewButton("listAddMeteorologicalControl.zul", product,Permission.VIEW_METEOROLOGICAL_CONTROL) : new Listcell());
+                    item.setValue(metrologicalControl);
+                    item.appendChild(new Listcell(metrologicalControl.getBraund().getName()));
+                    item.appendChild(new Listcell(metrologicalControl.getModel().getName()));
+                    item.appendChild(new Listcell(metrologicalControl.getSerie()));
+                    item.appendChild(new Listcell(metrologicalControl.getRange()));
+                    MetrologicalControlHistory history = transactionEJB.loadLastMetrologicalControlHistoryByMetrologicalControlId(metrologicalControlParam.getId());
+                    String date = null;
+                    if (history != null) {
+						SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+						date = df.format(history.getCalibrationDate().getTime());
+					}
+                    item.appendChild(new Listcell(date));
+                    item.appendChild(new Listcell(metrologicalControl.getUbication()));
+                    item.appendChild(new Listcell(metrologicalControl.getScale()));
+                    item.appendChild(permissionChangeStatus ? initEnabledButton(metrologicalControl.isEnabled(), item) : new Listcell());
+                    item.appendChild(permissionEdit ? new ListcellEditButton(adminPage, metrologicalControl,Permission.EDIT_METEOROLOGICAL_CONTROL) : new Listcell());
+                    item.appendChild(permissionRead ? new ListcellViewButton(adminPage, metrologicalControl,Permission.VIEW_METEOROLOGICAL_CONTROL) : new Listcell());
                     item.setParent(lbxRecords);
                 }
             } else {
@@ -141,14 +150,44 @@ public class ListMetrologicalControlController extends GenericAbstractListContro
             showError(ex);
         }
     }
+    
+    private Listcell initEnabledButton(final Boolean enabled, final Listitem listItem) {
+        Listcell cell = new Listcell();
+        cell.setValue("");
+        final ChangeStatusButton button = new ChangeStatusButton(enabled);
+        button.setTooltiptext(Labels.getLabel("sp.common.actions.changeStatus"));
+        button.setClass("open orange");
+        button.addEventListener("onClick", new EventListener() {
+            public void onEvent(Event event) throws Exception {
+                changeStatus(button, listItem);
+            }
+        });
+
+        button.setParent(cell);
+        return cell;
+    }
+    
+    private void changeStatus(ChangeStatusButton button, Listitem listItem) {
+        try {
+            Product product = (Product) listItem.getValue();
+            button.changeImageStatus(product.getEnabled());
+            product.setEnabled(!product.getEnabled());
+            listItem.setValue(product);
+            request.setParam(product);
+            productEJB.saveProduct(request);
+            AccessControl.saveAction(Permission.CHANGE_PRODUCT_STATUS, "changeStatus product = " + product.getId() + " to status = " + !product.getEnabled());
+        } catch (Exception ex) {
+            showError(ex);
+        }
+    }
 
     public void getData() {
-        products = new ArrayList<Product>();
+    	metrologicalControls = new ArrayList<MetrologicalControl>();
         try {
             request.setFirst(0);
             request.setLimit(null);
             request.setAuditData(null);
-            products = transactionEJB.listProducts();
+            metrologicalControls = transactionEJB.searchMetrologicalControl(request);
         } catch (NullParameterException ex) {
             showError(ex);
         } catch (EmptyListException ex) {
