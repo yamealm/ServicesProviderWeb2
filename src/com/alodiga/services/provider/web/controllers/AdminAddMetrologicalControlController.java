@@ -1,59 +1,32 @@
 package com.alodiga.services.provider.web.controllers;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
-import org.zkoss.zul.Button;
-import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Datebox;
-import org.zkoss.zul.Grid;
-import org.zkoss.zul.Intbox;
-import org.zkoss.zul.Radio;
-import org.zkoss.zul.Radiogroup;
-import org.zkoss.zul.Row;
-import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 
-import com.alodiga.services.provider.commons.ejbs.CustomerEJB;
-import com.alodiga.services.provider.commons.ejbs.ProductEJB;
 import com.alodiga.services.provider.commons.ejbs.TransactionEJB;
 import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
 import com.alodiga.services.provider.commons.exceptions.EmptyListException;
 import com.alodiga.services.provider.commons.exceptions.NullParameterException;
-import com.alodiga.services.provider.commons.genericEJB.EJBRequest;
 import com.alodiga.services.provider.commons.models.Braund;
-import com.alodiga.services.provider.commons.models.Category;
-import com.alodiga.services.provider.commons.models.Condicion;
 import com.alodiga.services.provider.commons.models.ControlType;
 import com.alodiga.services.provider.commons.models.Country;
-import com.alodiga.services.provider.commons.models.Customer;
 import com.alodiga.services.provider.commons.models.EnterCalibration;
-import com.alodiga.services.provider.commons.models.Enterprise;
 import com.alodiga.services.provider.commons.models.MetrologicalControl;
 import com.alodiga.services.provider.commons.models.MetrologicalControlHistory;
 import com.alodiga.services.provider.commons.models.Model;
-import com.alodiga.services.provider.commons.models.Product;
-import com.alodiga.services.provider.commons.models.ProductHistory;
-import com.alodiga.services.provider.commons.models.ProductSerie;
-import com.alodiga.services.provider.commons.models.Provider;
 import com.alodiga.services.provider.commons.models.State;
-import com.alodiga.services.provider.commons.models.Transaction;
-import com.alodiga.services.provider.commons.models.TransactionType;
 import com.alodiga.services.provider.commons.models.User;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
-import com.alodiga.services.provider.commons.utils.GeneralUtils;
-import com.alodiga.services.provider.commons.utils.QueryConstants;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractAdminController;
 import com.alodiga.services.provider.web.utils.AccessControl;
 import com.alodiga.services.provider.web.utils.WebConstants;
@@ -74,7 +47,6 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
     private Datebox dtxExpiration;
     private Datebox dtxCreation;
  
-    private ProductEJB productEJB = null;
     private UtilsEJB utilsEJB = null;
     private TransactionEJB transactionEJB = null;
     private MetrologicalControl metrologicalControlParam;
@@ -84,7 +56,6 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
     private List<ControlType> controlTypes;
 
     private User user;
-    private Button btnSave;
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
@@ -103,8 +74,6 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
     public void initialize() {
         super.initialize();
         try {
-
-            productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
             utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
             transactionEJB = (TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
             dtxExpiration.setValue(new Timestamp(new Date().getTime()));
@@ -165,10 +134,10 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
         if (validateEmpty()) {
             switch (eventType) {
                 case WebConstants.EVENT_ADD:
-                    saveProduct(null);
+                	saveMetreologicalControl(null);
                     break;
                 case WebConstants.EVENT_EDIT:
-                    saveProduct(metrologicalControlParam);
+                	saveMetreologicalControl(metrologicalControlParam);
                     break;
                 default:
                     break;
@@ -196,12 +165,9 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
                 blockFields();
                 break;
             case WebConstants.EVENT_ADD:
-            	loadFields(metrologicalControlParam);
             	loadBraunds(null);
                 loadControlType(null);
                 loadEnterCalibration(null);
-
-                blockFields();
                 break;
             default:
                 break;
@@ -211,16 +177,18 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
     
     public void loadFields(MetrologicalControl metrologicalControlParam) {
     	
-    	loadBraunds(metrologicalControlParam.getBraund());
-    	loadControlType(metrologicalControlParam.getControlType());
-    	loadEnterCalibration(metrologicalControlParam.getEnterCalibration());
     	txtSerilNumber.setText(metrologicalControlParam.getSerie());
-    	txtRank.setText(metrologicalControlParam.getRange());
+    	txtRank.setText(metrologicalControlParam.getRango());
     	
     	txtSerilNumber.setText(metrologicalControlParam.getSerie());
     	dtxCreation.setValue(metrologicalControlParam.getCreationDate());
     	//buscar el ultimo
-    	MetrologicalControlHistory history = transactionEJB.loadLastMetrologicalControlHistoryByMetrologicalControlId(metrologicalControlParam.getId());
+    	MetrologicalControlHistory history = null;
+		try {
+			history = transactionEJB.loadLastMetrologicalControlHistoryByMetrologicalControlId(metrologicalControlParam.getId());
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
     	dtxCalibration.setValue(history.getCalibrationDate());
     	dtxExpiration.setValue(history.getExpirationDate());
     	
@@ -235,7 +203,7 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
     private void loadBraunds(Braund braund) {
         try {
             cmbBraund.getItems().clear();
-            braunds = utilsEJB.getBraund();
+            braunds = utilsEJB.getBraunds();
             for (Braund e : braunds) {
                 Comboitem cmbItem = new Comboitem();
                 cmbItem.setLabel(e.getName());
@@ -245,30 +213,33 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
                 	cmbBraund.setSelectedItem(cmbItem);
                 } else {
                 	cmbBraund.setSelectedIndex(0);
+                	braund = (Braund) cmbBraund.getSelectedItem().getValue();
                 }
             }
-            loadModel(braund, metrologicalControlParam.getModel());
-        } catch (Exception ex) {
+            loadModel(braund);
+        } catch (EmptyListException ex) {
+            
+        }catch (Exception ex) {
             showError(ex);
         }
     }
 
        
-    private void loadModel(Braund braund, Model model) {
+    private void loadModel(Braund braund) {
 
 
             try {
             	cmbModel.getItems().clear();
-                models = utilsEJB.getModelByBraund(braund.getId());
+                models = utilsEJB.getModelsByBraund(braund.getId());
                 for (int i = 0; i < models.size(); i++) {
                     Comboitem item = new Comboitem();
                     item.setValue(models.get(i));
                     item.setLabel(models.get(i).getName());
                     item.setParent(cmbModel);
-                    if (models.get(i).getId().equals(models.getId())) {
-                    	cmbModel.setSelectedItem(item);
-                    }
                 }
+                cmbModel.setSelectedIndex(0);
+            } catch (EmptyListException ex) {
+               
             } catch (Exception ex) {
                 ex.getStackTrace();
             }
@@ -290,6 +261,8 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
                 	cmbType.setSelectedIndex(0);
                 }
             }
+        }catch (EmptyListException ex) {
+           
         } catch (Exception ex) {
             showError(ex);
         }
@@ -310,12 +283,14 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
                 	cmbEnterCalibration.setSelectedIndex(0);
                 }
             }
+        }catch (EmptyListException ex) {
+            
         } catch (Exception ex) {
             showError(ex);
         }
     }
     
-    private void saveMtreologicalControl(MetrologicalControl _metrologicalControl) {
+    private void saveMetreologicalControl(MetrologicalControl _metrologicalControl) {
     	MetrologicalControl metrologicalControl = new MetrologicalControl();
         try {
 
@@ -334,7 +309,7 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
             controlType.setId(((ControlType) cmbType.getSelectedItem().getValue()).getId());
             metrologicalControl.setControlType(controlType);
             metrologicalControl.setSerie(txtSerilNumber.getText());
-            metrologicalControl.setRange(txtRank.getText());
+            metrologicalControl.setRango(txtRank.getText());
             metrologicalControl.setCreationDate(new Timestamp((new java.util.Date().getTime())));
             metrologicalControl.setScale(txtScale.getText());
             metrologicalControl.setUbication(txtUbication.getText());

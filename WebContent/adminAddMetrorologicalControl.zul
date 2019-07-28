@@ -26,7 +26,7 @@
                                             <hlayout>
                                                 <toolbarbutton label="${c:l('sp.bread.crumb.home')}" onClick='Executions.sendRedirect(&quot;home-admin.zul&quot;)'/>
                                                  |
-                                                <toolbarbutton label="${c:l('sp.crud.product.meteorological')}" onClick='Executions.sendRedirect(&quot;listMetrologicalControl.zul&quot;)'/>
+                                                <toolbarbutton label="${c:l('sp.crud.product.list.meteorological')}" onClick='Executions.sendRedirect(&quot;listMetrologicalControl.zul&quot;)'/>
                                                  |
                                                 <toolbarbutton label="${c:l('sp.common.meteorological.add')}" />
                                             </hlayout>
@@ -115,7 +115,7 @@
                                                             </hlayout>
                                                         </row>
                                                         <row>
-                                                        <label value="${c:l('sp.common.control.minimun.scale)}" sclass="lblbold"/>
+                                                        <label value="${c:l('sp.common.control.minimun.scale')}" sclass="lblbold"/>
                                                             <hlayout>
                                                                <textbox id="txtScale" maxlength="45" width="320px" constraint="no empty: ${c:l('error.field.required')}"/>
                                                                <label value="${c:l('sp.common.max45')}" sclass="lblexample"/>

@@ -172,7 +172,6 @@ public class AdminMainMenuController extends GenericForwardComposer {
         createCell(Permission.WAIT, "listWait.zul", permissionGroup, listgroup);
         createCell(Permission.REMOVE_WAIT, "listEgressWait.zul", permissionGroup, listgroup);
         createCell(Permission.METEOROLOGICAL_CONTROL, "listMetrologicalControl.zul", permissionGroup, listgroup);
-        createCell(Permission.REMOVE_METEOROLOGICAL_CONTROL, "listEgressMetrologicalControl.zul", permissionGroup, listgroup);
     }
 
     private void loadSecurityManagementGroup(PermissionGroup permissionGroup) {
@@ -188,7 +187,8 @@ public class AdminMainMenuController extends GenericForwardComposer {
         createCell(Permission.LIST_ENTERPRISES, "listEnterprises.zul", permissionGroup, listgroup);
         createCell(Permission.LIST_PROVIDERS, "listProviders.zul", permissionGroup, listgroup);
         createCell(Permission.LIST_CUSTOMER, "listCustomers.zul", permissionGroup, listgroup);
-        createCell(Permission.LIST_COUNTRIES, "listCountries.zul", permissionGroup, listgroup);
+        createCell(Permission.LIST_MARKES, "listMarkes.zul", permissionGroup, listgroup);
+        createCell(Permission.LIST_MODELS, "listModels.zul", permissionGroup, listgroup);
         createCell(Permission.AUTOMATIC_PROCESS, "adminAutomaticServices.zul", permissionGroup, listgroup);
     }
 

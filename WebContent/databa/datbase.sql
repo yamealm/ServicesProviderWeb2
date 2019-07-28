@@ -609,7 +609,7 @@ CREATE TABLE `services`. `control_type`(
 
 CREATE TABLE `services`.`metrological_control` (
   `id` bigint(3) NOT NULL AUTO_INCREMENT,
-  `braunId` int(5) NOT NULL,
+  `braundId` int(5) NOT NULL,
   `modelId` int(5) NOT NULL,
   `name` varchar(75) CHARACTER SET latin1 COLLATE latin1_bin DEFAULT NULL,
   `serie` varchar(45) CHARACTER SET latin1 COLLATE latin1_bin DEFAULT NULL,
@@ -625,7 +625,7 @@ CREATE TABLE `services`.`metrological_control` (
   KEY `fk_metrological_control_model` (`modelId`),
   KEY `fk_metrological_control_enterCalibration` (`enterCalibrationId`),
   KEY `fk_metrological_control_controlType` (`controlTypeId`),
-  CONSTRAINT `fk_metrological_control_braund` FOREIGN KEY (`braunId`) REFERENCES `braund` (`id`),
+  CONSTRAINT `fk_metrological_control_braund` FOREIGN KEY (`braundId`) REFERENCES `braund` (`id`),
   CONSTRAINT `fk_metrological_control_model` FOREIGN KEY (`modelId`) REFERENCES `model` (`id`),
   CONSTRAINT `fk_metrological_control_enterCalibration` FOREIGN KEY (`enterCalibrationId`) REFERENCES `enter_calibration` (`id`),
   CONSTRAINT `fk_metrological_control_controlType` FOREIGN KEY (`controlTypeId`) REFERENCES `control_type` (`id`)
@@ -644,3 +644,70 @@ CREATE TABLE `services`.`metrological_control_history` (
   KEY `fk_metrological_control_history` (`metrologicalControlId`),
   CONSTRAINT `fk_metrological_control_history` FOREIGN KEY (`metrologicalControlId`) REFERENCES `metrological_control` (`id`)
 ) ENGINE=InnoDB;
+
+ALTER TABLE `services`.`metrological_control_history` 
+CHANGE COLUMN `calibrationDateOld` `calibrationDateOld` DATETIME NULL ;
+
+
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('122', '1', 'listMarke', 'braund', 'listMarke', '1');
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('123', '1', 'addMarke', 'braund', 'addMarke', '1');
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('124', '1', 'editMarke', 'braund', 'editMarke', '1');
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('125', '1', 'viewMarke', 'braund', 'viewMarke', '1');
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('126', '1', 'listModels', 'model', 'listModels', '1');
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('127', '1', 'addModel', 'model', 'addModel', '1');
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('128', '1', 'editModel', 'model', 'editModel', '1');
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('129', '1', 'viewModel', 'model', 'viewModel', '1');
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('130', '1', 'removeMarke', 'braund', 'removeMarke', '1');
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('131', '1', 'removeModel', 'model', 'removeModel', '1');
+
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('241', '122', '1', 'List Makes', 'List Makes');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('242', '122', '2', 'Listar Marcas', 'Listar Marcas');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('243', '123', '1', 'Add Make', 'Add Make');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('244', '123', '2', 'Agregar Marca', 'Agregar Marca');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('245', '124', '1', 'Edit Make', 'Edit  Make');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('246', '124', '2', 'Editar Marca', 'Editar Marca');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('247', '125', '1', 'View  Make', 'View  Make');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('248', '125', '2', 'Ver Marca', 'Ver Marca');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('249', '126', '1', 'List Models', 'List Models');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('250', '126', '2', 'Listar Modelos', 'Listar Modelos');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('251', '127', '1', 'Add Model', 'Add Model');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('252', '127', '2', 'Agregar Modelo', 'Agregar Modelo');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('253', '128', '1', 'Edit Model', 'Edit Model');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('254', '128', '2', 'Editar Modelo', 'Editar Modelo');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('255', '129', '1', 'View Model', 'View Model');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('256', '129', '2', 'Ver Modelo', 'Ver Modelo');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('257', '130', '1', 'Delete Marke', 'Delete Marke');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('258', '130', '2', 'Eliminar Marca', 'Eliminar Marca');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('259', '131', '1', 'Delete Model', 'Delete Model');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('260', '131', '2', 'Eliminar Modelo', 'Eliminar Modelo');
+
+UPDATE `services`.`permission_data` SET `alias` = 'List Markes', `description` = 'List Markes' WHERE (`id` = '241');
+UPDATE `services`.`permission_data` SET `alias` = 'Delete Mark', `description` = 'Delete Mark' WHERE (`id` = '257');
+UPDATE `services`.`permission_data` SET `alias` = 'Add Mark', `description` = 'Add Mark' WHERE (`id` = '243');
+UPDATE `services`.`permission_data` SET `alias` = 'Edit Mark', `description` = 'Edit  Mark' WHERE (`id` = '245');
+UPDATE `services`.`permission_data` SET `alias` = 'View  Mark', `description` = 'View  Mark' WHERE (`id` = '247');
+
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1507', '122', '1');
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1508', '123', '1');
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1509', '124', '1');
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1510', '125', '1');
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1511', '126', '1');
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1512', '127', '1');
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1513', '128', '1');
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1514', '129', '1');
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1515', '130', '1');
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1516', '131', '1');
+
+
+ALTER TABLE `services`.`model` 
+DROP FOREIGN KEY `fk_braund_model`;
+ALTER TABLE `services`.`model` 
+CHANGE COLUMN `braundI` `braundId` INT(5) NOT NULL ;
+ALTER TABLE `services`.`model` 
+ADD CONSTRAINT `fk_braund_model`
+  FOREIGN KEY (`braundId`)
+  REFERENCES `services`.`braund` (`id`);
+
+
+
+

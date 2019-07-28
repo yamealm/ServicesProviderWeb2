@@ -2,11 +2,15 @@ package com.alodiga.services.provider.web.controllers;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zul.Listbox;
@@ -19,6 +23,7 @@ import com.alodiga.services.provider.commons.ejbs.TransactionEJB;
 import com.alodiga.services.provider.commons.exceptions.EmptyListException;
 import com.alodiga.services.provider.commons.exceptions.GeneralException;
 import com.alodiga.services.provider.commons.exceptions.NullParameterException;
+import com.alodiga.services.provider.commons.genericEJB.EJBRequest;
 import com.alodiga.services.provider.commons.managers.PermissionManager;
 import com.alodiga.services.provider.commons.models.Category;
 import com.alodiga.services.provider.commons.models.Enterprise;
@@ -41,8 +46,9 @@ import com.alodiga.services.provider.web.generic.controllers.GenericAbstractList
 import com.alodiga.services.provider.web.utils.AccessControl;
 import com.alodiga.services.provider.web.utils.PDFUtil;
 import com.alodiga.services.provider.web.utils.Utils;
+import com.alodiga.services.provider.web.utils.WebConstants;
 
-public class ListMetrologicalControlController extends GenericAbstractListController<Product> {
+public class ListMetrologicalControlController extends GenericAbstractListController<MetrologicalControl> {
 
     private static final long serialVersionUID = -9145887024839938515L;
     private Listbox lbxRecords;
@@ -98,7 +104,7 @@ public class ListMetrologicalControlController extends GenericAbstractListContro
         List<MetrologicalControl> auxList = new ArrayList<MetrologicalControl>();
         for (Iterator<MetrologicalControl> i = metrologicalControls.iterator(); i.hasNext();) {
         	MetrologicalControl tmp = i.next();
-            String field = tmp.getBraund().toLowerCase();
+            String field = tmp.getBraund().getName().toLowerCase();
             if (field.indexOf(filter.trim().toLowerCase()) >= 0) {
                 auxList.add(tmp);
             }
@@ -121,8 +127,8 @@ public class ListMetrologicalControlController extends GenericAbstractListContro
                     item.appendChild(new Listcell(metrologicalControl.getBraund().getName()));
                     item.appendChild(new Listcell(metrologicalControl.getModel().getName()));
                     item.appendChild(new Listcell(metrologicalControl.getSerie()));
-                    item.appendChild(new Listcell(metrologicalControl.getRange()));
-                    MetrologicalControlHistory history = transactionEJB.loadLastMetrologicalControlHistoryByMetrologicalControlId(metrologicalControlParam.getId());
+                    item.appendChild(new Listcell(metrologicalControl.getRango()));
+                    MetrologicalControlHistory history = transactionEJB.loadLastMetrologicalControlHistoryByMetrologicalControlId(metrologicalControl.getId());
                     String date = null;
                     if (history != null) {
 						SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -131,7 +137,8 @@ public class ListMetrologicalControlController extends GenericAbstractListContro
                     item.appendChild(new Listcell(date));
                     item.appendChild(new Listcell(metrologicalControl.getUbication()));
                     item.appendChild(new Listcell(metrologicalControl.getScale()));
-                    item.appendChild(permissionChangeStatus ? initEnabledButton(metrologicalControl.isEnabled(), item) : new Listcell());
+                    item.appendChild(new Listcell(metrologicalControl.getControlType().getName()));
+                    item.appendChild(permissionDelete ? initEnabledButton(metrologicalControl.isEnabled(), item) : new Listcell());
                     item.appendChild(permissionEdit ? new ListcellEditButton(adminPage, metrologicalControl,Permission.EDIT_METEOROLOGICAL_CONTROL) : new Listcell());
                     item.appendChild(permissionRead ? new ListcellViewButton(adminPage, metrologicalControl,Permission.VIEW_METEOROLOGICAL_CONTROL) : new Listcell());
                     item.setParent(lbxRecords);
@@ -169,13 +176,13 @@ public class ListMetrologicalControlController extends GenericAbstractListContro
     
     private void changeStatus(ChangeStatusButton button, Listitem listItem) {
         try {
-            Product product = (Product) listItem.getValue();
-            button.changeImageStatus(product.getEnabled());
-            product.setEnabled(!product.getEnabled());
-            listItem.setValue(product);
-            request.setParam(product);
-            productEJB.saveProduct(request);
-            AccessControl.saveAction(Permission.CHANGE_PRODUCT_STATUS, "changeStatus product = " + product.getId() + " to status = " + !product.getEnabled());
+            MetrologicalControl metrologicalControl = (MetrologicalControl) listItem.getValue();
+            button.changeImageStatus(metrologicalControl.isEnabled());
+            metrologicalControl.setEnabled(!metrologicalControl.isEnabled());
+            listItem.setValue(metrologicalControl);
+            request.setParam(metrologicalControl);
+            transactionEJB.saveMetrologicalControl(metrologicalControl);
+            AccessControl.saveAction(Permission.EDIT_METEOROLOGICAL_CONTROL, "changeStatus metrological control = " + metrologicalControl.getId() + " to status = " + !metrologicalControl.isEnabled());
         } catch (Exception ex) {
             showError(ex);
         }
@@ -184,9 +191,10 @@ public class ListMetrologicalControlController extends GenericAbstractListContro
     public void getData() {
     	metrologicalControls = new ArrayList<MetrologicalControl>();
         try {
-            request.setFirst(0);
-            request.setLimit(null);
-            request.setAuditData(null);
+        	EJBRequest request = new EJBRequest();
+        	Map<String, Object> params = new HashMap<String, Object>();
+        	request.setParams(params);
+            request.setParam(true);
             metrologicalControls = transactionEJB.searchMetrologicalControl(request);
         } catch (NullParameterException ex) {
             showError(ex);
@@ -212,7 +220,7 @@ public class ListMetrologicalControlController extends GenericAbstractListContro
     
     public void onClick$btnExportPdf() throws InterruptedException {
         try {
-        	PDFUtil.exportPdf((Labels.getLabel("sp.common.product"))+".pdf", Labels.getLabel("sp.crud.product.list.reporte"), lbxRecords,3);
+        	PDFUtil.exportPdf((Labels.getLabel("sp.common.meteorological"))+".pdf", Labels.getLabel("sp.crud.metrological.control.list.reporte"), lbxRecords,3);
         } catch (Exception ex) {
             showError(ex);
         }
@@ -220,7 +228,7 @@ public class ListMetrologicalControlController extends GenericAbstractListContro
     
     public void onClick$btnDownload() throws InterruptedException {
         try {
-            Utils.exportExcel(lbxRecords, Labels.getLabel("sp.crud.product.list"));
+            Utils.exportExcel(lbxRecords, Labels.getLabel("sp.crud.product.list.meteorological"));
         } catch (Exception ex) {
             showError(ex);
         }
@@ -228,7 +236,8 @@ public class ListMetrologicalControlController extends GenericAbstractListContro
 
 	@Override
 	public void onClick$btnAdd() throws InterruptedException {
-		
+		Sessions.getCurrent().setAttribute("eventType", WebConstants.EVENT_ADD);
+		Executions.sendRedirect("./adminAddMetrorologicalControl.zul");
 	}
     
 }

@@ -6,11 +6,14 @@ import com.alodiga.services.provider.commons.exceptions.GeneralException;
 import com.alodiga.services.provider.commons.exceptions.NullParameterException;
 import com.alodiga.services.provider.commons.exceptions.RegisterNotFoundException;
 import com.alodiga.services.provider.commons.managers.PermissionManager;
+import com.alodiga.services.provider.commons.models.Braund;
 import com.alodiga.services.provider.commons.models.Country;
 import com.alodiga.services.provider.commons.models.CountryTranslation;
 import com.alodiga.services.provider.commons.models.Enterprise;
 import com.alodiga.services.provider.commons.models.Language;
+import com.alodiga.services.provider.commons.models.Model;
 import com.alodiga.services.provider.commons.models.Permission;
+import com.alodiga.services.provider.commons.models.Product;
 import com.alodiga.services.provider.commons.models.Profile;
 import com.alodiga.services.provider.commons.models.User;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
@@ -22,6 +25,7 @@ import com.alodiga.services.provider.web.utils.AccessControl;
 import com.alodiga.services.provider.web.utils.Utils;
 import com.alodiga.services.provider.web.utils.WebConstants;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,13 +38,13 @@ import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Textbox;
 
-public class ListCountryController extends GenericAbstractListController<Country> {
+public class ListModelsController extends GenericAbstractListController<Model> {
 
     private static final long serialVersionUID = -9145887024839938515L;
     private Listbox lbxRecords;
     private Textbox txtAlias;
     private UtilsEJB utilsEJB = null;
-    private List<Country> countries = null;
+    private List<Model> models = null;
     private User currentUser;
     private Profile currentProfile;
 
@@ -57,9 +61,9 @@ public class ListCountryController extends GenericAbstractListController<Country
     @Override
     public void checkPermissions() {
         try {
-            btnAdd.setVisible(PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.ADD_COUNTRY));
-            permissionEdit = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.EDIT_COUNTRY);
-            permissionRead = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.VIEW_COUNTRY);
+            btnAdd.setVisible(PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.ADD_MODEL));
+            permissionEdit = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.EDIT_MODEL);
+            permissionRead = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.VIEW_MODEL);
         } catch (Exception ex) {
             showError(ex);
         }
@@ -73,31 +77,25 @@ public class ListCountryController extends GenericAbstractListController<Country
             currentUser = AccessControl.loadCurrentUser();
             currentProfile = currentUser.getCurrentProfile(Enterprise.ALODIGA_USA);
             checkPermissions();
-            adminPage = "adminCountry.zul";
+            adminPage = "adminModel.zul";
             utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
             getData();
-            loadList(countries);
+            loadList(models);
         } catch (Exception ex) {
             showError(ex);
         }
     }
 
-    public List<Country> getFilteredList(String filter) {
-        List<Country> countriesaux = new ArrayList<Country>();
-        Country country;
-        try {
-            if (filter != null && !filter.equals("")) {
-                country = utilsEJB.searchCountry(filter);
-                countriesaux.add(country);
-            } else {
-                return countries;
-            }
-        } catch (RegisterNotFoundException ex) {
-            Logger.getLogger(ListCountryController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception ex) {
-            showError(ex);
-        }
-        return countriesaux;
+    public List<Model> getFilteredList(String filter) {
+    	 List<Model> auxList = new ArrayList<Model>();
+         for (Iterator<Model> i = models.iterator(); i.hasNext();) {
+        	 Model tmp = i.next();
+             String field = tmp.getName().toLowerCase();
+             if (field.indexOf(filter.trim().toLowerCase()) >= 0) {
+                 auxList.add(tmp);
+             }
+         }
+         return auxList;
     }
 
     public void onClick$btnAdd() throws InterruptedException {
@@ -109,23 +107,20 @@ public class ListCountryController extends GenericAbstractListController<Country
     public void onClick$btnDelete() {
     }
 
-    public void loadList(List<Country> list) {
+    public void loadList(List<Model> list) {
         try {
             lbxRecords.getItems().clear();
             Listitem item = null;
             if (list != null && !list.isEmpty()) {
 //                btnDownload.setVisible(true);
-                for (Country country : list) {
-                    List<CountryTranslation> countryTranslations = utilsEJB.getCountryTranslationByCountryId(country.getId());
+                for (Model model : list) {
                     item = new Listitem();
-                    item.setValue(country);
-                    item.appendChild(new Listcell(country.getName()));
-                    item.appendChild(new Listcell(country.getCode()));
-                    item.appendChild(new Listcell(country.getShortName()));
-                    item.appendChild(new Listcell(getCountryTraslationAlias(countryTranslations, Language.SPANISH)));
-                    item.appendChild(new Listcell(getCountryTraslationAlias(countryTranslations, Language.ENGLISH)));
-                    item.appendChild(permissionEdit ? new ListcellEditButton(adminPage, country, Permission.EDIT_COUNTRY) : new Listcell());
-                    item.appendChild(permissionRead ? new ListcellViewButton(adminPage, country, Permission.VIEW_COUNTRY) : new Listcell());
+                    item.setValue(model);
+                    item.appendChild(new Listcell(model.getId().toString()));
+                    item.appendChild(new Listcell(model.getBraund().getName()));
+                    item.appendChild(new Listcell(model.getName()));
+                    item.appendChild(permissionEdit ? new ListcellEditButton(adminPage, model, Permission.EDIT_COUNTRY) : new Listcell());
+                    item.appendChild(permissionRead ? new ListcellViewButton(adminPage, model, Permission.VIEW_COUNTRY) : new Listcell());
                     item.setParent(lbxRecords);
                 }
             } else {
@@ -144,11 +139,11 @@ public class ListCountryController extends GenericAbstractListController<Country
     }
 
     public void getData() {
-        countries = new ArrayList<Country>();
+        models = new ArrayList<Model>();
         try {
             request.setFirst(0);
             request.setLimit(null);
-            countries = utilsEJB.getCountries(request);
+            models = utilsEJB.getModels();
         } catch (NullParameterException ex) {
             showError(ex);
         } catch (EmptyListException ex) {
@@ -158,21 +153,10 @@ public class ListCountryController extends GenericAbstractListController<Country
         }
     }
 
-    public String getCountryTraslationAlias(List<CountryTranslation> countryTranslations, Long languageId) {
-        String alias = "";
-        if (countryTranslations != null) {
-            for (CountryTranslation countryTranslation : countryTranslations) {
-                if (countryTranslation.getLanguage().getId().equals(languageId)) {
-                    alias = countryTranslation.getAlias();
-                }
-            }
-        }
-        return alias;
-    }
-
+   
     public void onClick$btnDownload() throws InterruptedException {
         try {
-            Utils.exportExcel(lbxRecords, Labels.getLabel("sp.bread.crumb.country.list"));
+            Utils.exportExcel(lbxRecords, Labels.getLabel("sp.crud.model.list"));
         } catch (Exception ex) {
             showError(ex);
         }
