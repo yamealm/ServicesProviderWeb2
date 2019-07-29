@@ -1,6 +1,6 @@
 package com.alodiga.services.provider.web.controllers;
 
-//import com.alodiga.services.provider.commons.ejbs.ProductEJB;
+import com.alodiga.services.provider.commons.ejbs.ProductEJB;
 import com.alodiga.services.provider.commons.models.Provider;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
@@ -16,9 +16,9 @@ public class AdminProviderController extends GenericAbstractAdminController {
 
     private static final long serialVersionUID = -9145887024839938515L;
     private Textbox txtName;
-    private Textbox txtURL;
+    private Textbox txtAddress;
     private Checkbox cbxEnabled;
-//    private ProductEJB productEJB = null;
+    private ProductEJB productEJB = null;
     private Provider providerParam;
     private Button btnSave;
     
@@ -38,29 +38,29 @@ public class AdminProviderController extends GenericAbstractAdminController {
     @Override
     public void initialize() {
         super.initialize();
-//        try {
-//            
-//            productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
-//        } catch (Exception ex) {
-//            showError(ex);
-//        }
+        try {
+            
+            productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
+        } catch (Exception ex) {
+            showError(ex);
+        }
     }
 
     public void clearFields() {
         txtName.setRawValue(null);
-        txtURL.setRawValue(null);
+        txtAddress.setRawValue(null);
         cbxEnabled.setChecked(true);
     }
 
     private void loadFields(Provider provider) {
         txtName.setText(provider.getName());
-        txtURL.setText(provider.getAddress());
+        txtAddress.setText(provider.getAddress());
         cbxEnabled.setChecked(provider.getEnabled());
     }
 
     public void blockFields() {
         txtName.setReadonly(true);
-        txtURL.setReadonly(true);
+        txtAddress.setReadonly(true);
         cbxEnabled.setDisabled(true);
         btnSave.setVisible(false);
     }
@@ -69,8 +69,8 @@ public class AdminProviderController extends GenericAbstractAdminController {
         if (txtName.getText().isEmpty()) {
             txtName.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        } else if (txtURL.getText().isEmpty()) {
-            txtURL.setFocus(true);
+        } else if (txtAddress.getText().isEmpty()) {
+        	txtAddress.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
         } else {
             return true;
@@ -86,10 +86,10 @@ public class AdminProviderController extends GenericAbstractAdminController {
             provider.setId(_provider.getId());
             }
             provider.setName(txtName.getText());
-            provider.setAddress(txtURL.getText());
+            provider.setAddress(txtAddress.getText());
             provider.setEnabled(cbxEnabled.isChecked());
             request.setParam(provider);
-//            providerParam = productEJB.saveProvider(request);
+            providerParam = productEJB.saveProvider(request);
             providerParam = provider;
             eventType = WebConstants.EVENT_EDIT;
             this.showMessage("sp.common.save.success", false, null);

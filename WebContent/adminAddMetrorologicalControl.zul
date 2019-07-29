@@ -124,8 +124,8 @@
                                                         <row>
                                                             <label value="${c:l('sp.common.control.type')}" sclass="lblbold"/>
                                                             <hlayout>
-                                                                <combobox id="cmbType" width="190px" mold="rounded" readonly="true"/>
-                                                                <label value="*" sclass="lblreq" />
+                                                                <textbox id="txtType" width="190px" mold="rounded" readonly="true"/>
+                                                             
                                                             </hlayout>
                                                         </row>
                                                         <row>

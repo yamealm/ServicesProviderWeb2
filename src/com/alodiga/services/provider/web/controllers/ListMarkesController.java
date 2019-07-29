@@ -117,8 +117,8 @@ public class ListMarkesController extends GenericAbstractListController<Braund> 
                     item.setValue(braund);
                     item.appendChild(new Listcell(braund.getId().toString()));
                     item.appendChild(new Listcell(braund.getName()));
-                    item.appendChild(permissionEdit ? new ListcellEditButton(adminPage, braund, Permission.EDIT_COUNTRY) : new Listcell());
-                    item.appendChild(permissionRead ? new ListcellViewButton(adminPage, braund, Permission.VIEW_COUNTRY) : new Listcell());
+                    item.appendChild(permissionEdit ? new ListcellEditButton(adminPage, braund, Permission.EDIT_MARK) : new Listcell());
+                    item.appendChild(permissionRead ? new ListcellViewButton(adminPage, braund, Permission.VIEW_MARK) : new Listcell());
                     item.setParent(lbxRecords);
                 }
             } else {

@@ -707,6 +707,30 @@ ALTER TABLE `services`.`model`
 ADD CONSTRAINT `fk_braund_model`
   FOREIGN KEY (`braundId`)
   REFERENCES `services`.`braund` (`id`);
+  
+  //Yamelis 29/07/2019
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('132', '1', 'listCalibrationEntity', 'enter_calibration', 'listCalibrationEntity', '1');
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('133', '1', 'addCalibrationEntity', 'enter_calibration', 'addCalibrationEntity', '1');
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('134', '1', 'editCalibrationEntity', 'enter_calibration', 'editCalibrationEntity', '1');
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('135', '1', 'viewCalibrationEntity', 'enter_calibration', 'viewCalibrationEntity', '1');
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('136', '1', 'removeCalibrationEntity', 'enter_calibration', 'removeCalibrationEntity', '1');
+
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('261', '132', '1', 'List Calibration Entities', 'List Calibration Entities');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('262', '132', '2', 'Listar Entes de Calibracion', 'Listar Entes de Calibracion');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('263', '133', '1', 'Add Calibration Entity', 'Add  Calibration Entity');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('264', '133', '2', 'Agregar Ente de Calibracion', 'Agragar Ente de Calibracion');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('265', '134', '1', 'Edit  Calibration Entity', 'Edit  Calibration Entity');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('266', '134', '2', 'Editar Ente de Calibracion', 'Editar Ente de Calibracion');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('267', '135', '1', 'View  Calibration Entity', 'View  Calibration Entity');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('268', '135', '2', 'Ver Ente de Calibracion', 'Ver Ente de Calibracion');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('269', '136', '1', 'Delete  Calibration Entity', 'Delete  Calibration Entity');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('270', '136', '2', 'Eliminar Ente de Calibracion', 'Eliminar Ente de Calibracion');
+
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1517', '132', '1');
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1518', '133', '1');
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1519', '134', '1');
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1520', '135', '1');
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1521', '136', '1');
 
 
 

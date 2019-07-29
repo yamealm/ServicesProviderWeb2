@@ -1193,3 +1193,4 @@ sp.crud.ipBlackList.list= Lista Negra de IP
 sp.crud.ipBlackList.admin= Aministrar Lista Negra de IP
 sp.crud.ipBlackList.exit= Ya existe la Ip
 sp.common.actions.delete= Eliminar IP
+sp.common.dni=DNI/CUIL

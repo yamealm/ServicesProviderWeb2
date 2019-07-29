@@ -4,7 +4,7 @@
 <?link rel="icon" tye="image/x-icon" href="/images/favicon.ico"?>
 <?init class="com.alodiga.services.provider.web.security.InitiatorLoggedUser" ?>
 <zk xmlns:n="native">
-    <window width="100%" height="100%" apply="com.alodiga.services.provider.web.controllers.AdminProviderController" class="general-window">
+    <window id="winAdminCountry" width="100%" height="100%" apply="com.alodiga.services.provider.web.controllers.AdminCalibrationEntityController" class="general-window">
         <style src="/css/general.css"/>
         <borderlayout width="100%" height="100%" class="content-transparent">
             <north border="none" size="52px" class="content-transparent">
@@ -14,7 +14,7 @@
                 <div align="center" >
                     <hlayout >
                         <div></div>
-                        <div width="1200px" align="left" height="600px">
+                        <div width="1200px" align="left" height="780px">
                             <hlayout>
                                 <div>
                                     <include src="adminMainMenu.zul"/>
@@ -26,7 +26,7 @@
                                             <hlayout>
                                                 <toolbarbutton label="${c:l('sp.bread.crumb.home')}" onClick='Executions.sendRedirect(&quot;home-admin.zul&quot;)'/>
                                                  |
-                                                <toolbarbutton label="${c:l('sp.crud.provider.list')}" onClick='Executions.sendRedirect(&quot;listProviders.zul&quot;)'/>
+                                                <toolbarbutton label="${c:l('sp.crud.braund.list')}"/>
                                                  |
                                                 <toolbarbutton id="tbbCurrentAction" />
                                             </hlayout>
@@ -51,25 +51,13 @@
                                                     </columns>
                                                     <rows>
                                                         <row>
-                                                            <label value="${c:l('sp.common.name')}" sclass="lblbold"/>
+                                                            <label value="${c:l('sp.common.enter.name')}" sclass="lblbold"/>
                                                             <hlayout>
-                                                                <textbox id="txtName" maxlength="45" width="320px" constraint="no empty: ${c:l('error.field.required')}"/>
+                                                                <textbox id="txtName" width="320px" constraint="no empty: ${c:l('error.field.required')}" maxlength="45"/>
                                                                 <label value="*" sclass="lblreq" />
-                                                                <label value="${c:l('sp.common.max45')}" sclass="lblexample"/>
                                                             </hlayout>
                                                         </row>
-                                                        <row>
-                                                            <label value="${c:l('sp.common.address')}" width="100px" sclass="lblbold"/>
-                                                            <hlayout>
-                                                                <textbox id="txtAddress" width="320px" rows="2" maxlength="255" constraint="no empty: ${c:l('error.field.required')}"/>
-                                                                <label value="*" sclass="lblreq" />
-                                                                <label value="${c:l('sp.common.max255')}" sclass="lblexample"/>
-                                                            </hlayout>
-                                                        </row>
-                                                        <row>
-                                                            <label value="${c:l('sp.common.enabled')}" sclass="lblbold"/>
-                                                            <checkbox id="cbxEnabled" checked="true"/>
-                                                        </row>
+                                                        
                                                     </rows>
                                                 </grid>
                                                 
@@ -79,7 +67,7 @@
                                         <!--Buttons-->
                                         <div align="right">
                                             <button  id="btnSave" width="150px" label="${c:l('sp.common.actions.save')}" class="open orange"/>
-                                            <button  id="btnBack" width="150px" label="${c:l('sp.common.actions.back')}" class="open gray" onClick="Executions.sendRedirect(&quot;listProviders.zul&quot;)"/>
+                                            <button  id="btnBack" width="150px" label="${c:l('sp.common.actions.back')}" class="open gray" />
                                         </div>
                                     </vlayout>
                                 </div>

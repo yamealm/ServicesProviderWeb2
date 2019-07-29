@@ -6,12 +6,11 @@ import com.alodiga.services.provider.commons.exceptions.GeneralException;
 import com.alodiga.services.provider.commons.exceptions.NullParameterException;
 import com.alodiga.services.provider.commons.exceptions.RegisterNotFoundException;
 import com.alodiga.services.provider.commons.managers.PermissionManager;
-import com.alodiga.services.provider.commons.models.Braund;
+import com.alodiga.services.provider.commons.models.EnterCalibration;
 import com.alodiga.services.provider.commons.models.Country;
 import com.alodiga.services.provider.commons.models.CountryTranslation;
 import com.alodiga.services.provider.commons.models.Enterprise;
 import com.alodiga.services.provider.commons.models.Language;
-import com.alodiga.services.provider.commons.models.Model;
 import com.alodiga.services.provider.commons.models.Permission;
 import com.alodiga.services.provider.commons.models.Product;
 import com.alodiga.services.provider.commons.models.Profile;
@@ -38,13 +37,13 @@ import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Textbox;
 
-public class ListModelsController extends GenericAbstractListController<Model> {
+public class ListCalibrationEntityController extends GenericAbstractListController<EnterCalibration> {
 
     private static final long serialVersionUID = -9145887024839938515L;
     private Listbox lbxRecords;
     private Textbox txtAlias;
     private UtilsEJB utilsEJB = null;
-    private List<Model> models = null;
+    private List<EnterCalibration> calibrations = null;
     private User currentUser;
     private Profile currentProfile;
 
@@ -61,9 +60,9 @@ public class ListModelsController extends GenericAbstractListController<Model> {
     @Override
     public void checkPermissions() {
         try {
-            btnAdd.setVisible(PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.ADD_MODEL));
-            permissionEdit = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.EDIT_MODEL);
-            permissionRead = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.VIEW_MODEL);
+            btnAdd.setVisible(PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.ADD_MARK));
+            permissionEdit = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.EDIT_MARK);
+            permissionRead = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.VIEW_MARK);
         } catch (Exception ex) {
             showError(ex);
         }
@@ -77,19 +76,19 @@ public class ListModelsController extends GenericAbstractListController<Model> {
             currentUser = AccessControl.loadCurrentUser();
             currentProfile = currentUser.getCurrentProfile(Enterprise.ALODIGA_USA);
             checkPermissions();
-            adminPage = "adminModel.zul";
+            adminPage = "adminCalibrationEntity.zul";
             utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
             getData();
-            loadList(models);
+            loadList(calibrations);
         } catch (Exception ex) {
             showError(ex);
         }
     }
 
-    public List<Model> getFilteredList(String filter) {
-    	 List<Model> auxList = new ArrayList<Model>();
-         for (Iterator<Model> i = models.iterator(); i.hasNext();) {
-        	 Model tmp = i.next();
+    public List<EnterCalibration> getFilteredList(String filter) {
+    	 List<EnterCalibration> auxList = new ArrayList<EnterCalibration>();
+         for (Iterator<EnterCalibration> i = calibrations.iterator(); i.hasNext();) {
+        	 EnterCalibration tmp = i.next();
              String field = tmp.getName().toLowerCase();
              if (field.indexOf(filter.trim().toLowerCase()) >= 0) {
                  auxList.add(tmp);
@@ -107,20 +106,19 @@ public class ListModelsController extends GenericAbstractListController<Model> {
     public void onClick$btnDelete() {
     }
 
-    public void loadList(List<Model> list) {
+    public void loadList(List<EnterCalibration> list) {
         try {
             lbxRecords.getItems().clear();
             Listitem item = null;
             if (list != null && !list.isEmpty()) {
 //                btnDownload.setVisible(true);
-                for (Model model : list) {
+                for (EnterCalibration calibration : list) {
                     item = new Listitem();
-                    item.setValue(model);
-                    item.appendChild(new Listcell(model.getId().toString()));
-                    item.appendChild(new Listcell(model.getBraund().getName()));
-                    item.appendChild(new Listcell(model.getName()));
-                    item.appendChild(permissionEdit ? new ListcellEditButton(adminPage, model, Permission.EDIT_MODEL) : new Listcell());
-                    item.appendChild(permissionRead ? new ListcellViewButton(adminPage, model, Permission.VIEW_MODEL) : new Listcell());
+                    item.setValue(calibration);
+                    item.appendChild(new Listcell(calibration.getId().toString()));
+                    item.appendChild(new Listcell(calibration.getName()));
+                    item.appendChild(permissionEdit ? new ListcellEditButton(adminPage, calibration, Permission.EDIT_CALIBRATION) : new Listcell());
+                    item.appendChild(permissionRead ? new ListcellViewButton(adminPage, calibration, Permission.VIEW_CALIBRATION) : new Listcell());
                     item.setParent(lbxRecords);
                 }
             } else {
@@ -139,11 +137,11 @@ public class ListModelsController extends GenericAbstractListController<Model> {
     }
 
     public void getData() {
-        models = new ArrayList<Model>();
+    	calibrations = new ArrayList<EnterCalibration>();
         try {
             request.setFirst(0);
             request.setLimit(null);
-            models = utilsEJB.getModels();
+            calibrations = utilsEJB.getEnterCalibrations();
         } catch (NullParameterException ex) {
             showError(ex);
         } catch (EmptyListException ex) {
@@ -156,7 +154,7 @@ public class ListModelsController extends GenericAbstractListController<Model> {
    
     public void onClick$btnDownload() throws InterruptedException {
         try {
-            Utils.exportExcel(lbxRecords, Labels.getLabel("sp.crud.model.list"));
+            Utils.exportExcel(lbxRecords, Labels.getLabel("sp.crud.enter.list"));
         } catch (Exception ex) {
             showError(ex);
         }

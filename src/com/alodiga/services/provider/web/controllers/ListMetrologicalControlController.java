@@ -137,7 +137,7 @@ public class ListMetrologicalControlController extends GenericAbstractListContro
                     item.appendChild(new Listcell(date));
                     item.appendChild(new Listcell(metrologicalControl.getUbication()));
                     item.appendChild(new Listcell(metrologicalControl.getScale()));
-                    item.appendChild(new Listcell(metrologicalControl.getControlType().getName()));
+                    item.appendChild(new Listcell(metrologicalControl.getControlType()));
                     item.appendChild(permissionDelete ? initEnabledButton(metrologicalControl.isEnabled(), item) : new Listcell());
                     item.appendChild(permissionEdit ? new ListcellEditButton(adminPage, metrologicalControl,Permission.EDIT_METEOROLOGICAL_CONTROL) : new Listcell());
                     item.appendChild(permissionRead ? new ListcellViewButton(adminPage, metrologicalControl,Permission.VIEW_METEOROLOGICAL_CONTROL) : new Listcell());
