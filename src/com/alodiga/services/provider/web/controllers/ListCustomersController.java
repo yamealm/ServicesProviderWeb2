@@ -88,7 +88,6 @@ public class ListCustomersController extends GenericAbstractListController<Custo
             checkPermissions();
             customerEJB = (CustomerEJB) EJBServiceLocator.getInstance().get(EjbConstants.CUSTOMER_EJB);
             utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
-            loadEnterprises();
         } catch (Exception ex) {
             showError(ex);
         }
@@ -233,32 +232,11 @@ public class ListCustomersController extends GenericAbstractListController<Custo
             String email = !txtEmail.getText().isEmpty() ? txtEmail.getText() : null;
             String login = !txtLogin.getText().isEmpty() ? txtLogin.getText() : null;
             String fullName = !txtName.getText().isEmpty() ? txtName.getText() : null;
-            Long enterpriseId = ((Enterprise) cmbEnterprises.getSelectedItem().getValue()).getId();
-            loadList(customerEJB.searchCustomers(enterpriseId, login, fullName, email));
+            loadList(customerEJB.searchCustomers(login, fullName, email));
         } catch (Exception ex) {
             showError(ex);
         }
     }
 
    
-    private void loadEnterprises() {
-        List<Enterprise> enterprises = null;
-        try {
-            cmbEnterprises.getItems().clear();
-            enterprises = utilsEJB.getEnterprises();
-            for (Enterprise e : enterprises) {
-                Comboitem cmbItem = new Comboitem();
-                cmbItem.setLabel(e.getName());
-                cmbItem.setValue(e);
-                cmbItem.setParent(cmbEnterprises);
-
-            }
-            cmbEnterprises.setSelectedIndex(0);
-        } catch (Exception ex) {
-            showError(ex);
-        }
-
-    }
-
-
-}
+ }

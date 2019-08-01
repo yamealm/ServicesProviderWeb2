@@ -733,5 +733,11 @@ INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileI
 INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('1521', '136', '1');
 
 
+ALTER TABLE `services`.`metrological_control` 
+DROP FOREIGN KEY `fk_metrological_control_controlType`;
+ALTER TABLE `services`.`metrological_control` 
+CHANGE COLUMN `controlTypeId` `controlType` VARCHAR(35) CHARACTER SET 'latin1' COLLATE 'latin1_bin' NULL DEFAULT NULL ,
+DROP INDEX `fk_metrological_control_controlType` ;
+;
 
 

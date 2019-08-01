@@ -36,9 +36,6 @@
                                             <vlayout>
 
                                                 <hlayout style="text-align:right" >
-                                                    <label value="${c:l('sp.common.enterprise')}" sclass="lblbold"/>
-                                                    <combobox id="cmbEnterprises" width="130px" mold="rounded" readonly="true"/>
-                                                    <separator/>
                                                     <label value="${c:l('sp.common.name')}" sclass="lblbold"/>
                                                     <textbox id="txtName" value="" width="130px" tooltiptext="${c:l('sp.common.searching.filter')}"/>
                                                     <separator/>
@@ -52,7 +49,7 @@
                                                 <hlayout>
                                                     <!--Add button-->
                                                     <div align="left" width="495px">
-                                                        <button id="btnAdd" label="${c:l('sp.common.actions.add')}" width="80px" class="open orange" tooltiptext="${c:l('sp.common.actions.add.tooltip')}" visible="false"/>
+                                                        <button id="btnAdd" label="${c:l('sp.common.actions.add')}" width="80px" class="open orange" tooltiptext="${c:l('sp.common.actions.add.tooltip')}" visible="true"/>
                                                     </div>
                                                     <!--Filters button-->
                                                     <div align="right" width="400px">
