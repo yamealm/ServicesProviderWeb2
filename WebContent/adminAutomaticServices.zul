@@ -65,131 +65,31 @@
                                                     <rows>
                                                         <row>
                                                             <label value="${c:l('sp.automatic.service.name')}" sclass="lblbold"/>
-                                                            <label value="${c:l('sp.automatic.service.topUp.prepay.nation.update')}"/>
+                                                            <label value="${c:l('sp.automatic.service.stock.update')}"/>
                                                         </row>
                                                         <row>
                                                             <label value="${c:l('sp.automatic.service.date')}" sclass="lblbold"/>
-                                                            <label id="lblTopUpPrepayNationUpdateDate"/>
+                                                            <label id="lblUpdateDate"/>
                                                         </row>
                                                         <row>
                                                             <label value="${c:l('sp.automatic.service.description')}" sclass="lblbold"/>
-                                                            <label value="${c:l('sp.automatic.service.topUp.prepay.nation.update.description')}"/>
+                                                            <label value="${c:l('sp.automatic.service.stock.update.description)}"/>
                                                         </row>
                                                         <row>
                                                             <label value="${c:l('sp.automatic.service.interval')}" sclass="lblbold"/>
-                                                            <label id="lblTopUpPrepayNationUpdateInterval"/>
+                                                            <label id="lblUpdateInterval"/>
                                                         </row>
                                                         <row>
                                                             <label value="${c:l('sp.automatic.service.options')}" sclass="lblbold"/>
                                                             <hlayout >
-                                                                <button id="btnPPNRestart" label="${c:l('sp.automatic.commission.restart')}" width="150px" height="25px" orient="vertical" class="open orange" />
-                                                                <button id="btnPPNStop" label="${c:l('sp.automatic.commission.stop')}" width="150px" height="25px" orient="vertical" class="open gray"/>
-                                                                <button id="btnPPNTimeout" label="${c:l('sp.automatic.commission.timeout')}" width="150px" height="25px" orient="vertical" class="open gray"/>
-                                                                <button id="btnPPNNextExecution" label="${c:l('sp.automatic.commission.date')}" width="180px" height="25px" orient="vertical" class="open gray"/>
+                                                                <button id="btnRestart" label="${c:l('sp.automatic.commission.restart')}" width="150px" height="25px" orient="vertical" class="open orange" />
+                                                                <button id="btnStop" label="${c:l('sp.automatic.commission.stop')}" width="150px" height="25px" orient="vertical" class="open gray"/>
+                                                                <button id="btnTimeout" label="${c:l('sp.automatic.commission.timeout')}" width="150px" height="25px" orient="vertical" class="open gray"/>
+                                                                <button id="btnNextExecution" label="${c:l('sp.automatic.commission.date')}" width="180px" height="25px" orient="vertical" class="open gray"/>
                                                             </hlayout>
                                                         </row>
                                                     </rows>
                                                 </grid>
-                                                <grid width="890px">
-                                                    <columns>
-                                                        <column label="" width="180px"/>
-                                                        <column label="" width="700px"/>
-                                                    </columns>
-                                                    <rows>
-                                                        <row>
-                                                            <label value="${c:l('sp.automatic.service.name')}" sclass="lblbold"/>
-                                                            <label value="${c:l('sp.automatic.service.topUp.update')}"/>
-                                                        </row>
-                                                        <row>
-                                                            <label value="${c:l('sp.automatic.service.date')}" sclass="lblbold"/>
-                                                            <label id="lblTopUpUpdateDate"/>
-                                                        </row>
-                                                        <row>
-                                                            <label value="${c:l('sp.automatic.service.description')}" sclass="lblbold"/>
-                                                            <label value="${c:l('sp.automatic.service.topUp.update.description')}"/>
-                                                        </row>
-                                                        <row>
-                                                            <label value="${c:l('sp.automatic.service.interval')}" sclass="lblbold"/>
-                                                            <label id="lblTopUpUpdateInterval"/>
-                                                        </row>
-                                                        <row>
-                                                            <label value="${c:l('sp.automatic.service.options')}" sclass="lblbold"/>
-                                                            <hlayout>
-                                                                <button id="btnTTRestart" label="${c:l('sp.automatic.commission.restart')}" width="126px" height="25px" orient="vertical" class="open orange" />
-                                                                <button id="btnTTStop" label="${c:l('sp.automatic.commission.stop')}" width="126px" height="25px" orient="vertical" class="open gray"/>
-                                                                <button id="btnTTTimeout" label="${c:l('sp.automatic.commission.timeout')}" width="126px" height="25px" orient="vertical" class="open gray"/>
-                                                                <button id="btnTTNextExecution" label="${c:l('sp.automatic.commission.date')}" width="126px" height="25px" orient="vertical" class="open gray"/>
-                                                                <button id="btnPPNSubmitFile" label="${c:l('sp.automatic.commission.loadCSV')}" upload="true,native" width="126px" height="25px" orient="vertical" class="open gray"/>
-                                                            </hlayout>
-                                                        </row>
-                                                    </rows>
-                                                </grid>
-                                                <grid width="890px">
-                                                    <columns>
-                                                        <column label="" width="180px"/>
-                                                        <column label="" width="700px"/>
-                                                    </columns>
-                                                   <rows>
-                                                    <row>
-                                                        <label value="${c:l('sp.automatic.service.name')}" sclass="lblbold"/>
-                                                        <label value="${c:l('sp.automatic.service.billpayment.prepaynation.update')}"/>
-                                                    </row>
-                                                    <row>
-                                                        <label value="${c:l('sp.automatic.service.date')}" sclass="lblbold"/>
-                                                        <label id="lblBillPaymentUpdateDate"/>
-                                                    </row>
-                                                    <row>
-                                                        <label value="${c:l('sp.automatic.service.description')}" sclass="lblbold"/>
-                                                        <label value="${c:l('sp.automatic.service.bill.payment.update.description')}"/>
-                                                    </row>
-                                                    <row>
-                                                        <label value="${c:l('sp.automatic.service.interval')}" sclass="lblbold"/>
-                                                        <label id="lblBillPaymentUpdateInterval"/>
-                                                    </row>
-                                                    <row>
-                                                        <label value="${c:l('sp.automatic.service.options')}" sclass="lblbold"/>
-                                                        <hlayout>
-                                                            <button id="btnPNBPRestart" label="${c:l('sp.automatic.commission.restart')}" width="150px" height="25px" orient="vertical" class="open orange"/>
-                                                            <button id="btnPNBPStop" label="${c:l('sp.automatic.commission.stop')}" width="150px" height="25px" orient="vertical"  class="open gray"/>
-                                                            <button id="btnPNBPTimeout" label="${c:l('sp.automatic.commission.timeout')}" width="150px" height="25px" orient="vertical" class="open gray"/>
-                                                            <button id="btnPNBPNextExecution" label="${c:l('sp.automatic.commission.date')}" width="180px" height="25px" orient="vertical" class="open gray"/>
-                                                        </hlayout>
-                                                    </row>
-                                                </rows>
-                                            </grid>
-                                                <grid width="890px">
-                                                    <columns>
-                                                        <column label="" width="180px"/>
-                                                        <column label="" width="700px"/>
-                                                    </columns>
-                                                   <rows>
-                                                    <row>
-                                                        <label value="${c:l('sp.automatic.service.name')}" sclass="lblbold"/>
-                                                        <label value="${c:l('sp.automatic.service.billing.update')}"/>
-                                                    </row>
-                                                    <row>
-                                                        <label value="${c:l('sp.automatic.service.date')}" sclass="lblbold"/>
-                                                        <label id="lblBillingInvoiceUpdate"/>
-                                                    </row>
-                                                    <row>
-                                                        <label value="${c:l('sp.automatic.service.description')}" sclass="lblbold"/>
-                                                        <label value="${c:l('sp.automatic.service.bill.payment.update.description')}"/>
-                                                    </row>
-                                                    <row>
-                                                        <label value="${c:l('sp.automatic.service.interval')}" sclass="lblbold"/>
-                                                        <label id="lblBillPaymentBillingInterval"/>
-                                                    </row>
-                                                    <row>
-                                                        <label value="${c:l('sp.automatic.service.options')}" sclass="lblbold"/>
-                                                        <hlayout>
-                                                            <button id="btnBIRestart" label="${c:l('sp.automatic.commission.restart')}" width="150px" height="25px" orient="vertical" class="open orange"/>
-                                                            <button id="btnBIPStop" label="${c:l('sp.automatic.commission.stop')}" width="150px" height="25px" orient="vertical"  class="open gray"/>
-                                                            <button id="btnBITimeout" label="${c:l('sp.automatic.commission.timeout')}" width="150px" height="25px" orient="vertical" class="open gray"/>
-                                                            <button id="btnBINextExecution" label="${c:l('sp.automatic.commission.date')}" width="180px" height="25px" orient="vertical" class="open gray"/>
-                                                        </hlayout>
-                                                    </row>
-                                                </rows>
-                                            </grid>
                                         </vlayout>
                                     </vlayout>
                                 </groupbox>
