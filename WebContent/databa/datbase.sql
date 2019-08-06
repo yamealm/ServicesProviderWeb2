@@ -738,6 +738,14 @@ DROP FOREIGN KEY `fk_metrological_control_controlType`;
 ALTER TABLE `services`.`metrological_control` 
 CHANGE COLUMN `controlTypeId` `controlType` VARCHAR(35) CHARACTER SET 'latin1' COLLATE 'latin1_bin' NULL DEFAULT NULL ,
 DROP INDEX `fk_metrological_control_controlType` ;
-;
+
+
+//06/08/2019
+ALTER TABLE `services`.`transaction` 
+CHANGE COLUMN `observation` `observation` VARCHAR(150) CHARACTER SET 'latin1' COLLATE 'latin1_bin' NULL DEFAULT NULL ;
+
+ALTER TABLE `services`.`product_serie` 
+ADD COLUMN `observation` VARCHAR(150) CHARACTER SET 'latin1' COLLATE 'latin1_bin' NULL AFTER `work`;
+
 
 

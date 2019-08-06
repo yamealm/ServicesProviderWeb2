@@ -265,7 +265,7 @@ public class ViewStockController extends GenericAbstractAdminController {
 			dtxCure.setValue(productSerie.getCure());
 		}else
 			cbxCure.setChecked(true);
-		txtObservation.setText(productSerie.getBeginTransactionId().getObservation());
+		txtObservation.setText(productSerie.getObservation());
 		txtSerial.setText(productSerie.getSerie());
     }
     
@@ -373,6 +373,7 @@ public class ViewStockController extends GenericAbstractAdminController {
 			productSerie.setQuantity(intQuantity.getValue());
 			productSerie.setCondition(condition);
 			productSerie.setSerie(txtSerial.getText());
+			productSerie.setObservation(txtObservation.getText());
 			if (cbxExpiration.isChecked())
 				productSerie.setExpirationDate(new Timestamp(dtxExpiration.getValue().getTime()));
 			if (cbxCure.isChecked())

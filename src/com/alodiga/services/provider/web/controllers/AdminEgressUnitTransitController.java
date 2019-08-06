@@ -244,7 +244,7 @@ public class AdminEgressUnitTransitController extends GenericAbstractAdminContro
 		txtPartNumber.setText(productSerie.getProduct().getPartNumber());
 		txtQuarantine.setText(productSerie.getQuarantineReason());
 		txtSerial.setText(productSerie.getSerie());
-		txtObservation.setText(productSerie.getBeginTransactionId().getObservation());
+		txtObservation.setText(productSerie.getObservation());
 		
 		if (productSerie.getExpirationDate()!=null) {
 			dtxExpiration.setValue(productSerie.getExpirationDate());
@@ -404,6 +404,7 @@ public class AdminEgressUnitTransitController extends GenericAbstractAdminContro
 			productSerieParam.setQuarantineReason(txtQuarantine.getText());
 			productSerieParam.setEndingTransactionId(transaction);
 			productSerieParam.setOrderWord(txtWorkOrder.getText());
+			productSerieParam.setObservation(txtObservation.getText());
 			productSeries.add(productSerieParam);
     		transaction.setQuantity(intQuantity.getValue());
     		transaction = transactionEJB.saveEgressStock(transaction,productSeries);

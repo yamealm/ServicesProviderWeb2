@@ -281,7 +281,7 @@ public class ViewTransitController extends GenericAbstractAdminController {
 		dtxCreation.setValue(productSerie.getCreationDate());
 		txtWorkOrder.setText(productSerie.getOrderWord());
 		txtWork.setText(productSerie.getOrderWord());
-		txtObservation.setText(productSerie.getBeginTransactionId().getObservation());
+		txtObservation.setText(productSerie.getObservation());
 		txtSerial.setText(productSerie.getSerie());
     }
     
@@ -393,6 +393,7 @@ public class ViewTransitController extends GenericAbstractAdminController {
 			productSerie.setSerie(txtSerial.getText());
 			productSerie.setOrderWord(txtWorkOrder.getText());
 			productSerie.setCreationDate(new Timestamp(dtxCreation.getValue().getTime()));
+			productSerie.setObservation(txtObservation.getText());
 			if (cbxExpiration.isChecked())
 				productSerie.setExpirationDate(new Timestamp(dtxExpiration.getValue().getTime()));
 			if (cbxCure.isChecked())

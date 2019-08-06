@@ -257,7 +257,7 @@ public class ViewWaitController extends GenericAbstractAdminController {
 			dtxCure.setValue(productSerie.getCure());
 		}else
 			cbxCure.setChecked(true);
-		txtObservation.setText(productSerie.getBeginTransactionId().getObservation());
+		txtObservation.setText(productSerie.getObservation());
 		txtSerial.setText(productSerie.getSerie());
 		dtxCreation.setValue(productSerie.getCreationDate());
 		txtWorkOrder.setText(productSerie.getOrderWord());
@@ -393,6 +393,7 @@ public class ViewWaitController extends GenericAbstractAdminController {
 			productSerie.setSerie(txtSerial.getText());
 			productSerie.setOrderWord(txtWorkOrder.getText());
 			productSerie.setWork(txtWork.getText());
+			productSerie.setObservation(txtObservation.getText());
 			productSerie.setCreationDate(new Timestamp(dtxCreation.getValue().getTime()));
 			if (cbxExpiration.isChecked())
 				productSerie.setExpirationDate(new Timestamp(dtxExpiration.getValue().getTime()));

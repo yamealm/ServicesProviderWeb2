@@ -243,7 +243,7 @@ public class AdminEgressUnitMetrologicalControlController extends GenericAbstrac
 		txtPartNumber.setText(productSerie.getProduct().getPartNumber());
 		txtQuarantine.setText(productSerie.getQuarantineReason());
 		txtSerial.setText(productSerie.getSerie());
-		txtObservation.setText(productSerie.getBeginTransactionId().getObservation());
+		txtObservation.setText(productSerie.getObservation());
 		if (productSerie.getExpirationDate()!=null) {
 			dtxExpiration.setValue(productSerie.getExpirationDate());
 		}
@@ -394,6 +394,7 @@ public class AdminEgressUnitMetrologicalControlController extends GenericAbstrac
             productSerieParam.getProduct().setAmount(Float.valueOf(txtAmount.getText()));
             List<ProductSerie> productSeries = new ArrayList<ProductSerie>();
 			productSerieParam.setEndingDate(new Timestamp(dtxExit.getValue().getTime()));
+			productSerieParam.setObservation(txtObservation.getText());
 			transaction.setCondition(productSerieParam.getCondition());
 			transaction.setProvider(productSerieParam.getProvider());
 			transaction.setObservation(txtObservation.getText());
