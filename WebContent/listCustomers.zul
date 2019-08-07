@@ -39,7 +39,7 @@
                                                     <label value="${c:l('sp.common.name')}" sclass="lblbold"/>
                                                     <textbox id="txtName" value="" width="130px" tooltiptext="${c:l('sp.common.searching.filter')}"/>
                                                     <separator/>
-                                                    <label value="${c:l('sp.common.login')}" sclass="lblbold"/>
+                                                    <label value="${c:l('sp.common.dni')}" sclass="lblbold"/>
                                                     <textbox id="txtLogin" value="" width="130px" tooltiptext="${c:l('sp.common.searching.filter')}"/>
                                                     <separator/>
                                                     <label value="${c:l('sp.common.email')}" sclass="lblbold"/>
@@ -65,7 +65,7 @@
                                                 <listhead>
                                                     <listheader label="${c:l('sp.common.name')}" width="167px" sort="auto"/>
                                                     <listheader label="${c:l('sp.common.lastName')}" width="167px" sort="auto"/>
-                                                    <listheader label="${c:l('sp.common.login')}" width="145px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.common.phone')}" width="145px" sort="auto"/>
                                                     <listheader label="${c:l('sp.common.email')}" width="167px" sort="auto"/>
                                                     <listheader label="-" width="45px"/>
                                                     <listheader label="-" width="45px"/>

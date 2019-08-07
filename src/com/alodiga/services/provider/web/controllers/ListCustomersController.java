@@ -1,7 +1,22 @@
 package com.alodiga.services.provider.web.controllers;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import org.zkoss.util.resource.Labels;
+import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zul.Combobox;
+import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listcell;
+import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Textbox;
+
 import com.alodiga.services.provider.commons.ejbs.CustomerEJB;
-import com.alodiga.services.provider.commons.ejbs.UserEJB;
 import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
 import com.alodiga.services.provider.commons.exceptions.EmptyListException;
 import com.alodiga.services.provider.commons.exceptions.GeneralException;
@@ -15,30 +30,12 @@ import com.alodiga.services.provider.commons.models.User;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
 import com.alodiga.services.provider.web.components.ChangeStatusButton;
-import com.alodiga.services.provider.web.components.ListcellAddDescendantButton;
-import com.alodiga.services.provider.web.components.ListcellDetailsButton;
 import com.alodiga.services.provider.web.components.ListcellEditButton;
 import com.alodiga.services.provider.web.components.ListcellViewButton;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractListController;
 import com.alodiga.services.provider.web.utils.AccessControl;
 import com.alodiga.services.provider.web.utils.Utils;
 import com.alodiga.services.provider.web.utils.WebConstants;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import org.zkoss.util.resource.Labels;
-import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.Executions;
-import org.zkoss.zk.ui.Sessions;
-import org.zkoss.zk.ui.event.Event;
-import org.zkoss.zk.ui.event.EventListener;
-import org.zkoss.zul.Button;
-import org.zkoss.zul.Combobox;
-import org.zkoss.zul.Comboitem;
-import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listcell;
-import org.zkoss.zul.Listitem;
-import org.zkoss.zul.Textbox;
 
 public class ListCustomersController extends GenericAbstractListController<Customer> {
 

@@ -378,12 +378,10 @@ public class AdminEgressUnitTransitController extends GenericAbstractAdminContro
         try {
 
             transaction.setProduct(productSerieParam.getProduct());
-            Category category = new Category();
-            category.setId(((Category) cmbCategory.getSelectedItem().getValue()).getId());
+            Category category = (Category) cmbCategory.getSelectedItem().getValue();
             transaction.setCategory(category);
 			if (cmbCustomer.getSelectedItem() != null) {
-				Customer customer = new Customer();
-				customer.setId(((Customer) cmbCustomer.getSelectedItem().getValue()).getId());
+				Customer customer = (Customer) cmbCustomer.getSelectedItem().getValue();
 				transaction.setCustomer(customer);
 			}else
 				transaction.setCustomer(null);

@@ -39,7 +39,7 @@ public class AdminUserController extends GenericAbstractAdminController {
     private Textbox txtEmail;
     private Textbox txtPhoneNumber;
     private Checkbox cbxEnabled;
-    private Checkbox cbxReceiveTopNotification;
+//    private Checkbox cbxReceiveTopNotification;
     private Listbox lbxEnterprises;
     private Combobox cmbProfiles;
     private UtilsEJB utilsEJB = null;
@@ -76,7 +76,7 @@ public class AdminUserController extends GenericAbstractAdminController {
         txtEmail.setRawValue(null);
         txtPhoneNumber.setRawValue(null);
         cbxEnabled.setChecked(true);
-        cbxReceiveTopNotification.setChecked(false);
+//        cbxReceiveTopNotification.setChecked(false);
         loadEnterprises(true);
         loadProfiles(true);
     }
@@ -90,7 +90,7 @@ public class AdminUserController extends GenericAbstractAdminController {
             txtEmail.setText(user.getEmail());
             txtPhoneNumber.setText(user.getPhoneNumber());
             cbxEnabled.setChecked(user.getEnabled());
-            cbxReceiveTopNotification.setChecked(user.getReceiveTopUpNotification());
+//            cbxReceiveTopNotification.setChecked(user.getReceiveTopUpNotification());
 
         } catch (Exception ex) {
             showError(ex);
@@ -106,7 +106,7 @@ public class AdminUserController extends GenericAbstractAdminController {
         txtPhoneNumber.setReadonly(true);
         cmbProfiles.setReadonly(true);
         cbxEnabled.setDisabled(true);
-        cbxReceiveTopNotification.setDisabled(true);
+//        cbxReceiveTopNotification.setDisabled(true);
     }
 
     public boolean validateEmpty() {
@@ -194,7 +194,7 @@ public class AdminUserController extends GenericAbstractAdminController {
             user.setEmail(txtEmail.getText());
             user.setPhoneNumber(txtPhoneNumber.getText());
             user.setEnabled(cbxEnabled.isChecked());
-            user.setReceiveTopUpNotification(cbxReceiveTopNotification.isChecked());
+            user.setReceiveTopUpNotification(true);
             user.setCreationDate(new Timestamp(new java.util.Date().getTime()));
             List<UserHasProfileHasEnterprise> uhphes = new ArrayList<UserHasProfileHasEnterprise>();
             Profile profile = (Profile) cmbProfiles.getSelectedItem().getValue();

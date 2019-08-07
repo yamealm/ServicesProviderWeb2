@@ -17,30 +17,21 @@ import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Datebox;
-import org.zkoss.zul.Grid;
 import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
-import org.zkoss.zul.Radio;
-import org.zkoss.zul.Radiogroup;
-import org.zkoss.zul.Row;
-import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 
 import com.alodiga.services.provider.commons.ejbs.CustomerEJB;
-import com.alodiga.services.provider.commons.ejbs.ProductEJB;
 import com.alodiga.services.provider.commons.ejbs.TransactionEJB;
 import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
 import com.alodiga.services.provider.commons.genericEJB.EJBRequest;
 import com.alodiga.services.provider.commons.models.Category;
-import com.alodiga.services.provider.commons.models.Condicion;
 import com.alodiga.services.provider.commons.models.Customer;
 import com.alodiga.services.provider.commons.models.Enterprise;
 import com.alodiga.services.provider.commons.models.Product;
-import com.alodiga.services.provider.commons.models.ProductHistory;
 import com.alodiga.services.provider.commons.models.ProductSerie;
-import com.alodiga.services.provider.commons.models.Provider;
 import com.alodiga.services.provider.commons.models.Transaction;
 import com.alodiga.services.provider.commons.models.TransactionType;
 import com.alodiga.services.provider.commons.models.User;
@@ -398,11 +389,9 @@ public class AdminEgressWaitController extends GenericAbstractAdminController {
             if (_transaction != null) 
             	transaction.setId(_transaction.getId());
             transaction.setProduct(productParam);
-            Category category = new Category();
-            category.setId(((Category) cmbCategory.getSelectedItem().getValue()).getId());
+            Category category = (Category) cmbCategory.getSelectedItem().getValue();
             transaction.setCategory(category);
-            Customer customer = new Customer();
-            customer.setId(((Customer) cmbCustomer.getSelectedItem().getValue()).getId());
+            Customer customer = (Customer) cmbCustomer.getSelectedItem().getValue();
             transaction.setCustomer(customer);
             transaction.setUser(user);
             transaction.setCreationDate(new Timestamp((new java.util.Date().getTime())));
@@ -412,7 +401,7 @@ public class AdminEgressWaitController extends GenericAbstractAdminController {
             transaction.setAmount(Float.valueOf(txtAmount.getText()));
             productParam.setAmount(Float.valueOf(txtAmount.getText()));
             transaction.setOrderWord(txtWorkOrder.getText());
-//          transaction.setWork(txtWork.getText());// agregar campo base da datos trabajo a realizar
+            transaction.setWork(txtWork.getText());// agregar campo base da datos trabajo a realizar
             List<ProductSerie> productSeries = new ArrayList<ProductSerie>();
             int totalQuantity = 0;
             List<Listitem> listitems = lbxRecords.getItems();

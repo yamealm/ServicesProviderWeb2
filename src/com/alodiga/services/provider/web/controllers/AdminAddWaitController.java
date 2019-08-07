@@ -378,17 +378,13 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
 
             if (_transaction != null) 
             	transaction.setId(_transaction.getId());
-            Category category = new Category();
-            category.setId(((Category) cmbCategory.getSelectedItem().getValue()).getId());
+            Category category = (Category) cmbCategory.getSelectedItem().getValue();
             transaction.setCategory(category);
-            Condicion condition = new Condicion();
-            condition.setId(((Condicion) cmbCondition.getSelectedItem().getValue()).getId());
+            Condicion condition = (Condicion) cmbCondition.getSelectedItem().getValue();
             transaction.setCondition(condition);
-            Customer customer = new Customer();
-            customer.setId(((Customer) cmbCustomer.getSelectedItem().getValue()).getId());
+            Customer customer = (Customer) cmbCustomer.getSelectedItem().getValue();
             transaction.setCustomer(customer);
-            Provider provider = new Provider();
-            provider.setId(((Provider) cmbProvider.getSelectedItem().getValue()).getId());
+            Provider provider = (Provider) cmbProvider.getSelectedItem().getValue();
             transaction.setProvider(provider);
             transaction.setUser(user);
             transaction.setCreationDate(new Timestamp(dtxCreation.getValue().getTime()));

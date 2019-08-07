@@ -206,6 +206,12 @@
                                                             	<datebox id="dtxCure" width="120px" format="dd-MM-yyyy"/>
                                                              </hlayout>
                                                         </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.automatic.service.options')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                              <button id="btnPPNSubmitFile" label="${c:l('sp.automatic.commission.loadCSV')}" upload="true,native" width="126px" height="25px" orient="vertical" class="open gray"/>
+                                                            </hlayout>
+                                                        </row>
                                                          <row>
                                                             <label value="${c:l('sp.common.observations')}" sclass="lblbold"/>
                                                             <hlayout>

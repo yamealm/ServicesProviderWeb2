@@ -102,10 +102,10 @@
                                                                 <label value="${c:l('sp.common.phoneNumber.example')}" sclass="lblexample"/>
                                                             </hlayout>
                                                         </row>
-                                                        <row>
-                                                            <label value="${c:l('sp.common.receiveTopNotification')}" sclass="lblbold"/>
-                                                            <checkbox id="cbxReceiveTopNotification" checked="true"/>
-                                                        </row>
+<!--                                                         <row> -->
+<!--                                                             <label value="${c:l('sp.common.receiveTopNotification')}" sclass="lblbold"/> -->
+<!--                                                             <checkbox id="cbxReceiveTopNotification" checked="true"/> -->
+<!--                                                         </row> -->
                                                     
                                                         <row>
                                                             <label value="${c:l('sp.common.enabled')}" sclass="lblbold"/>

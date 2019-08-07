@@ -114,8 +114,7 @@ public class AdminModelController extends GenericAbstractAdminController {
                	model.setId(_model.getId());
                }
                model.setName(txtName.getText()); 
-               Braund braund = new Braund();
-               braund.setId(((Braund) cmbBraund.getSelectedItem().getValue()).getId());
+               Braund braund = (Braund) cmbBraund.getSelectedItem().getValue();
                model.setBraund(braund);
                model = utilsEJB.saveModel(model);   
                this.showMessage("sp.common.save.success", false, null);

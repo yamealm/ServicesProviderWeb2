@@ -145,22 +145,9 @@ public class AdminEnterpriseController extends GenericAbstractAdminController {
             enterprise.setInvoiceAddress(txtInvoiceAddress.getText());
             enterprise.setUrl(txtURL.getText());
             enterprise.setEnabled(cbxEnabled.isChecked());
-//            List<EnterpriseHasTinType> enterpriseHasTinTypes = new ArrayList<EnterpriseHasTinType>();
-//            Set items = lbxTinTypes.getSelectedItems();
-//            List al = new ArrayList(items);
-//            for (Iterator it = al.iterator(); it.hasNext();) {
-//                EnterpriseHasTinType ehtt = new EnterpriseHasTinType();
-//                Listitem li = (Listitem) it.next();
-//                 TinType tinType = (TinType) li.getValue();
-//                ehtt.setTinType(tinType);
-//                ehtt.setEnterprise(enterprise);
-//                enterpriseHasTinTypes.add(ehtt);
-//            }
-//            enterprise.setEnterpriseHasTinTypes(enterpriseHasTinTypes);
-            
+           
             if (_enterprise != null) {
                 enterprise.setId(_enterprise.getId());
-//                utilsEJB.deleteEnterpriseHasTinType(_enterprise.getId());
             }
             request.setParam(enterprise);
             enterprise = utilsEJB.saveEnterprise(request);

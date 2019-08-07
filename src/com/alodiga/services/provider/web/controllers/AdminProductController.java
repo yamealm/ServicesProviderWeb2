@@ -267,8 +267,7 @@ public class AdminProductController extends GenericAbstractAdminController {
             product.setUbicationFolder(txtUbicationFolder.getText());
             product.setStockMax(intStockMin.getValue());
             product.setStockMin(intStockMin.getValue());
-            Enterprise e = new Enterprise();
-            e.setId(((Enterprise) cmbEnterprise.getSelectedItem().getValue()).getId());
+            Enterprise e = (Enterprise) cmbEnterprise.getSelectedItem().getValue();
             product.setEnterprise(e);
             request.setParam(product);
             request.setAuditData(null);

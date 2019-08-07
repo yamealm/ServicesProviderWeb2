@@ -360,11 +360,9 @@ public class ViewStockController extends GenericAbstractAdminController {
 			int quantity = productSerie.getBeginTransactionId().getQuantity();
 			quantity = quantity - productSerie.getQuantity() + intQuantity.getValue();
 			transaction.setQuantity(quantity);
-			Condicion condition = new Condicion();
-			condition.setId(((Condicion) cmbCondition.getSelectedItem().getValue()).getId());
+			Condicion condition = (Condicion) cmbCondition.getSelectedItem().getValue();
 			transaction.setCondition(condition);
-			Provider provider = new Provider();
-			provider.setId(((Provider) cmbProvider.getSelectedItem().getValue()).getId());
+			Provider provider = (Provider) cmbProvider.getSelectedItem().getValue();
 			transaction.setProvider(provider);
 			transaction.setObservation(txtObservation.getText());
 			transaction.setInvoice(txtInvoice.getText());
@@ -379,7 +377,7 @@ public class ViewStockController extends GenericAbstractAdminController {
 			if (cbxCure.isChecked())
 				productSerie.setCure(new Timestamp(dtxCure.getValue().getTime()));
     		transaction = transactionEJB.modificarStock(transaction, productSerie);
-//            productParam = product;
+//            productSerieParam = productSerie;
 //            eventType = WebConstants.EVENT_EDIT;
     			this.showMessage(Labels.getLabel("sp.common.save.success"), false, null);
     		

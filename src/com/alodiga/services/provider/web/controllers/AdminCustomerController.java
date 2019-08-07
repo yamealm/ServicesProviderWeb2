@@ -45,8 +45,8 @@ public class AdminCustomerController extends GenericAbstractAdminController {
     private Textbox txtFirstName;
     private Textbox txtLastName;
     private Textbox txtEmail;
-    private Textbox txtCountryCode;
-    private Textbox txtRegionCode;
+//    private Textbox txtCountryCode;
+//    private Textbox txtRegionCode;
     private Textbox txtPhoneNumber;
     private Textbox txtAddress;
     private Checkbox cbxEnabled;
@@ -92,7 +92,7 @@ public class AdminCustomerController extends GenericAbstractAdminController {
             txtEmail.setText(customer.getEmail());
             txtAddress.setText(customer.getAddress());
             txtDNI.setText(customer.getDni());
-            loadPhoneNumber(customer.getPhoneNumber());
+            txtPhoneNumber.setText(customer.getPhoneNumber());
         } 
     }
 
@@ -103,8 +103,8 @@ public class AdminCustomerController extends GenericAbstractAdminController {
         txtEmail.setReadonly(true);
         txtDNI.setReadonly(true);
         txtAddress.setReadonly(true);
-        txtCountryCode.setReadonly(true);
-        txtRegionCode.setReadonly(true);
+//        txtCountryCode.setReadonly(true);
+//        txtRegionCode.setReadonly(true);
         txtPhoneNumber.setReadonly(true);
         btnSave.setVisible(false);
     }
@@ -119,12 +119,12 @@ public class AdminCustomerController extends GenericAbstractAdminController {
         } else if (txtEmail.getText().isEmpty()) {
             txtEmail.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        } else if (txtCountryCode.getText().isEmpty()) {
-            txtCountryCode.setFocus(true);
-            this.showMessage("sp.error.field.cannotNull", true, null);
-        } else if (txtRegionCode.getText().isEmpty()) {
-            txtRegionCode.setFocus(true);
-            this.showMessage("sp.error.field.cannotNull", true, null);
+//        } else if (txtCountryCode.getText().isEmpty()) {
+//            txtCountryCode.setFocus(true);
+//            this.showMessage("sp.error.field.cannotNull", true, null);
+//        } else if (txtRegionCode.getText().isEmpty()) {
+//            txtRegionCode.setFocus(true);
+//            this.showMessage("sp.error.field.cannotNull", true, null);
         } else if (txtPhoneNumber.getText().isEmpty()) {
             txtPhoneNumber.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
@@ -151,9 +151,10 @@ public class AdminCustomerController extends GenericAbstractAdminController {
             customer.setFirstName(txtFirstName.getText());
             customer.setLastName(txtLastName.getText());
             customer.setEmail(txtEmail.getText());
-            customer.setPhoneNumber(txtCountryCode.getText() + txtRegionCode.getText() + txtPhoneNumber.getText());
+            customer.setPhoneNumber(txtPhoneNumber.getText());
             customer.setEnabled(cbxEnabled.isChecked());
             customer.setDni(txtDNI.getText());
+            customer.setPhoneNumber(txtPhoneNumber.getText());
             request.setParam(customer);
             customerParam = customerEJB.saveCustomer(request);
             this.showMessage("sp.common.save.success", false, null);
@@ -198,12 +199,4 @@ public class AdminCustomerController extends GenericAbstractAdminController {
     }
 
  
-    private void loadPhoneNumber(String phoneNumber) {
-        if (phoneNumber.length() >= 11) {
-            txtCountryCode.setText(phoneNumber.substring(0, 1));
-            txtRegionCode.setText(phoneNumber.substring(1, 4));
-            txtPhoneNumber.setText(phoneNumber.substring(4, 11));
-        }
-    }
-
 }

@@ -395,11 +395,9 @@ public class AdminEgressStockController extends GenericAbstractAdminController {
             if (_transaction != null) 
             	transaction.setId(_transaction.getId());
             transaction.setProduct(productParam);
-            Category category = new Category();
-            category.setId(((Category) cmbCategory.getSelectedItem().getValue()).getId());
+            Category category =(Category) cmbCategory.getSelectedItem().getValue();
             transaction.setCategory(category);
-            Customer customer = new Customer();
-            customer.setId(((Customer) cmbCustomer.getSelectedItem().getValue()).getId());
+            Customer customer = (Customer) cmbCustomer.getSelectedItem().getValue();
             transaction.setCustomer(customer);
             transaction.setUser(user);
             transaction.setCreationDate(new Timestamp((new java.util.Date().getTime())));

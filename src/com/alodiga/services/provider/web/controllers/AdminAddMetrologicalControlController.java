@@ -53,7 +53,6 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
     private List<Braund> braunds;
     private List<Model> models;
     private List<EnterCalibration> enterCalibrations;
-    private List<ControlType> controlTypes;
 
     private User user;
     @Override
@@ -295,14 +294,11 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
 
             if (_metrologicalControl != null) 
             	metrologicalControl.setId(_metrologicalControl.getId());
-            Braund braund = new Braund();
-            braund.setId(((Braund) cmbBraund.getSelectedItem().getValue()).getId());
+            Braund braund = (Braund) cmbBraund.getSelectedItem().getValue();
             metrologicalControl.setBraund(braund);
-            Model model = new Model();
-            model.setId(((Model) cmbModel.getSelectedItem().getValue()).getId());
+            Model model = (Model) cmbModel.getSelectedItem().getValue();
             metrologicalControl.setModel(model);
-            EnterCalibration enterCalibration = new EnterCalibration();
-            enterCalibration.setId(((EnterCalibration) cmbEnterCalibration.getSelectedItem().getValue()).getId());
+            EnterCalibration enterCalibration = (EnterCalibration) cmbEnterCalibration.getSelectedItem().getValue();
             metrologicalControl.setEnterCalibration(enterCalibration);
 //            ControlType controlType = new ControlType();
 //            controlType.setId(((ControlType) cmbType.getSelectedItem().getValue()).getId());

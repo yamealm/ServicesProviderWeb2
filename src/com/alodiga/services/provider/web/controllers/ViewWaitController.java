@@ -375,11 +375,9 @@ public class ViewWaitController extends GenericAbstractAdminController {
 			int quantity = productSerie.getBeginTransactionId().getQuantity();
 			quantity = quantity - productSerie.getQuantity() + intQuantity.getValue();
 			transaction.setQuantity(quantity);
-			Condicion condition = new Condicion();
-			condition.setId(((Condicion) cmbCondition.getSelectedItem().getValue()).getId());
+			Condicion condition =(Condicion) cmbCondition.getSelectedItem().getValue();
 			transaction.setCondition(condition);
-			Provider provider = new Provider();
-			provider.setId(((Provider) cmbProvider.getSelectedItem().getValue()).getId());
+			Provider provider = (Provider) cmbProvider.getSelectedItem().getValue();
 			transaction.setProvider(provider);
 			transaction.setObservation(txtObservation.getText());
 			transaction.setInvoice(txtInvoice.getText());
