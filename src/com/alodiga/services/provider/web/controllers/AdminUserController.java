@@ -342,7 +342,7 @@ public class AdminUserController extends GenericAbstractAdminController {
     private void sendRegistrationMail(User user, Profile profile, String password) {
 
         try {
-            Enterprise enterprise = utilsEJB.loadEnterprise(new EJBRequest(Enterprise.ALODIGA_USA));
+            Enterprise enterprise = utilsEJB.loadEnterprise(new EJBRequest(Enterprise.TURBINES));
           //  Mail mail = CommonMails.getUserRegistrationMail(user, profile, password, enterprise);
            // utilsEJB.sendMail(mail);
         } catch (Exception ex) {

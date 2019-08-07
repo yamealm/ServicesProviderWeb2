@@ -66,7 +66,7 @@ public class ListEnterprisesController extends GenericAbstractListController<Ent
         super.initialize();
         try {
             currentUser = AccessControl.loadCurrentUser();
-            currentProfile = currentUser.getCurrentProfile(Enterprise.ALODIGA_USA);
+            currentProfile = currentUser.getCurrentProfile(Enterprise.TURBINES);
             checkPermissions();
             adminPage = "adminEnterprise.zul";
             utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);

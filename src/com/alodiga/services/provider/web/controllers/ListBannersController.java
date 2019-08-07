@@ -82,7 +82,7 @@ public class ListBannersController extends GenericAbstractListController<Banner>
         super.initialize();
         try {
             currentUser = AccessControl.loadCurrentUser();
-            currentProfile = currentUser.getCurrentProfile(Enterprise.ALODIGA_USA);
+            currentProfile = currentUser.getCurrentProfile(Enterprise.TURBINES);
             checkPermissions();
             adminPage = "adminBanner.zul";
             bannerEJB = (BannerEJB) EJBServiceLocator.getInstance().get(EjbConstants.BANNER_EJB);

@@ -86,7 +86,7 @@ public class ListMetrologicalControlController extends GenericAbstractListContro
         super.initialize();
         try {
             currentUser = AccessControl.loadCurrentUser();
-            currentProfile = currentUser.getCurrentProfile(Enterprise.ALODIGA_USA);
+            currentProfile = currentUser.getCurrentProfile(Enterprise.TURBINES);
             checkPermissions();
             adminPage = "adminAddStock.zul";
             productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);

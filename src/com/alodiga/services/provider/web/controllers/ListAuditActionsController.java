@@ -75,7 +75,7 @@ public class ListAuditActionsController extends GenericAbstractListController<Au
         try {
             adminPage = "adminAccount.zul";
             currentUser = AccessControl.loadCurrentUser();
-            currentProfile = currentUser.getCurrentProfile(Enterprise.ALODIGA_USA);
+            currentProfile = currentUser.getCurrentProfile(Enterprise.TURBINES);
             checkPermissions();
             dtbBeginningDate.setFormat("yyyy/MM/dd");
             dtbBeginningDate.setValue(new Timestamp(new java.util.Date().getTime()));

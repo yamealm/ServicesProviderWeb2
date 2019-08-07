@@ -72,7 +72,7 @@ public class ListUsersController extends GenericAbstractListController<User> {
         super.initialize();
         try {
             currentUser = AccessControl.loadCurrentUser();
-            currentProfile = currentUser.getCurrentProfile(Enterprise.ALODIGA_USA);
+            currentProfile = currentUser.getCurrentProfile(Enterprise.TURBINES);
             checkPermissions();
             adminPage = "adminUser.zul";
             userEJB = (UserEJB) EJBServiceLocator.getInstance().get(EjbConstants.USER_EJB);
@@ -152,7 +152,7 @@ public class ListUsersController extends GenericAbstractListController<User> {
                     item.setValue(user);
                     item.appendChild(new Listcell(user.getFirstName() + " " + user.getLastName()));
                     item.appendChild(new Listcell(user.getLogin()));
-                    item.appendChild(new Listcell(user.getCurrentProfile(Enterprise.ALODIGA_USA).getProfileDataByLanguageId(languageId).getAlias()));
+                    item.appendChild(new Listcell(user.getCurrentProfile(Enterprise.TURBINES).getProfileDataByLanguageId(languageId).getAlias()));
                     System.out.println("---------------user "+ user.getEmail());
                     item.appendChild(permissionChangeStatus ? initEnabledButton(user.getEnabled(), item) : new Listcell());
                     item.appendChild(permissionEdit ? new ListcellEditButton(adminPage, user,Permission.EDIT_USER) : new Listcell());

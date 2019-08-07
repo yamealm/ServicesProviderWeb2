@@ -32,7 +32,7 @@ public class TestMailController extends GenericAbstractController {
         super.initialize();
         try {
             utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
-            enterprise = utilsEJB.loadEnterprise(new EJBRequest(Enterprise.ALODIGA_USA));
+            enterprise = utilsEJB.loadEnterprise(new EJBRequest(Enterprise.TURBINES));
         } catch (Exception ex) {
             showError(ex);
         }

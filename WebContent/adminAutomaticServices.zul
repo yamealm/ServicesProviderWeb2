@@ -73,7 +73,7 @@
                                                         </row>
                                                         <row>
                                                             <label value="${c:l('sp.automatic.service.description')}" sclass="lblbold"/>
-                                                            <label value="${c:l('sp.automatic.service.stock.update.description)}"/>
+                                                            <label value="${c:l('sp.automatic.service.stock.update.description')}"/>
                                                         </row>
                                                         <row>
                                                             <label value="${c:l('sp.automatic.service.interval')}" sclass="lblbold"/>

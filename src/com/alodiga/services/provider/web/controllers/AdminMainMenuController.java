@@ -70,7 +70,7 @@ public class AdminMainMenuController extends GenericForwardComposer {
     private void loadAccountData() {
         try {
             currentuser = AccessControl.loadCurrentUser();
-            currentProfile = currentuser.getCurrentProfile(Enterprise.ALODIGA_USA);
+            currentProfile = currentuser.getCurrentProfile(Enterprise.TURBINES);
             ltcFullName.setLabel(currentuser.getFirstName() + " " + currentuser.getLastName());
             ltcLogin.setLabel(currentuser.getLogin());
             ltcProfile.setLabel(currentProfile.getProfileDataByLanguageId(languageId).getAlias());
@@ -138,7 +138,7 @@ public class AdminMainMenuController extends GenericForwardComposer {
 
     private void loadPemissions() {
         try {
-                permissions = pm.getPermissionByProfileId(currentuser.getCurrentProfile(Enterprise.ALODIGA_USA).getId());
+                permissions = pm.getPermissionByProfileId(currentuser.getCurrentProfile(Enterprise.TURBINES).getId());
             if (permissions != null && !permissions.isEmpty()) {
                 loadMenu();
             }

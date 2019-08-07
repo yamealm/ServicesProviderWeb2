@@ -103,7 +103,7 @@ public class AccessControl {
         user = accessEjb.validateUser(login, Encoder.MD5(password));
         List<UserHasProfileHasEnterprise> userHasProfileHasEnterprises = user.getUserHasProfileHasEnterprises();
         if (userHasProfileHasEnterprises != null && userHasProfileHasEnterprises.size() > 0 && user.getEnabled()) {
-            AccessControl.savePermissionUser(userHasProfileHasEnterprises, Enterprise.ALODIGA_USA);
+            AccessControl.savePermissionUser(userHasProfileHasEnterprises, Enterprise.TURBINES);
             Sessions.getCurrent().setAttribute(WebConstants.SESSION_USER, user);
             saveAction(null, Permission.LOG_IN);
             valid = true;
