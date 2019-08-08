@@ -1,10 +1,14 @@
 package com.alodiga.services.provider.web.controllers;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.zkoss.io.Files;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
@@ -53,7 +57,6 @@ public class AdminAddStockController extends GenericAbstractAdminController {
     private Combobox cmbProvider;
     private Combobox cmbCondition;
     private Combobox cmbCustomer;
-//    private Checkbox cbxSerial;
     private Checkbox cbxSerialVarius;
     private Checkbox cbxExpiration;
     private Checkbox cbxCure;
@@ -67,6 +70,7 @@ public class AdminAddStockController extends GenericAbstractAdminController {
     private Textbox txtSerial;
     private Textbox txtInvoice;
     private Textbox txtObservation;
+    private Textbox txtForm;
     private Intbox intStockMax;
     private Intbox intStockMin;
     private Intbox intStock;
@@ -78,9 +82,10 @@ public class AdminAddStockController extends GenericAbstractAdminController {
     private Radio ra3;
     private Row rowSerial;
     private Row rowSerials;
-    private Radiogroup radiogroup;
+    private Button btnPPNSubmitFile;
     private Grid gridSerials;
     private Rows rows;
+    byte[] form =	null;
 
     private ProductEJB productEJB = null;
     private UtilsEJB utilsEJB = null;
@@ -92,6 +97,7 @@ public class AdminAddStockController extends GenericAbstractAdminController {
     private List<Provider> providers;
     private List<Condicion> conditions;
     private List<Customer> customers;
+    private boolean uploaded = false;
     private User user;
     private Button btnSave;
     @Override
@@ -219,6 +225,12 @@ public class AdminAddStockController extends GenericAbstractAdminController {
 
     public void onClick$btnBack() {
     	 Executions.sendRedirect("./listStock.zul");
+    }
+    
+    public void onClick$btnClear() {
+   	 	txtForm.setText("");
+   	 	form = null;
+		uploaded = false;
     }
     
     public void loadData() {
@@ -394,6 +406,9 @@ public class AdminAddStockController extends GenericAbstractAdminController {
             transaction.setTransactionType(transactionType);
             transaction.setAmount(Float.valueOf(txtAmount.getText()));
             transaction.setInvoice(txtInvoice.getText());
+            if (uploaded) {
+            	transaction.setForm(new javax.sql.rowset.serial.SerialBlob(form));	
+            }
             productParam.setInictialAmount(productParam.getAmount());
             productParam.setAmount(Float.valueOf(txtAmount.getText()));
             productParam.setActNpNsn(txtactNpNsn.getText());
@@ -525,5 +540,19 @@ public class AdminAddStockController extends GenericAbstractAdminController {
 			rowSerial.setVisible(false);
 		}
 
+	}
+	
+	 public void onUpload$btnPPNSubmitFile(org.zkoss.zk.ui.event.UploadEvent event) throws Throwable {
+	    org.zkoss.util.media.Media media = event.getMedia();
+	        
+		if (media != null) {
+			txtForm.setText(media.getName());
+			media.getFormat();
+			form = media.getByteData();
+			uploaded = true;
+
+		} else {
+			showError("Error");
+		}
 	}
 }

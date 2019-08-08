@@ -26,7 +26,7 @@
                                             <hlayout>
                                                 <toolbarbutton label="${c:l('sp.bread.crumb.home')}" onClick='Executions.sendRedirect(&quot;home-admin.zul&quot;)'/>
                                                  |
-                                                <toolbarbutton label="${c:l('sp.crud.braund.list')}" onClick='Executions.sendRedirect(&quot;listMarkes.zul&quot;)'/>
+                                                <toolbarbutton label="${c:l('sp.crud.model.list')}" onClick='Executions.sendRedirect(&quot;listMarkes.zul&quot;)'/>
                                                  |
                                                 <toolbarbutton id="tbbCurrentAction" />
                                             </hlayout>
