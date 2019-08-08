@@ -1,51 +1,34 @@
 package com.alodiga.services.provider.web.controllers;
 
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.rowset.serial.SerialBlob;
+import javax.sql.rowset.serial.SerialException;
+
 import org.zkoss.util.resource.Labels;
+import org.zkoss.zhtml.Filedownload;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
-import org.zkoss.zk.ui.event.Event;
-import org.zkoss.zk.ui.event.EventListener;
-import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Datebox;
-import org.zkoss.zul.Grid;
 import org.zkoss.zul.Intbox;
-import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listcell;
-import org.zkoss.zul.Listitem;
-import org.zkoss.zul.Radio;
-import org.zkoss.zul.Radiogroup;
-import org.zkoss.zul.Row;
-import org.zkoss.zul.Rows;
+import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
-import org.zkoss.zul.Toolbarbutton;
 
-import com.alodiga.services.provider.commons.ejbs.CustomerEJB;
 import com.alodiga.services.provider.commons.ejbs.ProductEJB;
 import com.alodiga.services.provider.commons.ejbs.TransactionEJB;
 import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
 import com.alodiga.services.provider.commons.genericEJB.EJBRequest;
-import com.alodiga.services.provider.commons.managers.PermissionManager;
 import com.alodiga.services.provider.commons.models.Category;
 import com.alodiga.services.provider.commons.models.Condicion;
-import com.alodiga.services.provider.commons.models.Customer;
 import com.alodiga.services.provider.commons.models.Enterprise;
-import com.alodiga.services.provider.commons.models.Permission;
-import com.alodiga.services.provider.commons.models.Product;
-import com.alodiga.services.provider.commons.models.ProductHistory;
 import com.alodiga.services.provider.commons.models.ProductSerie;
-import com.alodiga.services.provider.commons.models.Profile;
 import com.alodiga.services.provider.commons.models.Provider;
 import com.alodiga.services.provider.commons.models.Transaction;
-import com.alodiga.services.provider.commons.models.TransactionType;
 import com.alodiga.services.provider.commons.models.User;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
@@ -70,7 +53,6 @@ public class ViewStockController extends GenericAbstractAdminController {
     private Textbox txtactNpNsn;
     private Textbox txtDescription;
     private Textbox txtPartNumber;
-    private Textbox txtWorkOrder;
     private Textbox txtInvoice;
     private Textbox txtObservation;
     private Textbox txtSerial;
@@ -80,8 +62,12 @@ public class ViewStockController extends GenericAbstractAdminController {
     private Intbox intQuantity;
     private Datebox dtxExpiration;
     private Datebox dtxCure;
-    private Toolbarbutton viewDetail;
-
+    private SerialBlob blob = null;
+    private Textbox txtForm;
+    private byte[] form =	null;
+    private String extForm = null;
+    private String nameForm = null;
+    private boolean uploaded = false;
 
     private ProductEJB productEJB = null;
     private UtilsEJB utilsEJB = null;
@@ -91,10 +77,7 @@ public class ViewStockController extends GenericAbstractAdminController {
     private List<Category> categories;
     private List<Provider> providers;
     private List<Condicion> conditions;
-    private List<Customer> customers;
     private User currentUser;
-    private Profile currentProfile;
-    private Button btnSave;
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
@@ -248,6 +231,18 @@ public class ViewStockController extends GenericAbstractAdminController {
 		txtDescription.setText(productSerie.getProduct().getDescription());
 		txtInvoice.setText(productSerie.getBeginTransactionId().getInvoice() );
 		txtPartNumber.setText(productSerie.getProduct().getPartNumber());
+		if (productSerie.getBeginTransactionId().getForm()!=null){
+			blob = productSerie.getBeginTransactionId().getForm();	
+			try {
+				form = blob.getBytes(1l, (int)blob.length());
+			} catch (SerialException e) {
+
+			}
+			txtForm.setText(productSerie.getBeginTransactionId().getNameForm()+"."+productSerie.getBeginTransactionId().getExtensionForm());
+			txtForm.setReadonly(true);
+		    extForm = productSerie.getBeginTransactionId().getExtensionForm();
+		    nameForm = productSerie.getBeginTransactionId().getNameForm();
+		}
 		try {
     		int  quantity = transactionEJB.loadQuantityByProductId(productSerie.getProduct().getId(),productSerie.getCategory().getId());
     		intStock.setValue(quantity);
@@ -366,6 +361,17 @@ public class ViewStockController extends GenericAbstractAdminController {
 			transaction.setProvider(provider);
 			transaction.setObservation(txtObservation.getText());
 			transaction.setInvoice(txtInvoice.getText());
+			
+			if (uploaded) {
+	           	transaction.setForm(new javax.sql.rowset.serial.SerialBlob(form));
+	           	transaction.setExtForm(extForm);
+	           	transaction.setNameForm(nameForm);
+	        }else if(!uploaded && form==null){
+	        	transaction.setForm(null);
+	           	transaction.setExtForm(null);
+	           	transaction.setNameForm(null);
+	        }
+			
 			productSerie.setProvider(provider);
 			productSerie.setAmount(Float.valueOf(txtAmount.getText()));
 			productSerie.setQuantity(intQuantity.getValue());
@@ -386,6 +392,47 @@ public class ViewStockController extends GenericAbstractAdminController {
         }
     }
     
+    public void onClick$btnDownload() throws InterruptedException {
+        try {
+            if (blob!=null){
+            	form = blob.getBytes(1l, (int)blob.length());
+    			Filedownload.save(form, extForm, nameForm);
+            }
+        } catch (Exception ex) {
+            showError(ex);
+        }
+    }
+    
+    public void onUpload$btnPPNSubmitFile(org.zkoss.zk.ui.event.UploadEvent event) throws Throwable {
+	    org.zkoss.util.media.Media media = event.getMedia();
+	        
+		if (media != null) {
+			if (validateFormatFile(media)) {
+				txtForm.setText(media.getName());
+				media.getFormat();
+				form = media.getByteData();
+				extForm = media.getFormat();
+				nameForm = 	media.getName();	
+				uploaded = true;
+
+			}
+		}else {
+			showError(Labels.getLabel("sp.error.fileupload.invalid.file"));
+        }
+	}
+	 
+	private boolean validateFormatFile(org.zkoss.util.media.Media media) throws InterruptedException {
+		if (!media.getFormat().equals("png") && !media.getFormat().equals("jpg") && !media.getFormat().equals("jpeg")&& !media.getFormat().equals("pdf")) {
+			Messagebox.show(Labels.getLabel("sp.error.fileupload.invalid.format"), "Advertencia", 0,Messagebox.EXCLAMATION);
+			return false;
+		}
+		return true;
+	}
    
+    public void onClick$btnClear() {
+   	 	txtForm.setText("");
+   	 	form = null;
+		uploaded = false;
+    }
     
 } 

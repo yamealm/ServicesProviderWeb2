@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
@@ -14,6 +15,7 @@ import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Intbox;
+import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Radio;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
@@ -50,7 +52,6 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
     private Combobox cmbProvider;
     private Combobox cmbCondition;
     private Combobox cmbCustomer;
-//    private Checkbox cbxSerial;
     private Checkbox cbxSerialVarius;
     private Checkbox cbxExpiration;
     private Checkbox cbxCure;
@@ -80,6 +81,11 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
     private Row rowSerials;
     private Grid gridSerials;
     private Rows rows;
+    private Textbox txtForm;
+    private byte[] form =	null;
+    private String extForm = null;
+    private String nameForm = null;
+    private boolean uploaded = false;
 
     private ProductEJB productEJB = null;
     private UtilsEJB utilsEJB = null;
@@ -395,7 +401,12 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
             transaction.setAmount(Float.valueOf(txtAmount.getText()));
             transaction.setInvoice(txtInvoice.getText());
             transaction.setOrderWord(txtWorkOrder.getText());
-            transaction.setWork(txtWork.getText());// agregar campo base da datos  trabajo a realizar
+            transaction.setWork(txtWork.getText());
+            if (uploaded) {
+            	transaction.setForm(new javax.sql.rowset.serial.SerialBlob(form));
+            	transaction.setExtForm(extForm);
+            	transaction.setNameForm(nameForm);
+            }
             productParam.setInictialAmount(productParam.getAmount());
             productParam.setAmount(Float.valueOf(txtAmount.getText()));
             productParam.setActNpNsn(txtactNpNsn.getText());
@@ -533,5 +544,31 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
 			rowSerial.setVisible(false);
 		}
 
+	}
+	
+	public void onUpload$btnPPNSubmitFile(org.zkoss.zk.ui.event.UploadEvent event) throws Throwable {
+	    org.zkoss.util.media.Media media = event.getMedia();
+	        
+		if (media != null) {
+			if (validateFormatFile(media)) {
+				txtForm.setText(media.getName());
+				media.getFormat();
+				form = media.getByteData();
+				extForm = media.getFormat();
+				nameForm = 	media.getName();
+				uploaded = true;
+
+			}
+		}else {
+			showError(Labels.getLabel("sp.error.fileupload.invalid.file"));
+        }
+	}
+	 
+	private boolean validateFormatFile(org.zkoss.util.media.Media media) throws InterruptedException {
+		if (!media.getFormat().equals("png") && !media.getFormat().equals("jpg") && !media.getFormat().equals("jpeg")&& !media.getFormat().equals("pdf")) {
+			Messagebox.show(Labels.getLabel("sp.error.fileupload.invalid.format"), "Advertencia", 0,Messagebox.EXCLAMATION);
+			return false;
+		}
+		return true;
 	}
 }

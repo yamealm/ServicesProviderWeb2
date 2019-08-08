@@ -671,7 +671,8 @@ sp.error.enteprise.notSelected=You must select one enterprise.
 sp.error.level.notSelected=You must select one level.
 sp.error.purchase.balance.zero=You must set at least one product product greater than zero(0).
 sp.error.declined.creditCard= Credit Card Declined
-sp.error.fileupload.invalid.file=File format or name is invalid
+sp.error.fileupload.invalid.format=File format is invalid
+sp.error.fileupload.invalid.file=File is invalid
 
 #MENUS
 

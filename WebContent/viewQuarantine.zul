@@ -211,6 +211,13 @@
                                                                <textbox id="txtQuarantine"  rows="4" maxlength="45" width="320px"/>                                 
                                                             </hlayout>
                                                         </row>
+                                                         <row >
+                                                            <label value="${c:l('sp.common.form')}" sclass="lblbold"/>
+                                                             <hlayout>
+                                                                 <textbox id="txtForm" maxlength="45" width="320px" />
+                                                            	 <button id="btnDownload" label="${c:l('sp.common.actions.download')}"  width="80px" class="open gray" tooltiptext="${c:l('sp.common.actions.download.tooltip')}"/>
+                                                             </hlayout>
+                                                        </row>
                                                          <row>
                                                             <label value="${c:l('sp.common.observations')}" sclass="lblbold"/>
                                                             <hlayout>

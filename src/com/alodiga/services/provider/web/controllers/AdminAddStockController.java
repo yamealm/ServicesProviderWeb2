@@ -1,26 +1,22 @@
 package com.alodiga.services.provider.web.controllers;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.zkoss.io.Files;
+import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
-import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Intbox;
+import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Radio;
-import org.zkoss.zul.Radiogroup;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
@@ -36,7 +32,6 @@ import com.alodiga.services.provider.commons.models.Condicion;
 import com.alodiga.services.provider.commons.models.Customer;
 import com.alodiga.services.provider.commons.models.Enterprise;
 import com.alodiga.services.provider.commons.models.Product;
-import com.alodiga.services.provider.commons.models.ProductHistory;
 import com.alodiga.services.provider.commons.models.ProductSerie;
 import com.alodiga.services.provider.commons.models.Provider;
 import com.alodiga.services.provider.commons.models.Transaction;
@@ -82,10 +77,12 @@ public class AdminAddStockController extends GenericAbstractAdminController {
     private Radio ra3;
     private Row rowSerial;
     private Row rowSerials;
-    private Button btnPPNSubmitFile;
     private Grid gridSerials;
     private Rows rows;
-    byte[] form =	null;
+    private byte[] form =	null;
+    private String extForm = null;
+    private String nameForm = null;
+    private boolean uploaded = false;
 
     private ProductEJB productEJB = null;
     private UtilsEJB utilsEJB = null;
@@ -97,9 +94,9 @@ public class AdminAddStockController extends GenericAbstractAdminController {
     private List<Provider> providers;
     private List<Condicion> conditions;
     private List<Customer> customers;
-    private boolean uploaded = false;
     private User user;
-    private Button btnSave;
+    
+    
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
@@ -227,12 +224,7 @@ public class AdminAddStockController extends GenericAbstractAdminController {
     	 Executions.sendRedirect("./listStock.zul");
     }
     
-    public void onClick$btnClear() {
-   	 	txtForm.setText("");
-   	 	form = null;
-		uploaded = false;
-    }
-    
+   
     public void loadData() {
         switch (eventType) {
             case WebConstants.EVENT_DELETE:
@@ -407,7 +399,9 @@ public class AdminAddStockController extends GenericAbstractAdminController {
             transaction.setAmount(Float.valueOf(txtAmount.getText()));
             transaction.setInvoice(txtInvoice.getText());
             if (uploaded) {
-            	transaction.setForm(new javax.sql.rowset.serial.SerialBlob(form));	
+            	transaction.setForm(new javax.sql.rowset.serial.SerialBlob(form));
+            	transaction.setExtForm(extForm);
+            	transaction.setNameForm(nameForm);
             }
             productParam.setInictialAmount(productParam.getAmount());
             productParam.setAmount(Float.valueOf(txtAmount.getText()));
@@ -546,13 +540,32 @@ public class AdminAddStockController extends GenericAbstractAdminController {
 	    org.zkoss.util.media.Media media = event.getMedia();
 	        
 		if (media != null) {
-			txtForm.setText(media.getName());
-			media.getFormat();
-			form = media.getByteData();
-			uploaded = true;
+			if (validateFormatFile(media)) {
+				txtForm.setText(media.getName());
+				media.getFormat();
+				form = media.getByteData();
+				extForm = media.getFormat();
+				nameForm = 	media.getName();	
+				uploaded = true;
 
-		} else {
-			showError("Error");
-		}
+			}
+		}else {
+			showError(Labels.getLabel("sp.error.fileupload.invalid.file"));
+        }
 	}
+	 
+	private boolean validateFormatFile(org.zkoss.util.media.Media media) throws InterruptedException {
+		if (!media.getFormat().equals("png") && !media.getFormat().equals("jpg") && !media.getFormat().equals("jpeg")&& !media.getFormat().equals("pdf")) {
+			Messagebox.show(Labels.getLabel("sp.error.fileupload.invalid.format"), "Advertencia", 0,Messagebox.EXCLAMATION);
+			return false;
+		}
+		return true;
+	}
+	
+	
+    public void onClick$btnClear() {
+   	 	txtForm.setText("");
+   	 	form = null;
+		uploaded = false;
+    }
 }

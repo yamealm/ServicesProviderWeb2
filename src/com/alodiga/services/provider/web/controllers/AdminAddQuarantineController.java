@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
@@ -15,6 +16,7 @@ import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Intbox;
+import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Radio;
 import org.zkoss.zul.Radiogroup;
 import org.zkoss.zul.Row;
@@ -32,7 +34,6 @@ import com.alodiga.services.provider.commons.models.Condicion;
 import com.alodiga.services.provider.commons.models.Customer;
 import com.alodiga.services.provider.commons.models.Enterprise;
 import com.alodiga.services.provider.commons.models.Product;
-import com.alodiga.services.provider.commons.models.ProductHistory;
 import com.alodiga.services.provider.commons.models.ProductSerie;
 import com.alodiga.services.provider.commons.models.Provider;
 import com.alodiga.services.provider.commons.models.Transaction;
@@ -53,7 +54,6 @@ public class AdminAddQuarantineController extends GenericAbstractAdminController
     private Combobox cmbProvider;
     private Combobox cmbCondition;
     private Combobox cmbCustomer;
-//    private Checkbox cbxSerial;
     private Checkbox cbxSerialVarius;
     private Checkbox cbxExpiration;
     private Checkbox cbxCure;
@@ -83,6 +83,11 @@ public class AdminAddQuarantineController extends GenericAbstractAdminController
     private Radiogroup radiogroup;
     private Grid gridSerials;
     private Rows rows;
+    private Textbox txtForm;
+    private byte[] form =	null;
+    private String extForm = null;
+    private String nameForm = null;
+    private boolean uploaded = false;
 
     private ProductEJB productEJB = null;
     private UtilsEJB utilsEJB = null;
@@ -398,6 +403,11 @@ public class AdminAddQuarantineController extends GenericAbstractAdminController
             transaction.setAmount(Float.valueOf(txtAmount.getText()));
             transaction.setInvoice(txtInvoice.getText());
             transaction.setQuarantineReason(txtQuarantine.getText());
+            if (uploaded) {
+            	transaction.setForm(new javax.sql.rowset.serial.SerialBlob(form));
+            	transaction.setExtForm(extForm);
+            	transaction.setNameForm(nameForm);
+            }
             productParam.setInictialAmount(productParam.getAmount());
             productParam.setAmount(Float.valueOf(txtAmount.getText()));
             productParam.setActNpNsn(txtactNpNsn.getText());
@@ -529,5 +539,31 @@ public class AdminAddQuarantineController extends GenericAbstractAdminController
 			rowSerial.setVisible(false);
 		}
 
+	}
+	
+	public void onUpload$btnPPNSubmitFile(org.zkoss.zk.ui.event.UploadEvent event) throws Throwable {
+	    org.zkoss.util.media.Media media = event.getMedia();
+	        
+		if (media != null) {
+			if (validateFormatFile(media)) {
+				txtForm.setText(media.getName());
+				media.getFormat();
+				form = media.getByteData();
+				extForm = media.getFormat();
+				nameForm = 	media.getName();
+				uploaded = true;
+
+			}
+		}else {
+			showError(Labels.getLabel("sp.error.fileupload.invalid.file"));
+        }
+	}
+	 
+	private boolean validateFormatFile(org.zkoss.util.media.Media media) throws InterruptedException {
+		if (!media.getFormat().equals("png") && !media.getFormat().equals("jpg") && !media.getFormat().equals("jpeg")&& !media.getFormat().equals("pdf")) {
+			Messagebox.show(Labels.getLabel("sp.error.fileupload.invalid.format"), "Advertencia", 0,Messagebox.EXCLAMATION);
+			return false;
+		}
+		return true;
 	}
 }

@@ -4,7 +4,10 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
+import javax.sql.rowset.serial.SerialBlob;
+
 import org.zkoss.util.resource.Labels;
+import org.zkoss.zhtml.Filedownload;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
@@ -67,7 +70,10 @@ public class ViewTransitController extends GenericAbstractAdminController {
     private Datebox dtxExpiration;
     private Datebox dtxCure;
     private Datebox dtxCreation;
-
+    private SerialBlob blob = null;
+    private Textbox txtForm;
+    private String extForm = null;
+    private String nameForm = null;
 
     private ProductEJB productEJB = null;
     private UtilsEJB utilsEJB = null;
@@ -80,8 +86,7 @@ public class ViewTransitController extends GenericAbstractAdminController {
     private List<Condicion> conditions;
     private List<Customer> customers;
     private User currentUser;
-    private Profile currentProfile;
-    private Button btnSave;
+
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
@@ -261,6 +266,13 @@ public class ViewTransitController extends GenericAbstractAdminController {
 		txtDescription.setText(productSerie.getProduct().getDescription());
 		txtInvoice.setText(productSerie.getBeginTransactionId().getInvoice() );
 		txtPartNumber.setText(productSerie.getProduct().getPartNumber());
+		if (productSerie.getBeginTransactionId().getForm()!=null){
+			blob = productSerie.getBeginTransactionId().getForm();	
+			txtForm.setText(productSerie.getBeginTransactionId().getNameForm()+"."+productSerie.getBeginTransactionId().getExtensionForm());
+			txtForm.setReadonly(true);
+		    extForm = productSerie.getBeginTransactionId().getExtensionForm();
+		    nameForm = productSerie.getBeginTransactionId().getNameForm();
+		}
 		try {
     		int  quantity = transactionEJB.loadQuantityByProductId(productSerie.getProduct().getId(),productSerie.getCategory().getId());
     		intStock.setValue(quantity);
@@ -404,6 +416,17 @@ public class ViewTransitController extends GenericAbstractAdminController {
         }
     }
     
+    
+    public void onClick$btnDownload() throws InterruptedException {
+        try {
+            if (blob!=null){
+    			byte [] bytes = blob.getBytes(1l, (int)blob.length());
+    			Filedownload.save(bytes, extForm, nameForm);
+            }
+        } catch (Exception ex) {
+            showError(ex);
+        }
+    }
    
     
 } 

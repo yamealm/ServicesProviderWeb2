@@ -747,8 +747,13 @@ CHANGE COLUMN `observation` `observation` VARCHAR(150) CHARACTER SET 'latin1' CO
 ALTER TABLE `services`.`product_serie` 
 ADD COLUMN `observation` VARCHAR(150) CHARACTER SET 'latin1' COLLATE 'latin1_bin' NULL AFTER `work`;
 
+//07/08/2019 Yamelis
 ALTER TABLE `services`.`transaction` 
 CHANGE COLUMN `form` `form` LONGBLOB NULL DEFAULT NULL ;
 
+//08/08/2019 Yamelis
+ALTER TABLE `services`.`transaction` 
+ADD COLUMN `extForm` VARCHAR(10) CHARACTER SET 'latin1' COLLATE 'latin1_bin' NULL AFTER `work`,
+ADD COLUMN `nameForm` VARCHAR(150) CHARACTER SET 'latin1' COLLATE 'latin1_bin' NULL AFTER `extForm`;
 
 

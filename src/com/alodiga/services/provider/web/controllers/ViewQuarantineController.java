@@ -5,7 +5,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.rowset.serial.SerialBlob;
+
 import org.zkoss.util.resource.Labels;
+import org.zkoss.zhtml.Filedownload;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
@@ -81,7 +84,10 @@ public class ViewQuarantineController extends GenericAbstractAdminController {
     private Datebox dtxExpiration;
     private Datebox dtxCure;
     private Datebox dtxCreation;
-
+    private SerialBlob blob = null;
+    private Textbox txtForm;
+    private String extForm = null;
+    private String nameForm = null;
 
     private ProductEJB productEJB = null;
     private UtilsEJB utilsEJB = null;
@@ -91,10 +97,9 @@ public class ViewQuarantineController extends GenericAbstractAdminController {
     private List<Category> categories;
     private List<Provider> providers;
     private List<Condicion> conditions;
-    private List<Customer> customers;
+
     private User currentUser;
-    private Profile currentProfile;
-    private Button btnSave;
+
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
@@ -249,6 +254,13 @@ public class ViewQuarantineController extends GenericAbstractAdminController {
 		txtInvoice.setText(productSerie.getBeginTransactionId().getInvoice() );
 		txtPartNumber.setText(productSerie.getProduct().getPartNumber());
 		txtQuarantine.setText(productSerie.getQuarantineReason());
+		if (productSerie.getBeginTransactionId().getForm()!=null){
+			blob = productSerie.getBeginTransactionId().getForm();	
+			txtForm.setText(productSerie.getBeginTransactionId().getNameForm()+"."+productSerie.getBeginTransactionId().getExtensionForm());
+			txtForm.setReadonly(true);
+		    extForm = productSerie.getBeginTransactionId().getExtensionForm();
+		    nameForm = productSerie.getBeginTransactionId().getNameForm();
+		}
 		try {
     		int  quantity = transactionEJB.loadQuantityByProductId(productSerie.getProduct().getId(),productSerie.getCategory().getId());
     		intStock.setValue(quantity);
@@ -390,6 +402,16 @@ public class ViewQuarantineController extends GenericAbstractAdminController {
         }
     }
     
+    public void onClick$btnDownload() throws InterruptedException {
+        try {
+            if (blob!=null){
+    			byte [] bytes = blob.getBytes(1l, (int)blob.length());
+    			Filedownload.save(bytes, extForm, nameForm);
+            }
+        } catch (Exception ex) {
+            showError(ex);
+        }
+    }
    
     
 } 
