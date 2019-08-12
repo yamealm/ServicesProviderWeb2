@@ -217,11 +217,13 @@
                                                             	<datebox id="dtxCure" width="120px" format="dd-MM-yyyy"/>
                                                              </hlayout>
                                                         </row>
-                                                        <row >
+                                                          <row >
                                                             <label value="${c:l('sp.common.form')}" sclass="lblbold"/>
                                                              <hlayout>
-                                                                 <textbox id="txtForm" maxlength="45" width="320px" />
-                                                            	 <button id="btnDownload" label="${c:l('sp.common.actions.download')}"  width="80px" class="open gray" tooltiptext="${c:l('sp.common.actions.download.tooltip')}"/>
+                                                               <textbox id="txtForm" maxlength="45" width="320px" />
+                                                               <button id="btnPPNSubmitFile" label="${c:l('sp.automatic.commission.loadCSV')}" upload="true,maxsize=2048" width="110px" height="25px" orient="vertical" class="open gray"/>
+                                                               <button id="btnDownload" label="${c:l('sp.common.actions.download')}"  width="110px" height="25px" class="open gray" tooltiptext="${c:l('sp.common.actions.download.tooltip')}"/>
+                                                               <button  id="btnClear" width="110px" height="25px" label="${c:l('sp.common.clear')}" class="open gray" />
                                                              </hlayout>
                                                         </row>
                                                          <row>

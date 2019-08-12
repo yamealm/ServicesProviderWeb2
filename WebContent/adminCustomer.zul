@@ -81,7 +81,7 @@
                                                         <row>
                                                             <label value="${c:l('sp.common.phoneNumber')}" sclass="lblbold"/>
                                                             <hlayout>
-                                                                <textbox id="txtPhoneNumber" width="100px" constraint="no empty: ${c:l('error.field.required')};" maxlength="7"/>
+                                                                <textbox id="txtPhoneNumber" width="100px" constraint="no empty: ${c:l('error.field.required')};" maxlength="15"/>
                                                                 <label value="*" sclass="lblreq"/>
                                                                 <label value="${c:l('sp.common.phoneNumber.example')}" sclass="lblexample"/>
                                                             </hlayout>

@@ -1,10 +1,9 @@
 package com.alodiga.services.provider.web.controllers;
 
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
-
-import javax.sql.rowset.serial.SerialBlob;
-import javax.sql.rowset.serial.SerialException;
 
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zhtml.Filedownload;
@@ -62,7 +61,6 @@ public class ViewStockController extends GenericAbstractAdminController {
     private Intbox intQuantity;
     private Datebox dtxExpiration;
     private Datebox dtxCure;
-    private SerialBlob blob = null;
     private Textbox txtForm;
     private byte[] form =	null;
     private String extForm = null;
@@ -232,13 +230,10 @@ public class ViewStockController extends GenericAbstractAdminController {
 		txtInvoice.setText(productSerie.getBeginTransactionId().getInvoice() );
 		txtPartNumber.setText(productSerie.getProduct().getPartNumber());
 		if (productSerie.getBeginTransactionId().getForm()!=null){
-			blob = productSerie.getBeginTransactionId().getForm();	
-			try {
-				form = blob.getBytes(1l, (int)blob.length());
-			} catch (SerialException e) {
+			
+			form = productSerie.getBeginTransactionId().getForm();
 
-			}
-			txtForm.setText(productSerie.getBeginTransactionId().getNameForm()+"."+productSerie.getBeginTransactionId().getExtensionForm());
+			txtForm.setText(productSerie.getBeginTransactionId().getNameForm());
 			txtForm.setReadonly(true);
 		    extForm = productSerie.getBeginTransactionId().getExtensionForm();
 		    nameForm = productSerie.getBeginTransactionId().getNameForm();
@@ -259,7 +254,7 @@ public class ViewStockController extends GenericAbstractAdminController {
 			cbxCure.setChecked(true);
 			dtxCure.setValue(productSerie.getCure());
 		}else
-			cbxCure.setChecked(true);
+			cbxCure.setChecked(false);
 		txtObservation.setText(productSerie.getObservation());
 		txtSerial.setText(productSerie.getSerie());
     }
@@ -363,7 +358,7 @@ public class ViewStockController extends GenericAbstractAdminController {
 			transaction.setInvoice(txtInvoice.getText());
 			
 			if (uploaded) {
-	           	transaction.setForm(new javax.sql.rowset.serial.SerialBlob(form));
+	           	transaction.setForm(form);
 	           	transaction.setExtForm(extForm);
 	           	transaction.setNameForm(nameForm);
 	        }else if(!uploaded && form==null){
@@ -394,8 +389,7 @@ public class ViewStockController extends GenericAbstractAdminController {
     
     public void onClick$btnDownload() throws InterruptedException {
         try {
-            if (blob!=null){
-            	form = blob.getBytes(1l, (int)blob.length());
+            if (form!=null){
     			Filedownload.save(form, extForm, nameForm);
             }
         } catch (Exception ex) {
@@ -422,7 +416,8 @@ public class ViewStockController extends GenericAbstractAdminController {
 	}
 	 
 	private boolean validateFormatFile(org.zkoss.util.media.Media media) throws InterruptedException {
-		if (!media.getFormat().equals("png") && !media.getFormat().equals("jpg") && !media.getFormat().equals("jpeg")&& !media.getFormat().equals("pdf")) {
+		if (!media.getFormat().equals("png") && !media.getFormat().equals("jpg") && !media.getFormat().equals("jpeg")&& !media.getFormat().equals("pdf")&& !media.getFormat().equals("jpeg")
+				&& !media.getFormat().equals("xlsx")&& !media.getFormat().equals("docx")&& !media.getFormat().equals("xls")&& !media.getFormat().equals("doc")) {
 			Messagebox.show(Labels.getLabel("sp.error.fileupload.invalid.format"), "Advertencia", 0,Messagebox.EXCLAMATION);
 			return false;
 		}

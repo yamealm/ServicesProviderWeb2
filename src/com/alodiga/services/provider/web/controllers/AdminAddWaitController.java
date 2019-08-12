@@ -403,7 +403,7 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
             transaction.setOrderWord(txtWorkOrder.getText());
             transaction.setWork(txtWork.getText());
             if (uploaded) {
-            	transaction.setForm(new javax.sql.rowset.serial.SerialBlob(form));
+            	transaction.setForm(form);
             	transaction.setExtForm(extForm);
             	transaction.setNameForm(nameForm);
             }
@@ -565,7 +565,8 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
 	}
 	 
 	private boolean validateFormatFile(org.zkoss.util.media.Media media) throws InterruptedException {
-		if (!media.getFormat().equals("png") && !media.getFormat().equals("jpg") && !media.getFormat().equals("jpeg")&& !media.getFormat().equals("pdf")) {
+		if (!media.getFormat().equals("png") && !media.getFormat().equals("jpg") && !media.getFormat().equals("jpeg")&& !media.getFormat().equals("pdf")&& !media.getFormat().equals("jpeg")
+				&& !media.getFormat().equals("xlsx")&& !media.getFormat().equals("docx")&& !media.getFormat().equals("xls")&& !media.getFormat().equals("doc")) {
 			Messagebox.show(Labels.getLabel("sp.error.fileupload.invalid.format"), "Advertencia", 0,Messagebox.EXCLAMATION);
 			return false;
 		}

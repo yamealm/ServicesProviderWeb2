@@ -146,6 +146,7 @@ public class AdminCustomerController extends GenericAbstractAdminController {
             Customer customer = new Customer();
             if (_customer != null) {
                customer.setId(customerParam.getId());
+               customer.setCreationDate(customerParam.getCreationDate());
             }
             customer.setAddress(txtAddress.getText());
             customer.setFirstName(txtFirstName.getText());

@@ -9,12 +9,14 @@ import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zul.Bandbox;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Intbox;
+import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Radio;
 import org.zkoss.zul.Row;
@@ -44,6 +46,7 @@ import com.alodiga.services.provider.web.generic.controllers.GenericAbstractAdmi
 import com.alodiga.services.provider.web.utils.AccessControl;
 import com.alodiga.services.provider.web.utils.WebConstants;
 
+
 public class AdminAddStockController extends GenericAbstractAdminController {
 
     private static final long serialVersionUID = -9145887024839938515L;
@@ -52,6 +55,10 @@ public class AdminAddStockController extends GenericAbstractAdminController {
     private Combobox cmbProvider;
     private Combobox cmbCondition;
     private Combobox cmbCustomer;
+    private Bandbox cbProduct;
+	private Textbox txtFilterCode;
+	private Textbox txtFilterName;
+	private Listbox lbxProduct;
     private Checkbox cbxSerialVarius;
     private Checkbox cbxExpiration;
     private Checkbox cbxCure;
@@ -218,8 +225,16 @@ public class AdminAddStockController extends GenericAbstractAdminController {
         }
     }
 
-    
+    public void onOpen$cbProduct() {
+    	fillListBox();
+    }
 
+    private void fillListBox() {
+		// TODO Auto-generated method stub
+//		DependenceListModel modelList = new DependenceListModel(5);
+//		lbxProduct.setModel(modelList);
+	}
+    
     public void onClick$btnBack() {
     	 Executions.sendRedirect("./listStock.zul");
     }
@@ -399,7 +414,7 @@ public class AdminAddStockController extends GenericAbstractAdminController {
             transaction.setAmount(Float.valueOf(txtAmount.getText()));
             transaction.setInvoice(txtInvoice.getText());
             if (uploaded) {
-            	transaction.setForm(new javax.sql.rowset.serial.SerialBlob(form));
+            	transaction.setForm(form);
             	transaction.setExtForm(extForm);
             	transaction.setNameForm(nameForm);
             }
@@ -555,7 +570,8 @@ public class AdminAddStockController extends GenericAbstractAdminController {
 	}
 	 
 	private boolean validateFormatFile(org.zkoss.util.media.Media media) throws InterruptedException {
-		if (!media.getFormat().equals("png") && !media.getFormat().equals("jpg") && !media.getFormat().equals("jpeg")&& !media.getFormat().equals("pdf")) {
+		if (!media.getFormat().equals("png") && !media.getFormat().equals("jpg") && !media.getFormat().equals("jpeg")&& !media.getFormat().equals("pdf")&& !media.getFormat().equals("jpeg")
+				&& !media.getFormat().equals("xlsx")&& !media.getFormat().equals("docx")&& !media.getFormat().equals("xls")&& !media.getFormat().equals("doc")) {
 			Messagebox.show(Labels.getLabel("sp.error.fileupload.invalid.format"), "Advertencia", 0,Messagebox.EXCLAMATION);
 			return false;
 		}
