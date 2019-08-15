@@ -9,6 +9,8 @@ import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zk.ui.SuspendNotAllowedException;
+import org.zkoss.zk.ui.event.ForwardEvent;
 import org.zkoss.zul.Bandbox;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
@@ -22,6 +24,7 @@ import org.zkoss.zul.Radio;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Window;
 
 import com.alodiga.services.provider.commons.ejbs.CustomerEJB;
 import com.alodiga.services.provider.commons.ejbs.ProductEJB;
@@ -55,10 +58,6 @@ public class AdminAddStockController extends GenericAbstractAdminController {
     private Combobox cmbProvider;
     private Combobox cmbCondition;
     private Combobox cmbCustomer;
-    private Bandbox cbProduct;
-	private Textbox txtFilterCode;
-	private Textbox txtFilterName;
-	private Listbox lbxProduct;
     private Checkbox cbxSerialVarius;
     private Checkbox cbxExpiration;
     private Checkbox cbxCure;
@@ -90,6 +89,7 @@ public class AdminAddStockController extends GenericAbstractAdminController {
     private String extForm = null;
     private String nameForm = null;
     private boolean uploaded = false;
+    private Product product;
 
     private ProductEJB productEJB = null;
     private UtilsEJB utilsEJB = null;
@@ -225,16 +225,20 @@ public class AdminAddStockController extends GenericAbstractAdminController {
         }
     }
 
-    public void onOpen$cbProduct() {
-    	fillListBox();
+    public void onClick$btnSearch() {
+    	 Window window = (Window)Executions.createComponents("catProducts.zul", null, null);
+         try {
+			window.doModal();
+		} catch (SuspendNotAllowedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
-    private void fillListBox() {
-		// TODO Auto-generated method stub
-//		DependenceListModel modelList = new DependenceListModel(5);
-//		lbxProduct.setModel(modelList);
-	}
-    
+     
     public void onClick$btnBack() {
     	 Executions.sendRedirect("./listStock.zul");
     }
