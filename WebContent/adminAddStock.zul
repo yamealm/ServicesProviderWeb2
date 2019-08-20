@@ -50,12 +50,51 @@
                                                         <column label="" width="690px"/>
                                                     </columns>
                                                     <rows>
-                                                    <row>
-                                                        <label value="${c:l('sp.common.product')}" sclass="lblbold"/>
-                                                            <hlayout>
-                                                               <button id="btnSearch" label="${c:l('sp.common.actions.search')}" width="80px" class="open orange" tooltiptext="${c:l('sp.common.actions.search.filter.tooltip')}"/>
-                                                            </hlayout>
-														</row>		
+                                                      <row>
+										        <label value="${c:l('sp.product.product')}"  />
+																<bandbox id="cbProduct" width="90%" constraint="no empty">
+																	<bandpopup>
+																		<listbox id="lbxProduct" mold="paging" pageSize="5" emptyMessage="No existen productor para mostrar" width="600px" forward="onSelect = lbxProduct.onSelectMine">
+																		<auxhead>
+																			<auxheader colspan="1">
+																				<div width="85%">
+																					<image src="/img/icon-filter.png"/>
+																					<textbox id="txtFilterCode" instant="true" width="100%" forward="onChange = lbxProduct.onFilter"/>
+																				</div>						
+																			</auxheader>
+																			<auxheader colspan="1">
+																				<div width="95%">
+																					<image src="/img/icon-filter.png"/>
+																					<textbox id="txtFilterName" instant="true" width="100%" forward="onChange = lbxProduct.onFilter"/>
+																				</div>						
+																			</auxheader>
+																			<auxheader colspan="1" align="center">
+																				<button	forward="onClick = lbxListDependences.onCleanFilters" tooltiptext="Limpiar" label="Limpiar"/>
+																			</auxheader>
+																		</auxhead>
+																		<listhead>
+																			<listheader label="Codigo" sort="none" width="20%" align="center"/>
+																			<listheader label="Nombre" sort="none" width="50%" align="center"/>
+																			<listheader label="Precio" sort="none" width="30%" align="center"/>
+																		</listhead>
+													
+																		<template name="model">
+																			<listitem>
+																				<listcell label="${each.partNumber}" />
+																				<listcell label="${each.description}" />
+																				<listcell label="${each.amount}" />
+																			</listitem>
+																		</template>
+																	</listbox>
+																</bandpopup>
+															</bandbox>
+														</row>	
+<!--                                                     <row> -->
+<!--                                                         <label value="${c:l('sp.common.product')}" sclass="lblbold"/> -->
+<!--                                                             <hlayout> -->
+<!--                                                                <button id="btnSearch" label="${c:l('sp.common.actions.search')}" width="80px" class="open orange" tooltiptext="${c:l('sp.common.actions.search.filter.tooltip')}"/> -->
+<!--                                                             </hlayout> -->
+<!-- 														</row>		 -->
                                                         <row>
                                                             <label value="${c:l('sp.common.enterprise')}" sclass="lblbold"/>
                                                             <hlayout>
