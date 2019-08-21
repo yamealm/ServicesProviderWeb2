@@ -155,7 +155,8 @@ public class CatProductsController extends GenericAbstractListController<Product
     public void onClick$btnSelect() {
     	Product product = (Product) lbxRecords.getSelectedItem().getValue();
     	Sessions.getCurrent().setAttribute("object",product);
-   	 	Executions.sendRedirect("./adminAddStock.zul");
+    	String page = (String) Sessions.getCurrent().getAttribute("page");
+   	 	Executions.sendRedirect("./"+page);
    }
     
     public void onClick$btnCancel() {

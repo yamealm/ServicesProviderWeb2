@@ -9,7 +9,7 @@ import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
-import org.zkoss.zul.Button;
+import org.zkoss.zk.ui.SuspendNotAllowedException;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
@@ -18,10 +18,10 @@ import org.zkoss.zul.Grid;
 import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Radio;
-import org.zkoss.zul.Radiogroup;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Window;
 
 import com.alodiga.services.provider.commons.ejbs.CustomerEJB;
 import com.alodiga.services.provider.commons.ejbs.ProductEJB;
@@ -80,7 +80,6 @@ public class AdminAddQuarantineController extends GenericAbstractAdminController
     private Radio ra3;
     private Row rowSerial;
     private Row rowSerials;
-    private Radiogroup radiogroup;
     private Grid gridSerials;
     private Rows rows;
     private Textbox txtForm;
@@ -100,14 +99,20 @@ public class AdminAddQuarantineController extends GenericAbstractAdminController
     private List<Condicion> conditions;
     private List<Customer> customers;
     private User user;
-    private Button btnSave;
+    private Customer customer = null;
+    
+    
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
         productParam = (Sessions.getCurrent().getAttribute("object") != null) ? (Product) Sessions.getCurrent().getAttribute("object") : null;
-        user = AccessControl.loadCurrentUser();
-        initialize();
-        initView(eventType, "sp.crud.product");
+        customer  = (Sessions.getCurrent().getAttribute("customer") != null) ? (Customer) Sessions.getCurrent().getAttribute("customer") : null;
+		if (customer == null) {
+			user = AccessControl.loadCurrentUser();
+			initialize();
+			initView(eventType, "sp.crud.product");
+		}else
+			loadCustomer(customer);
     }
 
     @Override
@@ -242,8 +247,8 @@ public class AdminAddQuarantineController extends GenericAbstractAdminController
                 blockFields();
                 break;
             case WebConstants.EVENT_ADD:
-            	loadFields(productParam);
-                loadEnterprises(productParam.getEnterprise());
+            	loadFields(productParam!=null?productParam:null);
+                loadEnterprises(productParam!=null?productParam.getEnterprise():null);
                 loadCondition(null);
                 loadCategory(null);
                 loadProvider(null);
@@ -257,22 +262,23 @@ public class AdminAddQuarantineController extends GenericAbstractAdminController
 
     
     public void loadFields(Product product) {
-    	
-    	intStockMax.setValue(product.getStockMax());
-    	intStockMin.setValue(product.getStockMin());
-    	txtAmount.setText(String.valueOf(product.getAmount()));
-		txtBachNumber.setText(product.getBatchNumber());
-		txtUbicationFolder.setText(product.getUbicationFolder());
-		txtUbicationBox.setText(product.getUbicationBox());
-		txtactNpNsn.setText(product.getActNpNsn());
-		txtDescription.setText(product.getDescription());
-		txtPartNumber.setText(product.getPartNumber());
-		try {
-    		int  quantity = transactionEJB.loadQuantityByProductId(product.getId(), Category.QUARANTINE);
-    		intStock.setValue(quantity);
-    	} catch (Exception ex) {
-    		intStock.setValue(0);
-        }
+		if (product != null) {
+			intStockMax.setValue(product.getStockMax());
+			intStockMin.setValue(product.getStockMin());
+			txtAmount.setText(String.valueOf(product.getAmount()));
+			txtBachNumber.setText(product.getBatchNumber());
+			txtUbicationFolder.setText(product.getUbicationFolder());
+			txtUbicationBox.setText(product.getUbicationBox());
+			txtactNpNsn.setText(product.getActNpNsn());
+			txtDescription.setText(product.getDescription());
+			txtPartNumber.setText(product.getPartNumber());
+			try {
+				int quantity = transactionEJB.loadQuantityByProductId(product.getId(), Category.QUARANTINE);
+				intStock.setValue(quantity);
+			} catch (Exception ex) {
+				intStock.setValue(0);
+			}
+		}
     }
 
 
@@ -567,4 +573,33 @@ public class AdminAddQuarantineController extends GenericAbstractAdminController
 		}
 		return true;
 	}
+	
+	 public void onClick$btnSearch() {
+    	 Window window = (Window)Executions.createComponents("catProducts.zul", null, null);
+    	 Sessions.getCurrent().setAttribute("page","adminAddQuarantine.zul");
+         try {
+			window.doModal();
+		} catch (SuspendNotAllowedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+	
+	 public void onClick$btnSearchCustomer() {
+    	 Window window = (Window)Executions.createComponents("catCustomers.zul", null, null);
+    	 Sessions.getCurrent().setAttribute("page","adminAddQuarantine.zul");
+         try {
+			window.doModal();
+		} catch (SuspendNotAllowedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+
 }

@@ -221,21 +221,7 @@ public class AdminAddStockController extends GenericAbstractAdminController {
             }
         }
     }
-
-    public void onClick$btnSearch() {
-    	 Window window = (Window)Executions.createComponents("catProducts.zul", null, null);
-         try {
-			window.doModal();
-		} catch (SuspendNotAllowedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    }
-
-     
+       
     public void onClick$btnBack() {
     	 Executions.sendRedirect("./listStock.zul");
     }
@@ -586,4 +572,19 @@ public class AdminAddStockController extends GenericAbstractAdminController {
    	 	form = null;
 		uploaded = false;
     }
+    
+    public void onClick$btnSearch() {
+   	 Window window = (Window)Executions.createComponents("catProducts.zul", null, null);
+   	 Sessions.getCurrent().setAttribute("page","adminAddStock.zul");
+        try {
+			window.doModal();
+		} catch (SuspendNotAllowedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+   }
+
 }

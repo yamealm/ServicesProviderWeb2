@@ -8,6 +8,7 @@ import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zk.ui.SuspendNotAllowedException;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
@@ -91,8 +92,17 @@ public class CatCustomersController extends GenericAbstractListController<Custom
 
     public void onClick$btnAdd() throws InterruptedException {
         Sessions.getCurrent().setAttribute("eventType", WebConstants.EVENT_ADD);
-        Sessions.getCurrent().removeAttribute("object");
-        Executions.getCurrent().sendRedirect(adminPage);
+        Window window = (Window)Executions.createComponents("addCustomer.zul", null, null);
+        Sessions.getCurrent().setAttribute("page","catCustomers.zul");
+        try {
+			window.doModal();
+		} catch (SuspendNotAllowedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     public void loadList(List<Customer> list) {
@@ -155,7 +165,8 @@ public class CatCustomersController extends GenericAbstractListController<Custom
     public void onClick$btnSelect() {
     	Customer customer = (Customer) lbxRecords.getSelectedItem().getValue();
     	Sessions.getCurrent().setAttribute("customer",customer);
-   	 	Executions.sendRedirect("./adminAddStock.zul");
+     	String page = (String) Sessions.getCurrent().getAttribute("page");
+    	Executions.sendRedirect("./"+page);
    }
     
     public void onClick$btnCancel() {
@@ -167,5 +178,7 @@ public class CatCustomersController extends GenericAbstractListController<Custom
 		// TODO Auto-generated method stub
 		
 	}
+   
+   
     
 }

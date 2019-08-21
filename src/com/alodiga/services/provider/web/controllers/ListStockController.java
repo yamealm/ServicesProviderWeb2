@@ -23,7 +23,6 @@ import com.alodiga.services.provider.commons.models.Category;
 import com.alodiga.services.provider.commons.models.Enterprise;
 import com.alodiga.services.provider.commons.models.Permission;
 import com.alodiga.services.provider.commons.models.Product;
-import com.alodiga.services.provider.commons.models.ProductHistory;
 import com.alodiga.services.provider.commons.models.Profile;
 import com.alodiga.services.provider.commons.models.Provider;
 import com.alodiga.services.provider.commons.models.User;

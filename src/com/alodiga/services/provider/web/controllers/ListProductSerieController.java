@@ -249,9 +249,11 @@ public class ListProductSerieController extends GenericAbstractListController<Pr
                     item = new Listitem();
                     item.setValue(productSerie);
                     item.appendChild(new Listcell(productSerie.getId().toString()));
+                    item.appendChild(new Listcell(productSerie.getProduct().getPartNumber()));
                     item.appendChild(new Listcell(productSerie.getProduct().getDescription()));
                     item.appendChild(new Listcell(productSerie.getProvider().getName()));
                     item.appendChild(new Listcell(productSerie.getCreationDate().toString()));
+                    item.appendChild(new Listcell(productSerie.getEndingDate()!=null?productSerie.getEndingDate().toString():null));
                     item.appendChild(new Listcell(productSerie.getAmount().toString()));
                     item.appendChild(new Listcell(String.valueOf(productSerie.getQuantity())));
                     item.appendChild(new Listcell(productSerie.getCategory().getName()));
