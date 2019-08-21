@@ -31,8 +31,8 @@ public class MyAccountController extends GenericAbstractAdminController {
     private Textbox txtLastName;
     private Textbox txtEmail;
     private Textbox txtPhoneNumber;
-    private Checkbox cbxEnabled;
-    private Checkbox cbxReceiveTopNotification;
+//    private Checkbox cbxEnabled;
+//    private Checkbox cbxReceiveTopNotification;
     private Listbox lbxEnterprises;
     private Label lblProfile;
     private UserEJB userEJB = null;
@@ -51,6 +51,7 @@ public class MyAccountController extends GenericAbstractAdminController {
             super.initialize();
             userEJB = (UserEJB) EJBServiceLocator.getInstance().get(EjbConstants.USER_EJB);
             userParam = AccessControl.loadCurrentUser();
+            loadFields(userParam);
         } catch (Exception ex) {
             showError(ex);
         }
@@ -67,8 +68,8 @@ public class MyAccountController extends GenericAbstractAdminController {
             txtLastName.setText(user.getLastName());
             txtEmail.setText(user.getEmail());
             txtPhoneNumber.setText(user.getPhoneNumber());
-            cbxEnabled.setChecked(user.getEnabled());
-            cbxReceiveTopNotification.setChecked(user.getReceiveTopUpNotification());
+//            cbxEnabled.setChecked(user.getEnabled());
+//            cbxReceiveTopNotification.setChecked(user.getReceiveTopUpNotification());
             lbxEnterprises.getItems().clear();
             loadEnterpriseList(user.getUserHasProfileHasEnterprises());
         } catch (Exception ex) {
@@ -122,8 +123,8 @@ public class MyAccountController extends GenericAbstractAdminController {
                     user.setLastName(txtLastName.getText());
                     user.setEmail(txtEmail.getText());
                     user.setPhoneNumber(txtPhoneNumber.getText());
-                    user.setEnabled(cbxEnabled.isChecked());
-                    user.setReceiveTopUpNotification(cbxReceiveTopNotification.isChecked());
+                    user.setEnabled(true);
+                    user.setReceiveTopUpNotification(true);
                     request.setParam(user);
                     user = userEJB.saveUser(request);
                     userParam = user;
@@ -136,8 +137,8 @@ public class MyAccountController extends GenericAbstractAdminController {
                         user.setLastName(txtLastName.getText());
                         user.setEmail(txtEmail.getText());
                         user.setPhoneNumber(txtPhoneNumber.getText());
-                        user.setEnabled(cbxEnabled.isChecked());
-                        user.setReceiveTopUpNotification(cbxReceiveTopNotification.isChecked());
+                        user.setEnabled(true);
+                        user.setReceiveTopUpNotification(true);
                         request.setParam(user);
                         user = userEJB.saveUser(request);
                         userParam = user;

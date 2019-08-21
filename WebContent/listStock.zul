@@ -39,8 +39,9 @@
                                                 </hlayout>
 
                                                 <hlayout>
-                                                    <!--Add button-->
+                                                     <!--Add button-->
                                                     <div align="left" width="495px">
+                                                        <button id="btnAdd" label="${c:l('sp.common.actions.add')}" width="80px" class="open orange" tooltiptext="${c:l('sp.common.actions.add.tooltip')}" visible="true"/>
                                                     </div>
                                                     <!--Filters button-->
                                                     <div align="right" width="400px">

@@ -9,20 +9,19 @@ import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
-import org.zkoss.zk.ui.event.ForwardEvent;
-import org.zkoss.zul.Bandbox;
+import org.zkoss.zk.ui.SuspendNotAllowedException;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Intbox;
-import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Radio;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Window;
 
 import com.alodiga.services.provider.commons.ejbs.CustomerEJB;
 import com.alodiga.services.provider.commons.ejbs.ProductEJB;
@@ -43,7 +42,6 @@ import com.alodiga.services.provider.commons.models.User;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
 import com.alodiga.services.provider.commons.utils.GeneralUtils;
-import com.alodiga.services.provider.web.components.ProductListModel;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractAdminController;
 import com.alodiga.services.provider.web.utils.AccessControl;
 import com.alodiga.services.provider.web.utils.WebConstants;
@@ -88,11 +86,7 @@ public class AdminAddStockController extends GenericAbstractAdminController {
     private String extForm = null;
     private String nameForm = null;
     private boolean uploaded = false;
-    private Product product;
-    private Bandbox cbProduct;
-    private Textbox txtFilterCode;
-	private Textbox txtFilterName;
-	private Listbox lbxProduct;
+//    private Product product;
 
     private ProductEJB productEJB = null;
     private UtilsEJB utilsEJB = null;
@@ -228,7 +222,20 @@ public class AdminAddStockController extends GenericAbstractAdminController {
         }
     }
 
-    
+    public void onClick$btnSearch() {
+    	 Window window = (Window)Executions.createComponents("catProducts.zul", null, null);
+         try {
+			window.doModal();
+		} catch (SuspendNotAllowedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+
+     
     public void onClick$btnBack() {
     	 Executions.sendRedirect("./listStock.zul");
     }
@@ -246,8 +253,8 @@ public class AdminAddStockController extends GenericAbstractAdminController {
                 blockFields();
                 break;
             case WebConstants.EVENT_ADD:
-            	loadFields(productParam);
-                loadEnterprises(productParam.getEnterprise());
+            	loadFields(productParam!=null?productParam:null);
+                loadEnterprises(productParam!=null?productParam.getEnterprise():null);
                 loadCondition(null);
                 loadCategory(null);
                 loadProvider(null);
@@ -261,22 +268,23 @@ public class AdminAddStockController extends GenericAbstractAdminController {
 
     
     public void loadFields(Product product) {
-    	
-    	intStockMax.setValue(product.getStockMax());
-    	intStockMin.setValue(product.getStockMin());
-    	txtAmount.setText(String.valueOf(product.getAmount()));
-		txtBachNumber.setText(product.getBatchNumber());
-		txtUbicationFolder.setText(product.getUbicationFolder());
-		txtUbicationBox.setText(product.getUbicationBox());
-		txtactNpNsn.setText(product.getActNpNsn());
-		txtDescription.setText(product.getDescription());
-		txtPartNumber.setText(product.getPartNumber());
-		try {
-    		int  quantity = transactionEJB.loadQuantityByProductId(product.getId(), Category.STOCK);
-    		intStock.setValue(quantity);
-    	} catch (Exception ex) {
-    		intStock.setValue(0);
-        }
+		if (product != null) {
+			intStockMax.setValue(product.getStockMax());
+			intStockMin.setValue(product.getStockMin());
+			txtAmount.setText(String.valueOf(product.getAmount()));
+			txtBachNumber.setText(product.getBatchNumber());
+			txtUbicationFolder.setText(product.getUbicationFolder());
+			txtUbicationBox.setText(product.getUbicationBox());
+			txtactNpNsn.setText(product.getActNpNsn());
+			txtDescription.setText(product.getDescription());
+			txtPartNumber.setText(product.getPartNumber());
+			try {
+				int quantity = transactionEJB.loadQuantityByProductId(product.getId(), Category.STOCK);
+				intStock.setValue(quantity);
+			} catch (Exception ex) {
+				intStock.setValue(0);
+			}
+		}
     }
 
 
@@ -492,47 +500,6 @@ public class AdminAddStockController extends GenericAbstractAdminController {
     		dtxCure.setVisible(false);
     }
     
-    public void onOpen$cbProduct() {
-    	fillListBox();
-    }
-
-    private void fillListBox() {
-		// TODO Auto-generated method stub
-		ProductListModel modelList = new ProductListModel(5);
-		lbxProduct.setModel(modelList);
-	}
-    
-	public void onCleanFilters() {
-		txtFilterName.setValue("");
-
-		fillListBox();
-	}
-
-	public void onFilter$lbxProduct(final ForwardEvent event) {
-
-		String filterCodeValue = txtFilterCode.getValue();
-		String filterCode = "p.partNumber LIKE '" + filterCodeValue + "%'";
-
-		String filterDependenceValue = txtFilterName.getValue();
-		String filterDependence = "p.description LIKE '" + filterDependenceValue+ "%'";
-
-		String filterFinal = "";
-		filterFinal = filterCode + " AND " + filterDependence;
-		// Actualizar modelo
-		lbxProduct.getItems().clear();
-
-		ProductListModel modelList = new ProductListModel(5, filterFinal);
-
-		lbxProduct.setModel(modelList);
-	}
-	
-	public void onSelect$lbxProduct(final ForwardEvent event) {
-		Listbox button = (Listbox) event.getOrigin().getTarget();
-		if (button.getSelectedItem() != null) {
-			product = button.getSelectedItem().getValue();
-			cbProduct.setValue(product.getDescription());
-		}
-	}
     
     public void onCheck$radiogroup(){
     	if (intQuantity.getText().isEmpty()) {
