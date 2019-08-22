@@ -4,9 +4,9 @@
 <?link rel="icon" tye="image/x-icon" href="/images/favicon.ico"?>
 <zk xmlns:n="native">
     <window id="winCustomersView" apply ="com.alodiga.services.provider.web.controllers.CatCustomersController" width="600px" height="480px" closable="true" border="normal">
-        <caption image="/images/icon-alodiga-1.png" label="${c:l('sp.common.product')}"/>
+        <caption image="/images/icon-alodiga-1.png" label="${c:l('sp.common.customer')}"/>
         <style src="/css/general.css"/>
-        <groupbox closable="false" height="40px" id=grpProduct>
+        <groupbox closable="false" height="40px" >
             <caption label="${c:l('common.data.filter')}" />
             <textbox id="txtAlias" width="300px" />
         </groupbox>
@@ -22,7 +22,7 @@
         </div>
         <separator/>
         <div align="right">
-            <button id="btnAdd" label="${c:l('sp.common.actions.add')}" width="80px" class="open orange" tooltiptext="${c:l('sp.common.actions.add.tooltip')}" visible="true"/>
+            <button id="btnAdd" label="${c:l('sp.common.actions.add')}" width="150px" class="open orange" tooltiptext="${c:l('sp.common.actions.add.tooltip')}" visible="true"/>
             <button  id="btnSelect" width="150px" label="${c:l('sp.common.select')}" class="open orange"/>
             <button  id="btnCancel" width="150px" label="${c:l('sp.common.actions.cancel')}" class="open gray" />
         </div>

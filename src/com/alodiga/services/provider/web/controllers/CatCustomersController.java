@@ -91,9 +91,10 @@ public class CatCustomersController extends GenericAbstractListController<Custom
     }
 
     public void onClick$btnAdd() throws InterruptedException {
+    	winCustomersView.detach();
         Sessions.getCurrent().setAttribute("eventType", WebConstants.EVENT_ADD);
         Window window = (Window)Executions.createComponents("addCustomer.zul", null, null);
-        Sessions.getCurrent().setAttribute("page","catCustomers.zul");
+        Sessions.getCurrent().setAttribute("page1","catCustomers.zul");
         try {
 			window.doModal();
 		} catch (SuspendNotAllowedException e) {

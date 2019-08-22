@@ -3,8 +3,8 @@
 <?page title="${c:l('sp.common.page.title')}"?>
 <?link rel="icon" tye="image/x-icon" href="/images/favicon.ico"?>
 <zk xmlns:n="native">
-    <window id="winAddCustomerView" apply ="com.alodiga.services.provider.web.controllers.AddCustomerController" width="600px" height="480px" closable="true" border="normal">
-        <caption image="/images/icon-alodiga-1.png" label="${c:l('sp.common.product')}"/>
+    <window id="winAddCustomerView" apply ="com.alodiga.services.provider.web.controllers.AddCustomerController" width="600px" height="380px" closable="true" border="normal">
+        <caption image="/images/icon-alodiga-1.png" label="${c:l('sp.common.customer')}"/>
         <style src="/css/general.css"/>
         <div>
         	<vlayout>
@@ -24,43 +24,40 @@
         		<label value="${c:l('sp.common.data.basic')}" sclass="lblbold" />
         		<grid fixedLayout="true">
         			<columns>
-        				<column label="" width="300px" />
-        				<column label="" width="590px" />
+        				<column label="" width="200px" />
+        				<column label="" width="400px" />
         			</columns>
         			<rows>
 
         				<row>
         					<label value="${c:l('sp.common.name')}" sclass="lblbold" />
         					<hlayout>
-        						<textbox id="txtFirstName" width="320px" constraint="no empty: ${c:l('error.field.required')}"	maxlength="45" />
+        						<textbox id="txtFirstName" width="200px" constraint="no empty: ${c:l('error.field.required')}"	maxlength="45" />
         						<label value="*" sclass="lblreq" />
-        						<label value="${c:l('sp.common.max45')}" sclass="lblexample" />
         					</hlayout>
         				</row>
         				<row>
         					<label value="${c:l('sp.common.lastName')}" sclass="lblbold" />
         					<hlayout>
-        						<textbox id="txtLastName" width="320px" constraint="no empty: ${c:l('error.field.required')}" maxlength="45" />
+        						<textbox id="txtLastName" width="200px" constraint="no empty: ${c:l('error.field.required')}" maxlength="45" />
         						<label value="*" sclass="lblreq" />
-        						<label value="${c:l('sp.common.max45')}" sclass="lblexample" />
         					</hlayout>
         				</row>
 
         				<row>
-        					<label value="${c:l('sp.common.email')}" width="100px" sclass="lblbold" />
+        					<label value="${c:l('sp.common.email')}" width="150px" sclass="lblbold" />
         					<hlayout>
-        						<textbox id="txtEmail" width="320px" maxlength="45" constraint="/.+@.+\.[a-z]+/, no empty: ${c:l('error.field.email')}" />
+        						<textbox id="txtEmail" width="200px" maxlength="45" constraint="/.+@.+\.[a-z]+/, no empty: ${c:l('error.field.email')}" />
         						<label value="*" sclass="lblreq" />
-        						<label value="${c:l('sp.common.max45')}" sclass="lblexample" />
         						<separator />
-        						<label	value="${c:l('sp.common.email.example')}"sclass="lblexample" />
+        						<label	value="${c:l('sp.common.email.example')}" sclass="lblexample" />
         					</hlayout>
         				</row>
         				<row>
         					<label
         						value="${c:l('sp.common.phoneNumber')}" sclass="lblbold" />
         					<hlayout>
-        						<textbox id="txtPhoneNumber" width="100px" constraint="no empty: ${c:l('error.field.required')};" maxlength="15" />
+        						<textbox id="txtPhoneNumber" width="200px" constraint="no empty: ${c:l('error.field.required')};" maxlength="15" />
         						<label value="*" sclass="lblreq" />
         						<label value="${c:l('sp.common.phoneNumber.example')}" sclass="lblexample" />
         					</hlayout>
@@ -68,17 +65,16 @@
         				<row>
         					<label value="${c:l('sp.common.dni')}" sclass="lblbold" />
         					<hlayout>
-        						<textbox id="txtDNI" width="320px" rows="2" maxlength="255" />
+        						<textbox id="txtDNI" width="200px"  maxlength="15" />
         						<label value="*" sclass="lblreq" />
-        						<label value="${c:l('sp.common.max255')}" sclass="lblexample" />
         					</hlayout>
         				</row>
         				<row>
         					<label value="${c:l('sp.common.address')}" sclass="lblbold" />
         					<hlayout>
-        						<textbox id="txtAddress" width="320px" rows="2" maxlength="255" />
+        						<textbox id="txtAddress" width="200px" rows="2" maxlength="255" />
         						<label value="*" sclass="lblreq" />
-        						<label value="${c:l('sp.common.max255')}" sclass="lblexample" />
+        						<label value="Max 150" sclass="lblexample" />
         					</hlayout>
         				</row>
         			</rows>

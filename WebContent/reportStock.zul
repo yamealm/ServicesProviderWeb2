@@ -65,7 +65,8 @@
                                                     <datebox id="dtbBeginningDate"  format="dd-MM-yyyy" tooltiptext="${c:l('sp.common.searching.filter')}"/>
                                                     <label value="${c:l('sp.common.endingDate')}" sclass="lblbold"/>
                                                     <datebox id="dtbEndingDate" format="dd-MM-yyyy" tooltiptext="${c:l('sp.common.searching.filter')}"/>
-                                                </hlayout>                                      
+                                                </hlayout>    
+                                                 <hlayout>                                  
                                                     <label value="${c:l('sp.common.customer')}" sclass="lblbold"/>
                                                     <combobox id="cmbCustomer" width="160px" mold="rounded" readonly="true"/>
                                                     <label value="${c:l('sp.common.work.order')}" sclass="lblbold"/>

@@ -1,5 +1,7 @@
 package com.alodiga.services.provider.web.controllers;
 
+import java.sql.Timestamp;
+
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.SuspendNotAllowedException;
@@ -34,7 +36,7 @@ public class AddCustomerController extends GenericAbstractAdminController {
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
         initialize();
-        initView(eventType, "sp.crud.customer");
+//        initView(eventType, "sp.crud.customer");
     }
 
     @Override
@@ -69,7 +71,7 @@ public class AddCustomerController extends GenericAbstractAdminController {
 //    }
 
     public void blockFields() {
-        cbxEnabled.setDisabled(true);
+//        cbxEnabled.setDisabled(true);
         txtFirstName.setReadonly(true);
         txtLastName.setReadonly(true);
         txtEmail.setReadonly(true);
@@ -117,7 +119,8 @@ public class AddCustomerController extends GenericAbstractAdminController {
             customer.setLastName(txtLastName.getText());
             customer.setEmail(txtEmail.getText());
             customer.setPhoneNumber(txtPhoneNumber.getText());
-            customer.setEnabled(cbxEnabled.isChecked());
+            customer.setCreationDate(new Timestamp((new java.util.Date().getTime())));
+            customer.setEnabled(true);
             customer.setDni(txtDNI.getText());
             customer.setPhoneNumber(txtPhoneNumber.getText());
             request.setParam(customer);

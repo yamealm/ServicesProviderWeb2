@@ -21,6 +21,8 @@ import com.alodiga.services.provider.commons.utils.QueryConstants;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractAdminController;
 import com.alodiga.services.provider.web.utils.Utils;
 import com.alodiga.services.provider.web.utils.WebConstants;
+
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -147,7 +149,8 @@ public class AdminCustomerController extends GenericAbstractAdminController {
             if (_customer != null) {
                customer.setId(customerParam.getId());
                customer.setCreationDate(customerParam.getCreationDate());
-            }
+            }else
+            	customer.setCreationDate(new Timestamp((new java.util.Date().getTime())));
             customer.setAddress(txtAddress.getText());
             customer.setFirstName(txtFirstName.getText());
             customer.setLastName(txtLastName.getText());

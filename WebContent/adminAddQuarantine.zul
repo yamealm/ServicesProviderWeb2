@@ -170,11 +170,12 @@
                                                                 <label value="*" sclass="lblreq" />
                                                             </hlayout>
                                                         </row>
-                                                      <row id="rowCustomer" visible="false">
+                                                      <row id="rowCustomer" >
                                                             <label value="${c:l('sp.common.customer')}" sclass="lblbold"/>
                                                             <hlayout>
                                                                 <combobox id="cmbCustomer" width="190px" mold="rounded" readonly="true"/>
                                                                  <button id="btnSearchCustomer" image="/images/icon-show.png" width="30px" class="open orange" tooltiptext="${c:l('sp.common.actions.search.filter.tooltip')}"/>
+                                                                 <button id="btnRemove" image="/images/icon-remove.png" width="30px" class="open orange" tooltiptext="${c:l('sp.common.actions.remove.customer.tooltip')}"/>
 <!--                                                                 <label value="*" sclass="lblreq" /> -->
                                                             </hlayout>
                                                         </row>
@@ -201,7 +202,7 @@
                                                          <row>
                                                             <label value="${c:l('sp.common.date.add')}" sclass="lblbold"/>
                                                              <hlayout>
-                                                            <datebox id="dtxIntro" width="120px" format="dd-MM-yyyy"/>
+                                                            <datebox id="dtxCreation" width="120px" format="dd-MM-yyyy"/>
                                                             </hlayout>
                                                         </row>
                                                          <row>

@@ -107,12 +107,24 @@ public class AdminAddQuarantineController extends GenericAbstractAdminController
         super.doAfterCompose(comp);
         productParam = (Sessions.getCurrent().getAttribute("object") != null) ? (Product) Sessions.getCurrent().getAttribute("object") : null;
         customer  = (Sessions.getCurrent().getAttribute("customer") != null) ? (Customer) Sessions.getCurrent().getAttribute("customer") : null;
-		if (customer == null) {
-			user = AccessControl.loadCurrentUser();
+        productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
+        utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
+        transactionEJB = (TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
+        customerEJB = (CustomerEJB) EJBServiceLocator.getInstance().get(EjbConstants.CUSTOMER_EJB);
+        user = AccessControl.loadCurrentUser();
+		if (customer != null && productParam !=null) {
+			loadFields(productParam!=null?productParam:null);
+            loadEnterprises(productParam!=null?productParam.getEnterprise():null);
+            loadCondition(null);
+            loadCategory(null);
+            loadProvider(null);
+            loadCustomer(customer);
+            blockFields();
+		}else if (customer == null ) {
 			initialize();
-			initView(eventType, "sp.crud.product");
 		}else
 			loadCustomer(customer);
+		initView(eventType, "sp.crud.product");
     }
 
     @Override
@@ -125,10 +137,6 @@ public class AdminAddQuarantineController extends GenericAbstractAdminController
         super.initialize();
         try {
 
-            productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
-            utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
-            transactionEJB = (TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
-            customerEJB = (CustomerEJB) EJBServiceLocator.getInstance().get(EjbConstants.CUSTOMER_EJB);
             dtxExpiration.setValue(new Timestamp(new Date().getTime()));
             dtxCure.setValue(new Timestamp(new Date().getTime()));
             dtxCreation.setValue(new Timestamp(new Date().getTime()));
@@ -601,5 +609,17 @@ public class AdminAddQuarantineController extends GenericAbstractAdminController
 			e.printStackTrace();
 		}
     }
+	 
+	 public void onClick$btnClear() {
+	   	 	txtForm.setText("");
+	   	 	form = null;
+			uploaded = false;
+	    }
+	 
+	 public void onClick$btnRemove() {
+		 cmbCustomer.setSelectedItem(null);
+		 cmbCustomer.setValue(null);
+		 cmbCustomer.setText("");
+	    }
 
 }

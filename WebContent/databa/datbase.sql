@@ -757,3 +757,43 @@ ADD COLUMN `extForm` VARCHAR(10) CHARACTER SET 'latin1' COLLATE 'latin1_bin' NUL
 ADD COLUMN `nameForm` VARCHAR(150) CHARACTER SET 'latin1' COLLATE 'latin1_bin' NULL AFTER `extForm`;
 
 
+
+//21/08/2019
+ALTER TABLE `services`.`transaction` 
+DROP FOREIGN KEY `FK_product_customer`;
+ALTER TABLE `services`.`transaction` 
+DROP INDEX `FK_product_customer` ;
+;
+
+ALTER TABLE `services`.`product_serie` 
+DROP FOREIGN KEY `fk_product_serie_customer`;
+ALTER TABLE `services`.`product_serie` 
+DROP INDEX `fk_product_serie_customer_idx` ;
+;
+
+ALTER TABLE `services`.`customer` 
+CHANGE COLUMN `id` `id` BIGINT(5) NOT NULL AUTO_INCREMENT ;
+
+ALTER TABLE `services`.`product_serie` 
+ADD INDEX `fk_product_serie_customer` (`customerId` ASC) VISIBLE;
+;
+ALTER TABLE `services`.`product_serie` 
+ADD CONSTRAINT `fk_product_serie_customer`
+  FOREIGN KEY (`customerId`)
+  REFERENCES `services`.`customer` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+  
+  ALTER TABLE `services`.`transaction` 
+ADD INDEX `FK_product_customer` (`customerId` ASC) VISIBLE;
+;
+ALTER TABLE `services`.`transaction` 
+ADD CONSTRAINT `FK_product_customer`
+  FOREIGN KEY (`customerId`)
+  REFERENCES `services`.`customer` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+  
+
+
+

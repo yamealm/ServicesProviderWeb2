@@ -574,4 +574,10 @@ public class AdminAddTransitController extends GenericAbstractAdminController {
 		}
 		return true;
 	}
+	
+	 public void onClick$btnClear() {
+	   	 	txtForm.setText("");
+	   	 	form = null;
+			uploaded = false;
+	    }
 }
