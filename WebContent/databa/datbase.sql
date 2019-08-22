@@ -758,7 +758,7 @@ ADD COLUMN `nameForm` VARCHAR(150) CHARACTER SET 'latin1' COLLATE 'latin1_bin' N
 
 
 
-//21/08/2019
+//21/08/2019 Yamelis
 ALTER TABLE `services`.`transaction` 
 DROP FOREIGN KEY `FK_product_customer`;
 ALTER TABLE `services`.`transaction` 
@@ -795,5 +795,20 @@ ADD CONSTRAINT `FK_product_customer`
   ON UPDATE NO ACTION;
   
 
-
+//22/08/2019 Yamelis
+ALTER TABLE `services`.`metrological_control` 
+DROP FOREIGN KEY `fk_metrological_control_braund`,
+DROP FOREIGN KEY `fk_metrological_control_model`;
+ALTER TABLE `services`.`metrological_control` 
+ADD COLUMN `designation` VARCHAR(45) CHARACTER SET 'latin1' COLLATE 'latin1_bin' NULL DEFAULT NULL AFTER `id`,
+ADD COLUMN `instrument` VARCHAR(45) CHARACTER SET 'latin1' COLLATE 'latin1_bin' NULL DEFAULT NULL AFTER `designation`,
+CHANGE COLUMN `braunId` `braunId` INT(5) NULL DEFAULT NULL ,
+CHANGE COLUMN `modelId` `modelId` INT(5) NULL DEFAULT NULL ;
+ALTER TABLE `services`.`metrological_control` 
+ADD CONSTRAINT `fk_metrological_control_braund`
+  FOREIGN KEY (`braunId`)
+  REFERENCES `services`.`braund` (`id`),
+ADD CONSTRAINT `fk_metrological_control_model`
+  FOREIGN KEY (`modelId`)
+  REFERENCES `services`.`model` (`id`);
 

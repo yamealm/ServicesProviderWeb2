@@ -9,12 +9,14 @@ import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zk.ui.SuspendNotAllowedException;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Window;
 
 import com.alodiga.services.provider.commons.ejbs.CustomerEJB;
 import com.alodiga.services.provider.commons.ejbs.ProductEJB;
@@ -78,13 +80,24 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
     private List<Provider> providers;
     private List<Condicion> conditions;
     private User user;
+    private Customer customer = null;
+    
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
         productSerieParam = (Sessions.getCurrent().getAttribute("object") != null) ? (ProductSerie) Sessions.getCurrent().getAttribute("object") : null;
+        productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
+        utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
+        transactionEJB = (TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
+        customerEJB = (CustomerEJB) EJBServiceLocator.getInstance().get(EjbConstants.CUSTOMER_EJB);
         user = AccessControl.loadCurrentUser();
-        initialize();
-        initView(eventType, "sp.crud.product");
+        if (customer != null && productSerieParam !=null) {
+			loadData();
+            loadCustomer(customer);
+		}else if (customer == null ) {
+			initialize();
+		}
+		initView(eventType, "sp.crud.product");
     }
 
     @Override
@@ -96,10 +109,6 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
     public void initialize() {
         super.initialize();
         try {
-        	productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
-            utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
-            transactionEJB = (TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
-            customerEJB = (CustomerEJB) EJBServiceLocator.getInstance().get(EjbConstants.CUSTOMER_EJB);
             dtxExit.setValue(new Timestamp(new Date().getTime()));
             loadData();
         } catch (Exception ex) {
@@ -409,6 +418,36 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
         }
     }
     
+	 public void onClick$btnSearch() {
+    	 Window window = (Window)Executions.createComponents("catProducts.zul", null, null);
+    	 Sessions.getCurrent().setAttribute("page","adminEgressInitQuarantine.zul");
+         try {
+			window.doModal();
+		} catch (SuspendNotAllowedException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+    }
+	
+	 public void onClick$btnSearchCustomer() {
+    	 Window window = (Window)Executions.createComponents("catCustomers.zul", null, null);
+    	 Sessions.getCurrent().setAttribute("page","adminEgressInitQuarantine.zul");
+         try {
+			window.doModal();
+		} catch (SuspendNotAllowedException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+    }
+	 
+	 
+	 public void onClick$btnRemove() {
+		 cmbCustomer.setSelectedItem(null);
+		 cmbCustomer.setValue(null);
+		 cmbCustomer.setText("");
+	}
    
     
 } 

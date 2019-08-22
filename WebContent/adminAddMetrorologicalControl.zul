@@ -50,7 +50,22 @@
                                                         <column label="" width="690px"/>
                                                     </columns>
                                                     <rows>
-                                                        
+                                                         <row>
+                                                            <label value="${c:l('sp.common.control.designation')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <textbox id="txtDesignation" maxlength="45" width="320px" constraint="no empty: ${c:l('error.field.required')}"/>
+                                                                <label value="*" sclass="lblreq" />
+                                                                <label value="${c:l('sp.common.max45')}" sclass="lblexample"/>
+                                                            </hlayout>
+                                                        </row>
+                                                         <row>
+                                                            <label value="${c:l('sp.common.control.id.instrument')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <textbox id="txtInstrument" maxlength="45" width="320px" constraint="no empty: ${c:l('error.field.required')}"/>
+                                                                <label value="*" sclass="lblreq" />
+                                                                <label value="${c:l('sp.common.max45')}" sclass="lblexample"/>
+                                                            </hlayout>
+                                                        </row>
                                                         <row>
                                                             <label value="${c:l('sp.common.control.braund')}" sclass="lblbold"/>
                                                             <hlayout>

@@ -588,10 +588,8 @@ public class AdminAddQuarantineController extends GenericAbstractAdminController
          try {
 			window.doModal();
 		} catch (SuspendNotAllowedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }
@@ -602,10 +600,8 @@ public class AdminAddQuarantineController extends GenericAbstractAdminController
          try {
 			window.doModal();
 		} catch (SuspendNotAllowedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }
@@ -620,6 +616,6 @@ public class AdminAddQuarantineController extends GenericAbstractAdminController
 		 cmbCustomer.setSelectedItem(null);
 		 cmbCustomer.setValue(null);
 		 cmbCustomer.setText("");
-	    }
+	 }
 
 }

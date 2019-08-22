@@ -13,7 +13,6 @@ import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Textbox;
 
-import com.alodiga.services.provider.commons.ejbs.ProductEJB;
 import com.alodiga.services.provider.commons.ejbs.TransactionEJB;
 import com.alodiga.services.provider.commons.exceptions.EmptyListException;
 import com.alodiga.services.provider.commons.exceptions.GeneralException;
@@ -42,7 +41,6 @@ public class ListStockController extends GenericAbstractListController<Product> 
     private static final long serialVersionUID = -9145887024839938515L;
     private Listbox lbxRecords;
     private Textbox txtAlias;
-    private ProductEJB productEJB = null;
     private TransactionEJB transactionEJB = null;
     private List<Product> products = null;
     private User currentUser;
@@ -77,7 +75,6 @@ public class ListStockController extends GenericAbstractListController<Product> 
             currentProfile = currentUser.getCurrentProfile(Enterprise.TURBINES);
             checkPermissions();
             adminPage = "adminAddStock.zul";
-            productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
             transactionEJB = (TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
             loadPermission(new Provider());
             startListener();

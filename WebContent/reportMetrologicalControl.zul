@@ -4,7 +4,7 @@
 <?link rel="icon" tye="image/x-icon" href="/images/favicon.ico"?>
 <?init class="com.alodiga.services.provider.web.security.InitiatorLoggedUser" ?>
 <zk xmlns:n="native">
-    <window width="100%" height="100%" apply="com.alodiga.services.provider.web.controllers.ReportWaitController" class="general-window">
+    <window width="100%" height="100%" apply="com.alodiga.services.provider.web.controllers.ReportMetrologicalControlController" class="general-window">
         <style src="/css/general.css"/>
         <borderlayout width="100%" height="100%" class="content-transparent">
             <north border="none" size="52px" class="content-transparent">
@@ -66,6 +66,10 @@
                                                     <label value="${c:l('sp.common.endingDate')}" sclass="lblbold"/>
                                                     <datebox id="dtbEndingDate" format="dd-MM-yyyy" tooltiptext="${c:l('sp.common.searching.filter')}"/>
                                                 </hlayout>                                      
+                                                    <label value="${c:l('sp.common.control.designation')}" sclass="lblbold"/>
+                                                    <combobox id="txtDesignation" width="160px" mold="rounded" readonly="true"/>
+                                                    <label value="${c:l('sp.common.control.id.instrument')}" sclass="lblbold"/>
+                                                    <textbox id="txtInstrument"  maxlength="45" width="320px"/>
                                                     <label value="${c:l('sp.common.enter.name')}" sclass="lblbold"/>
                                                     <combobox id="cmbEnterCalibration" width="160px" mold="rounded" readonly="true"/>
                                                     <label value="${c:l('sp.common.serial')}" sclass="lblbold"/>
@@ -83,7 +87,9 @@
                                             <div align="center">
                                                 <listbox id="lbxReport" width="895px" height="560px" mold="paging">
                                                     <listhead>
-                                                        <listheader label="#" width="40px"/>
+                                                       <listheader label="#" width="40px"/>
+                                                       <listheader label="${c:l('sp.common.control.designation')}" width="90px" sort="auto"/>
+                                                       <listheader label="${c:l('sp.common.control.id.instrument')}" width="90px" sort="auto"/>
                                                        <listheader label="${c:l('sp.common.control.braund')}" width="80px"/>
                                                         <listheader label="${c:l('sp.common.control.model')}" width="200px"/>
                                                         <listheader label="${c:l('sp.common.serial')}" width="70px"/>

@@ -9,6 +9,7 @@ import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zk.ui.SuspendNotAllowedException;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
@@ -20,6 +21,7 @@ import org.zkoss.zul.Radio;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Window;
 
 import com.alodiga.services.provider.commons.ejbs.CustomerEJB;
 import com.alodiga.services.provider.commons.ejbs.ProductEJB;
@@ -86,7 +88,6 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
     private String extForm = null;
     private String nameForm = null;
     private boolean uploaded = false;
-
     private ProductEJB productEJB = null;
     private UtilsEJB utilsEJB = null;
     private TransactionEJB transactionEJB = null;
@@ -98,13 +99,29 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
     private List<Condicion> conditions;
     private List<Customer> customers;
     private User user;
+    private Customer customer = null;
+    
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
         productParam = (Sessions.getCurrent().getAttribute("object") != null) ? (Product) Sessions.getCurrent().getAttribute("object") : null;
+        utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
+        transactionEJB = (TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
+        customerEJB = (CustomerEJB) EJBServiceLocator.getInstance().get(EjbConstants.CUSTOMER_EJB);
         user = AccessControl.loadCurrentUser();
-        initialize();
-        initView(eventType, "sp.crud.product");
+        if (customer != null && productParam !=null) {
+			loadFields(productParam!=null?productParam:null);
+            loadEnterprises(productParam!=null?productParam.getEnterprise():null);
+            loadCondition(null);
+            loadCategory(null);
+            loadProvider(null);
+            loadCustomer(customer);
+            blockFields();
+		}else if (customer == null ) {
+			initialize();
+		}else
+			loadCustomer(customer);
+		initView(eventType, "sp.crud.product");
     }
 
     @Override
@@ -116,11 +133,7 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
     public void initialize() {
         super.initialize();
         try {
-
             productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
-            utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
-            transactionEJB = (TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
-            customerEJB = (CustomerEJB) EJBServiceLocator.getInstance().get(EjbConstants.CUSTOMER_EJB);
             dtxExpiration.setValue(new Timestamp(new Date().getTime()));
             dtxCure.setValue(new Timestamp(new Date().getTime()));
             dtxCreation.setValue(new Timestamp(new Date().getTime()));
@@ -573,9 +586,39 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
 		return true;
 	}
 	
-	 public void onClick$btnClear() {
-	   	 	txtForm.setText("");
-	   	 	form = null;
-			uploaded = false;
-	    }
+	public void onClick$btnSearch() {
+		Window window = (Window) Executions.createComponents("catProducts.zul", null, null);
+		Sessions.getCurrent().setAttribute("page", "adminAddWait.zul");
+		try {
+			window.doModal();
+		} catch (SuspendNotAllowedException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void onClick$btnSearchCustomer() {
+		Window window = (Window) Executions.createComponents("catCustomers.zul", null, null);
+		Sessions.getCurrent().setAttribute("page", "adminAddWait.zul");
+		try {
+			window.doModal();
+		} catch (SuspendNotAllowedException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void onClick$btnClear() {
+		txtForm.setText("");
+		form = null;
+		uploaded = false;
+	}
+
+	public void onClick$btnRemove() {
+		cmbCustomer.setSelectedItem(null);
+		cmbCustomer.setValue(null);
+		cmbCustomer.setText("");
+	}
 }

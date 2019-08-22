@@ -176,7 +176,6 @@
                                                                 <combobox id="cmbCustomer" width="190px" mold="rounded" readonly="true"/>
                                                                  <button id="btnSearchCustomer" image="/images/icon-show.png" width="30px" class="open orange" tooltiptext="${c:l('sp.common.actions.search.filter.tooltip')}"/>
                                                                  <button id="btnRemove" image="/images/icon-remove.png" width="30px" class="open orange" tooltiptext="${c:l('sp.common.actions.remove.customer.tooltip')}"/>
-<!--                                                                 <label value="*" sclass="lblreq" /> -->
                                                             </hlayout>
                                                         </row>
                                                         <row>

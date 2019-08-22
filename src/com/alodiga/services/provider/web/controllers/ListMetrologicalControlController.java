@@ -124,6 +124,8 @@ public class ListMetrologicalControlController extends GenericAbstractListContro
                 
                     item = new Listitem();
                     item.setValue(metrologicalControl);
+                    item.appendChild(new Listcell(metrologicalControl.getDesignation()));
+                    item.appendChild(new Listcell(metrologicalControl.getInstrument()));
                     item.appendChild(new Listcell(metrologicalControl.getBraund().getName()));
                     item.appendChild(new Listcell(metrologicalControl.getModel().getName()));
                     item.appendChild(new Listcell(metrologicalControl.getSerie()));
@@ -147,6 +149,8 @@ public class ListMetrologicalControlController extends GenericAbstractListContro
                 btnDownload.setVisible(false);
                 item = new Listitem();
                 item.appendChild(new Listcell(Labels.getLabel("sp.error.empty.list")));
+                item = new Listitem();
+                item = new Listitem();
                 item.appendChild(new Listcell());
                 item.appendChild(new Listcell());
                 item.appendChild(new Listcell());

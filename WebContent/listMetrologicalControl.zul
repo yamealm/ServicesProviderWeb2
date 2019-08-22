@@ -55,6 +55,8 @@
                                             <!--Record Listbox-->
                                             <listbox id="lbxRecords" fixedLayout="true" width="895px" height="530px">
                                                 <listhead>
+                                                    <listheader label="${c:l('sp.common.control.designation')}" width="90px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.common.control.id.instrument')}" width="90px" sort="auto"/>
                                                     <listheader label="${c:l('sp.common.control.braund')}" width="90px" sort="auto"/>
                                                     <listheader label="${c:l('sp.common.control.model')}" width="90px" sort="auto"/>
                                                     <listheader label="${c:l('sp.common.control.serial')}" width="125px" sort="auto"/>

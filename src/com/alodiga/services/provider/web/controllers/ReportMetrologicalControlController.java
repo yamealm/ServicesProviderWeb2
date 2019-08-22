@@ -1,8 +1,25 @@
 package com.alodiga.services.provider.web.controllers;
 
-import com.alodiga.services.provider.commons.ejbs.CustomerEJB;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.zkoss.util.resource.Labels;
+import org.zkoss.zk.ui.Component;
+import org.zkoss.zul.Button;
+import org.zkoss.zul.Combobox;
+import org.zkoss.zul.Comboitem;
+import org.zkoss.zul.Datebox;
+import org.zkoss.zul.Label;
+import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listcell;
+import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Textbox;
+
 import com.alodiga.services.provider.commons.ejbs.ProductEJB;
-import com.alodiga.services.provider.commons.ejbs.TransactionEJB;
 import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
 import com.alodiga.services.provider.commons.exceptions.EmptyListException;
 import com.alodiga.services.provider.commons.exceptions.GeneralException;
@@ -10,42 +27,20 @@ import com.alodiga.services.provider.commons.exceptions.NullParameterException;
 import com.alodiga.services.provider.commons.genericEJB.EJBRequest;
 import com.alodiga.services.provider.commons.models.Braund;
 import com.alodiga.services.provider.commons.models.Category;
-import com.alodiga.services.provider.commons.models.Condicion;
 import com.alodiga.services.provider.commons.models.Customer;
 import com.alodiga.services.provider.commons.models.EnterCalibration;
-import com.alodiga.services.provider.commons.models.MetrologicalControl;
 import com.alodiga.services.provider.commons.models.MetrologicalControlHistory;
 import com.alodiga.services.provider.commons.models.Model;
 import com.alodiga.services.provider.commons.models.Product;
-import com.alodiga.services.provider.commons.models.ProductSerie;
 import com.alodiga.services.provider.commons.models.Provider;
-import com.alodiga.services.provider.commons.models.TransactionType;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
 import com.alodiga.services.provider.commons.utils.QueryConstants;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractListController;
 import com.alodiga.services.provider.web.utils.PDFUtil;
 import com.alodiga.services.provider.web.utils.Utils;
-import java.util.Date;
-import java.util.List;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.Map;
-import org.zkoss.zul.Datebox;
-import org.apache.log4j.lf5.viewer.categoryexplorer.CategoryAbstractCellEditor;
-import org.zkoss.util.resource.Labels;
-import org.zkoss.zk.ui.Component;
-import org.zkoss.zul.Button;
-import org.zkoss.zul.Combobox;
-import org.zkoss.zul.Comboitem;
-import org.zkoss.zul.Label;
-import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listcell;
-import org.zkoss.zul.Listitem;
-import org.zkoss.zul.Textbox;
 
-public class ReportmetrologicalControlController extends GenericAbstractListController<MetrologicalControlHistory> {
+public class ReportMetrologicalControlController extends GenericAbstractListController<MetrologicalControlHistory> {
 
     private static final long serialVersionUID = -9145887024839938515L;
     private Listbox lbxReport;
@@ -56,10 +51,10 @@ public class ReportmetrologicalControlController extends GenericAbstractListCont
     private Datebox dtbBeginningDate;
     private Datebox dtbEndingDate;
     private Textbox txtSerial;
+    private Textbox txtDesignation;
+    private Textbox txtInstrument;
     private UtilsEJB utilsEJB = null;
-    private CustomerEJB customerEJB = null;
     private ProductEJB productEJB = null;
-    private TransactionEJB transactionEJB = null;
     private List<Braund> braunds;
     private List<Model> models;
     private List<EnterCalibration> enterCalibrations;
@@ -83,8 +78,6 @@ public class ReportmetrologicalControlController extends GenericAbstractListCont
             adminPage = "adminTransaction.zul";
             utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
             productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
-            customerEJB = (CustomerEJB) EJBServiceLocator.getInstance().get(EjbConstants.CUSTOMER_EJB);
-            transactionEJB = (TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
             getData();
         } catch (Exception ex) {
             showError(ex);
@@ -119,6 +112,12 @@ public class ReportmetrologicalControlController extends GenericAbstractListCont
                
                 if (txtSerial.getText() != null && txtSerial.getText() !="") {
                     params.put(QueryConstants.PARAM_SERIAL, txtSerial.getText());
+                }
+                if (txtDesignation.getText() != null && txtDesignation.getText() !="") {
+                    params.put(QueryConstants.PARAM_DESIGNATION, txtDesignation.getText());
+                }
+                if (txtInstrument.getText() != null && txtInstrument.getText() !="") {
+                    params.put(QueryConstants.PARAM_INSTRUMENT, txtInstrument.getText());
                 }
                 _request.setParams(params);
                 _request.setParam(true);
@@ -213,6 +212,8 @@ public class ReportmetrologicalControlController extends GenericAbstractListCont
                 for (MetrologicalControlHistory control : list) {
                     item = new Listitem();
                     item.setValue(control);
+                    item.appendChild(new Listcell(control.getMetrologicalControl().getDesignation()));
+                    item.appendChild(new Listcell(control.getMetrologicalControl().getInstrument()));
                     item.appendChild(new Listcell(control.getMetrologicalControl().getBraund().getName()));
                     item.appendChild(new Listcell(control.getMetrologicalControl().getModel().getName()));
                     item.appendChild(new Listcell(control.getMetrologicalControl().getSerie()));
@@ -244,6 +245,8 @@ public class ReportmetrologicalControlController extends GenericAbstractListCont
                 item.appendChild(new Listcell());
                 item.appendChild(new Listcell());
                 item.appendChild(new Listcell());
+                item.appendChild(new Listcell());
+                item.appendChild(new Listcell());
                 item.setParent(lbxReport);
             }
         } catch (Exception ex) {
@@ -263,7 +266,7 @@ public class ReportmetrologicalControlController extends GenericAbstractListCont
 
     public void onClick$btnDownload() throws InterruptedException {
         try {
-            Utils.exportExcel(lbxReport, Labels.getLabel("sp.report.title"));
+            Utils.exportExcel(lbxReport, Labels.getLabel("sp.crud.metrological.control.list.reporte"));
         } catch (Exception ex) {
             showError(ex);
         }
@@ -271,7 +274,7 @@ public class ReportmetrologicalControlController extends GenericAbstractListCont
     
     public void onClick$btnExportPdf() throws InterruptedException {
         try {
-        	PDFUtil.exportPdf((Labels.getLabel("sp.common.stock"))+".pdf", Labels.getLabel("sp.crud.product.list.reporte"), lbxReport,0);
+        	PDFUtil.exportPdf((Labels.getLabel("sp.common.meteorological"))+".pdf", Labels.getLabel("sp.crud.metrological.control.list.reporte"), lbxReport,0);
         } catch (Exception ex) {
             showError(ex);
         }

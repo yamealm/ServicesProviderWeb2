@@ -24,6 +24,7 @@ import com.alodiga.services.provider.commons.exceptions.GeneralException;
 import com.alodiga.services.provider.commons.exceptions.NullParameterException;
 import com.alodiga.services.provider.commons.genericEJB.EJBRequest;
 import com.alodiga.services.provider.commons.models.Category;
+import com.alodiga.services.provider.commons.models.MetrologicalControlHistory;
 import com.alodiga.services.provider.commons.models.Product;
 import com.alodiga.services.provider.commons.models.ProductSerie;
 import com.alodiga.services.provider.commons.models.Provider;
@@ -41,6 +42,7 @@ public class MunitoringController extends GenericAbstractListController<ProductS
     private Listbox lbxReport2;
     private Listbox lbxReport3;
     private Listbox lbxReport4;
+    private Listbox lbxReport5;
     private Combobox cmbProvider;
     private Button btnExportPdf;
     private Datebox dtbBeginningDate;
@@ -50,6 +52,8 @@ public class MunitoringController extends GenericAbstractListController<ProductS
     private Button btnExportPdf23;
     private Button btnDownload4;
     private Button btnExportPdf4;
+    private Button btnDownload5;
+    private Button btnExportPdf5;
      
      
     
@@ -62,6 +66,7 @@ public class MunitoringController extends GenericAbstractListController<ProductS
     private Intbox intCuradoStock4;
     Boolean isStoreAll = false;
     List<ProductSerie> productSeries = null;
+    List<MetrologicalControlHistory> controlHistories = null;
     private Label lblInfo;
 
     @Override
@@ -112,6 +117,23 @@ public class MunitoringController extends GenericAbstractListController<ProductS
 		}
     	
     }
+    
+    public void onClick$tabControl() {
+    	try {
+    		
+    		controlHistories = productEJB.getMetrologicalControlDefeated(5);
+			intDay.setValue(5);
+			loadList5(controlHistories);
+			
+		} catch (GeneralException e) {
+			e.printStackTrace();
+		} catch (NullParameterException e) {
+			e.printStackTrace();
+		} catch (EmptyListException e) {
+			e.printStackTrace();
+		}
+    	
+    }
  
     
 	public void onClick$tabMinStock() {
@@ -140,7 +162,7 @@ public class MunitoringController extends GenericAbstractListController<ProductS
 	
     public void onClick$tabCure() {
     	try {
-			productSeries = productEJB.getProductDefeated(5);
+			productSeries = productEJB.getProductDefeatedCure(5);
 			intCuradoStock4.setValue(5);
 			loadList4(productSeries);
 		} catch (GeneralException e) {
@@ -414,6 +436,59 @@ public class MunitoringController extends GenericAbstractListController<ProductS
             showError(ex);
         }
     }
+    
+    public void loadList5(List<MetrologicalControlHistory> list) {
+        try {
+        	lbxReport5.getItems().clear();
+            Listitem item = null;
+            if (list != null && !list.isEmpty()) {
+                for (MetrologicalControlHistory controlHistory : list) {
+                	
+                	try {
+                		controlHistory.getExpirationDate().toString();
+					} catch (NullPointerException e) {
+					    System.out.println("entro en el nullpointer");
+						continue;
+					}
+                	
+                    item = new Listitem();
+                    item.setValue(controlHistory);
+                  
+                    
+                    item.appendChild(new Listcell(controlHistory.getId().toString()));
+                    item.appendChild(new Listcell(controlHistory.getMetrologicalControl().getDesignation()));
+                    item.appendChild(new Listcell(controlHistory.getMetrologicalControl().getInstrument()));
+                    item.appendChild(new Listcell(controlHistory.getMetrologicalControl().getBraund().getName()+ "/"+
+                    		controlHistory.getMetrologicalControl().getModel().getName()));
+                    item.appendChild(new Listcell(controlHistory.getMetrologicalControl().getSerie()));
+                    item.appendChild(new Listcell(controlHistory.getCalibrationDate().toString()));
+                    Listcell listCellEnding = new Listcell(controlHistory.getExpirationDate().toString());
+                    
+                    if(controlHistory.getExpirationDate().getTime()< new Date().getTime()) {
+                    	 listCellEnding.setStyle("color:red");
+                    }
+                    item.appendChild(listCellEnding);
+                    item.setParent(lbxReport5);
+                }
+                btnDownload5.setVisible(true);
+                btnExportPdf5.setVisible(true);
+            } else {
+                btnDownload5.setVisible(false);
+                btnExportPdf5.setVisible(false);
+                item = new Listitem();
+                item.appendChild(new Listcell());
+                item.appendChild(new Listcell(Labels.getLabel("sp.error.empty.list")));
+                item.appendChild(new Listcell());
+                item.appendChild(new Listcell());
+                item.appendChild(new Listcell());
+                item.appendChild(new Listcell());
+                item.appendChild(new Listcell());
+                item.setParent(lbxReport5);
+            }
+        } catch (Exception ex) {
+            showError(ex);
+        }
+    }
 
     public void onClick$btnClear() throws InterruptedException {
         cmbProvider.setSelectedIndex(0);
@@ -490,6 +565,21 @@ public class MunitoringController extends GenericAbstractListController<ProductS
         }
     }
     
+    public void onClick$btnDownload5() throws InterruptedException {
+        try {
+            Utils.exportExcel(lbxReport5, Labels.getLabel("sp.crud.metrological.control.list.reporte"));
+        } catch (Exception ex) {
+            showError(ex);
+        }
+    }
+
+    public void onClick$btnExportPdf5() throws InterruptedException {
+        try {
+        	PDFUtil.exportPdf((Labels.getLabel("sp.common.meteorological"))+".pdf", Labels.getLabel("sp.crud.metrological.control.list.reporte"), lbxReport5,0);
+        } catch (Exception ex) {
+            showError(ex);
+        }
+    }
 
     
     public void getData() {

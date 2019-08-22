@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
@@ -34,6 +36,7 @@ import com.alodiga.services.provider.web.generic.controllers.GenericAbstractList
 import com.alodiga.services.provider.web.utils.AccessControl;
 import com.alodiga.services.provider.web.utils.PDFUtil;
 import com.alodiga.services.provider.web.utils.Utils;
+import com.alodiga.services.provider.web.utils.WebConstants;
 
 public class ListWaitController extends GenericAbstractListController<Product> {
 
@@ -188,7 +191,9 @@ public class ListWaitController extends GenericAbstractListController<Product> {
 
 	@Override
 	public void onClick$btnAdd() throws InterruptedException {
-		
+		  Sessions.getCurrent().setAttribute("eventType", WebConstants.EVENT_ADD);
+	      Sessions.getCurrent().removeAttribute("object");
+	      Executions.getCurrent().sendRedirect("adminAddWait.zul");
 	}
     
 }

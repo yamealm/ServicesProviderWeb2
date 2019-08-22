@@ -57,6 +57,7 @@
                                             <tab id="tabProxEnding" label="${c:l('sp.munitoring.expirate.next')}" />
                                             <tab id="tabMinStock" label="${c:l('sp.munitoring.expirate.min.stock')}" />
                                             <tab id="tabCure" label="${c:l('sp.munitoring.expirate.curado')}" />
+                                            <tab id="tabControl" label="${c:l('sp.common.meteorological')}" />
                                         </tabs>
                                         <tabpanels>
                                             <tabpanel>
@@ -205,7 +206,41 @@
                                           				  <button id="btnExportPdf4" label="${c:l('sp.common.actions.download.pdf')}"  width="80px" class="open orange" tooltiptext="${c:l('sp.common.actions.download.pdf')}"/>
                                         			</div> 
                                                 </vlayout>
-                                            </tabpanel>                                 
+                                            </tabpanel>      
+                                            <tabpanel>
+                                                <vlayout>
+                                                 
+                                                 
+                                                  <div align="left">
+                                            <separator/>
+                                            <separator/>
+                                            <!--Filters for Searching-->
+                                            
+                                            <separator/>
+                                            <div id="divInfoT5" height="20px" width="100%" style="background:#B6E59E;" align="left" visible="false"/>
+                                                   <!--Record Listbox-->
+                                            <separator/>
+                                            <div align="left">
+                                                <listbox id="lbxReport5" width="790px" height="360px" mold="paging">
+                                                    <listhead>
+                                                        <listheader label="#" width="40px"/>
+                                                        <listheader label="${c:l('sp.common.control.designation')}" width="90px" sort="auto"/>
+                                                        <listheader label="${c:l('sp.common.control.id.instrument')}" width="90px" sort="auto"/>
+                                                        <listheader label="${c:l('sp.common.control.braund.model')}" width="200px"/> 
+                                                        <listheader label="${c:l('sp.common.serial')}" width="70px"/>
+                                                        <listheader label="${c:l('sp.common.control.date.calibration')}" width="60px"/>
+                                                        <listheader label="${c:l('sp.common.control.due.date')}" width="110px"/>
+                                                    </listhead>
+                                                </listbox>
+                                            </div>
+                                        </div>
+                                                  <div align="right">
+                                           				   <button id="btnDownload5" label="${c:l('sp.common.actions.download')}"  width="80px" class="open gray" tooltiptext="${c:l('sp.common.actions.download.tooltip')}"/>
+                                          				  <button id="btnExportPdf5" label="${c:l('sp.common.actions.download.pdf')}"  width="80px" class="open orange" tooltiptext="${c:l('sp.common.actions.download.pdf')}"/>
+                                        			</div>
+                                                 
+                                                </vlayout>
+                                            </tabpanel>                           
                                         </tabpanels>
                                     </tabbox>
                                     </vlayout>
