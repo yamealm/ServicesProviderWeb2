@@ -13,7 +13,7 @@
                         <div align="center">
                             <hlayout style="background:#232323; repeat center center; border:none;">
                                 <div ></div>
-                                <div width="1200px" height="18px" align="center">
+                                <div width="1800px" height="18px" align="center">
                                     <label value="${c:l('sp.common.page.title')}" style="color:#837E76; font-size:16px;"/>
                                 </div>
                                 <div></div>
@@ -35,12 +35,12 @@
                 <div align="center" >
                     <hlayout>
                         <div></div>
-                        <div width="1200px" align="left" height="800px">
+                        <div width="1800px" align="left" height="800px">
                             <hlayout>
                                 <div>
                                     <include src="adminMainMenu.zul"/>
                                 </div>
-                                <div width="900px">
+                                <div width="1400px">
                                     <vlayout>
                                         <div height="20px" width="100%" align="left">
                                             <!--Bread crumb-->
@@ -65,7 +65,8 @@
                                                     <datebox id="dtbBeginningDate"  format="dd-MM-yyyy" tooltiptext="${c:l('sp.common.searching.filter')}"/>
                                                     <label value="${c:l('sp.common.endingDate')}" sclass="lblbold"/>
                                                     <datebox id="dtbEndingDate" format="dd-MM-yyyy" tooltiptext="${c:l('sp.common.searching.filter')}"/>
-                                                </hlayout>                                      
+                                                </hlayout>     
+                                                 <hlayout>                                 
                                                     <label value="${c:l('sp.common.customer')}" sclass="lblbold"/>
                                                     <combobox id="cmbCustomer" width="160px" mold="rounded" readonly="true"/>
                                                     <label value="${c:l('sp.common.work.order')}" sclass="lblbold"/>
@@ -85,7 +86,7 @@
                                                    <!--Record Listbox-->
                                             <separator/>
                                             <div align="center">
-                                                <listbox id="lbxReport" width="895px" height="560px" mold="paging">
+                                                <listbox id="lbxReport" width="1395px" height="560px" mold="paging">
                                                     <listhead>
                                                         <listheader label="#" width="40px"/>
 <!--                                                        <listheader label="${c:l('sp.common.login')}" width="80px"/>-->

@@ -13,7 +13,7 @@
                         <div align="center">
                             <hlayout style="background:#232323; repeat center center; border:none;">
                                 <div ></div>
-                                <div width="1200px" height="18px" align="center">
+                                <div width="1710px" height="18px" align="center">
                                     <label value="${c:l('sp.common.page.title')}" style="color:#837E76; font-size:16px;"/>
                                 </div>
                                 <div></div>
@@ -35,12 +35,12 @@
                 <div align="center" >
                     <hlayout>
                         <div></div>
-                        <div width="1200px" align="left" height="700px">
+                        <div width="1710px" align="left" height="700px">
                             <hlayout>
                                 <div>
                                     <include src="adminMainMenu.zul"/>
                                 </div>
-                                <div width="900px">
+                                <div width="1400px">
                                     <div height="20px" width="100%" align="left">
                                             <!--Bread crumb-->
                                         <hlayout>
@@ -56,11 +56,11 @@
                                     <separator/>
                                     <groupbox mold="3d">
                                         <vlayout>
-                                            <vlayout width="900px" spacing="2px" style="padding-left:3px;">
-                                                <grid width="890px">
+                                            <vlayout width="1400px" spacing="2px" style="padding-left:3px;">
+                                                <grid width="1390px">
                                                     <columns>
                                                         <column label="" width="180px"/>
-                                                        <column label="" width="700px"/>
+                                                        <column label="" width="1200px"/>
                                                     </columns>
                                                     <rows>
                                                         <row>

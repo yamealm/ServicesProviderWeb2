@@ -14,12 +14,12 @@
                 <div align="center" >
                     <hlayout >
                         <div></div>
-                        <div width="1200px" align="left" height="1100px">
+                        <div width="1710px" align="left" height="1100px">
                             <hlayout>
                                 <div>
                                     <include src="adminMainMenu.zul"/>
                                 </div>
-                                <div width="900px">
+                                <div width="1400px">
                                     <vlayout>
                                         <div height="20px" width="100%" align="left">
                                             <!--Bread crumb-->
@@ -46,8 +46,8 @@
                                                 <label value="${c:l('sp.common.data.basic')}" sclass="lblbold"/>
                                                 <grid fixedLayout="true">
                                                     <columns>
-                                                        <column label="" width="150px"/>
-                                                        <column label="" width="740px"/>
+                                                        <column label="" width="250px"/>
+                                                        <column label="" width="1140px"/>
                                                     </columns>
                                                     <rows>
                                                         
@@ -139,8 +139,8 @@
                                                 <label value="${c:l('sp.common.actions.egress')}" sclass="lblbold"/>
                                                 <grid fixedLayout="true">
                                                     <columns>
-                                                        <column label="" width="150px"/>
-                                                        <column label="" width="740px"/>
+                                                        <column label="" width="250px"/>
+                                                        <column label="" width="1140px"/>
                                                     </columns>
                                                     <rows>
                                                         <group label="${c:l('sp.common.wait')}" />

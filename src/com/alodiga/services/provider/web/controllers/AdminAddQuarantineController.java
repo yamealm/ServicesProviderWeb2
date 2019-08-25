@@ -442,6 +442,7 @@ public class AdminAddQuarantineController extends GenericAbstractAdminController
 					productSerie.setCreationDate(new Timestamp(dtxCreation.getValue().getTime()));
 					productSerie.setAmount(Float.valueOf(txtAmount.getText()));
 					productSerie.setQuantity(1);
+					productSerie.setQuantityInto(1);
 					productSerie.setCondition(condition);
 					productSerie.setCategory(category);
 					productSerie.setQuarantineReason(txtQuarantine.getText());
@@ -464,6 +465,7 @@ public class AdminAddQuarantineController extends GenericAbstractAdminController
 				productSerie.setCreationDate(new Timestamp(dtxCreation.getValue().getTime()));
 				productSerie.setAmount(Float.valueOf(txtAmount.getText()));
 				productSerie.setQuantity(intQuantity.getValue());
+				productSerie.setQuantityInto(intQuantity.getValue());
 				productSerie.setCondition(condition);
 				productSerie.setCategory(category);
 				productSerie.setQuarantineReason(txtQuarantine.getText());

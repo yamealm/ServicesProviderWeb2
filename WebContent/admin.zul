@@ -16,7 +16,7 @@
                             </div>
                             <div align="center" class="yellow1">
                                 <menubar id="menubar" class="yellow1">
-                                    <menuitem label="${c:l('sp.common.gotoCommercialPage')}" image="/images/icon-home.png" onClick="Executions.sendRedirect(&quot;https://cgturbines.com.ar/&quot;)"/>
+                                    <menuitem label="${c:l('sp.common.gotoCommercialPage')}" image="/images/icon-home.png" onClick="Executions.sendRedirect(&quot;https://cgturbines.com.ar//&quot;)"/>
                                     <menu label="${c:l('sp.common.language')}" image="/images/icon-chat.png" >
                                         <menupopup style="background: #DAA908 repeat-x 0 center;border:0">
                                             <menuitem id="mniSpanish" label="${c:l('sp.common.language.spanish')}" image="/images/icon-spanish.png" style="background: #FACC2E repeat-x 0 center;border:0"/>
@@ -35,9 +35,22 @@
                 <div align="center">
                     <vlayout>
                         <separator/>
+                         <separator/>
+                          <separator/>
+                           <separator/>
+                            <separator/>
+                             <separator/>
+                             <separator/>
+                             <separator/>
+                              <separator/>
+                               <separator/>
+                               <separator/>
+                               <separator/>
                         <hlayout>
-                        <image id="imgAirPlane" src="/images/login_air_plane.png" style="cursor:pointer" /> 
+                        <image id="imgAirPlane" src="/images/logo_turbines.png" style="cursor:pointer" /> 
                         </hlayout>
+                         <separator/>
+                          <separator/>
                         <groupbox id="gbxLogin" mold="3d" width="350px" >
                             <caption label="${c:l('sp.common.loginTitle')}" />
                             <hlayout >

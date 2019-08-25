@@ -14,12 +14,12 @@
                 <div align="center" >
                     <hlayout>
                         <div></div>
-                        <div width="1200px" align="left" height="670px">
+                        <div width="1710px" align="left" height="670px">
                             <hlayout>
                                 <div>
                                     <include src="adminMainMenu.zul"/>
                                 </div>
-                                <div width="900px">
+                                <div width="1400px">
                                     <vlayout>
                                         <div height="20px" width="100%" align="left">
                                             <!--Bread crumb-->
@@ -36,7 +36,7 @@
 
                                             <separator/>
                                             <!--Record Listbox-->
-                                            <listbox id="lbxRecords" fixedLayout="true" width="895px" height="530px">
+                                            <listbox id="lbxRecords" fixedLayout="true" width="1395px" height="530px">
                                                 <listhead>
                                                     <listheader label="${c:l('sp.common.PartNumber')}" width="135px" sort="auto"/>
                                                     <listheader label="${c:l('sp.common.descripton')}" width="240px" sort="auto"/>

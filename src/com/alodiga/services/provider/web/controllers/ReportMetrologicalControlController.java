@@ -224,6 +224,11 @@ public class ReportMetrologicalControlController extends GenericAbstractListCont
 						date = df.format(control.getCalibrationDate().getTime());
 					}
                     item.appendChild(new Listcell(date));
+                    if (control.getExpirationDate() != null) {
+						SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+						date = df.format(control.getExpirationDate().getTime());
+					}
+                    item.appendChild(new Listcell(date));
                     item.appendChild(new Listcell(control.getMetrologicalControl().getUbication()));
                     item.appendChild(new Listcell(control.getMetrologicalControl().getScale()));
                     item.appendChild(new Listcell(control.getMetrologicalControl().getControlType()));

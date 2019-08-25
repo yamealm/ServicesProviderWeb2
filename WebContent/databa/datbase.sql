@@ -797,18 +797,15 @@ ADD CONSTRAINT `FK_product_customer`
 
 //22/08/2019 Yamelis
 ALTER TABLE `services`.`metrological_control` 
-DROP FOREIGN KEY `fk_metrological_control_braund`,
-DROP FOREIGN KEY `fk_metrological_control_model`;
-ALTER TABLE `services`.`metrological_control` 
-ADD COLUMN `designation` VARCHAR(45) CHARACTER SET 'latin1' COLLATE 'latin1_bin' NULL DEFAULT NULL AFTER `id`,
-ADD COLUMN `instrument` VARCHAR(45) CHARACTER SET 'latin1' COLLATE 'latin1_bin' NULL DEFAULT NULL AFTER `designation`,
-CHANGE COLUMN `braunId` `braunId` INT(5) NULL DEFAULT NULL ,
-CHANGE COLUMN `modelId` `modelId` INT(5) NULL DEFAULT NULL ;
-ALTER TABLE `services`.`metrological_control` 
-ADD CONSTRAINT `fk_metrological_control_braund`
-  FOREIGN KEY (`braunId`)
-  REFERENCES `services`.`braund` (`id`),
-ADD CONSTRAINT `fk_metrological_control_model`
-  FOREIGN KEY (`modelId`)
-  REFERENCES `services`.`model` (`id`);
+ADD COLUMN `designation` VARCHAR(45) CHARACTER SET 'latin1' COLLATE 'latin1_bin' NULL AFTER `enabled`,
+ADD COLUMN `instrument` VARCHAR(45) CHARACTER SET 'latin1' COLLATE 'latin1_bin' NULL AFTER `designation`;
+
+
+//25-08-2019
+ALTER TABLE `services`.`product_serie` 
+ADD COLUMN `quantityInto` INT(5) NULL DEFAULT NULL AFTER `observation`;
+
+ALTER TABLE `services`.`product_serie` 
+CHANGE COLUMN `quantityInto` `quantityInto` INT(5) NULL DEFAULT NULL AFTER `quantity`;
+
 

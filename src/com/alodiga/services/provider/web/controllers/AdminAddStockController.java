@@ -388,8 +388,6 @@ public class AdminAddStockController extends GenericAbstractAdminController {
             transaction.setCategory(category);
             Condicion condition =(Condicion) cmbCondition.getSelectedItem().getValue();
             transaction.setCondition(condition);
-//            Customer customer = new Customer();
-//            customer.setId(((Customer) cmbCustomer.getSelectedItem().getValue()).getId());
             transaction.setCustomer(null);
             Provider provider = (Provider) cmbProvider.getSelectedItem().getValue();
             transaction.setProvider(provider);
@@ -426,6 +424,7 @@ public class AdminAddStockController extends GenericAbstractAdminController {
 					productSerie.setCreationDate(new Timestamp((new java.util.Date().getTime())));
 					productSerie.setAmount(Float.valueOf(txtAmount.getText()));
 					productSerie.setQuantity(1);
+					productSerie.setQuantityInto(1);
 					productSerie.setCondition(condition);
 					productSerie.setCategory(category);
 					Row row = (Row) gridSerials.getRows().getChildren().get(i);
@@ -447,6 +446,7 @@ public class AdminAddStockController extends GenericAbstractAdminController {
 				productSerie.setCreationDate(new Timestamp((new java.util.Date().getTime())));
 				productSerie.setAmount(Float.valueOf(txtAmount.getText()));
 				productSerie.setQuantity(intQuantity.getValue());
+				productSerie.setQuantityInto(intQuantity.getValue());
 				productSerie.setCondition(condition);
 				productSerie.setCategory(category);
 				if (ra1.isChecked()) {

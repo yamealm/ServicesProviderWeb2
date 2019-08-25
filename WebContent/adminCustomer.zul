@@ -14,12 +14,12 @@
                 <div align="center" >
                     <hlayout >
                         <div></div>
-                        <div width="1200px" align="left" height="1200px">
+                        <div width="1710px" align="left" height="1200px">
                             <hlayout>
                                 <div>
                                     <include src="adminMainMenu.zul"/>
                                 </div>
-                                <div width="900px">
+                                <div width="1400px">
                                     <vlayout>
                                         <div height="20px" width="100%" align="left">
                                             <!--Bread crumb-->
@@ -47,7 +47,7 @@
                                                 <grid fixedLayout="true">
                                                     <columns>
                                                         <column label="" width="300px"/>
-                                                        <column label="" width="590px"/>
+                                                        <column label="" width="1090px"/>
                                                     </columns>
                                                     <rows>
 
