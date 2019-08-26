@@ -13,7 +13,7 @@
                         <div align="center">
                             <hlayout style="background:#232323; repeat center center; border:none;">
                                 <div ></div>
-                                <div width="1200px" height="18px" align="center">
+                                <div width="1710px" height="18px" align="center">
                                     <label value="${c:l('sp.common.page.title')}" style="color:#837E76; font-size:16px;"/>
                                 </div>
                                 <div></div>
@@ -35,12 +35,12 @@
                 <div align="center" >
                     <hlayout>
                         <div></div>
-                        <div width="1200px" align="left" height="800px">
+                        <div width="1710px" align="left" height="800px">
                             <hlayout>
                                 <div>
                                     <include src="adminMainMenu.zul"/>
                                 </div>
-                                <div width="850px">
+                                <div width="1450px">
                                     <vlayout>
                                         <div height="20px" width="100%" align="left">
                                             <!--Bread crumb-->
@@ -51,7 +51,7 @@
                                             </hlayout>
                                         </div>
                                         
-                                        <tabbox id="tbxRechargeTabs" width="800px" height="490px">
+                                        <tabbox id="tbxRechargeTabs" width="1400px" height="490px">
                                         <tabs>
                                             <tab id="tabEnding" label="${c:l('sp.munitoring.expirate')}" />
                                             <tab id="tabProxEnding" label="${c:l('sp.munitoring.expirate.next')}" />
@@ -74,15 +74,15 @@
                                                    <!--Record Listbox-->
                                             <separator/>
                                             <div align="left">
-                                                <listbox id="lbxReport" width="790px" height="360px" mold="paging">
+                                                <listbox id="lbxReport" width="1190px" height="360px" mold="paging">
                                                     <listhead>
                                                         <listheader label="#" width="40px"/>
-<!--                                                        <listheader label="${c:l('sp.common.login')}" width="80px"/>-->
+														<listheader label="${c:l('sp.common.PartNumber')}" width="200px"/>
                                                         <listheader label="${c:l('sp.common.name')}" width="200px"/>
-                                                        <listheader label="${c:l('sp.common.provider')}" width="115px"/>
-                                                        <listheader label="${c:l('sp.common.label.expirationDate')}" width="140px"/>
-                                                        <listheader label="${c:l('sp.transaction.amount')}" width="110px"/>
-                                                        <listheader label="${c:l('sp.common.quantity')}" width="145px"/>
+                                                        <listheader label="${c:l('sp.common.provider')}" width="215px"/>
+                                                        <listheader label="${c:l('sp.common.label.expirationDate')}" width="210px"/>
+                                                        <listheader label="${c:l('sp.transaction.amount')}" width="210px"/>
+                                                        <listheader label="${c:l('sp.common.quantity')}" width="115px"/>
                                                     </listhead>
                                                 </listbox>
                                             </div>
@@ -117,15 +117,15 @@
                                                    <!--Record Listbox-->
                                             <separator/>
                                             <div align="left">
-                                                <listbox id="lbxReport2" width="790px" height="330px" mold="paging">
+                                                <listbox id="lbxReport2" width="1190px" height="330px" mold="paging">
                                                     <listhead>
                                                         <listheader label="#" width="40px"/>
-<!--                                                    <listheader label="${c:l('sp.common.login')}" width="80px"/>-->
+                                                        <listheader label="${c:l('sp.common.PartNumber')}" width="200px"/>
                                                         <listheader label="${c:l('sp.common.name')}" width="200px"/>
-                                                        <listheader label="${c:l('sp.common.provider')}" width="115px"/>
-                                                        <listheader label="${c:l('sp.common.date.expiration')}" width="140px"/>
-                                                        <listheader label="${c:l('sp.transaction.amount')}" width="110px"/>
-                                                        <listheader label="${c:l('sp.common.quantity')}" width="145px"/>
+                                                        <listheader label="${c:l('sp.common.provider')}" width="215px"/>
+                                                        <listheader label="${c:l('sp.common.date.expiration')}" width="210px"/>
+                                                        <listheader label="${c:l('sp.transaction.amount')}" width="210px"/>
+                                                        <listheader label="${c:l('sp.common.quantity')}" width="115px"/>
                                                     </listhead>
                                                 </listbox>
                                             </div>
@@ -149,15 +149,14 @@
                                                    <!--Record Listbox-->
                                             <separator/>
                                             <div align="left">
-                                                <listbox id="lbxReport3" width="790px" height="360px" mold="paging">
+                                                <listbox id="lbxReport3" width="1190px" height="360px" mold="paging">
                                                     <listhead>
                                                         <listheader label="#" width="40px"/>
-<!--                                                    <listheader label="${c:l('sp.common.login')}" width="80px"/>-->
-                                                        <listheader label="${c:l('sp.common.name')}" width="200px"/>
-                                                        <listheader label="${c:l('sp.common.serials')}" width="115px"/>
-                                                        <listheader label="${c:l('sp.common.ubicationBox')}" width="140px"/>
-                                                        <listheader label="${c:l('sp.common.stockMin')}" width="110px"/>
-                                                        <listheader label="${c:l('sp.common.quantity')}" width="145px"/>
+                                                        <listheader label="${c:l('sp.common.PartNumber')}" width="230px"/>
+                                                        <listheader label="${c:l('sp.common.name')}" width="230px"/>
+                                                        <listheader label="${c:l('sp.common.ubicationBox')}" width="240px"/>
+                                                        <listheader label="${c:l('sp.common.stockMin')}" width="230px"/>
+                                                        <listheader label="${c:l('sp.common.quantity')}" width="220px"/>
                                                     </listhead>
                                                 </listbox>
                                             </div>
@@ -188,15 +187,15 @@
                                                    <!--Record Listbox-->
                                             <separator/>
                                             <div align="left">
-                                                <listbox id="lbxReport4" width="790px" height="330px" mold="paging">
+                                                <listbox id="lbxReport4" width="1190px" height="330px" mold="paging">
                                                     <listhead>
-                                                        <listheader label="#" width="40px"/>
-<!--                                                    <listheader label="${c:l('sp.common.login')}" width="80px"/>-->
+                                                        <listheader label="#" width="60px"/>
+                                                        <listheader label="${c:l('sp.common.PartNumber')}" width="200px"/>
                                                         <listheader label="${c:l('sp.common.name')}" width="200px"/>
-                                                        <listheader label="${c:l('sp.common.provider')}" width="115px"/>
-                                                        <listheader label="${c:l('sp.common.date.cure')}" width="140px"/>
-                                                        <listheader label="${c:l('sp.transaction.amount')}" width="110px"/>
-                                                        <listheader label="${c:l('sp.common.quantity')}" width="145px"/>
+                                                        <listheader label="${c:l('sp.common.provider')}" width="215px"/>
+                                                        <listheader label="${c:l('sp.common.date.cure')}" width="240px"/>
+                                                        <listheader label="${c:l('sp.transaction.amount')}" width="210px"/>
+                                                        <listheader label="${c:l('sp.common.quantity')}" width="125px"/>
                                                     </listhead>
                                                 </listbox>
                                             </div>
@@ -221,15 +220,15 @@
                                                    <!--Record Listbox-->
                                             <separator/>
                                             <div align="left">
-                                                <listbox id="lbxReport5" width="790px" height="360px" mold="paging">
+                                                <listbox id="lbxReport5" width="1190px" height="360px" mold="paging">
                                                     <listhead>
                                                         <listheader label="#" width="40px"/>
-                                                        <listheader label="${c:l('sp.common.control.designation')}" width="90px" sort="auto"/>
-                                                        <listheader label="${c:l('sp.common.control.id.instrument')}" width="90px" sort="auto"/>
-                                                        <listheader label="${c:l('sp.common.control.braund.model')}" width="200px"/> 
-                                                        <listheader label="${c:l('sp.common.serial')}" width="70px"/>
-                                                        <listheader label="${c:l('sp.common.control.date.calibration')}" width="60px"/>
-                                                        <listheader label="${c:l('sp.common.control.due.date')}" width="110px"/>
+                                                        <listheader label="${c:l('sp.common.control.designation')}" width="190px" sort="auto"/>
+                                                        <listheader label="${c:l('sp.common.control.id.instrument')}" width="190px" sort="auto"/>
+                                                        <listheader label="${c:l('sp.common.control.braund.model')}" width="300px"/> 
+                                                        <listheader label="${c:l('sp.common.serial')}" width="170px"/>
+                                                        <listheader label="${c:l('sp.common.control.date.calibration')}" width="160px"/>
+                                                        <listheader label="${c:l('sp.common.control.due.date')}" width="140px"/>
                                                     </listhead>
                                                 </listbox>
                                             </div>

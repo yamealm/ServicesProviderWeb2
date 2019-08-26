@@ -20,8 +20,9 @@ import com.alodiga.services.provider.commons.exceptions.EmptyListException;
 import com.alodiga.services.provider.commons.exceptions.GeneralException;
 import com.alodiga.services.provider.commons.exceptions.NullParameterException;
 import com.alodiga.services.provider.commons.managers.PermissionManager;
-import com.alodiga.services.provider.commons.models.Category;
 import com.alodiga.services.provider.commons.models.Enterprise;
+import com.alodiga.services.provider.commons.models.MetrologicalControl;
+import com.alodiga.services.provider.commons.models.MetrologicalControlHistory;
 import com.alodiga.services.provider.commons.models.Permission;
 import com.alodiga.services.provider.commons.models.Product;
 import com.alodiga.services.provider.commons.models.ProductSerie;
@@ -115,25 +116,41 @@ public class ListEgressMetrologicalControlController extends GenericAbstractList
     	Listitem item = null;
         try {
             lbxRecords.getItems().clear();
-            List<ProductSerie> producSeries = transactionEJB.searchProductSerieByCategoryId(Category.METEOROLOGICAL_CONTROL);
-            if (producSeries != null && !producSeries.isEmpty()) {
+            List<MetrologicalControl> controls = transactionEJB.searchMetrologicalControl();
+            if (controls != null && !controls.isEmpty()) {
                 btnDownload.setVisible(true);
-                for (ProductSerie productSerie : producSeries) {
+                for (MetrologicalControl control : controls) {
                     item = new Listitem();
-                    item.setValue(productSerie);
-                    item.appendChild(new Listcell(productSerie.getProduct().getPartNumber()));
-                    item.appendChild(new Listcell(productSerie.getProduct().getDescription()));
-                    item.appendChild(new Listcell(productSerie.getProvider().getName()));
-                    item.appendChild(new Listcell(productSerie.getSerie()));
-                    item.appendChild(new Listcell(String.valueOf(productSerie.getQuantity())));
+                    item.setValue(control);
+                    item.appendChild(new Listcell(control.getDesignation()));
+                    item.appendChild(new Listcell(control.getInstrument()));
+                    item.appendChild(new Listcell(control.getBraund().getName()));
+                    item.appendChild(new Listcell(control.getModel().getName()));
+                    item.appendChild(new Listcell(control.getSerie()));
+                    item.appendChild(new Listcell(control.getRango()));
+                    MetrologicalControlHistory history = null;
                     String date = null;
-					if (productSerie.getExpirationDate() != null) {
-						SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-						date = df.format(productSerie.getCreationDate().getTime());
-					}
+                    String date2 = null;
+            		try {
+            			history = transactionEJB.loadLastMetrologicalControlHistoryByMetrologicalControlId(control.getId());
+            			if (history.getCalibrationDate() != null) {
+            				SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            				date = df.format(history.getCalibrationDate().getTime());
+            			}
+            			if (history.getExpirationDate() != null) {
+            				SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            				date = df.format(history.getExpirationDate().getTime());
+            			}
+            		} catch (Exception e) {
+            			e.printStackTrace();
+            		} 
                     item.appendChild(new Listcell(date));
-                    item.appendChild(permissionEdit ? new ListcellEditButton("viewMetrologicalControl.zul", productSerie,Permission.EDIT_QUARANTINE) : new Listcell());
-                    item.appendChild(permissionDelete  ? new ListcellRemoveButton ("adminEgressInitMetrologicalControl.zul", productSerie,Permission.REMOVE_QUARANTINE) : new Listcell());
+                    item.appendChild(new Listcell(date2));
+                    item.appendChild(new Listcell(control.getUbication()));
+                    item.appendChild(new Listcell(control.getScale()));
+                    item.appendChild(new Listcell(control.getControlType()));
+                    item.appendChild(permissionEdit ? new ListcellEditButton("viewMetrologicalControl.zul", control,Permission.EDIT_METEOROLOGICAL_CONTROL) : new Listcell());
+                    item.appendChild(permissionDelete  ? new ListcellRemoveButton ("adminEgressInitMetrologicalControl.zul", control,Permission.REMOVE_METEOROLOGICAL_CONTROL) : new Listcell());
                     item.appendChild(permissionDelete ? initDeleteButton(item) : new Listcell());
                     item.setParent(lbxRecords);
                 }

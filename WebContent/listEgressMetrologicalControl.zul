@@ -53,12 +53,16 @@
                                             <separator/>
                                             <listbox id="lbxRecords" fixedLayout="true" width="1395px" height="530px">
                                                 <listhead>
-                                                    <listheader label="${c:l('sp.common.PartNumber')}" width="125px" sort="auto"/>
-                                                    <listheader label="${c:l('sp.common.descripton')}" width="220px" sort="auto"/>
-                                                     <listheader label="${c:l('sp.common.provider')}" width="110px" sort="auto"/>
-                                                    <listheader label="${c:l('sp.common.serial')}" width="95px" sort="auto"/>
-                                                    <listheader label="${c:l('sp.common.stock')}" width="80px" sort="auto"/>
-                                                    <listheader label="${c:l('sp.common.creationDate')}" width="120px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.common.control.designation')}" width="130px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.common.control.id.instrument')}" width="130px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.common.control.braund')}" width="130px"/>
+                                                    <listheader label="${c:l('sp.common.control.model')}" width="130px"/>
+                                                    <listheader label="${c:l('sp.common.serial')}" width="100px"/>
+                                                    <listheader label="${c:l('sp.common.control.rank')}" width="125px"/>
+                                                    <listheader label="${c:l('sp.common.control.date.calibration')}" width="140px"/>
+                                                    <listheader label="${c:l('sp.common.control.due.date')}" width="140px"/>
+                                                    <listheader label="${c:l('sp.common.control.ubication')}" width="135px"/>
+                                                    <listheader label="${c:l('sp.common.control.type')}" width="100px"/>
                                                     <listheader label="-" width="45px" align="center"/>
                                                     <listheader label="-" width="45px" align="center"/>
                                                     <listheader label="-" width="45px" align="center"/>

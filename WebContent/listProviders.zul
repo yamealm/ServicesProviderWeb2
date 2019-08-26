@@ -56,11 +56,11 @@
                                             <listbox id="lbxRecords" fixedLayout="true" width="1395px" height="530px">
                                                 <listhead>
                                                     <listheader label="${c:l('sp.common.name')}" width="235px" sort="auto"/>
-                                                    <listheader label="${c:l('sp.common.url')}" width="370px" sort="auto"/>
-                                                    <listheader label="${c:l('sp.common.provider.isSMSProvider')}" width="150px" sort="auto"/>
-                                                    <listheader label="-" width="45px"/>
-                                                    <listheader label="-" width="45px"/>
-                                                    <listheader label="-" width="45px"/>
+                                                    <listheader label="${c:l('sp.common.address')}" width="370px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.product.status')}" width="150px" sort="auto"/>
+                                                    <listheader label="-" width="50px"/>
+                                                    <listheader label="-" width="50px"/>
+                                                    <listheader label="-" width="50px"/>
                                                 </listhead>
                                             </listbox>
 

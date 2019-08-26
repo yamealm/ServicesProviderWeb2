@@ -88,16 +88,18 @@
                                             <div align="center">
                                                 <listbox id="lbxReport" width="1395px" height="560px" mold="paging">
                                                     <listhead>
-                                                        <listheader label="#" width="40px"/>
-                                                       <listheader label="${c:l('sp.common.PartNumber')}" width="80px"/>
+                                                        <listheader label="${c:l('sp.common.PartNumber')}" width="110px"/>
                                                         <listheader label="${c:l('sp.common.name')}" width="200px"/>
-                                                        <listheader label="${c:l('sp.common.provider')}" width="70px"/>
+                                                        <listheader label="${c:l('sp.common.provider')}" width="100px"/>
+                                                        <listheader label="${c:l('sp.common.category')}" width="105px"/>
+                                                        <listheader label="${c:l('sp.common.condition')}" width="90px"/>
+                                                         <listheader label="${c:l('sp.common.serial')}" width="125px"/>
+<!--                                                         <listheader label="${c:l('sp.common.customer')}" width="85px"/> -->
+                                                         <listheader label="${c:l('sp.common.work.order')}" width="125px"/>
+                                                        <listheader label="${c:l('sp.transaction.amount')}" width="90px"/>
+                                                        <listheader label="${c:l('sp.common.quantity')}" width="170px"/>
                                                         <listheader label="${c:l('sp.common.creationDate')}" width="140px"/>
                                                         <listheader label="${c:l('sp.common.sp.common.date.expiration')}" width="140px"/>
-                                                        <listheader label="${c:l('sp.transaction.amount')}" width="60px"/>
-                                                        <listheader label="${c:l('sp.common.quantity')}" width="110px"/>
-                                                        <listheader label="${c:l('sp.common.category')}" width="120px"/>
-                                                        <listheader label="${c:l('sp.common.condition')}" width="70px"/>
                                                     </listhead>
                                                 </listbox>
                                             </div>

@@ -55,13 +55,14 @@
                                             <!--Record Listbox-->
                                             <listbox id="lbxRecords" fixedLayout="true" width="1395px" height="530px">
                                                 <listhead>
-                                                    <listheader label="${c:l('sp.common.control.designation')}" width="90px" sort="auto"/>
-                                                    <listheader label="${c:l('sp.common.control.id.instrument')}" width="90px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.common.control.designation')}" width="95px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.common.control.id.instrument')}" width="95px" sort="auto"/>
                                                     <listheader label="${c:l('sp.common.control.braund')}" width="90px" sort="auto"/>
                                                     <listheader label="${c:l('sp.common.control.model')}" width="90px" sort="auto"/>
                                                     <listheader label="${c:l('sp.common.control.serial')}" width="125px" sort="auto"/>
                                                     <listheader label="${c:l('sp.common.control.rank')}" width="125px" sort="auto"/>
                                                      <listheader label="${c:l('sp.common.control.date.calibration')}" width="125px" sort="auto"/>
+                                                     <listheader label="${c:l('sp.common.control.due.date')}" width="140px"/>
                                                     <listheader label="${c:l('sp.common.control.ubication')}" width="125px" sort="auto"/>
                                                     <listheader label="${c:l('sp.common.control.minimun.scale')}" width="125px" sort="auto"/>
                                                      <listheader label="${c:l('sp.common.control.type')}" width="125px" sort="auto"/>

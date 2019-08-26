@@ -55,8 +55,8 @@
                                             <!--Record Listbox-->
                                             <listbox id="lbxRecords" fixedLayout="true" width="1395px" height="530px" mold="paging">
                                                 <listhead>
-                                                    <listheader label="${c:l('sp.common.identifier')}" width="90px" sort="auto"/>
-                                                    <listheader label="${c:l('sp.common.braund.name')}" width="705px"/>
+                                                    <listheader label="${c:l('sp.common.identifier')}" width="150px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.common.braund.name')}" width="1145px"/>
                                                     <listheader label="-" width="50px"/>
                                                     <listheader label="-" width="50px"/>
                                                 </listhead>

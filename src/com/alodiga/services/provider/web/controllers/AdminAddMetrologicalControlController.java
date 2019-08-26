@@ -300,8 +300,6 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
             metrologicalControl.setModel(model);
             EnterCalibration enterCalibration = (EnterCalibration) cmbEnterCalibration.getSelectedItem().getValue();
             metrologicalControl.setEnterCalibration(enterCalibration);
-//            ControlType controlType = new ControlType();
-//            controlType.setId(((ControlType) cmbType.getSelectedItem().getValue()).getId());
             metrologicalControl.setControlType(txtType.getText());
             metrologicalControl.setSerie(txtSerilNumber.getText());
             metrologicalControl.setRango(txtRank.getText());

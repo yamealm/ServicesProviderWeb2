@@ -126,10 +126,18 @@ public class ListEgressTransitController extends GenericAbstractListController<P
                     item.appendChild(new Listcell(productSerie.getProvider().getName()));
                     item.appendChild(new Listcell(productSerie.getSerie()));
                     item.appendChild(new Listcell(String.valueOf(productSerie.getQuantity())));
+                    item.appendChild(new Listcell(productSerie.getCategory().getName()));
+                    item.appendChild(new Listcell(productSerie.getProduct().getUbicationBox()));
                     String date = null;
 					if (productSerie.getExpirationDate() != null) {
 						SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-						date = df.format(productSerie.getCreationDate().getTime());
+						date = df.format(productSerie.getExpirationDate().getTime());
+					}
+					date = null;
+                    item.appendChild(new Listcell(date));
+                    if (productSerie.getCure() != null) {
+						SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+						date = df.format(productSerie.getCure().getTime());
 					}
                     item.appendChild(new Listcell(date));
                     item.appendChild(permissionEdit ? new ListcellEditButton("viewTransit.zul", productSerie,Permission.EDIT_TRANSIT) : new Listcell());

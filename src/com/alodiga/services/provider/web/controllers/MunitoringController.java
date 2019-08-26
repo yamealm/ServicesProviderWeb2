@@ -252,6 +252,7 @@ public class MunitoringController extends GenericAbstractListController<ProductS
                   
                     
                     item.appendChild(new Listcell(productSerie.getId().toString()));
+                    item.appendChild(new Listcell(productSerie.getProduct().getPartNumber()));
                     item.appendChild(new Listcell(productSerie.getProduct().getDescription()));
                     item.appendChild(new Listcell(productSerie.getProvider().getName()));
               
@@ -306,6 +307,7 @@ public class MunitoringController extends GenericAbstractListController<ProductS
                   
                     
                     item.appendChild(new Listcell(productSerie.getId().toString()));
+                    item.appendChild(new Listcell(productSerie.getProduct().getPartNumber()));
                     item.appendChild(new Listcell(productSerie.getProduct().getDescription()));
                     item.appendChild(new Listcell(productSerie.getProvider().getName()));
               
@@ -359,6 +361,7 @@ public class MunitoringController extends GenericAbstractListController<ProductS
                     item = new Listitem();
                     item.setValue(productSerie);
                     item.appendChild(new Listcell(productSerie.getId().toString()));
+                    item.appendChild(new Listcell(productSerie.getProduct().getPartNumber()));
                     item.appendChild(new Listcell(productSerie.getProduct().getDescription()));
                     item.appendChild(new Listcell(productSerie.getProvider().getName()));
               
@@ -407,8 +410,8 @@ public class MunitoringController extends GenericAbstractListController<ProductS
                     item = new Listitem();
                     item.setValue(product);
                     item.appendChild(new Listcell(product.getId().toString()));
-                    item.appendChild(new Listcell(product.getDescription()));
                     item.appendChild(new Listcell(product.getPartNumber()));
+                    item.appendChild(new Listcell(product.getDescription()));
                     item.appendChild(new Listcell(product.getUbicationBox()));
                     item.appendChild(new Listcell(String.valueOf(product.getStockMin())));
                     item.appendChild(new Listcell(String.valueOf(product.getStockMax())));

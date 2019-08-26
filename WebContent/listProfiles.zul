@@ -55,10 +55,10 @@
                                             <!--Record Listbox-->
                                             <listbox id="lbxRecords" fixedLayout="true" width="1395px" height="530px">
                                                 <listhead>
-                                                    <listheader label="${c:l('sp.common.alias')}" width="755px" sort="auto"/>
-                                                    <listheader label="-" width="45px"/>
-                                                    <listheader label="-" width="45px"/>
-                                                    <listheader label="-" width="45px"/>
+                                                    <listheader label="${c:l('sp.common.alias')}" width="1245px" sort="auto"/>
+                                                    <listheader label="-" width="50px"/>
+                                                    <listheader label="-" width="50px"/>
+                                                    <listheader label="-" width="50px"/>
                                                 </listhead>
                                             </listbox>
 

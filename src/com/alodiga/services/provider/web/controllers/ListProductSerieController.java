@@ -24,6 +24,7 @@ import com.alodiga.services.provider.web.utils.Utils;
 import java.util.Date;
 import java.util.List;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 import org.zkoss.zul.Datebox;
@@ -248,16 +249,27 @@ public class ListProductSerieController extends GenericAbstractListController<Pr
                 for (ProductSerie productSerie : list) {
                     item = new Listitem();
                     item.setValue(productSerie);
-                    item.appendChild(new Listcell(productSerie.getId().toString()));
                     item.appendChild(new Listcell(productSerie.getProduct().getPartNumber()));
                     item.appendChild(new Listcell(productSerie.getProduct().getDescription()));
                     item.appendChild(new Listcell(productSerie.getProvider().getName()));
-                    item.appendChild(new Listcell(productSerie.getCreationDate().toString()));
-                    item.appendChild(new Listcell(productSerie.getEndingDate()!=null?productSerie.getEndingDate().toString():null));
-                    item.appendChild(new Listcell(productSerie.getAmount().toString()));
-                    item.appendChild(new Listcell(String.valueOf(productSerie.getQuantity())));
                     item.appendChild(new Listcell(productSerie.getCategory().getName()));
                     item.appendChild(new Listcell(productSerie.getCondition().getName()));
+                    item.appendChild(new Listcell(productSerie.getSerie()));
+                    item.appendChild(new Listcell(productSerie.getOrderWord()));
+                    item.appendChild(new Listcell(productSerie.getAmount().toString()));
+                    item.appendChild(new Listcell(String.valueOf(productSerie.getQuantityInto())));
+                    String date = null;
+					if (productSerie.getCreationDate() != null) {
+						SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+						date = df.format(productSerie.getCreationDate().getTime());
+					}
+                    item.appendChild(new Listcell(date));
+                    date = null;
+                    if (productSerie.getExpirationDate() != null) {
+						SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+						date = df.format(productSerie.getExpirationDate().getTime());
+					}
+                    item.appendChild(new Listcell(date));
                     //item.appendChild(new ListcellViewButton(adminPage, transaction, Permission.VIEW_TRANSACTION));
                     item.setParent(lbxReport);
                 }
