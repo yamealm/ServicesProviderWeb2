@@ -37,6 +37,8 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
     private Combobox cmbBraund;
     private Combobox cmbModel;
     private Combobox cmbEnterCalibration;
+    private Textbox txtDesignation;
+    private Textbox txtInstrument;
     private Textbox txtType;
     private Textbox txtSerilNumber;
     private Textbox txtRank;
@@ -99,6 +101,14 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
     }
 
     public Boolean validateEmpty() {
+    	if (txtDesignation.getText().isEmpty()) {
+    		txtDesignation.setFocus(true);
+            this.showMessage("sp.error.field.cannotNull", true, null);
+        } 
+    	if (txtInstrument.getText().isEmpty()) {
+    		txtInstrument.setFocus(true);
+            this.showMessage("sp.error.field.cannotNull", true, null);
+        } 
     	if (txtRank.getText().isEmpty()) {
     		txtRank.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
@@ -173,7 +183,8 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
 
     
     public void loadFields(MetrologicalControl metrologicalControlParam) {
-    	
+    	txtDesignation.setText(metrologicalControlParam.getDesignation());
+    	txtInstrument.setText(metrologicalControlParam.getInstrument());
     	txtSerilNumber.setText(metrologicalControlParam.getSerie());
     	txtRank.setText(metrologicalControlParam.getRango());
     	
@@ -244,27 +255,6 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
         
     }
     
-//    private void loadControlType(ControlType controlType) {
-//        try {
-//        	cmbType.getItems().clear();
-//        	controlTypes = utilsEJB.getControlTypes();
-//            for (ControlType e : controlTypes) {
-//                Comboitem cmbItem = new Comboitem();
-//                cmbItem.setLabel(e.getName());
-//                cmbItem.setValue(e);
-//                cmbItem.setParent(cmbType);
-//                if (controlType != null && controlType.getId().equals(e.getId())) {
-//                	cmbType.setSelectedItem(cmbItem);
-//                } else {
-//                	cmbType.setSelectedIndex(0);
-//                }
-//            }
-//        }catch (EmptyListException ex) {
-//           
-//        } catch (Exception ex) {
-//            showError(ex);
-//        }
-//    }
     
     private void loadEnterCalibration(EnterCalibration enterCalibration) {
         try {
@@ -300,6 +290,8 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
             metrologicalControl.setModel(model);
             EnterCalibration enterCalibration = (EnterCalibration) cmbEnterCalibration.getSelectedItem().getValue();
             metrologicalControl.setEnterCalibration(enterCalibration);
+            metrologicalControl.setDesignation(txtDesignation.getText());
+            metrologicalControl.setInstrument(txtInstrument.getText());
             metrologicalControl.setControlType(txtType.getText());
             metrologicalControl.setSerie(txtSerilNumber.getText());
             metrologicalControl.setRango(txtRank.getText());

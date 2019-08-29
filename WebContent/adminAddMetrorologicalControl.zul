@@ -139,7 +139,7 @@
                                                         <row>
                                                             <label value="${c:l('sp.common.control.type')}" sclass="lblbold"/>
                                                             <hlayout>
-                                                                <textbox id="txtType" width="190px" mold="rounded" readonly="true"/>
+                                                                <textbox id="txtType" width="190px" />
                                                              
                                                             </hlayout>
                                                         </row>

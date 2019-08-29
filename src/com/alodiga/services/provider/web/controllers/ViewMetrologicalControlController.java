@@ -34,6 +34,8 @@ public class ViewMetrologicalControlController extends GenericAbstractAdminContr
     private Combobox cmbBraund;
     private Combobox cmbModel;
     private Combobox cmbEnterCalibration;
+    private Textbox txtDesignation;
+    private Textbox txtInstrument;
     private Textbox txtType;
     private Textbox txtSerilNumber;
     private Textbox txtRank;
@@ -89,6 +91,14 @@ public class ViewMetrologicalControlController extends GenericAbstractAdminContr
     }
 
     public Boolean validateEmpty() {
+    	if (txtDesignation.getText().isEmpty()) {
+    		txtDesignation.setFocus(true);
+            this.showMessage("sp.error.field.cannotNull", true, null);
+        } 
+    	if (txtInstrument.getText().isEmpty()) {
+    		txtInstrument.setFocus(true);
+            this.showMessage("sp.error.field.cannotNull", true, null);
+        }
     	if (txtRank.getText().isEmpty()) {
     		txtRank.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
@@ -133,12 +143,12 @@ public class ViewMetrologicalControlController extends GenericAbstractAdminContr
 
     public void onClick$btnBack() {
     	Sessions.getCurrent().setAttribute("object",controlParam);
-    	Executions.sendRedirect("./listEgressMetrologicalControl.zul");
+    	Executions.sendRedirect("./listMetrologicalControl.zul");
     }
     
     public void onClick$viewDetail() {
     	Sessions.getCurrent().setAttribute("object",controlParam);
-    	Executions.sendRedirect("./listEgressMetrologicalControl.zul");
+    	Executions.sendRedirect("./listMetrologicalControl.zul");
     }
     
     public void loadData() {
@@ -160,7 +170,8 @@ public class ViewMetrologicalControlController extends GenericAbstractAdminContr
 
     
     public void loadFields(MetrologicalControl metrologicalControlParam) {
-    	
+    	txtDesignation.setText(metrologicalControlParam.getDesignation());
+    	txtInstrument.setText(metrologicalControlParam.getInstrument());
     	txtSerilNumber.setText(metrologicalControlParam.getSerie());
     	txtRank.setText(metrologicalControlParam.getRango());
     	
@@ -266,6 +277,8 @@ public class ViewMetrologicalControlController extends GenericAbstractAdminContr
             metrologicalControl.setModel(model);
             EnterCalibration enterCalibration = (EnterCalibration) cmbEnterCalibration.getSelectedItem().getValue();
             metrologicalControl.setEnterCalibration(enterCalibration);
+            metrologicalControl.setDesignation(txtDesignation.getText());
+            metrologicalControl.setInstrument(txtInstrument.getText());
             metrologicalControl.setControlType(txtType.getText());
             metrologicalControl.setSerie(txtSerilNumber.getText());
             metrologicalControl.setRango(txtRank.getText());

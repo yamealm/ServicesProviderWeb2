@@ -3,6 +3,7 @@ package com.alodiga.services.provider.web.controllers;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import org.zkoss.util.resource.Labels;
@@ -10,6 +11,7 @@ import org.zkoss.zhtml.Filedownload;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zk.ui.SuspendNotAllowedException;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
@@ -17,6 +19,7 @@ import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Window;
 
 import com.alodiga.services.provider.commons.ejbs.ProductEJB;
 import com.alodiga.services.provider.commons.ejbs.TransactionEJB;
@@ -24,6 +27,7 @@ import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
 import com.alodiga.services.provider.commons.genericEJB.EJBRequest;
 import com.alodiga.services.provider.commons.models.Category;
 import com.alodiga.services.provider.commons.models.Condicion;
+import com.alodiga.services.provider.commons.models.Customer;
 import com.alodiga.services.provider.commons.models.Enterprise;
 import com.alodiga.services.provider.commons.models.ProductSerie;
 import com.alodiga.services.provider.commons.models.Provider;
@@ -61,6 +65,7 @@ public class ViewStockController extends GenericAbstractAdminController {
     private Intbox intQuantity;
     private Datebox dtxExpiration;
     private Datebox dtxCure;
+    private Datebox dtxCreation;
     private Textbox txtForm;
     private byte[] form =	null;
     private String extForm = null;
@@ -99,6 +104,8 @@ public class ViewStockController extends GenericAbstractAdminController {
             productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
             utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
             transactionEJB = (TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
+            dtxExpiration.setValue(new Timestamp(new Date().getTime()));
+            dtxCure.setValue(new Timestamp(new Date().getTime()));
             loadData();
         } catch (Exception ex) {
             showError(ex);
@@ -248,13 +255,16 @@ public class ViewStockController extends GenericAbstractAdminController {
 		if (productSerie.getExpirationDate()!=null) {
 			cbxExpiration.setChecked(true);
 			dtxExpiration.setValue(productSerie.getExpirationDate());
-		}else
+		}else {
 			cbxExpiration.setChecked(false);
-		if (productSerie.getCure()!=null) {
+			dtxExpiration.setVisible(false);
+		}if (productSerie.getCure()!=null) {
 			cbxCure.setChecked(true);
 			dtxCure.setValue(productSerie.getCure());
-		}else
+		}else{
 			cbxCure.setChecked(false);
+			dtxCure.setVisible(false);
+		}
 		txtObservation.setText(productSerie.getObservation());
 		txtSerial.setText(productSerie.getSerie());
     }
@@ -373,6 +383,7 @@ public class ViewStockController extends GenericAbstractAdminController {
 			productSerie.setCondition(condition);
 			productSerie.setSerie(txtSerial.getText());
 			productSerie.setObservation(txtObservation.getText());
+			productSerie.setCreationDate(new Timestamp(dtxCreation.getValue().getTime()));
 			if (cbxExpiration.isChecked())
 				productSerie.setExpirationDate(new Timestamp(dtxExpiration.getValue().getTime()));
 			if (cbxCure.isChecked())
@@ -385,6 +396,20 @@ public class ViewStockController extends GenericAbstractAdminController {
         } catch (Exception ex) {
             showError(ex);
         }
+    }
+    
+    public void onCheck$cbxExpiration(){
+    	if (cbxExpiration.isChecked())
+    		dtxExpiration.setVisible(true);
+    	else
+    		dtxExpiration.setVisible(false);
+    }
+    
+    public void onCheck$cbxCure(){
+    	if (cbxCure.isChecked())
+    		dtxCure.setVisible(true);
+    	else
+    		dtxCure.setVisible(false);
     }
     
     public void onClick$btnDownload() throws InterruptedException {
@@ -429,5 +454,6 @@ public class ViewStockController extends GenericAbstractAdminController {
    	 	form = null;
 		uploaded = false;
     }
+    
     
 } 

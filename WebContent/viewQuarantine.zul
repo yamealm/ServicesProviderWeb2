@@ -165,6 +165,20 @@
                                                                 <label value="*" sclass="lblreq" />
                                                             </hlayout>
                                                         </row>
+                                                        <row id="rowCustomer" >
+                                                            <label value="${c:l('sp.common.customer')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <combobox id="cmbCustomer" width="190px" mold="rounded" readonly="true"/>
+                                                                <button id="btnSearchCustomer" image="/images/icon-show.png" width="30px" class="open orange" tooltiptext="${c:l('sp.common.actions.search.filter.tooltip')}"/>
+                                                                <button id="btnRemove" image="/images/icon-remove.png" width="30px" class="open orange" tooltiptext="${c:l('sp.common.actions.remove.customer.tooltip')}"/>
+                                                            </hlayout>
+                                                        </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.common.work.order')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                               <textbox id="txtWorkOrder" maxlength="45" width="320px"/>                                 
+                                                            </hlayout>
+                                                        </row>
                                                         <row>
                                                             <label value="${c:l('sp.common.page.invoice')}" sclass="lblbold"/>
                                                             <hlayout>

@@ -105,6 +105,7 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
         productParam = (Sessions.getCurrent().getAttribute("object") != null) ? (Product) Sessions.getCurrent().getAttribute("object") : null;
+        customer  = (Sessions.getCurrent().getAttribute("customer") != null) ? (Customer) Sessions.getCurrent().getAttribute("customer") : null;
         utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
         transactionEJB = (TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
         customerEJB = (CustomerEJB) EJBServiceLocator.getInstance().get(EjbConstants.CUSTOMER_EJB);
@@ -253,8 +254,8 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
                 blockFields();
                 break;
             case WebConstants.EVENT_ADD:
-            	loadFields(productParam);
-                loadEnterprises(productParam.getEnterprise());
+            	loadFields(productParam!=null?productParam:null);
+                loadEnterprises(productParam!=null?productParam.getEnterprise():null);
                 loadCondition(null);
                 loadCategory(null);
                 loadProvider(null);
@@ -268,22 +269,23 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
 
     
     public void loadFields(Product product) {
-    	
-    	intStockMax.setValue(product.getStockMax());
-    	intStockMin.setValue(product.getStockMin());
-    	txtAmount.setText(String.valueOf(product.getAmount()));
-		txtBachNumber.setText(product.getBatchNumber());
-		txtUbicationFolder.setText(product.getUbicationFolder());
-		txtUbicationBox.setText(product.getUbicationBox());
-		txtactNpNsn.setText(product.getActNpNsn());
-		txtDescription.setText(product.getDescription());
-		txtPartNumber.setText(product.getPartNumber());
-		try {
-    		int  quantity = transactionEJB.loadQuantityByProductId(product.getId(), Category.WAIT);
-    		intStock.setValue(quantity);
-    	} catch (Exception ex) {
-    		intStock.setValue(0);
-        }
+		if (product != null) {
+			intStockMax.setValue(product.getStockMax());
+			intStockMin.setValue(product.getStockMin());
+			txtAmount.setText(String.valueOf(product.getAmount()));
+			txtBachNumber.setText(product.getBatchNumber());
+			txtUbicationFolder.setText(product.getUbicationFolder());
+			txtUbicationBox.setText(product.getUbicationBox());
+			txtactNpNsn.setText(product.getActNpNsn());
+			txtDescription.setText(product.getDescription());
+			txtPartNumber.setText(product.getPartNumber());
+			try {
+				int quantity = transactionEJB.loadQuantityByProductId(product.getId(), Category.WAIT);
+				intStock.setValue(quantity);
+			} catch (Exception ex) {
+				intStock.setValue(0);
+			}
+		}
     }
 
 
@@ -484,6 +486,7 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
 			}
 
             transaction = transactionEJB.saveTransactionStock(transaction,productSeries);
+            Sessions.getCurrent().removeAttribute("customer");
 //            productParam = product;
 //            eventType = WebConstants.EVENT_EDIT;
             this.showMessage("sp.common.save.success", false, null);

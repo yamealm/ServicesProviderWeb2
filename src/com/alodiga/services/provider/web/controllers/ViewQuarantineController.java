@@ -3,6 +3,7 @@ package com.alodiga.services.provider.web.controllers;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import org.zkoss.util.resource.Labels;
@@ -10,6 +11,7 @@ import org.zkoss.zhtml.Filedownload;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zk.ui.SuspendNotAllowedException;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
@@ -17,13 +19,16 @@ import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Window;
 
+import com.alodiga.services.provider.commons.ejbs.CustomerEJB;
 import com.alodiga.services.provider.commons.ejbs.ProductEJB;
 import com.alodiga.services.provider.commons.ejbs.TransactionEJB;
 import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
 import com.alodiga.services.provider.commons.genericEJB.EJBRequest;
 import com.alodiga.services.provider.commons.models.Category;
 import com.alodiga.services.provider.commons.models.Condicion;
+import com.alodiga.services.provider.commons.models.Customer;
 import com.alodiga.services.provider.commons.models.Enterprise;
 import com.alodiga.services.provider.commons.models.ProductSerie;
 import com.alodiga.services.provider.commons.models.Provider;
@@ -43,6 +48,7 @@ public class ViewQuarantineController extends GenericAbstractAdminController {
     private Combobox cmbCategory;
     private Combobox cmbCondition;
     private Combobox cmbProvider;
+    private Combobox cmbCustomer;
     private Checkbox cbxExpiration;
     private Checkbox cbxCure;
     private Textbox txtAmount;
@@ -73,18 +79,21 @@ public class ViewQuarantineController extends GenericAbstractAdminController {
     private ProductEJB productEJB = null;
     private UtilsEJB utilsEJB = null;
     private TransactionEJB transactionEJB = null;
+    private CustomerEJB customerEJB = null;
     private ProductSerie productSerieParam;
     private List<Enterprise> enterprises;
     private List<Category> categories;
     private List<Provider> providers;
     private List<Condicion> conditions;
-
+    private List<Customer> customers;
+    private Customer customer = null;
     private User currentUser;
 
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
         productSerieParam = (Sessions.getCurrent().getAttribute("object") != null) ? (ProductSerie) Sessions.getCurrent().getAttribute("object") : null;
+        customer  = (Sessions.getCurrent().getAttribute("customer") != null) ? (Customer) Sessions.getCurrent().getAttribute("customer") : null;
         initialize();
         initView(eventType, "sp.crud.product");
     }
@@ -104,6 +113,9 @@ public class ViewQuarantineController extends GenericAbstractAdminController {
             productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
             utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
             transactionEJB = (TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
+            customerEJB = (CustomerEJB) EJBServiceLocator.getInstance().get(EjbConstants.CUSTOMER_EJB);
+            dtxExpiration.setValue(new Timestamp(new Date().getTime()));
+            dtxCure.setValue(new Timestamp(new Date().getTime()));
             loadData();
         } catch (Exception ex) {
             showError(ex);
@@ -194,11 +206,13 @@ public class ViewQuarantineController extends GenericAbstractAdminController {
     
 
     public void onClick$btnBack() {
+    	Sessions.getCurrent().removeAttribute("customer");
     	Sessions.getCurrent().setAttribute("object",productSerieParam.getProduct());
     	Executions.sendRedirect("./listEgressQuarantine.zul");
     }
     
     public void onClick$viewDetail() {
+    	Sessions.getCurrent().removeAttribute("customer");
     	Sessions.getCurrent().setAttribute("object",productSerieParam.getProduct());
     	Executions.sendRedirect("./listEgressQuarantine.zul");
     }
@@ -213,6 +227,10 @@ public class ViewQuarantineController extends GenericAbstractAdminController {
                 loadCategory(productSerieParam.getCategory());
                 loadCondition(productSerieParam.getCondition());
                 loadProvider(productSerieParam.getProvider());
+                if (customer!=null)
+                	loadCustomer(customer);
+                else
+                	loadCustomer(productSerieParam.getCustomer());
                 blockFields();
                 break;
 
@@ -236,13 +254,10 @@ public class ViewQuarantineController extends GenericAbstractAdminController {
 		txtPartNumber.setText(productSerie.getProduct().getPartNumber());
 		txtQuarantine.setText(productSerie.getQuarantineReason());
 		if (productSerie.getBeginTransactionId().getForm()!=null){
-//			blob = productSerie.getBeginTransactionId().getForm();	
-//			try {
-//				form = blob.getBytes(1l, (int)blob.length());
-//			} catch (SQLException e) {
-//
-//			}
-			txtForm.setText(productSerie.getBeginTransactionId().getNameForm()+"."+productSerie.getBeginTransactionId().getExtensionForm());
+			
+			form = productSerie.getBeginTransactionId().getForm();
+
+			txtForm.setText(productSerie.getBeginTransactionId().getNameForm());
 			txtForm.setReadonly(true);
 		    extForm = productSerie.getBeginTransactionId().getExtensionForm();
 		    nameForm = productSerie.getBeginTransactionId().getNameForm();
@@ -257,13 +272,16 @@ public class ViewQuarantineController extends GenericAbstractAdminController {
 		if (productSerie.getExpirationDate()!=null) {
 			cbxExpiration.setChecked(true);
 			dtxExpiration.setValue(productSerie.getExpirationDate());
-		}else
+		}else {
 			cbxExpiration.setChecked(false);
-		if (productSerie.getCure()!=null) {
+			dtxExpiration.setVisible(false);
+		}if (productSerie.getCure()!=null) {
 			cbxCure.setChecked(true);
 			dtxCure.setValue(productSerie.getCure());
-		}else
+		}else {
 			cbxCure.setChecked(false);
+			dtxCure.setVisible(false);
+		}
 		dtxCreation.setValue(productSerie.getCreationDate());
 		txtObservation.setText(productSerie.getObservation());
 		txtSerial.setText(productSerie.getSerie());
@@ -353,6 +371,29 @@ public class ViewQuarantineController extends GenericAbstractAdminController {
             showError(ex);
         }
     }
+    
+    
+    private void loadCustomer(Customer customer) {
+        try {
+        	cmbCustomer.getItems().clear();
+        	EJBRequest request = new EJBRequest();
+        	customers = customerEJB.getCustomers(request);
+            for (Customer e : customers) {
+                Comboitem cmbItem = new Comboitem();
+                cmbItem.setLabel(e.getFirstName() + " " + e.getLastName());
+                cmbItem.setValue(e);
+                cmbItem.setParent(cmbCustomer);
+                if (customer != null && customer.getId().equals(e.getId())) {
+                	cmbCustomer.setSelectedItem(cmbItem);
+                } 
+//                else {
+//                	cmbCustomer.setSelectedIndex(0);
+//                }
+            }
+        } catch (Exception ex) {
+            showError(ex);
+        }
+    }
 
     private void saveProductSerie(ProductSerie productSerie) {
         Transaction transaction = productSerie.getBeginTransactionId();
@@ -364,30 +405,35 @@ public class ViewQuarantineController extends GenericAbstractAdminController {
 			transaction.setCondition(condition);
 			Provider provider = (Provider) cmbProvider.getSelectedItem().getValue();
 			transaction.setProvider(provider);
+			Customer customer = (Customer) cmbCustomer.getSelectedItem().getValue();
+	        transaction.setCustomer(customer);
 			transaction.setObservation(txtObservation.getText());
 			transaction.setInvoice(txtInvoice.getText());
 			transaction.setCreationDate(new Timestamp(dtxCreation.getValue().getTime()));
+			if (uploaded) {
+				transaction.setForm(form);
+				transaction.setExtForm(extForm);
+				transaction.setNameForm(nameForm);
+			}else if(!uploaded && form==null){
+				transaction.setForm(null);
+				transaction.setExtForm(null);
+				transaction.setNameForm(null);
+			}
+			
 			productSerie.setProvider(provider);
 			productSerie.setAmount(Float.valueOf(txtAmount.getText()));
 			productSerie.setQuantity(intQuantity.getValue());
 			productSerie.setCondition(condition);
 			productSerie.setSerie(txtSerial.getText());
 			productSerie.setObservation(txtObservation.getText());
+			productSerie.setCustomer(customer);
 			productSerie.setCreationDate(new Timestamp(dtxCreation.getValue().getTime()));
-			if (uploaded) {
-//	           	transaction.setForm(new javax.sql.rowset.serial.SerialBlob(form));
-	           	transaction.setExtForm(extForm);
-	           	transaction.setNameForm(nameForm);
-	        }else if(!uploaded && form==null){
-	        	transaction.setForm(null);
-	           	transaction.setExtForm(null);
-	           	transaction.setNameForm(null);
-	        }
 			if (cbxExpiration.isChecked())
 				productSerie.setExpirationDate(new Timestamp(dtxExpiration.getValue().getTime()));
 			if (cbxCure.isChecked())
 				productSerie.setCure(new Timestamp(dtxCure.getValue().getTime()));
     		transaction = transactionEJB.modificarStock(transaction, productSerie);
+    		Sessions.getCurrent().removeAttribute("customer");
 //            productParam = product;
 //            eventType = WebConstants.EVENT_EDIT;
     			this.showMessage(Labels.getLabel("sp.common.save.success"), false, null);
@@ -397,11 +443,24 @@ public class ViewQuarantineController extends GenericAbstractAdminController {
         }
     }
     
+    public void onCheck$cbxExpiration(){
+    	if (cbxExpiration.isChecked())
+    		dtxExpiration.setVisible(true);
+    	else
+    		dtxExpiration.setVisible(false);
+    }
+    
+    public void onCheck$cbxCure(){
+    	if (cbxCure.isChecked())
+    		dtxCure.setVisible(true);
+    	else
+    		dtxCure.setVisible(false);
+    }
+    
     public void onClick$btnDownload() throws InterruptedException {
         try {
-            if (blob!=null){
-    			byte [] bytes = blob.getBytes(1l, (int)blob.length());
-    			Filedownload.save(bytes, extForm, nameForm);
+            if (form!=null){
+    			Filedownload.save(form, extForm, nameForm);
             }
         } catch (Exception ex) {
             showError(ex);
@@ -441,5 +500,21 @@ public class ViewQuarantineController extends GenericAbstractAdminController {
 		uploaded = false;
     }
     
-    
-} 
+	public void onClick$btnSearchCustomer() {
+		Window window = (Window) Executions.createComponents("catCustomers.zul", null, null);
+		Sessions.getCurrent().setAttribute("page", "viewQuarantine.zul");
+		try {
+			window.doModal();
+		} catch (SuspendNotAllowedException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void onClick$btnRemove() {
+		cmbCustomer.setSelectedItem(null);
+		cmbCustomer.setValue(null);
+		cmbCustomer.setText("");
+	}
+}

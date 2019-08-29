@@ -99,7 +99,7 @@
                                                         <listheader label="${c:l('sp.transaction.amount')}" width="90px"/>
                                                         <listheader label="${c:l('sp.common.quantity')}" width="170px"/>
                                                         <listheader label="${c:l('sp.common.creationDate')}" width="140px"/>
-                                                        <listheader label="${c:l('sp.common.sp.common.date.expiration')}" width="140px"/>
+                                                        <listheader label="${c:l('sp.common.date.expiration')}" width="140px"/>
                                                     </listhead>
                                                 </listbox>
                                             </div>

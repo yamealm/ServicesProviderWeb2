@@ -64,14 +64,13 @@
                                             </vlayout>
                                             <separator/>
                                             <!--Record Listbox-->
-                                            <listbox id="lbxRecords" fixedLayout="true" width="1395px" height="530px">
+                                            <listbox id="lbxRecords" fixedLayout="true" width="1395px" height="530px" mold="paging" pageSize="28">
                                                 <listhead>
-                                                    <listheader label="${c:l('sp.auditActions.userLogin')}" width="100px" sort="auto"/>
-                                                    <listheader label="${c:l('sp.auditActions.userName')}" width="150px" sort="auto"/>
-                                                    <listheader label="${c:l('sp.auditActions.permission')}" width="180px" sort="auto"/>
-                                                    <listheader label="${c:l('sp.auditActions.date')}" width="120px" sort="auto"/>
-                                                    <listheader label="${c:l('sp.auditActions.host')}" width="120px" sort="auto"/>
-                                                    <listheader label="${c:l('sp.auditActions.info')}" width="250px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.auditActions.userLogin')}" width="275px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.auditActions.userName')}" width="275px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.auditActions.permission')}" width="275px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.auditActions.date')}" width="275px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.auditActions.info')}" width="295px" sort="auto"/>
                                                 </listhead>
                                             </listbox>
 

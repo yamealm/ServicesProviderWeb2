@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zul.Listbox;
@@ -75,6 +76,7 @@ public class ListEgressWaitController extends GenericAbstractListController<Prod
     public void initialize() {
         super.initialize();
         try {
+        	Sessions.getCurrent().removeAttribute("customer");
             currentUser = AccessControl.loadCurrentUser();
             currentProfile = currentUser.getCurrentProfile(Enterprise.TURBINES);
             checkPermissions();
@@ -133,8 +135,8 @@ public class ListEgressWaitController extends GenericAbstractListController<Prod
 						SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 						date = df.format(productSerie.getExpirationDate().getTime());
 					}
+					item.appendChild(new Listcell(date));
 					date = null;
-                    item.appendChild(new Listcell(date));
                     if (productSerie.getCure() != null) {
 						SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 						date = df.format(productSerie.getCure().getTime());

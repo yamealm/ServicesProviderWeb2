@@ -11,6 +11,7 @@ import org.zkoss.zhtml.Filedownload;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zk.ui.SuspendNotAllowedException;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
@@ -18,6 +19,7 @@ import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Window;
 
 import com.alodiga.services.provider.commons.ejbs.CustomerEJB;
 import com.alodiga.services.provider.commons.ejbs.ProductEJB;
@@ -86,12 +88,14 @@ public class ViewWaitController extends GenericAbstractAdminController {
     private List<Provider> providers;
     private List<Condicion> conditions;
     private List<Customer> customers;
+    private Customer customer = null;
     private User currentUser;
 
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
         productSerieParam = (Sessions.getCurrent().getAttribute("object") != null) ? (ProductSerie) Sessions.getCurrent().getAttribute("object") : null;
+        customer  = (Sessions.getCurrent().getAttribute("customer") != null) ? (Customer) Sessions.getCurrent().getAttribute("customer") : null;
         initialize();
         initView(eventType, "sp.crud.product");
     }
@@ -205,12 +209,14 @@ public class ViewWaitController extends GenericAbstractAdminController {
 
     public void onClick$btnBack() {
     	Sessions.getCurrent().setAttribute("object",productSerieParam.getProduct());
-    	Executions.sendRedirect("./listAddWait.zul");
+    	Sessions.getCurrent().removeAttribute("customer");
+    	Executions.sendRedirect("./listEgressWait.zul");
     }
     
     public void onClick$viewDetail() {
+    	Sessions.getCurrent().removeAttribute("customer");
     	Sessions.getCurrent().setAttribute("object",productSerieParam.getProduct());
-    	Executions.sendRedirect("./listAddWait.zul");
+    	Executions.sendRedirect("./listEgressWait.zul");
     }
     
     public void loadData() {
@@ -223,7 +229,10 @@ public class ViewWaitController extends GenericAbstractAdminController {
                 loadCategory(productSerieParam.getCategory());
                 loadCondition(productSerieParam.getCondition());
                 loadProvider(productSerieParam.getProvider());
-                loadCustomer(productSerieParam.getCustomer());
+                if (customer!=null)
+                	loadCustomer(customer);
+                else
+                	loadCustomer(productSerieParam.getCustomer());
                 blockFields();
                 break;
 
@@ -246,13 +255,10 @@ public class ViewWaitController extends GenericAbstractAdminController {
 		txtInvoice.setText(productSerie.getBeginTransactionId().getInvoice() );
 		txtPartNumber.setText(productSerie.getProduct().getPartNumber());
 		if (productSerie.getBeginTransactionId().getForm()!=null){
-//			blob = productSerie.getBeginTransactionId().getForm();	
-			try {
-				form = blob.getBytes(1l, (int)blob.length());
-			} catch (SQLException e) {
+			
+			form = productSerie.getBeginTransactionId().getForm();
 
-			}
-			txtForm.setText(productSerie.getBeginTransactionId().getNameForm()+"."+productSerie.getBeginTransactionId().getExtensionForm());
+			txtForm.setText(productSerie.getBeginTransactionId().getNameForm());
 			txtForm.setReadonly(true);
 		    extForm = productSerie.getBeginTransactionId().getExtensionForm();
 		    nameForm = productSerie.getBeginTransactionId().getNameForm();
@@ -267,13 +273,16 @@ public class ViewWaitController extends GenericAbstractAdminController {
 		if (productSerie.getExpirationDate()!=null) {
 			cbxExpiration.setChecked(true);
 			dtxExpiration.setValue(productSerie.getExpirationDate());
-		}else
+		}else {
 			cbxExpiration.setChecked(false);
-		if (productSerie.getCure()!=null) {
+			dtxExpiration.setVisible(false);
+		}if (productSerie.getCure()!=null) {
 			cbxCure.setChecked(true);
 			dtxCure.setValue(productSerie.getCure());
-		}else
+		}else {
 			cbxCure.setChecked(false);
+			dtxCure.setVisible(false);
+		}
 		txtObservation.setText(productSerie.getObservation());
 		txtSerial.setText(productSerie.getSerie());
 		dtxCreation.setValue(productSerie.getCreationDate());
@@ -336,9 +345,10 @@ public class ViewWaitController extends GenericAbstractAdminController {
                 cmbItem.setParent(cmbCustomer);
                 if (customer != null && customer.getId().equals(e.getId())) {
                 	cmbCustomer.setSelectedItem(cmbItem);
-                } else {
-                	cmbCustomer.setSelectedIndex(0);
-                }
+                } 
+//                else {
+//                	cmbCustomer.setSelectedIndex(0);
+//                }
             }
         } catch (Exception ex) {
             showError(ex);
@@ -396,6 +406,8 @@ public class ViewWaitController extends GenericAbstractAdminController {
 			transaction.setCondition(condition);
 			Provider provider = (Provider) cmbProvider.getSelectedItem().getValue();
 			transaction.setProvider(provider);
+			Customer customer = (Customer) cmbCustomer.getSelectedItem().getValue();
+	        transaction.setCustomer(customer);
 			transaction.setObservation(txtObservation.getText());
 			transaction.setInvoice(txtInvoice.getText());
 			transaction.setOrderWord(txtWorkOrder.getText());
@@ -403,7 +415,7 @@ public class ViewWaitController extends GenericAbstractAdminController {
 			transaction.setCreationDate(new Timestamp(dtxCreation.getValue().getTime()));
 			
 			if (uploaded) {
-//	           	transaction.setForm(new javax.sql.rowset.serial.SerialBlob(form));
+				transaction.setForm(form);
 	           	transaction.setExtForm(extForm);
 	           	transaction.setNameForm(nameForm);
 	        }else if(!uploaded && form==null){
@@ -419,6 +431,7 @@ public class ViewWaitController extends GenericAbstractAdminController {
 			productSerie.setOrderWord(txtWorkOrder.getText());
 			productSerie.setWork(txtWork.getText());
 			productSerie.setObservation(txtObservation.getText());
+			productSerie.setCustomer(customer);
 			productSerie.setCreationDate(new Timestamp(dtxCreation.getValue().getTime()));
 			if (cbxExpiration.isChecked())
 				productSerie.setExpirationDate(new Timestamp(dtxExpiration.getValue().getTime()));
@@ -426,17 +439,30 @@ public class ViewWaitController extends GenericAbstractAdminController {
 				productSerie.setCure(new Timestamp(dtxCure.getValue().getTime()));
     		transaction = transactionEJB.modificarStock(transaction, productSerie);
     			this.showMessage(Labels.getLabel("sp.common.save.success"), false, null);
-    		
+    		Sessions.getCurrent().removeAttribute("customer");
         } catch (Exception ex) {
             showError(ex);
         }
     }
     
+    public void onCheck$cbxExpiration(){
+    	if (cbxExpiration.isChecked())
+    		dtxExpiration.setVisible(true);
+    	else
+    		dtxExpiration.setVisible(false);
+    }
+    
+    public void onCheck$cbxCure(){
+    	if (cbxCure.isChecked())
+    		dtxCure.setVisible(true);
+    	else
+    		dtxCure.setVisible(false);
+    }
+    
     public void onClick$btnDownload() throws InterruptedException {
         try {
-            if (blob!=null){
-    			byte [] bytes = blob.getBytes(1l, (int)blob.length());
-    			Filedownload.save(bytes, extForm, nameForm);
+            if (form!=null){
+    			Filedownload.save(form, extForm, nameForm);
             }
         } catch (Exception ex) {
             showError(ex);
@@ -476,5 +502,22 @@ public class ViewWaitController extends GenericAbstractAdminController {
 		uploaded = false;
     }
    
+    public void onClick$btnSearchCustomer() {
+		Window window = (Window) Executions.createComponents("catCustomers.zul", null, null);
+		Sessions.getCurrent().setAttribute("page", "viewWait.zul");
+		try {
+			window.doModal();
+		} catch (SuspendNotAllowedException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void onClick$btnRemove() {
+		cmbCustomer.setSelectedItem(null);
+		cmbCustomer.setValue(null);
+		cmbCustomer.setText("");
+	}
     
 } 

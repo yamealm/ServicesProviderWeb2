@@ -482,6 +482,7 @@ public class AdminAddQuarantineController extends GenericAbstractAdminController
 			}
 
             transaction = transactionEJB.saveTransactionStock(transaction,productSeries);
+            Sessions.getCurrent().removeAttribute("customer");
             this.showMessage("sp.common.save.success", false, null);
         } catch (NullParameterException ex) {
         	showMessage("sp.error.field.number", true, null);

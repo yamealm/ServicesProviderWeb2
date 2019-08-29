@@ -38,12 +38,13 @@
                                             <!--Record Listbox-->
                                             <listbox id="lbxRecords" fixedLayout="true" width="1395px" height="530px">
                                                 <listhead>
-                                                    <listheader label="${c:l('sp.common.PartNumber')}" width="210px" sort="auto"/>
-                                                    <listheader label="${c:l('sp.common.descripton')}" width="230px" sort="auto"/>
-                                                     <listheader label="${c:l('sp.common.provider')}" width="230px" sort="auto"/>
-                                                    <listheader label="${c:l('sp.common.serial')}" width="210px" sort="auto"/>
-                                                    <listheader label="${c:l('sp.common.stock')}" width="210px" sort="auto"/>
-                                                    <listheader label="${c:l('sp.common.creationDate')}" width="205px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.common.PartNumber')}" width="185px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.common.descripton')}" width="185px" sort="auto"/>
+                                                     <listheader label="${c:l('sp.common.provider')}" width="185px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.common.serial')}" width="185px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.common.stock')}" width="185px" sort="auto"/>
+                                                     <listheader label="${c:l('sp.common.date.expiration')}" width="185px" sort="auto"/>
+                                                     <listheader label="${c:l('sp.common.date.cure')}" width="185px" sort="auto"/>
                                                     <listheader label="-" width="50px"/>
                                                     <listheader label="-" width="50px"/>
                                                     

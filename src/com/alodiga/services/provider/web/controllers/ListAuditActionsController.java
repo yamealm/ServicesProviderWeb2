@@ -102,9 +102,13 @@ public class ListAuditActionsController extends GenericAbstractListController<Au
                     item.setValue(auditAction);
                     item.appendChild(new Listcell(auditAction.getUser().getLogin()));
                     item.appendChild(new Listcell(auditAction.getUser().getFirstName() + " " + auditAction.getUser().getLastName()));
-                    item.appendChild(new Listcell(auditAction.getPermission() != null ? auditAction.getPermission().getPermissionDataByLanguageId(languageId).getAlias() : ""));
+                    try{
+                    	item.appendChild(new Listcell(auditAction.getPermission() != null ? auditAction.getPermission().getPermissionDataByLanguageId(languageId).getAlias() : ""));
+                    } catch (Exception ex) {
+                    	 item.appendChild(new Listcell());
+                    }
                     item.appendChild(new Listcell(GeneralUtils.date2String(auditAction.getDate(), GeneralUtils.FORMAT_DATE_USA)));
-                    item.appendChild(new Listcell(auditAction.getHost()));
+//                    item.appendChild(new Listcell(auditAction.getHost()));
                     item.appendChild(new Listcell(auditAction.getInfo()));
                     item.setParent(lbxRecords);
                 }

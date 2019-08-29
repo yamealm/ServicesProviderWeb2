@@ -88,7 +88,7 @@ public class ListMetrologicalControlController extends GenericAbstractListContro
             currentUser = AccessControl.loadCurrentUser();
             currentProfile = currentUser.getCurrentProfile(Enterprise.TURBINES);
             checkPermissions();
-            adminPage = "adminAddStock.zul";
+            adminPage = "viewMetrologicalControl.zul";
             productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
             transactionEJB = (TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
             loadPermission(new Provider());
@@ -135,6 +135,12 @@ public class ListMetrologicalControlController extends GenericAbstractListContro
                     if (history != null) {
 						SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 						date = df.format(history.getCalibrationDate().getTime());
+					}
+                    item.appendChild(new Listcell(date));
+                    date = null;
+                    if (history != null) {
+						SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+						date = df.format(history.getExpirationDate().getTime());
 					}
                     item.appendChild(new Listcell(date));
                     item.appendChild(new Listcell(metrologicalControl.getUbication()));

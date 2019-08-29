@@ -104,6 +104,7 @@ public class AdminAddTransitController extends GenericAbstractAdminController {
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
         productParam = (Sessions.getCurrent().getAttribute("object") != null) ? (Product) Sessions.getCurrent().getAttribute("object") : null;
+        customer  = (Sessions.getCurrent().getAttribute("customer") != null) ? (Customer) Sessions.getCurrent().getAttribute("customer") : null;
         productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
         utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
         transactionEJB = (TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
@@ -266,22 +267,23 @@ public class AdminAddTransitController extends GenericAbstractAdminController {
 
     
     public void loadFields(Product product) {
-    	
-    	intStockMax.setValue(product.getStockMax());
-    	intStockMin.setValue(product.getStockMin());
-    	txtAmount.setText(String.valueOf(product.getAmount()));
-		txtBachNumber.setText(product.getBatchNumber());
-		txtUbicationFolder.setText(product.getUbicationFolder());
-		txtUbicationBox.setText(product.getUbicationBox());
-		txtactNpNsn.setText(product.getActNpNsn());
-		txtDescription.setText(product.getDescription());
-		txtPartNumber.setText(product.getPartNumber());
-		try {
-    		int  quantity = transactionEJB.loadQuantityByProductId(product.getId(), Category.TRANSIT);
-    		intStock.setValue(quantity);
-    	} catch (Exception ex) {
-    		intStock.setValue(0);
-        }
+		if (product != null) {
+			intStockMax.setValue(product.getStockMax());
+			intStockMin.setValue(product.getStockMin());
+			txtAmount.setText(String.valueOf(product.getAmount()));
+			txtBachNumber.setText(product.getBatchNumber());
+			txtUbicationFolder.setText(product.getUbicationFolder());
+			txtUbicationBox.setText(product.getUbicationBox());
+			txtactNpNsn.setText(product.getActNpNsn());
+			txtDescription.setText(product.getDescription());
+			txtPartNumber.setText(product.getPartNumber());
+			try {
+				int quantity = transactionEJB.loadQuantityByProductId(product.getId(), Category.TRANSIT);
+				intStock.setValue(quantity);
+			} catch (Exception ex) {
+				intStock.setValue(0);
+			}
+		}
     }
 
 
@@ -479,6 +481,7 @@ public class AdminAddTransitController extends GenericAbstractAdminController {
 			}
 
             transaction = transactionEJB.saveTransactionStock(transaction,productSeries);
+            Sessions.getCurrent().removeAttribute("customer");
 //            productParam = product;
 //            eventType = WebConstants.EVENT_EDIT;
             this.showMessage("sp.common.save.success", false, null);

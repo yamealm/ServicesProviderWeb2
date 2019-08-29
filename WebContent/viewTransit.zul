@@ -169,7 +169,8 @@
                                                             <label value="${c:l('sp.common.customer')}" sclass="lblbold"/>
                                                             <hlayout>
                                                                 <combobox id="cmbCustomer" width="190px" mold="rounded" readonly="true"/>
-                                                                <label value="*" sclass="lblreq" />
+                                                                <button id="btnSearchCustomer" image="/images/icon-show.png" width="30px" class="open orange" tooltiptext="${c:l('sp.common.actions.search.filter.tooltip')}"/>
+                                                                <button id="btnRemove" image="/images/icon-remove.png" width="30px" class="open orange" tooltiptext="${c:l('sp.common.actions.remove.customer.tooltip')}"/>
                                                             </hlayout>
                                                         </row>
                                                         <row>
