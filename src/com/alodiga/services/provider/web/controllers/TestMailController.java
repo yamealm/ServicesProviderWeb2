@@ -1,17 +1,14 @@
 package com.alodiga.services.provider.web.controllers;
 
+import org.zkoss.zk.ui.Component;
+import org.zkoss.zul.Textbox;
+
 import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
 import com.alodiga.services.provider.commons.genericEJB.EJBRequest;
 import com.alodiga.services.provider.commons.models.Enterprise;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
-import com.alodiga.services.provider.commons.utils.Mail;
-import com.alodiga.services.provider.commons.utils.ServiceMails;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractController;
-import java.util.ArrayList;
-import org.zkoss.util.resource.Labels;
-import org.zkoss.zk.ui.Component;
-import org.zkoss.zul.Textbox;
 
 public class TestMailController extends GenericAbstractController {
 

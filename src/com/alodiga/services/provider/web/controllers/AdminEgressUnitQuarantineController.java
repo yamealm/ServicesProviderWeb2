@@ -29,6 +29,7 @@ import com.alodiga.services.provider.commons.models.Customer;
 import com.alodiga.services.provider.commons.models.Enterprise;
 import com.alodiga.services.provider.commons.models.ProductSerie;
 import com.alodiga.services.provider.commons.models.Provider;
+import com.alodiga.services.provider.commons.models.QuarantineStatus;
 import com.alodiga.services.provider.commons.models.Transaction;
 import com.alodiga.services.provider.commons.models.TransactionType;
 import com.alodiga.services.provider.commons.models.User;
@@ -47,6 +48,7 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
     private Combobox cmbCustomer;
     private Combobox cmbProvider;
     private Combobox cmbCondition;
+    private Combobox cmbStatus;
     private Checkbox cbxSerialVarius;
     private Checkbox cbxExpiration;
     private Checkbox cbxCure;
@@ -77,6 +79,7 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
     private List<Enterprise> enterprises;
     private List<Category> categories;
     private List<Customer> customers;
+    private List<QuarantineStatus> quarantineStatus;
     private List<Provider> providers;
     private List<Condicion> conditions;
     private User user;
@@ -163,7 +166,7 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
     	cmbCategory.setDisabled(true);
     	cmbCondition.setDisabled(true);
     	cmbProvider.setDisabled(true);
-    	
+    	cmbStatus.setDisabled(true);
     }
 
     public Boolean validateEmpty() {
@@ -234,6 +237,7 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
 		loadProvider(productSerieParam.getProvider());
 		loadCondition(productSerieParam.getCondition());
 		loadCustomer(productSerieParam.getCustomer());
+		loadStatus();
 		blockFields();
 
 	}
@@ -338,6 +342,26 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
         }
     }
     
+    private void loadStatus() {
+        try {
+        	cmbStatus.getItems().clear();
+        	quarantineStatus = utilsEJB.getQuaratineStatus();
+        	 Comboitem cmbItem = new Comboitem();
+             cmbItem.setLabel("Seleccione");
+             cmbItem.setValue(null);
+             cmbItem.setParent(cmbStatus);
+            for (QuarantineStatus status : quarantineStatus) {
+                cmbItem = new Comboitem();
+                cmbItem.setLabel(status.getName());
+                cmbItem.setValue(status);
+                cmbItem.setParent(cmbStatus);
+              
+            }
+        } catch (Exception ex) {
+            showError(ex);
+        }
+    }
+    
     private void loadCondition(Condicion condition) {
         try {
         	cmbCondition.getItems().clear();
@@ -408,6 +432,8 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
 			productSerieParam.setQuarantineReason(txtQuarantine.getText());
 			productSerieParam.setEndingTransactionId(transaction);
 			productSerieParam.setObservation(txtObservation.getText());
+			QuarantineStatus status = (QuarantineStatus) cmbStatus.getSelectedItem().getValue();
+			productSerieParam.setQuarantineStatus(status);
 			productSeries.add(productSerieParam);
     		transaction.setQuantity(intQuantity.getValue());
     		transaction = transactionEJB.saveEgressStock(transaction,productSeries);

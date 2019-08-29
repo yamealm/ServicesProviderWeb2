@@ -1,18 +1,26 @@
 package com.alodiga.services.provider.web.controllers;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import org.zkoss.util.resource.Labels;
+import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listcell;
+import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Textbox;
+
 import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
 import com.alodiga.services.provider.commons.exceptions.EmptyListException;
 import com.alodiga.services.provider.commons.exceptions.GeneralException;
 import com.alodiga.services.provider.commons.exceptions.NullParameterException;
-import com.alodiga.services.provider.commons.exceptions.RegisterNotFoundException;
 import com.alodiga.services.provider.commons.managers.PermissionManager;
 import com.alodiga.services.provider.commons.models.Braund;
-import com.alodiga.services.provider.commons.models.Country;
-import com.alodiga.services.provider.commons.models.CountryTranslation;
 import com.alodiga.services.provider.commons.models.Enterprise;
-import com.alodiga.services.provider.commons.models.Language;
 import com.alodiga.services.provider.commons.models.Permission;
-import com.alodiga.services.provider.commons.models.Product;
 import com.alodiga.services.provider.commons.models.Profile;
 import com.alodiga.services.provider.commons.models.User;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
@@ -23,19 +31,6 @@ import com.alodiga.services.provider.web.generic.controllers.GenericAbstractList
 import com.alodiga.services.provider.web.utils.AccessControl;
 import com.alodiga.services.provider.web.utils.Utils;
 import com.alodiga.services.provider.web.utils.WebConstants;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.zkoss.util.resource.Labels;
-import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.Executions;
-import org.zkoss.zk.ui.Sessions;
-import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listcell;
-import org.zkoss.zul.Listitem;
-import org.zkoss.zul.Textbox;
 
 public class ListMarkesController extends GenericAbstractListController<Braund> {
 

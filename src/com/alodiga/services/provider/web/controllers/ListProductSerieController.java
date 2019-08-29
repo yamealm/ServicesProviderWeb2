@@ -1,5 +1,24 @@
 package com.alodiga.services.provider.web.controllers;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.zkoss.util.resource.Labels;
+import org.zkoss.zk.ui.Component;
+import org.zkoss.zul.Button;
+import org.zkoss.zul.Combobox;
+import org.zkoss.zul.Comboitem;
+import org.zkoss.zul.Datebox;
+import org.zkoss.zul.Label;
+import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listcell;
+import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Textbox;
+
 import com.alodiga.services.provider.commons.ejbs.CustomerEJB;
 import com.alodiga.services.provider.commons.ejbs.ProductEJB;
 import com.alodiga.services.provider.commons.ejbs.TransactionEJB;
@@ -21,24 +40,6 @@ import com.alodiga.services.provider.commons.utils.QueryConstants;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractListController;
 import com.alodiga.services.provider.web.utils.PDFUtil;
 import com.alodiga.services.provider.web.utils.Utils;
-import java.util.Date;
-import java.util.List;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.Map;
-import org.zkoss.zul.Datebox;
-import org.apache.log4j.lf5.viewer.categoryexplorer.CategoryAbstractCellEditor;
-import org.zkoss.util.resource.Labels;
-import org.zkoss.zk.ui.Component;
-import org.zkoss.zul.Button;
-import org.zkoss.zul.Combobox;
-import org.zkoss.zul.Comboitem;
-import org.zkoss.zul.Label;
-import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listcell;
-import org.zkoss.zul.Listitem;
-import org.zkoss.zul.Textbox;
 
 public class ListProductSerieController extends GenericAbstractListController<ProductSerie> {
 

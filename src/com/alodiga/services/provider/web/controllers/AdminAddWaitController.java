@@ -239,6 +239,7 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
     
 
     public void onClick$btnBack() {
+    	 Sessions.getCurrent().removeAttribute("customer");
     	 Executions.sendRedirect("./listWait.zul");
     }
     

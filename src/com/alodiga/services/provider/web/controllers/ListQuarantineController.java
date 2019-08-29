@@ -47,6 +47,7 @@ public class ListQuarantineController extends GenericAbstractListController<Prod
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
+        Sessions.getCurrent().removeAttribute("customer");
         initialize();
     }
 

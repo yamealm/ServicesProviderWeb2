@@ -1,5 +1,20 @@
 package com.alodiga.services.provider.web.controllers;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import org.zkoss.util.resource.Labels;
+import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listcell;
+import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Textbox;
+
 import com.alodiga.services.provider.commons.ejbs.UserEJB;
 import com.alodiga.services.provider.commons.exceptions.EmptyListException;
 import com.alodiga.services.provider.commons.exceptions.GeneralException;
@@ -18,19 +33,6 @@ import com.alodiga.services.provider.web.generic.controllers.GenericAbstractList
 import com.alodiga.services.provider.web.utils.AccessControl;
 import com.alodiga.services.provider.web.utils.Utils;
 import com.alodiga.services.provider.web.utils.WebConstants;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import org.zkoss.util.resource.Labels;
-import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.Executions;
-import org.zkoss.zk.ui.Sessions;
-import org.zkoss.zk.ui.event.Event;
-import org.zkoss.zk.ui.event.EventListener;
-import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listcell;
-import org.zkoss.zul.Listitem;
-import org.zkoss.zul.Textbox;
 
 public class ListUsersController extends GenericAbstractListController<User> {
 
@@ -105,13 +107,13 @@ public class ListUsersController extends GenericAbstractListController<User> {
 
     public List<User> getFilteredList(String filter) {
         List<User> list= new ArrayList<User>();
-        for (Iterator<User> i = users.iterator(); i.hasNext();) {
-            User tmp = i.next();
-            /*String field = tmp.getProfileDataByLanguageId(languageId) != null ? tmp.getProfileDataByLanguageId(languageId).getAlias() : tmp.getName();
-            if (field.indexOf(filter.trim().toLowerCase()) >= 0) {
-                profilesaux.add(tmp);
-            }*/
-        }
+		for (Iterator<User> i = users.iterator(); i.hasNext();) {
+			User tmp = i.next();
+			String field = tmp.getFirstName().toLowerCase();
+			if (field.indexOf(filter.trim().toLowerCase()) >= 0) {
+				list.add(tmp);
+			}
+		}
         return list;
     }
 

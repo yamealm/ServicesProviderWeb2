@@ -8,7 +8,6 @@ import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Combobox;
-import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Label;
@@ -18,7 +17,6 @@ import org.zkoss.zul.Listitem;
 
 import com.alodiga.services.provider.commons.ejbs.ProductEJB;
 import com.alodiga.services.provider.commons.ejbs.TransactionEJB;
-import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
 import com.alodiga.services.provider.commons.exceptions.EmptyListException;
 import com.alodiga.services.provider.commons.exceptions.GeneralException;
 import com.alodiga.services.provider.commons.exceptions.NullParameterException;
@@ -27,7 +25,6 @@ import com.alodiga.services.provider.commons.models.Category;
 import com.alodiga.services.provider.commons.models.MetrologicalControlHistory;
 import com.alodiga.services.provider.commons.models.Product;
 import com.alodiga.services.provider.commons.models.ProductSerie;
-import com.alodiga.services.provider.commons.models.Provider;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractListController;
@@ -59,7 +56,6 @@ public class MunitoringController extends GenericAbstractListController<ProductS
     
 
     private Datebox dtbEndingDate;
-    private UtilsEJB utilsEJB = null;
     private ProductEJB productEJB = null;
     private TransactionEJB transactionEJB = null;
     private Intbox intDay;
@@ -84,7 +80,6 @@ public class MunitoringController extends GenericAbstractListController<ProductS
         super.initialize();
         try {
             adminPage = "adminTransaction.zul";
-            utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
             productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
             transactionEJB = (TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
             
@@ -209,25 +204,25 @@ public class MunitoringController extends GenericAbstractListController<ProductS
         }
     }
 
-    private void loadProvider() {
-        try {
-        	cmbProvider.getItems().clear();
-            List<Provider> providers = utilsEJB.getProvider();
-            Comboitem item = new Comboitem();
-            item.setLabel(Labels.getLabel("sp.common.all"));
-            item.setParent(cmbProvider);
-            cmbProvider.setSelectedItem(item);
-            for (int i = 0; i < providers.size(); i++) {
-                item = new Comboitem();
-                item.setValue(providers.get(i));
-                item.setLabel(providers.get(i).getName());
-                item.setParent(cmbProvider);
-            }
-        } catch (Exception ex) {
-            this.showError(ex);
-        }
+//    private void loadProvider() {
+//        try {
+//        	cmbProvider.getItems().clear();
+//            List<Provider> providers = utilsEJB.getProvider();
+//            Comboitem item = new Comboitem();
+//            item.setLabel(Labels.getLabel("sp.common.all"));
+//            item.setParent(cmbProvider);
+//            cmbProvider.setSelectedItem(item);
+//            for (int i = 0; i < providers.size(); i++) {
+//                item = new Comboitem();
+//                item.setValue(providers.get(i));
+//                item.setLabel(providers.get(i).getName());
+//                item.setParent(cmbProvider);
+//            }
+//        } catch (Exception ex) {
+//            this.showError(ex);
+//        }
 
-    }
+//    }
 
     
     

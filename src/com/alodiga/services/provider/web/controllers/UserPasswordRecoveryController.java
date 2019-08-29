@@ -49,7 +49,7 @@ public class UserPasswordRecoveryController extends GenericForwardComposer imple
                 params.put(QueryConstants.PARAM_LOGIN, txtLogin.getText());
                 request.setParams(params);
                 user = userEJB.loadUserByLogin(request);
-              //  AccessControl.generateNewPassword(user, null,false);
+                AccessControl.generateNewPassword(user, false);
                 lblInfo.setValue(Labels.getLabel("sp.common.recoveryPassword.success"));
             } catch (RegisterNotFoundException e) {
                 lblInfo.setValue(Labels.getLabel("sp.common.recoveryPassword.notFound"));

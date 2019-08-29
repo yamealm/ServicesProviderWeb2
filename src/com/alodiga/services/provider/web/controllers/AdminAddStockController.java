@@ -98,6 +98,7 @@ public class AdminAddStockController extends GenericAbstractAdminController {
     private List<Provider> providers;
     private List<Condicion> conditions;
     private List<Customer> customers;
+    private Provider provider;
     private User user;
     
     
@@ -105,9 +106,25 @@ public class AdminAddStockController extends GenericAbstractAdminController {
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
         productParam = (Sessions.getCurrent().getAttribute("object") != null) ? (Product) Sessions.getCurrent().getAttribute("object") : null;
+        provider  = (Sessions.getCurrent().getAttribute("provider") != null) ? (Provider) Sessions.getCurrent().getAttribute("provider") : null;
+        productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
+        utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
+        transactionEJB = (TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
+        customerEJB = (CustomerEJB) EJBServiceLocator.getInstance().get(EjbConstants.CUSTOMER_EJB);
         user = AccessControl.loadCurrentUser();
-        initialize();
-        initView(eventType, "sp.crud.product");
+        if (provider != null && productParam !=null) {
+			loadFields(productParam!=null?productParam:null);
+            loadEnterprises(productParam!=null?productParam.getEnterprise():null);
+            loadCondition(null);
+            loadCategory(null);
+            loadProvider(provider);
+            loadCustomer(null);
+            blockFields();
+		}else if (provider == null ) {
+			initialize();
+		}else
+			loadProvider(provider);
+		initView(eventType, "sp.crud.product");
     }
 
     @Override
@@ -120,10 +137,6 @@ public class AdminAddStockController extends GenericAbstractAdminController {
         super.initialize();
         try {
 
-            productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
-            utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
-            transactionEJB = (TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
-            customerEJB = (CustomerEJB) EJBServiceLocator.getInstance().get(EjbConstants.CUSTOMER_EJB);
             dtxExpiration.setValue(new Timestamp(new Date().getTime()));
             dtxCure.setValue(new Timestamp(new Date().getTime()));
             loadData();
@@ -223,6 +236,7 @@ public class AdminAddStockController extends GenericAbstractAdminController {
     }
        
     public void onClick$btnBack() {
+    	 Sessions.getCurrent().removeAttribute("provider");
     	 Executions.sendRedirect("./listStock.zul");
     }
     
@@ -462,8 +476,6 @@ public class AdminAddStockController extends GenericAbstractAdminController {
 			}
 
             transaction = transactionEJB.saveTransactionStock(transaction,productSeries);
-//            productParam = product;
-//            eventType = WebConstants.EVENT_EDIT;
             this.showMessage("sp.common.save.success", false, null);
         } catch (NullParameterException ex) {
         	showMessage("sp.error.field.number", true, null);
@@ -587,4 +599,21 @@ public class AdminAddStockController extends GenericAbstractAdminController {
 		}
    }
 
+	public void onClick$btnSearchProvider() {
+		Window window = (Window) Executions.createComponents("catProviders.zul", null, null);
+		Sessions.getCurrent().setAttribute("page", "adminAddStock.zul");
+		try {
+			window.doModal();
+		} catch (SuspendNotAllowedException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
+    public void onClick$btnRemove() {
+		 cmbProvider.setSelectedItem(null);
+		 cmbProvider.setValue(null);
+		 cmbProvider.setText("");
+	 }
 }

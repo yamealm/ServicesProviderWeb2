@@ -240,6 +240,7 @@ public class AdminAddQuarantineController extends GenericAbstractAdminController
     
 
     public void onClick$btnBack() {
+    	 Sessions.getCurrent().removeAttribute("customer");
     	 Executions.sendRedirect("./listQuarantine.zul");
     }
     

@@ -237,6 +237,7 @@ public class AdminAddTransitController extends GenericAbstractAdminController {
     
 
     public void onClick$btnBack() {
+    	Sessions.getCurrent().removeAttribute("customer");
     	 Executions.sendRedirect("./listTransit.zul");
     }
     
@@ -481,7 +482,7 @@ public class AdminAddTransitController extends GenericAbstractAdminController {
 			}
 
             transaction = transactionEJB.saveTransactionStock(transaction,productSeries);
-            Sessions.getCurrent().removeAttribute("customer");
+//            Sessions.getCurrent().removeAttribute("customer");
 //            productParam = product;
 //            eventType = WebConstants.EVENT_EDIT;
             this.showMessage("sp.common.save.success", false, null);

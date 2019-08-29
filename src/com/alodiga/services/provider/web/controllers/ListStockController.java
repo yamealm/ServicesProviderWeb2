@@ -49,6 +49,7 @@ public class ListStockController extends GenericAbstractListController<Product> 
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
+        Sessions.getCurrent().removeAttribute("provider");
         initialize();
     }
 

@@ -215,6 +215,13 @@
                                                                <textbox id="txtQuarantine"  rows="4" maxlength="45" width="320px"/>                                 
                                                             </hlayout>
                                                         </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.common.condition')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <combobox id="cmbStatus" width="190px" mold="rounded" readonly="true"/>
+                                                                <label value="*" sclass="lblreq" />
+                                                            </hlayout>
+                                                        </row>
                                                          <row>
                                                             <label value="${c:l('sp.common.observations')}" sclass="lblbold"/>
                                                             <hlayout>

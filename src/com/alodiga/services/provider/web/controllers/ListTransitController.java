@@ -13,7 +13,6 @@ import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Textbox;
 
-import com.alodiga.services.provider.commons.ejbs.ProductEJB;
 import com.alodiga.services.provider.commons.ejbs.TransactionEJB;
 import com.alodiga.services.provider.commons.exceptions.EmptyListException;
 import com.alodiga.services.provider.commons.exceptions.GeneralException;
@@ -23,15 +22,12 @@ import com.alodiga.services.provider.commons.models.Category;
 import com.alodiga.services.provider.commons.models.Enterprise;
 import com.alodiga.services.provider.commons.models.Permission;
 import com.alodiga.services.provider.commons.models.Product;
-import com.alodiga.services.provider.commons.models.ProductHistory;
 import com.alodiga.services.provider.commons.models.Profile;
 import com.alodiga.services.provider.commons.models.Provider;
 import com.alodiga.services.provider.commons.models.User;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
 import com.alodiga.services.provider.web.components.ListcellAddButton;
-import com.alodiga.services.provider.web.components.ListcellRemoveButton;
-import com.alodiga.services.provider.web.components.ListcellViewButton;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractListController;
 import com.alodiga.services.provider.web.utils.AccessControl;
 import com.alodiga.services.provider.web.utils.PDFUtil;
@@ -43,7 +39,6 @@ public class ListTransitController extends GenericAbstractListController<Product
     private static final long serialVersionUID = -9145887024839938515L;
     private Listbox lbxRecords;
     private Textbox txtAlias;
-    private ProductEJB productEJB = null;
     private TransactionEJB transactionEJB = null;
     private List<Product> products = null;
     private User currentUser;
@@ -52,6 +47,7 @@ public class ListTransitController extends GenericAbstractListController<Product
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
+        Sessions.getCurrent().removeAttribute("customer");
         initialize();
     }
 
@@ -77,7 +73,6 @@ public class ListTransitController extends GenericAbstractListController<Product
             currentUser = AccessControl.loadCurrentUser();
             currentProfile = currentUser.getCurrentProfile(Enterprise.TURBINES);
             checkPermissions();
-            productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
             transactionEJB = (TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
             loadPermission(new Provider());
             startListener();

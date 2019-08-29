@@ -6,7 +6,6 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.SuspendNotAllowedException;
 import org.zkoss.zul.Button;
-import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
@@ -26,7 +25,6 @@ public class AddCustomerController extends GenericAbstractAdminController {
     private Textbox txtEmail;
     private Textbox txtPhoneNumber;
     private Textbox txtAddress;
-    private Checkbox cbxEnabled;
     private Customer customerParam;
     private Window winAddCustomerView;
     private Button btnSave;
@@ -36,7 +34,6 @@ public class AddCustomerController extends GenericAbstractAdminController {
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
         initialize();
-//        initView(eventType, "sp.crud.customer");
     }
 
     @Override

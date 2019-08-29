@@ -18,29 +18,23 @@ import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Textbox;
 
-import com.alodiga.services.provider.commons.ejbs.ProductEJB;
 import com.alodiga.services.provider.commons.ejbs.TransactionEJB;
 import com.alodiga.services.provider.commons.exceptions.EmptyListException;
 import com.alodiga.services.provider.commons.exceptions.GeneralException;
 import com.alodiga.services.provider.commons.exceptions.NullParameterException;
 import com.alodiga.services.provider.commons.genericEJB.EJBRequest;
 import com.alodiga.services.provider.commons.managers.PermissionManager;
-import com.alodiga.services.provider.commons.models.Category;
 import com.alodiga.services.provider.commons.models.Enterprise;
-import com.alodiga.services.provider.commons.models.Permission;
-import com.alodiga.services.provider.commons.models.Product;
 import com.alodiga.services.provider.commons.models.MetrologicalControl;
 import com.alodiga.services.provider.commons.models.MetrologicalControlHistory;
-import com.alodiga.services.provider.commons.models.ProductHistory;
+import com.alodiga.services.provider.commons.models.Permission;
 import com.alodiga.services.provider.commons.models.Profile;
 import com.alodiga.services.provider.commons.models.Provider;
 import com.alodiga.services.provider.commons.models.User;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
 import com.alodiga.services.provider.web.components.ChangeStatusButton;
-import com.alodiga.services.provider.web.components.ListcellAddButton;
 import com.alodiga.services.provider.web.components.ListcellEditButton;
-import com.alodiga.services.provider.web.components.ListcellRemoveButton;
 import com.alodiga.services.provider.web.components.ListcellViewButton;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractListController;
 import com.alodiga.services.provider.web.utils.AccessControl;
@@ -53,7 +47,6 @@ public class ListMetrologicalControlController extends GenericAbstractListContro
     private static final long serialVersionUID = -9145887024839938515L;
     private Listbox lbxRecords;
     private Textbox txtAlias;
-    private ProductEJB productEJB = null;
     private TransactionEJB transactionEJB = null;
     private List<MetrologicalControl> metrologicalControls = null;
     private User currentUser;
@@ -89,7 +82,6 @@ public class ListMetrologicalControlController extends GenericAbstractListContro
             currentProfile = currentUser.getCurrentProfile(Enterprise.TURBINES);
             checkPermissions();
             adminPage = "viewMetrologicalControl.zul";
-            productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
             transactionEJB = (TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
             loadPermission(new Provider());
             startListener();
@@ -117,7 +109,6 @@ public class ListMetrologicalControlController extends GenericAbstractListContro
         try {
             lbxRecords.getItems().clear();
             Listitem item = null;
-            int stock = 0;
             if (list != null && !list.isEmpty()) {
                 btnDownload.setVisible(true);
                 for (MetrologicalControl metrologicalControl : list) {

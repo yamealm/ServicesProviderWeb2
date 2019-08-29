@@ -808,4 +808,27 @@ ADD COLUMN `quantityInto` INT(5) NULL DEFAULT NULL AFTER `observation`;
 ALTER TABLE `services`.`product_serie` 
 CHANGE COLUMN `quantityInto` `quantityInto` INT(5) NULL DEFAULT NULL AFTER `quantity`;
 
+//29-08-2019
+CREATE TABLE `services`.`quaratine_status` (
+  `id` int(3) NOT NULL,
+  `name` varchar(45) COLLATE latin1_bin NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_bin;
+
+
+INSERT INTO `services`.`quaratine_status` (`id`, `name`) VALUES ('1', 'APROBADO');
+INSERT INTO `services`.`quaratine_status` (`id`, `name`) VALUES ('2', 'RECHAZADO');
+
+ALTER TABLE `services`.`product_serie` 
+ADD COLUMN `quarantineStatusId` INT(3) NULL DEFAULT NULL AFTER `observation`,
+ADD INDEX `fk_product_serie_status_idx` (`quarantineStatusId` ASC) INVISIBLE;
+;
+
+ALTER TABLE `services`.`product_serie` 
+ADD CONSTRAINT `fk_product_serie_status_idx`
+  FOREIGN KEY (`quarantineStatusId`)
+  REFERENCES `services`.`quaratine_status` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
 

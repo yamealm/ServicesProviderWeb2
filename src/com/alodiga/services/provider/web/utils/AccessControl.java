@@ -39,6 +39,8 @@ import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
 import com.alodiga.services.provider.commons.utils.Encoder;
 import com.alodiga.services.provider.commons.utils.GeneralUtils;
+import com.alodiga.services.provider.commons.utils.Mail;
+import com.alodiga.services.provider.commons.utils.ServiceMails;
 
 public class AccessControl {
 
@@ -163,112 +165,53 @@ public class AccessControl {
 
     }
 
-//    public static void generateNewPassword(User user, Account account, boolean isForward) throws GeneralException {
-//
-//        try {
-//            utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
-//
-//            request = new EJBRequest();
-//            if (user != null) {
-//
-//                String oldPassword = user.getPassword();
-//                userEJB = (UserEJB) EJBServiceLocator.getInstance().get(EjbConstants.USER_EJB);
-//                String newPassword = GeneralUtils.getRamdomPassword(Constants.MAX_PASSWORD_DIGITS);
-//                user.setPassword(GeneralUtils.encryptMD5(newPassword));
-//                request.setParam(user);
-//                userEJB.saveUser(request);
-//                request = new EJBRequest();
-//                request.setParam(Enterprise.ALODIGA_USA);
-//                Enterprise enterprise = utilsEJB.loadEnterprise(request);
-//                try {
-//                    sendUserRecoveryPasswordMail(user, newPassword, enterprise);
-//                } catch (Exception ex) {
-//                    /*Si ocurre un error al enviar el correo se guarda el
-//                    usuario con el password que tenia previamente.*/
-//                    user.setPassword(oldPassword);
-//                    request.setParam(user);
-//                    userEJB.saveUser(request);
-//                    throw new GeneralException(ex.getMessage());
-//                }
-//            } else if (account != null) {
-//                String oldPassword = account.getPassword();
-//                userEJB = (UserEJB) EJBServiceLocator.getInstance().get(EjbConstants.USER_EJB);
-//                String password = GeneralUtils.getRamdomNumber(Constants.MAX_PASSWORD_DIGITS);
-//                account.setPassword(Encoder.MD5(password));
-//                request.setParam(account);
-////                userEJB.saveAccount(request);
-//                try {
-//                    SMS sms = new SMS();
-//                    if (isForward) {
-//                        sendForwardAccountDataMail(account, password);
-//                    } else {
-//                        sendAccountRecoveryPasswordMail(account, password);
-//                    }
-//                    sms.setDestination(account.getPhoneNumber());
-//                    sms.setAccount(account);
-//                    String msj = Labels.getLabel("sp.sms.passwordRecovery", new String[]{account.getLogin(), password});
-//                    sms.setContent(msj);
-////                    (new com.alodiga.services.provider.commons.utils.SMSSender(sms)).start();
-//                } catch (Exception ex) {
-//                    /*Si ocurre un error al enviar el correo se guarda la
-//                    cuenta con el password que tenia previamente.*/
-//                    account.setPassword(oldPassword);
-//                    request.setParam(account);
-////                    userEJB.saveAccount(request);
-//                    throw new GeneralException(ex.getMessage());
-//                }
-//            }
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//            throw new GeneralException(ex.getMessage());
-//        }
-//    }
+    public static void generateNewPassword(User user, boolean isForward) throws GeneralException {
 
-    private static void sendUserRecoveryPasswordMail(User user, String newPassword, Enterprise enterprise) throws GeneralException {
         try {
             utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
-            //   Mail mail = CommonMails.getUserRecoveryPasswordMail(user, newPassword, enterprise);
-            //  utilsEJB.sendMail(mail);
+
+            request = new EJBRequest();
+            if (user != null) {
+
+                String oldPassword = user.getPassword();
+                userEJB = (UserEJB) EJBServiceLocator.getInstance().get(EjbConstants.USER_EJB);
+                String newPassword = GeneralUtils.getRamdomPassword(Constants.MAX_PASSWORD_DIGITS);
+                user.setPassword(GeneralUtils.encryptMD5(newPassword));
+                request.setParam(user);
+                userEJB.saveUser(request);
+                request = new EJBRequest();
+                request.setParam(Enterprise.TURBINES);
+                Enterprise enterprise = utilsEJB.loadEnterprise(request);
+                try {
+                    sendUserRecoveryPasswordMail(user, newPassword, enterprise);
+                } catch (Exception ex) {
+                    /*Si ocurre un error al enviar el correo se guarda el
+                    usuario con el password que tenia previamente.*/
+                    user.setPassword(oldPassword);
+                    request.setParam(user);
+                    userEJB.saveUser(request);
+                    throw new GeneralException(ex.getMessage());
+                }
+            
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
             throw new GeneralException(ex.getMessage());
         }
     }
 
-//    private static void sendAccountRecoveryPasswordMail(Account account, String newPassword) throws GeneralException {
-//        try {
-//            //utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
-//            // Mail mail = CommonMails.getDistributorRecoveryPasswordMail(distributor, newPassword);
-//            // utilsEJB.sendMail(mail);
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//            throw new GeneralException(ex.getMessage());
-//        }
-//    }
-
-//    private static void sendForwardAccountDataMail(Account account, String newPassword) throws GeneralException {
-//        try {
-//            //      utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
-//            //    Mail mail = CommonMails.getForwardDistributorDataMail(distributor, newPassword);
-//            //  utilsEJB.sendMail(mail);
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//            throw new GeneralException(ex.getMessage());
-//        }
-//    }
-
-    public static void sendRegistrationMail(String password) {
-
+    private static void sendUserRecoveryPasswordMail(User user, String newPassword, Enterprise enterprise) throws GeneralException {
         try {
-            //  Mail mail = CommonMails.getDistributorRegistrationMail(distributor, level, password);
-            //utilsEJB.sendMail(mail);
+            utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
+               Mail mail = ServiceMails.getUserRecoveryPasswordMail(user, newPassword, enterprise);
+              utilsEJB.sendMail(mail);
         } catch (Exception ex) {
             ex.printStackTrace();
+            throw new GeneralException(ex.getMessage());
         }
-
     }
 
-    public static void saveAction(Long permissionId, String info) {
+      public static void saveAction(Long permissionId, String info) {
         try {
             AuditAction action = new AuditAction();
             String host = Sessions.getCurrent().getRemoteHost();
@@ -286,39 +229,11 @@ public class AccessControl {
         }
     }
 
-//    public static void sendRegistrationMail(Account account, String password) {
-//
-////        try {
-////            Mail mail = ServiceMails.getAccountRegistrationMail(account, password);
-////            utilsEJB.sendMail(mail);
-////        } catch (Exception ex) {
-////            ex.printStackTrace();
-////        }
-//
-//    }
-//
-//    public static Account loadCurrentAccount() throws RegisterNotFoundException, GeneralException, Exception {
-//        return (Account) Sessions.getCurrent().getAttribute(WebConstants.SESSION_ACCOUNT);
-//    }
-
 
     public static boolean getNeedUpdate() {
         return needUpdate;
     }
 
-//        public static boolean validateAccount(String login, String password) throws RegisterNotFoundException, GeneralException, NoSuchAlgorithmException, UnsupportedEncodingException, NullParameterException, DisabledAccountException {
-//        Account account = null;
-//        accessEjb = (AccessControlEJB) EJBServiceLocator.getInstance().get(EjbConstants.ACCESS_CONTROL_EJB);
-//
-//
-//        account = accessEjb.validateAccount(login, Encoder.MD5(password));
-//        if (!account.getEnabled()) {
-//            throw new DisabledAccountException("account with login =" + login + " is disabled ");
-//        }
-//        Sessions.getCurrent().setAttribute(WebConstants.SESSION_ACCOUNT, account);
-//
-//        return true;
-//    }
 
          public static List<Audit> getCurrentAudit() {
         List<Audit> audits = new ArrayList<Audit>();
@@ -332,10 +247,6 @@ public class AccessControl {
             //            audit.setOriginalValues("");
             audit.setRegisterId(1l);
             audit.setRemoteIp(Executions.getCurrent().getRemoteAddr());
-//            if (loadCurrentAccount() != null) {
-//                audit.setResponsibleId(loadCurrentAccount().getLogin());
-//                audit.setResponsibleType("Account");
-//            } else
             	if (loadCurrentUser() != null) {
                 audit.setResponsibleId(loadCurrentUser().getLogin());
                 audit.setResponsibleType("User");

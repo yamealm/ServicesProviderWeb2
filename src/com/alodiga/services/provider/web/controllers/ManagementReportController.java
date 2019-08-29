@@ -54,7 +54,7 @@ public class ManagementReportController extends GenericAbstractController {
        try {
             reportEJB = (ReportEJB) EJBServiceLocator.getInstance().get(EjbConstants.REPORT_EJB);
             currentUser = AccessControl.loadCurrentUser();
-            User currentUser = AccessControl.loadCurrentUser();
+//            User currentUser = AccessControl.loadCurrentUser();
 //            lblUser.setValue(currentUser.getFirstName() + " " + currentUser.getLastName());
             loadData();
         } catch (Exception ex) {

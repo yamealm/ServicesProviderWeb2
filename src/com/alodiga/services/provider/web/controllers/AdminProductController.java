@@ -1,36 +1,26 @@
 package com.alodiga.services.provider.web.controllers;
 
+import java.util.List;
+
+import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zul.Button;
+import org.zkoss.zul.Checkbox;
+import org.zkoss.zul.Combobox;
+import org.zkoss.zul.Comboitem;
+import org.zkoss.zul.Intbox;
+import org.zkoss.zul.Textbox;
+
 import com.alodiga.services.provider.commons.ejbs.ProductEJB;
 import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
-import com.alodiga.services.provider.commons.models.Category;
-import com.alodiga.services.provider.commons.models.Currency;
 import com.alodiga.services.provider.commons.models.Enterprise;
-import com.alodiga.services.provider.commons.models.Language;
 import com.alodiga.services.provider.commons.models.Product;
-import com.alodiga.services.provider.commons.models.ProductData;
-import com.alodiga.services.provider.commons.models.ProductDenomination;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
 import com.alodiga.services.provider.commons.utils.GeneralUtils;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractAdminController;
 import com.alodiga.services.provider.web.utils.WebConstants;
-import java.util.ArrayList;
-import java.util.List;
-import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.Executions;
-import org.zkoss.zk.ui.Sessions;
-import org.zkoss.zk.ui.event.Event;
-import org.zkoss.zk.ui.event.EventListener;
-import org.zkoss.zul.Button;
-import org.zkoss.zul.Checkbox;
-import org.zkoss.zul.Combobox;
-import org.zkoss.zul.Comboitem;
-import org.zkoss.zul.Decimalbox;
-import org.zkoss.zul.Intbox;
-import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listcell;
-import org.zkoss.zul.Listitem;
-import org.zkoss.zul.Textbox;
 
 public class AdminProductController extends GenericAbstractAdminController {
 
@@ -280,20 +270,20 @@ public class AdminProductController extends GenericAbstractAdminController {
         }
     }
 
-    private Listcell initDeleteButton(final Listitem listItem) {
-        Listcell cell = new Listcell();
-        final Button button = new Button();
-        button.setClass("open gray");
-        button.setImage("/images/icon-remove.png");
-        button.addEventListener("onClick", new EventListener() {
-
-            @Override
-            public void onEvent(Event arg0) throws Exception {
-                listItem.getParent().removeChild(listItem);
-            }
-        });
-
-        button.setParent(cell);
-        return cell;
-    }
+//    private Listcell initDeleteButton(final Listitem listItem) {
+//        Listcell cell = new Listcell();
+//        final Button button = new Button();
+//        button.setClass("open gray");
+//        button.setImage("/images/icon-remove.png");
+//        button.addEventListener("onClick", new EventListener() {
+//
+//            @Override
+//            public void onEvent(Event arg0) throws Exception {
+//                listItem.getParent().removeChild(listItem);
+//            }
+//        });
+//
+//        button.setParent(cell);
+//        return cell;
+//    }
 }
