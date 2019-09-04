@@ -831,4 +831,40 @@ ADD CONSTRAINT `fk_product_serie_status_idx`
   ON DELETE NO ACTION
   ON UPDATE NO ACTION;
 
+//03-09-2019
+ALTER TABLE `services`.`transaction` 
+DROP FOREIGN KEY `FK_product_provider`;
+ALTER TABLE `services`.`transaction` 
+DROP INDEX `FK_product_provider` ;
+;
+
+ALTER TABLE `services`.`product_serie` 
+DROP FOREIGN KEY `fk_product_serie_provider`;
+ALTER TABLE `services`.`product_serie` 
+DROP INDEX `fk_product_serie_provider` ;
+;
+
+ALTER TABLE `services`.`provider` 
+CHANGE COLUMN `id` `id` BIGINT(5) NOT NULL AUTO_INCREMENT ;
+
+
+ALTER TABLE `services`.`transaction` 
+ADD INDEX `FK_product_provider` (`providerId` ASC) INVISIBLE;
+;
+ALTER TABLE `services`.`transaction` 
+ADD CONSTRAINT `FK_product_provider`
+  FOREIGN KEY (`providerId`)
+  REFERENCES `services`.`provider` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+ALTER TABLE `services`.`product_serie` 
+ADD INDEX `fk_product_serie_provider` (`providerId` ASC) INVISIBLE;
+;
+ALTER TABLE `services`.`product_serie` 
+ADD CONSTRAINT `fk_product_serie_provider`
+  FOREIGN KEY (`providerId`)
+  REFERENCES `services`.`provider` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
 
