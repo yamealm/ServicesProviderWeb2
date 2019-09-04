@@ -54,7 +54,7 @@ public class AdminAddStockController extends GenericAbstractAdminController {
     private Combobox cmbCategory;
     private Combobox cmbProvider;
     private Combobox cmbCondition;
-    private Combobox cmbCustomer;
+//    private Combobox cmbCustomer;
     private Checkbox cbxSerialVarius;
     private Checkbox cbxExpiration;
     private Checkbox cbxCure;
@@ -118,7 +118,7 @@ public class AdminAddStockController extends GenericAbstractAdminController {
             loadCondition(null);
             loadCategory(null);
             loadProvider(provider);
-            loadCustomer(null);
+//            loadCustomer(null);
             blockFields();
 		}else if (provider == null ) {
 			initialize();
@@ -258,7 +258,7 @@ public class AdminAddStockController extends GenericAbstractAdminController {
                 loadCondition(null);
                 loadCategory(null);
                 loadProvider(null);
-                loadCustomer(null);
+//                loadCustomer(null);
                 blockFields();
                 break;
             default:
@@ -371,26 +371,26 @@ public class AdminAddStockController extends GenericAbstractAdminController {
         }
     }
 
-    private void loadCustomer(Customer customer) {
-        try {
-        	cmbCustomer.getItems().clear();
-        	EJBRequest request = new EJBRequest();
-        	customers = customerEJB.getCustomers(request);
-            for (Customer e : customers) {
-                Comboitem cmbItem = new Comboitem();
-                cmbItem.setLabel(e.getFirstName() + " " + e.getLastName());
-                cmbItem.setValue(e);
-                cmbItem.setParent(cmbCustomer);
-                if (customer != null && customer.getId().equals(e.getId())) {
-                	cmbCustomer.setSelectedItem(cmbItem);
-                } else {
-                	cmbCustomer.setSelectedIndex(0);
-                }
-            }
-        } catch (Exception ex) {
-            showError(ex);
-        }
-    }
+//    private void loadCustomer(Customer customer) {
+//        try {
+//        	cmbCustomer.getItems().clear();
+//        	EJBRequest request = new EJBRequest();
+//        	customers = customerEJB.getCustomers(request);
+//            for (Customer e : customers) {
+//                Comboitem cmbItem = new Comboitem();
+//                cmbItem.setLabel(e.getFirstName() + " " + e.getLastName());
+//                cmbItem.setValue(e);
+//                cmbItem.setParent(cmbCustomer);
+//                if (customer != null && customer.getId().equals(e.getId())) {
+//                	cmbCustomer.setSelectedItem(cmbItem);
+//                } else {
+//                	cmbCustomer.setSelectedIndex(0);
+//                }
+//            }
+//        } catch (Exception ex) {
+//            showError(ex);
+//        }
+//    }
 
     private void saveProduct(Transaction _transaction) {
         Transaction transaction = new Transaction();
