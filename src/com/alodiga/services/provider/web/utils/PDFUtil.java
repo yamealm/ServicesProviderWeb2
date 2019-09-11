@@ -7,6 +7,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.zkoss.zk.ui.Sessions;
@@ -34,13 +37,13 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 public class PDFUtil {
     private static String FILE = "/home/usuario/turbinas.pdf";
-    private static Font catFont = new Font(Font.FontFamily.TIMES_ROMAN, 18,
+    private static Font catFont = new Font(Font.FontFamily.TIMES_ROMAN, 16,
             Font.BOLD);
-    private static Font redFont = new Font(Font.FontFamily.TIMES_ROMAN, 12,
+    private static Font redFont = new Font(Font.FontFamily.TIMES_ROMAN, 10,
             Font.NORMAL, BaseColor.RED);
-    private static Font subFont = new Font(Font.FontFamily.TIMES_ROMAN, 16,
+    private static Font subFont = new Font(Font.FontFamily.TIMES_ROMAN, 14,
             Font.BOLD);
-    private static Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 12,
+    private static Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 8,
             Font.BOLD);
 
     public static void main(String[] args) {
@@ -129,7 +132,10 @@ public class PDFUtil {
 			for (Object header : ((Listhead) head).getChildren()) {
 				  if(lenghtCol> i ) {
 					  String h = ((Listheader) header).getLabel();
-					  PdfPCell c1 = new PdfPCell(new Phrase(h));
+					  Phrase  phrase= new Phrase();
+					  phrase.add(h);
+					  phrase.setFont(smallBold);
+					  PdfPCell c1 = new PdfPCell(phrase);
 				      c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 				      table.addCell(c1);
 					  i++;
@@ -149,7 +155,10 @@ public class PDFUtil {
             	 if(lenghtCol> y ) {
             		 String h;
                      h = ((Listcell) lbCell).getLabel();
-                     table.addCell(h);
+                     Phrase  phrase= new Phrase();
+					  phrase.add(h);
+					  phrase.setFont(smallBold);
+                     table.addCell(phrase);
                      y++;
             	 }else {
             		 break;
@@ -186,7 +195,11 @@ public class PDFUtil {
            PdfPCell c1 = new PdfPCell(getLogo());
            c1.setHorizontalAlignment(Element.ALIGN_LEFT);
            table.addCell(c1);
-           PdfPCell c2 = new PdfPCell(new Phrase(title));
+           PdfPCell c2 = new PdfPCell();
+           c2.addElement(new Phrase(title));
+           SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+           String dateString = format.format( new Date()   );
+           c2.addElement(new Phrase(dateString));
            c2.setHorizontalAlignment(Element.ALIGN_RIGHT);
            table.addCell(c2);
            subCatParTitle.add(table);

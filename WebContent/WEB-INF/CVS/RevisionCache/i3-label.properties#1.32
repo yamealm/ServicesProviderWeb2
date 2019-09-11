@@ -1051,7 +1051,7 @@ sp.automatic.promotion.title=Automatic promotion management service
 sp.automatic.promotion.success=Success
 sp.automatic.promotion.failure=Operation has failed. Please contact customer support
 sp.automatic.promotion.timeoutMessage=Timeout has been programmed to be in 1 minute
-sp.automatic.commission.loadCSV=Select File
+sp.automatic.commission.loadCSV=Select
 
 #SMS
 

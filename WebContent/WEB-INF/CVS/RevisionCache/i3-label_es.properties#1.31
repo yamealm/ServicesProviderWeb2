@@ -1054,7 +1054,7 @@ sp.automatic.promotion.title=Servicio automatico de gestion de promociones
 sp.automatic.promotion.success=Operacion exitosa
 sp.automatic.promotion.failure=Operacion fallida. Por favor pongase en contacto con el centro de atencion al cliente
 sp.automatic.promotion.timeoutMessage=El timeout ha sido programado para ser dentro de 1 minuto
-sp.automatic.commission.loadCSV=Seleccione Archivo
+sp.automatic.commission.loadCSV=Seleccione
 
 #SMS
 

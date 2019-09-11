@@ -150,6 +150,7 @@ public class ListAddStockController extends GenericAbstractListController<Produc
 						SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 						date = df.format(productSerie.getCure().getTime());
 					}
+                    item.appendChild(new Listcell(date));
                     item.appendChild(permissionEdit ? new ListcellEditButton("viewStock.zul", productSerie,Permission.EDIT_STOCK) : new Listcell());
                     item.appendChild(permissionDelete ? initDeleteButton(item) : new Listcell());
                     item.setParent(lbxRecords);
