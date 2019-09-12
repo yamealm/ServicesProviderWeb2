@@ -27,7 +27,6 @@ import org.zkoss.zul.Listitem;
 
 import com.alodiga.services.provider.commons.models.BannerType;
 import com.alodiga.services.provider.commons.models.Language;
-import com.alodiga.services.provider.commons.models.Period;
 import com.alodiga.services.provider.commons.utils.Constants;
 import com.alodiga.services.provider.commons.utils.GeneralUtils;
 
@@ -55,22 +54,22 @@ public class Utils {
         return value;
     }
 
-    public static String getPeriodName(Long periodId) {
-        String value = "";
-        if (periodId.equals(Period.DIARY)) {
-            value = Labels.getLabel("sp.period.diary");
-        } else if (periodId.equals(Period.WEEKLY)) {
-            value = Labels.getLabel("sp.period.weekly");
-        } else if (periodId.equals(Period.BIWEEKLY)) {
-            value = Labels.getLabel("sp.period.biweekly");
-        } else if (periodId.equals(Period.MONTHLY)) {
-            value = Labels.getLabel("sp.period.monthly");
-        } else if (periodId.equals(Period.QUARTERLY)) {
-            value = Labels.getLabel("sp.period.quartely");
-        }
-
-        return value;
-    }
+//    public static String getPeriodName(Long periodId) {
+//        String value = "";
+//        if (periodId.equals(Period.DIARY)) {
+//            value = Labels.getLabel("sp.period.diary");
+//        } else if (periodId.equals(Period.WEEKLY)) {
+//            value = Labels.getLabel("sp.period.weekly");
+//        } else if (periodId.equals(Period.BIWEEKLY)) {
+//            value = Labels.getLabel("sp.period.biweekly");
+//        } else if (periodId.equals(Period.MONTHLY)) {
+//            value = Labels.getLabel("sp.period.monthly");
+//        } else if (periodId.equals(Period.QUARTERLY)) {
+//            value = Labels.getLabel("sp.period.quartely");
+//        }
+//
+//        return value;
+//    }
 
     public static String getLanguageName(Long languageId) {
         String value = "";

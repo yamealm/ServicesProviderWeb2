@@ -868,3 +868,28 @@ ADD CONSTRAINT `fk_product_serie_provider`
   ON DELETE NO ACTION
   ON UPDATE NO ACTION;
 
+// 12-09-2019
+ALTER TABLE `services`.`audit` 
+DROP FOREIGN KEY `fk_audit_event1`;
+ALTER TABLE `services`.`audit` 
+ADD COLUMN `userId` BIGINT(10) NULL AFTER `extra`,
+ADD COLUMN `permissionId` BIGINT(3) NULL AFTER `userId`,
+ADD INDEX `fk_audit_user` (`userId` ASC) INVISIBLE,
+ADD INDEX `fk_audit_permission` (`permissionId` ASC) VISIBLE;
+ALTER TABLE `services`.`audit` ALTER INDEX `fk_audit_event1` INVISIBLE;
+ALTER TABLE `services`.`audit` 
+ADD CONSTRAINT `fk_audit_event1`
+  FOREIGN KEY (`eventId`)
+  REFERENCES `services`.`event` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_audit_user`
+  FOREIGN KEY (`userId`)
+  REFERENCES `services`.`user` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_audit_permission`
+  FOREIGN KEY (`permissionId`)
+  REFERENCES `services`.`permission` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;

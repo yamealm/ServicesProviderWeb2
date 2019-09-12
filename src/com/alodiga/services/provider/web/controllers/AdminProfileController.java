@@ -1,21 +1,13 @@
 package com.alodiga.services.provider.web.controllers;
 
-import com.alodiga.services.provider.commons.ejbs.AccessControlEJB;
-import com.alodiga.services.provider.commons.managers.PermissionManager;
-import com.alodiga.services.provider.commons.models.Language;
-import com.alodiga.services.provider.commons.models.Permission;
-import com.alodiga.services.provider.commons.models.PermissionHasProfile;
-import com.alodiga.services.provider.commons.models.Profile;
-import com.alodiga.services.provider.commons.models.ProfileData;
-import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
-import com.alodiga.services.provider.commons.utils.EjbConstants;
-import com.alodiga.services.provider.web.generic.controllers.GenericAbstractAdminController;
-import com.alodiga.services.provider.web.utils.WebConstants;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
@@ -23,6 +15,24 @@ import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Textbox;
+
+import com.alodiga.services.provider.commons.ejbs.AccessControlEJB;
+import com.alodiga.services.provider.commons.ejbs.AuditoryEJB;
+import com.alodiga.services.provider.commons.genericEJB.EJBRequest;
+import com.alodiga.services.provider.commons.managers.PermissionManager;
+import com.alodiga.services.provider.commons.models.Audit;
+import com.alodiga.services.provider.commons.models.Event;
+import com.alodiga.services.provider.commons.models.Language;
+import com.alodiga.services.provider.commons.models.Permission;
+import com.alodiga.services.provider.commons.models.PermissionHasProfile;
+import com.alodiga.services.provider.commons.models.Profile;
+import com.alodiga.services.provider.commons.models.ProfileData;
+import com.alodiga.services.provider.commons.models.User;
+import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
+import com.alodiga.services.provider.commons.utils.EjbConstants;
+import com.alodiga.services.provider.web.generic.controllers.GenericAbstractAdminController;
+import com.alodiga.services.provider.web.utils.AccessControl;
+import com.alodiga.services.provider.web.utils.WebConstants;
 
 public class AdminProfileController extends GenericAbstractAdminController {
 
@@ -35,15 +45,18 @@ public class AdminProfileController extends GenericAbstractAdminController {
     private Checkbox cbxEnabled;
     private Listbox lbxPermissions;
     private AccessControlEJB accessEjb = null;
-    private Language Language;
+    private AuditoryEJB auditoryEJB;
     private Profile profileParam;
     Profile parentProfile = null;
     private Button btnSave;
+    private User user;
+    private String ipAddress;
 
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
         profileParam = (Sessions.getCurrent().getAttribute("object") != null) ? (Profile) Sessions.getCurrent().getAttribute("object") : null;
+        user = AccessControl.loadCurrentUser();
         initialize();
         initView(eventType, "sp.crud.profile");
     }
@@ -57,8 +70,9 @@ public class AdminProfileController extends GenericAbstractAdminController {
     public void initialize() {
         super.initialize();
         try {
-
+        	ipAddress = Executions.getCurrent().getRemoteAddr();
             accessEjb = (AccessControlEJB) EJBServiceLocator.getInstance().get(EjbConstants.ACCESS_CONTROL_EJB);
+            auditoryEJB = (AuditoryEJB) EJBServiceLocator.getInstance().get(EjbConstants.AUDITORY_EJB);
         } catch (Exception ex) {
             showError(ex);
         }
@@ -150,6 +164,8 @@ public class AdminProfileController extends GenericAbstractAdminController {
     }
 
     private void saveProfile(Profile _profile) {
+        Profile rolOld = _profile;
+        Profile rolNew = null;
         Profile profile = new Profile();
         try {
             profile.setName(txtAlias.getText());
@@ -200,9 +216,11 @@ public class AdminProfileController extends GenericAbstractAdminController {
             }
             request.setParam(profile);
             profile = accessEjb.saveProfile(request);
+            rolNew = profile;
             profileParam = profile;
             eventType = WebConstants.EVENT_EDIT;
             this.showMessage("sp.common.save.success", false, null);
+            saveAudit(rolOld, rolNew);
             try {
                 PermissionManager.refresh();
             } catch (Exception ex) {
@@ -242,6 +260,50 @@ public class AdminProfileController extends GenericAbstractAdminController {
                 break;
             default:
                 break;
+        }
+    }
+    
+    public void saveAudit(Profile rolOld ,Profile rolNew){
+        EJBRequest request1 = new EJBRequest();
+        EJBRequest request2 = new EJBRequest();            
+        String result = "";
+         String oldValue ="";
+        request1.setParam(rolOld);
+        request2.setParam(rolNew);
+
+        try {
+            result = auditoryEJB.getNaturalFieldProfile(request1, request2);
+        } catch (Exception ex) {
+           
+        }
+
+        if(!result.isEmpty()||!"".equals(result)){
+            String descrip = rolOld.getName();
+            
+            String status = String.valueOf(!rolOld.getEnabled());
+           
+            oldValue = "Name:"+descrip+"|Status:"+status;
+            
+            Audit audit = new Audit();
+            EJBRequest auditRequest = new EJBRequest();
+            audit.setUser(user);
+            Event ev = new Event();
+            ev.setId(2l);
+            audit.setEvent(ev);
+            try {                
+            Permission permission = PermissionManager.getInstance().getPermissionById(2L);
+            audit.setPermission(permission);
+            audit.setCreationDate(new Timestamp((new java.util.Date().getTime())));           
+            audit.setTableName("Document Type");
+            audit.setRemoteIp(ipAddress);
+            audit.setOriginalValues(oldValue);
+            audit.setNewValues(result);
+            audit.setResponsibleType("usuario");
+            auditRequest.setParam(audit);
+               audit = auditoryEJB.saveAudit(auditRequest);
+            } catch (Exception ex) {
+               ex.printStackTrace();
+            }
         }
     }
 }

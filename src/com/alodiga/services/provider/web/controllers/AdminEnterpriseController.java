@@ -1,20 +1,8 @@
 package com.alodiga.services.provider.web.controllers;
 
-import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
-import com.alodiga.services.provider.commons.models.Country;
-import com.alodiga.services.provider.commons.models.Currency;
-import com.alodiga.services.provider.commons.models.Enterprise;
-import com.alodiga.services.provider.commons.models.EnterpriseHasTinType;
-import com.alodiga.services.provider.commons.models.TinType;
-import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
-import com.alodiga.services.provider.commons.utils.EjbConstants;
-import com.alodiga.services.provider.web.generic.controllers.GenericAbstractAdminController;
-import com.alodiga.services.provider.web.utils.WebConstants;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
-import org.zkoss.util.resource.Labels;
+
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Button;
@@ -22,9 +10,16 @@ import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listcell;
-import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Textbox;
+
+import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
+import com.alodiga.services.provider.commons.models.Country;
+import com.alodiga.services.provider.commons.models.Currency;
+import com.alodiga.services.provider.commons.models.Enterprise;
+import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
+import com.alodiga.services.provider.commons.utils.EjbConstants;
+import com.alodiga.services.provider.web.generic.controllers.GenericAbstractAdminController;
+import com.alodiga.services.provider.web.utils.WebConstants;
 
 public class AdminEnterpriseController extends GenericAbstractAdminController {
 

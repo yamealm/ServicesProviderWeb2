@@ -45,6 +45,8 @@ public class PDFUtil {
             Font.BOLD);
     private static Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 8,
             Font.BOLD);
+    private static Font smallSimple = new Font(Font.FontFamily.TIMES_ROMAN, 8,
+            Font.NORMAL);
 
     public static void main(String[] args) {
         try {
@@ -123,7 +125,6 @@ public class PDFUtil {
 
     private static void createTable(Paragraph subCatPart,Listbox box, int quitCellToBack)
             throws BadElementException {
-    	
     	int lenghtCol = getLenghtColumByBox(box)-quitCellToBack;
     	PdfPTable table = new PdfPTable(lenghtCol);
     	table.setWidthPercentage(90f);
@@ -132,9 +133,7 @@ public class PDFUtil {
 			for (Object header : ((Listhead) head).getChildren()) {
 				  if(lenghtCol> i ) {
 					  String h = ((Listheader) header).getLabel();
-					  Phrase  phrase= new Phrase();
-					  phrase.add(h);
-					  phrase.setFont(smallBold);
+					  Phrase  phrase= new Phrase(h,smallBold);
 					  PdfPCell c1 = new PdfPCell(phrase);
 				      c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 				      table.addCell(c1);
@@ -155,10 +154,11 @@ public class PDFUtil {
             	 if(lenghtCol> y ) {
             		 String h;
                      h = ((Listcell) lbCell).getLabel();
-                     Phrase  phrase= new Phrase();
-					  phrase.add(h);
-					  phrase.setFont(smallBold);
-                     table.addCell(phrase);
+                     Phrase  phrase= new Phrase(h,smallSimple);
+                     PdfPCell cell = new PdfPCell(phrase);
+                     cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                     table.addCell(cell);
+                     
                      y++;
             	 }else {
             		 break;
@@ -200,7 +200,8 @@ public class PDFUtil {
            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
            String dateString = format.format( new Date()   );
            c2.addElement(new Phrase(dateString));
-           c2.setHorizontalAlignment(Element.ALIGN_RIGHT);
+           c2.setVerticalAlignment(Element.ALIGN_MIDDLE);
+           c2.setHorizontalAlignment(Element.ALIGN_CENTER);
            table.addCell(c2);
            subCatParTitle.add(table);
     }

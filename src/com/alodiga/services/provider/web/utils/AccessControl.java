@@ -245,18 +245,11 @@ public class AccessControl {
             audit.setEvent(ev);
             //            audit.setNewValues("new values");
             //            audit.setOriginalValues("");
-            audit.setRegisterId(1l);
             audit.setRemoteIp(Executions.getCurrent().getRemoteAddr());
             	if (loadCurrentUser() != null) {
-                audit.setResponsibleId(loadCurrentUser().getLogin());
+                audit.setUser(loadCurrentUser());
                 audit.setResponsibleType("User");
-            } else if (loadCurrentCustomer() != null) {
-                audit.setResponsibleId(loadCurrentCustomer().getFirstName());
-                audit.setResponsibleType("Customer");
-            } else {
-                audit.setResponsibleId("unknown");
-                audit.setResponsibleType("unknown");
-            }
+            } 
             audit.setTableName("");
             audit.setCreationDate(new Timestamp(new Date().getDate()));
             audits.add(audit);

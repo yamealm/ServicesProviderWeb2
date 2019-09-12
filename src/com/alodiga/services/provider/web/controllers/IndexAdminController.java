@@ -1,8 +1,11 @@
 package com.alodiga.services.provider.web.controllers;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
+import org.zkoss.util.Locales;
+import org.zkoss.web.Attributes;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zul.Groupbox;
@@ -138,7 +141,7 @@ public class IndexAdminController extends GenericAbstractController {
                 params.put(QueryConstants.PARAM_LOGIN, txtRecoverLogin.getText());
                 request.setParams(params);
                 user = userEJB.loadUserByLogin(request);
-                //AccessControl.generateNewPassword(user, null, false);
+                AccessControl.generateNewPassword(user, false);
                 this.showMessage("sp.common.recoveryPassword.success", false, null);
             } catch (RegisterNotFoundException e) {
                 this.showMessage("sp.common.recoveryPassword.notFound", true, null);
@@ -148,5 +151,21 @@ public class IndexAdminController extends GenericAbstractController {
             }
         }
     }
+    
+    public void onClick$mniEnglish() {
 
+        if (!Locales.getCurrent().getLanguage().equals("en")) {
+            Locale _newLocal = new Locale("en", "US", "en");
+            session.setAttribute(Attributes.PREFERRED_LOCALE, _newLocal);
+            Executions.sendRedirect(null);
+        }
+    }
+
+    public void onClick$mniSpanish() {
+        if (!Locales.getCurrent().getLanguage().equals("es")) {
+            Locale _newLocal = new Locale("es", "ES", "es");
+            session.setAttribute(Attributes.PREFERRED_LOCALE, _newLocal);
+            Executions.sendRedirect(null);
+        }
+    }
 }

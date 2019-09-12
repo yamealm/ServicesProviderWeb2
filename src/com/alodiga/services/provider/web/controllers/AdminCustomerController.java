@@ -1,44 +1,20 @@
 package com.alodiga.services.provider.web.controllers;
 
-import com.alodiga.services.provider.commons.ejbs.CustomerEJB;
-import com.alodiga.services.provider.commons.ejbs.ProductEJB;
-import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
-import com.alodiga.services.provider.commons.exceptions.EmptyListException;
-import com.alodiga.services.provider.commons.models.Address;
-import com.alodiga.services.provider.commons.models.City;
-import com.alodiga.services.provider.commons.models.CivilState;
-import com.alodiga.services.provider.commons.models.Country;
-import com.alodiga.services.provider.commons.models.County;
-import com.alodiga.services.provider.commons.models.Customer;
-import com.alodiga.services.provider.commons.models.Enterprise;
-import com.alodiga.services.provider.commons.models.Gender;
-import com.alodiga.services.provider.commons.models.State;
-import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
-import com.alodiga.services.provider.commons.utils.EjbConstants;
-import com.alodiga.services.provider.commons.utils.Encoder;
-import com.alodiga.services.provider.commons.utils.GeneralUtils;
-import com.alodiga.services.provider.commons.utils.QueryConstants;
-import com.alodiga.services.provider.web.generic.controllers.GenericAbstractAdminController;
-import com.alodiga.services.provider.web.utils.Utils;
-import com.alodiga.services.provider.web.utils.WebConstants;
-
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import org.zkoss.util.resource.Labels;
+
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
-import org.zkoss.zul.Combobox;
-import org.zkoss.zul.Comboitem;
-import org.zkoss.zul.Datebox;
-import org.zkoss.zul.Label;
-import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
+
+import com.alodiga.services.provider.commons.ejbs.CustomerEJB;
+import com.alodiga.services.provider.commons.models.Customer;
+import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
+import com.alodiga.services.provider.commons.utils.EjbConstants;
+import com.alodiga.services.provider.web.generic.controllers.GenericAbstractAdminController;
+import com.alodiga.services.provider.web.utils.WebConstants;
 
 public class AdminCustomerController extends GenericAbstractAdminController {
 

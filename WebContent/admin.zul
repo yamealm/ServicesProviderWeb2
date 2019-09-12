@@ -92,6 +92,35 @@
                                 </vlayout>
                             </hlayout>
                         </groupbox>
+                          <groupbox id="gbxRecoverPass" mold="3d" width="230px" visible="false" class="borderedFrame">
+                                            <caption label="${c:l('sp.common.loginTitle')}" />
+                                            <hlayout >
+                                                <vlayout>
+                                                    <grid fixedLayout="true" width="225px">
+                                                        <columns >
+                                                            <column label="" width="80px" />
+                                                            <column label="" width="140px"/>
+                                                        </columns>
+                                                        <rows>
+                                                            <row>
+                                                                <label value="${c:l('sp.common.login')}" width="80px" class="lblbold"/>
+                                                                <hlayout>
+                                                                    <textbox id="txtRecoverLogin" width="120px" constraint="no empty: ${c:l('sp.error.field.required')}"/>
+                                                                </hlayout>
+                                                            </row>
+                                                        </rows>
+                                                    </grid>
+                                                    <vlayout>
+                                                        <div align="center">
+                                                            <hlayout>
+                                                                <button id="btnRecoverPass" label="${c:l('sp.common.generatePassword')}" width="100px" class="open orange" tooltiptext="${c:l('sp.common.actions.search.filter.tooltip')}"/>
+                                                                <button id="btnCancelRecoverPassword" label="${c:l('sp.common.actions.cancel')}"  width="100px" class="open gray" tooltiptext="${c:l('sp.common.actions.cancel.filter.tooltip')}"/>
+                                                            </hlayout>
+                                                        </div>
+                                                    </vlayout>
+                                                </vlayout>
+                                            </hlayout>
+                                       </groupbox>
                         <div id="divInfo" height="20px" width="100%" style="background:#B6E59E;" align="left" visible="false"/>
                         <separator/>
                         <div align="center">
