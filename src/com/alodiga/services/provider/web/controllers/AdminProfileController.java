@@ -45,11 +45,11 @@ public class AdminProfileController extends GenericAbstractAdminController {
     private Checkbox cbxEnabled;
     private Listbox lbxPermissions;
     private AccessControlEJB accessEjb = null;
-    private AuditoryEJB auditoryEJB;
     private Profile profileParam;
     Profile parentProfile = null;
     private Button btnSave;
     private User user;
+    private AuditoryEJB auditoryEJB;
     private String ipAddress;
 
     @Override
@@ -71,8 +71,8 @@ public class AdminProfileController extends GenericAbstractAdminController {
         super.initialize();
         try {
         	ipAddress = Executions.getCurrent().getRemoteAddr();
+        	auditoryEJB = (AuditoryEJB) EJBServiceLocator.getInstance().get(EjbConstants.AUDITORY_EJB);
             accessEjb = (AccessControlEJB) EJBServiceLocator.getInstance().get(EjbConstants.ACCESS_CONTROL_EJB);
-            auditoryEJB = (AuditoryEJB) EJBServiceLocator.getInstance().get(EjbConstants.AUDITORY_EJB);
         } catch (Exception ex) {
             showError(ex);
         }
@@ -165,7 +165,6 @@ public class AdminProfileController extends GenericAbstractAdminController {
 
     private void saveProfile(Profile _profile) {
         Profile rolOld = _profile;
-        Profile rolNew = null;
         Profile profile = new Profile();
         try {
             profile.setName(txtAlias.getText());
@@ -216,11 +215,10 @@ public class AdminProfileController extends GenericAbstractAdminController {
             }
             request.setParam(profile);
             profile = accessEjb.saveProfile(request);
-            rolNew = profile;
             profileParam = profile;
             eventType = WebConstants.EVENT_EDIT;
             this.showMessage("sp.common.save.success", false, null);
-            saveAudit(rolOld, rolNew);
+            saveAudit(rolOld, profile);
             try {
                 PermissionManager.refresh();
             } catch (Exception ex) {
@@ -284,26 +282,27 @@ public class AdminProfileController extends GenericAbstractAdminController {
            
             oldValue = "Name:"+descrip+"|Status:"+status;
             
-            Audit audit = new Audit();
-            EJBRequest auditRequest = new EJBRequest();
-            audit.setUser(user);
-            Event ev = new Event();
-            ev.setId(2l);
-            audit.setEvent(ev);
-            try {                
-            Permission permission = PermissionManager.getInstance().getPermissionById(2L);
-            audit.setPermission(permission);
-            audit.setCreationDate(new Timestamp((new java.util.Date().getTime())));           
-            audit.setTableName("Document Type");
-            audit.setRemoteIp(ipAddress);
-            audit.setOriginalValues(oldValue);
-            audit.setNewValues(result);
-            audit.setResponsibleType("usuario");
-            auditRequest.setParam(audit);
-               audit = auditoryEJB.saveAudit(auditRequest);
-            } catch (Exception ex) {
-               ex.printStackTrace();
-            }
+			try {
+				EJBRequest ejbRequest = new EJBRequest();
+				ejbRequest.setParam(eventType);
+				Event ev = auditoryEJB.loadEvent(ejbRequest);
+				Audit audit = new Audit();
+				EJBRequest auditRequest = new EJBRequest();
+				audit.setUser(user);
+				audit.setEvent(ev);
+				Permission permission = PermissionManager.getInstance().getPermissionById(2L);
+				audit.setPermission(permission);
+				audit.setCreationDate(new Timestamp((new java.util.Date().getTime())));
+				audit.setTableName("Profile");
+				audit.setRemoteIp(ipAddress);
+				audit.setOriginalValues(oldValue);
+				audit.setNewValues(result);
+				audit.setResponsibleType("usuario");
+				auditRequest.setParam(audit);
+				audit = auditoryEJB.saveAudit(auditRequest);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
         }
     }
 }

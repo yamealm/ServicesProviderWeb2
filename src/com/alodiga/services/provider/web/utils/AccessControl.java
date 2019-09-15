@@ -239,9 +239,9 @@ public class AccessControl {
         List<Audit> audits = new ArrayList<Audit>();
         Audit audit = new Audit();
         try {
-
-            Event ev = new Event();
-            ev.setId(1l);
+        	EJBRequest ejbRequest = new EJBRequest();
+        	ejbRequest.setParam(1);
+            Event ev = auditoryEJB.loadEvent(ejbRequest);
             audit.setEvent(ev);
             //            audit.setNewValues("new values");
             //            audit.setOriginalValues("");

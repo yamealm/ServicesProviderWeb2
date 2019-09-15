@@ -1,18 +1,29 @@
 package com.alodiga.services.provider.web.controllers;
 
 
+import java.sql.Timestamp;
+
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Textbox;
 
+import com.alodiga.services.provider.commons.ejbs.AuditoryEJB;
 import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
+import com.alodiga.services.provider.commons.genericEJB.EJBRequest;
+import com.alodiga.services.provider.commons.managers.PermissionManager;
+import com.alodiga.services.provider.commons.models.Audit;
 import com.alodiga.services.provider.commons.models.Braund;
+import com.alodiga.services.provider.commons.models.Event;
 import com.alodiga.services.provider.commons.models.Language;
+import com.alodiga.services.provider.commons.models.MetrologicalControl;
+import com.alodiga.services.provider.commons.models.Permission;
+import com.alodiga.services.provider.commons.models.User;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractAdminController;
+import com.alodiga.services.provider.web.utils.AccessControl;
 import com.alodiga.services.provider.web.utils.WebConstants;
 
 public class AdminMarkController extends GenericAbstractAdminController {
@@ -22,12 +33,16 @@ public class AdminMarkController extends GenericAbstractAdminController {
     private UtilsEJB utilsEJB = null;
     private Braund braundParam;
     private Button btnSave;
+    private User user;
+    private AuditoryEJB auditoryEJB;
+    private String ipAddress;
 
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
         braundParam = (Sessions.getCurrent().getAttribute("object") != null) ? (Braund) Sessions.getCurrent().getAttribute("object") : null;
         initialize();
+        user = AccessControl.loadCurrentUser();
         initView(eventType, "sp.crud.braund");
     }
 
@@ -40,6 +55,8 @@ public class AdminMarkController extends GenericAbstractAdminController {
     public void initialize() {
         super.initialize();
         try {
+        	ipAddress = Executions.getCurrent().getRemoteAddr();
+        	auditoryEJB = (AuditoryEJB) EJBServiceLocator.getInstance().get(EjbConstants.AUDITORY_EJB);
             utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
             loadData();
         } catch (Exception ex) {
@@ -129,5 +146,58 @@ public class AdminMarkController extends GenericAbstractAdminController {
     	Executions.sendRedirect("./listMarkes.zul");
     }
     
-    
+    public void saveAudit(Braund controlOld ,Braund controlNew){
+        EJBRequest request1 = new EJBRequest();
+        EJBRequest request2 = new EJBRequest();            
+        String result = "";
+         String oldValue ="";
+        request1.setParam(controlOld);
+        request2.setParam(controlNew);
+
+        try {
+            result = auditoryEJB.getNaturalFieldMetrologicalControl(request1, request2);
+        } catch (Exception ex) {
+           
+        }
+
+        if(!result.isEmpty()||!"".equals(result)){
+            String descrip = controlOld.getName();
+            String controlType = controlOld.getControlType();
+            String braund = controlOld.getBraund().getName();
+            String designation = controlOld.getDesignation();
+            String enter = controlOld.getEnterCalibration().getName();
+            String model = controlOld.getModel().getName();
+            String instrument = controlOld.getInstrument();
+            String rango =controlOld.getRango();
+            String scale = controlOld.getScale();
+            String serie = controlOld.getSerie();
+            String ubication = controlOld.getUbication();
+            oldValue = "Name:"+descrip+"|ControlType:"+controlType+"|Braund:"+braund
+            		+"|Designation:"+designation+"|EnterCAlibration"+enter+"|Model"+model
+            		+"|Instrument:"+instrument+"|Rango:"+rango+"|Scale:"+scale+"|Serie:"+serie
+            		+"|Ubication:"+ubication;
+            
+			try {
+				EJBRequest ejbRequest = new EJBRequest();
+				ejbRequest.setParam(eventType);
+				Event ev = auditoryEJB.loadEvent(ejbRequest);
+				Audit audit = new Audit();
+				EJBRequest auditRequest = new EJBRequest();
+				audit.setUser(user);
+				audit.setEvent(ev);
+				Permission permission = PermissionManager.getInstance().getPermissionById(2L);
+				audit.setPermission(permission);
+				audit.setCreationDate(new Timestamp((new java.util.Date().getTime())));
+				audit.setTableName("Metrological Control");
+				audit.setRemoteIp(ipAddress);
+				audit.setOriginalValues(oldValue);
+				audit.setNewValues(result);
+				audit.setResponsibleType("usuario");
+				auditRequest.setParam(audit);
+				audit = auditoryEJB.saveAudit(auditRequest);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+        }
+    }
 }

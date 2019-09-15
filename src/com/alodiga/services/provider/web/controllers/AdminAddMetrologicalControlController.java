@@ -12,15 +12,22 @@ import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Textbox;
 
+import com.alodiga.services.provider.commons.ejbs.AuditoryEJB;
 import com.alodiga.services.provider.commons.ejbs.TransactionEJB;
 import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
 import com.alodiga.services.provider.commons.exceptions.EmptyListException;
 import com.alodiga.services.provider.commons.exceptions.NullParameterException;
+import com.alodiga.services.provider.commons.genericEJB.EJBRequest;
+import com.alodiga.services.provider.commons.managers.PermissionManager;
+import com.alodiga.services.provider.commons.models.Audit;
 import com.alodiga.services.provider.commons.models.Braund;
 import com.alodiga.services.provider.commons.models.EnterCalibration;
+import com.alodiga.services.provider.commons.models.Event;
 import com.alodiga.services.provider.commons.models.MetrologicalControl;
 import com.alodiga.services.provider.commons.models.MetrologicalControlHistory;
 import com.alodiga.services.provider.commons.models.Model;
+import com.alodiga.services.provider.commons.models.Permission;
+import com.alodiga.services.provider.commons.models.Profile;
 import com.alodiga.services.provider.commons.models.User;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
@@ -48,10 +55,12 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
  
     private UtilsEJB utilsEJB = null;
     private TransactionEJB transactionEJB = null;
+    private AuditoryEJB auditoryEJB;
     private MetrologicalControl metrologicalControlParam;
     private List<Braund> braunds;
     private List<Model> models;
     private List<EnterCalibration> enterCalibrations;
+    private String ipAddress;
 
     private User user;
     @Override
@@ -72,8 +81,10 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
     public void initialize() {
         super.initialize();
         try {
+        	ipAddress = Executions.getCurrent().getRemoteAddr();
             utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
             transactionEJB = (TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
+            auditoryEJB = (AuditoryEJB) EJBServiceLocator.getInstance().get(EjbConstants.AUDITORY_EJB);
             dtxExpiration.setValue(new Timestamp(new Date().getTime()));
             dtxCalibration.setValue(new Timestamp(new Date().getTime()));
             dtxCreation.setValue(new Timestamp(new Date().getTime()));
@@ -304,6 +315,7 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
             metrologicalControl = transactionEJB.saveMetrologicalControl(metrologicalControl,metrologicalControlHistory);
 
             this.showMessage("sp.common.save.success", false, null);
+            saveAudit(_metrologicalControl, metrologicalControl);
         } catch (NullParameterException ex) {
         	showMessage("sp.error.field.number", true, null);
         } catch (Exception ex) {
@@ -311,5 +323,60 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
         }
     }
     
-  
+    public void saveAudit(MetrologicalControl controlOld ,MetrologicalControl controlNew){
+        EJBRequest request1 = new EJBRequest();
+        EJBRequest request2 = new EJBRequest();            
+        String result = "";
+         String oldValue ="";
+        request1.setParam(controlOld);
+        request2.setParam(controlNew);
+
+        try {
+            result = auditoryEJB.getNaturalFieldMetrologicalControl(request1, request2);
+        } catch (Exception ex) {
+           
+        }
+
+        if(!result.isEmpty()||!"".equals(result)){
+            String descrip = controlOld.getName();
+            String controlType = controlOld.getControlType();
+            String braund = controlOld.getBraund().getName();
+            String designation = controlOld.getDesignation();
+            String enter = controlOld.getEnterCalibration().getName();
+            String model = controlOld.getModel().getName();
+            String instrument = controlOld.getInstrument();
+            String rango =controlOld.getRango();
+            String scale = controlOld.getScale();
+            String serie = controlOld.getSerie();
+            String ubication = controlOld.getUbication();
+            oldValue = "Name:"+descrip+"|ControlType:"+controlType+"|Braund:"+braund
+            		+"|Designation:"+designation+"|EnterCAlibration"+enter+"|Model"+model
+            		+"|Instrument:"+instrument+"|Rango:"+rango+"|Scale:"+scale+"|Serie:"+serie
+            		+"|Ubication:"+ubication;
+            
+			try {
+				EJBRequest ejbRequest = new EJBRequest();
+				ejbRequest.setParam(eventType);
+				Event ev = auditoryEJB.loadEvent(ejbRequest);
+				Audit audit = new Audit();
+				EJBRequest auditRequest = new EJBRequest();
+				audit.setUser(user);
+				audit.setEvent(ev);
+				Permission permission = PermissionManager.getInstance().getPermissionById(2L);
+				audit.setPermission(permission);
+				audit.setCreationDate(new Timestamp((new java.util.Date().getTime())));
+				audit.setTableName("Metrological Control");
+				audit.setRemoteIp(ipAddress);
+				audit.setOriginalValues(oldValue);
+				audit.setNewValues(result);
+				audit.setResponsibleType("usuario");
+				auditRequest.setParam(audit);
+				audit = auditoryEJB.saveAudit(auditRequest);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+        }
+    }
 }
+    
+  

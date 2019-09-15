@@ -893,3 +893,29 @@ ADD CONSTRAINT `fk_audit_permission`
   REFERENCES `services`.`permission` (`id`)
   ON DELETE NO ACTION
   ON UPDATE NO ACTION;
+  
+  
+  ALTER TABLE `services`.`audit` 
+DROP FOREIGN KEY `fk_audit_event1`;
+ALTER TABLE `services`.`audit` 
+CHANGE COLUMN `eventId` `eventId` INT(3) NOT NULL ,
+DROP INDEX `fk_audit_event1` ;
+;
+
+ALTER TABLE `services`.`event` 
+CHANGE COLUMN `id` `id` INT(3) NOT NULL ;
+
+ALTER TABLE `services`.`audit` 
+ADD INDEX `fk_audit_event1` (`eventId` ASC) INVISIBLE;
+;
+ALTER TABLE `services`.`audit` 
+ADD CONSTRAINT `fk_audit_event1`
+  FOREIGN KEY (`eventId`)
+  REFERENCES `services`.`event` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+  
+  ALTER TABLE `services`.`event` 
+CHANGE COLUMN `id` `id` INT(3) NOT NULL ;
+  

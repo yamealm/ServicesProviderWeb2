@@ -4,16 +4,25 @@ import java.sql.Timestamp;
 import java.util.Map;
 
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Textbox;
 
+import com.alodiga.services.provider.commons.ejbs.AuditoryEJB;
 import com.alodiga.services.provider.commons.ejbs.CustomerEJB;
+import com.alodiga.services.provider.commons.genericEJB.EJBRequest;
+import com.alodiga.services.provider.commons.managers.PermissionManager;
+import com.alodiga.services.provider.commons.models.Audit;
 import com.alodiga.services.provider.commons.models.Customer;
+import com.alodiga.services.provider.commons.models.Event;
+import com.alodiga.services.provider.commons.models.Permission;
+import com.alodiga.services.provider.commons.models.User;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractAdminController;
+import com.alodiga.services.provider.web.utils.AccessControl;
 import com.alodiga.services.provider.web.utils.WebConstants;
 
 public class AdminCustomerController extends GenericAbstractAdminController {
@@ -31,6 +40,9 @@ public class AdminCustomerController extends GenericAbstractAdminController {
     private Customer customerParam;
     private Button btnSave;
     private CustomerEJB customerEJB;
+    private AuditoryEJB auditoryEJB;
+    private String ipAddress;
+    private User user;
     Map params = null;
 
     @Override
@@ -50,7 +62,9 @@ public class AdminCustomerController extends GenericAbstractAdminController {
     public void initialize() {
         super.initialize();
         try {
-
+        	user = AccessControl.loadCurrentUser();
+        	ipAddress = Executions.getCurrent().getRemoteAddr();
+        	auditoryEJB = (AuditoryEJB) EJBServiceLocator.getInstance().get(EjbConstants.AUDITORY_EJB);
             customerEJB = (CustomerEJB) EJBServiceLocator.getInstance().get(EjbConstants.CUSTOMER_EJB);
         } catch (Exception ex) {
             showError(ex);
@@ -179,4 +193,51 @@ public class AdminCustomerController extends GenericAbstractAdminController {
     }
 
  
+    public void saveAudit(Customer fCustomerOld ,Customer fCustomerNew){
+        EJBRequest request1 = new EJBRequest();
+        EJBRequest request2 = new EJBRequest();            
+        String result = "";
+         String oldValue ="";
+        request1.setParam(fCustomerOld);
+        request2.setParam(fCustomerNew);
+
+        try {
+            result = auditoryEJB.getNaturalFieldCustomer(request1, request2);
+        } catch (Exception ex) {
+            
+        }
+
+        if(!result.isEmpty()||!"".equals(result)){
+            String name = fCustomerOld.getFirstName();
+            String lastName = fCustomerOld.getLastName();
+            String mail = fCustomerOld.getEmail();
+            String phone = fCustomerOld.getPhoneNumber();
+            String DNI = fCustomerOld.getDni();
+            String address = fCustomerOld.getAddress();
+            oldValue = "Name:"+name+"|LastName:"+lastName+"|Mail:"+mail
+                    +"|PhoneNumber:"+phone+"|DNI:"+DNI+"|Address:"+address;
+            
+            try {
+				EJBRequest ejbRequest = new EJBRequest();
+				ejbRequest.setParam(eventType);
+				Event ev = auditoryEJB.loadEvent(ejbRequest);
+				Audit audit = new Audit();
+				EJBRequest auditRequest = new EJBRequest();
+				audit.setUser(user);
+				audit.setEvent(ev);
+				Permission permission = PermissionManager.getInstance().getPermissionById(2L);
+				audit.setPermission(permission);
+				audit.setCreationDate(new Timestamp((new java.util.Date().getTime())));
+				audit.setTableName("Customer");
+				audit.setRemoteIp(ipAddress);
+				audit.setOriginalValues(oldValue);
+				audit.setNewValues(result);
+				audit.setResponsibleType("usuario");
+				auditRequest.setParam(audit);
+				audit = auditoryEJB.saveAudit(auditRequest);
+            } catch (Exception ex) {
+				ex.printStackTrace();
+			}
+        }
+    }
 }
