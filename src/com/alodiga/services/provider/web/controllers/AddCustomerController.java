@@ -9,11 +9,19 @@ import org.zkoss.zul.Button;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
+import com.alodiga.services.provider.commons.ejbs.AuditoryEJB;
 import com.alodiga.services.provider.commons.ejbs.CustomerEJB;
+import com.alodiga.services.provider.commons.genericEJB.EJBRequest;
+import com.alodiga.services.provider.commons.managers.PermissionManager;
+import com.alodiga.services.provider.commons.models.Audit;
 import com.alodiga.services.provider.commons.models.Customer;
+import com.alodiga.services.provider.commons.models.Event;
+import com.alodiga.services.provider.commons.models.Permission;
+import com.alodiga.services.provider.commons.models.User;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractAdminController;
+import com.alodiga.services.provider.web.utils.AccessControl;
 import com.alodiga.services.provider.web.utils.WebConstants;
 
 public class AddCustomerController extends GenericAbstractAdminController {
@@ -29,10 +37,14 @@ public class AddCustomerController extends GenericAbstractAdminController {
     private Window winAddCustomerView;
     private Button btnSave;
     private CustomerEJB customerEJB;
+    private AuditoryEJB auditoryEJB;
+    private String ipAddress;
+    private User user;
 
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
+        user = AccessControl.loadCurrentUser();
         initialize();
     }
 
@@ -45,6 +57,8 @@ public class AddCustomerController extends GenericAbstractAdminController {
     public void initialize() {
         super.initialize();
         try {
+        	ipAddress = Executions.getCurrent().getRemoteAddr();
+        	auditoryEJB = (AuditoryEJB) EJBServiceLocator.getInstance().get(EjbConstants.AUDITORY_EJB);
             customerEJB = (CustomerEJB) EJBServiceLocator.getInstance().get(EjbConstants.CUSTOMER_EJB);
         } catch (Exception ex) {
             showError(ex);
@@ -124,6 +138,7 @@ public class AddCustomerController extends GenericAbstractAdminController {
             customerParam = customerEJB.saveCustomer(request);
             blockFields();
             this.showMessage("sp.common.save.success", false, null);
+            saveAudit(_customer, customer);
         } catch (Exception ex) {
             showError(ex);
         }
@@ -173,4 +188,53 @@ public class AddCustomerController extends GenericAbstractAdminController {
 				e.printStackTrace();
 			}
 	   }
+	 
+	  
+	    public void saveAudit(Customer fCustomerOld ,Customer fCustomerNew){
+	        EJBRequest request1 = new EJBRequest();
+	        EJBRequest request2 = new EJBRequest();            
+	        String result = "";
+	         String oldValue ="";
+	        request1.setParam(fCustomerOld);
+	        request2.setParam(fCustomerNew);
+
+	        try {
+	            result = auditoryEJB.getNaturalFieldCustomer(request1, request2);
+	        } catch (Exception ex) {
+	            
+	        }
+
+	        if(!result.isEmpty()||!"".equals(result)){
+	            String name = fCustomerOld.getFirstName();
+	            String lastName = fCustomerOld.getLastName();
+	            String phoneNumber = fCustomerOld.getPhoneNumber();
+	            String email = fCustomerOld.getEmail();
+	            String dni = fCustomerOld.getDni();
+	            String address = fCustomerOld.getAddress();
+	            oldValue = "Name:"+name+"|LastName:"+lastName+"|PhoneCellNumber:"+phoneNumber
+	                    +"|DNI:"+dni+"|Address:"+address+"|Email:"+email;
+	            
+	            try {
+					EJBRequest ejbRequest = new EJBRequest();
+					ejbRequest.setParam(eventType);
+					Event ev = auditoryEJB.loadEvent(ejbRequest);
+					Audit audit = new Audit();
+					EJBRequest auditRequest = new EJBRequest();
+					audit.setUser(user);
+					audit.setEvent(ev);
+					Permission permission = PermissionManager.getInstance().getPermissionById(2L);
+					audit.setPermission(permission);
+					audit.setCreationDate(new Timestamp((new java.util.Date().getTime())));
+					audit.setTableName("Customer");
+					audit.setRemoteIp(ipAddress);
+					audit.setOriginalValues(oldValue);
+					audit.setNewValues(result);
+					audit.setResponsibleType("usuario");
+					auditRequest.setParam(audit);
+					audit = auditoryEJB.saveAudit(auditRequest);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+	        }
+	    }
 }

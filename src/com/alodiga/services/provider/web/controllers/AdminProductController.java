@@ -1,5 +1,6 @@
 package com.alodiga.services.provider.web.controllers;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.zkoss.zk.ui.Component;
@@ -12,14 +13,23 @@ import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Textbox;
 
+import com.alodiga.services.provider.commons.ejbs.AuditoryEJB;
 import com.alodiga.services.provider.commons.ejbs.ProductEJB;
 import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
+import com.alodiga.services.provider.commons.genericEJB.EJBRequest;
+import com.alodiga.services.provider.commons.managers.PermissionManager;
+import com.alodiga.services.provider.commons.models.Audit;
+import com.alodiga.services.provider.commons.models.Customer;
 import com.alodiga.services.provider.commons.models.Enterprise;
+import com.alodiga.services.provider.commons.models.Event;
+import com.alodiga.services.provider.commons.models.Permission;
 import com.alodiga.services.provider.commons.models.Product;
+import com.alodiga.services.provider.commons.models.User;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
 import com.alodiga.services.provider.commons.utils.GeneralUtils;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractAdminController;
+import com.alodiga.services.provider.web.utils.AccessControl;
 import com.alodiga.services.provider.web.utils.WebConstants;
 
 public class AdminProductController extends GenericAbstractAdminController {
@@ -45,10 +55,15 @@ public class AdminProductController extends GenericAbstractAdminController {
     private List<Enterprise> enterprises;
     private Button btnAddDenomination;
     private Button btnSave;
+    private User user;
+    private AuditoryEJB auditoryEJB;
+    private String ipAddress;
+    
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
         productParam = (Sessions.getCurrent().getAttribute("object") != null) ? (Product) Sessions.getCurrent().getAttribute("object") : null;
+        user = AccessControl.loadCurrentUser();
         initialize();
         initView(eventType, "sp.crud.product");
     }
@@ -62,7 +77,8 @@ public class AdminProductController extends GenericAbstractAdminController {
     public void initialize() {
         super.initialize();
         try {
-
+        	ipAddress = Executions.getCurrent().getRemoteAddr();
+        	auditoryEJB = (AuditoryEJB) EJBServiceLocator.getInstance().get(EjbConstants.AUDITORY_EJB);
             productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
             utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
         } catch (Exception ex) {
@@ -265,25 +281,59 @@ public class AdminProductController extends GenericAbstractAdminController {
             productParam = product;
             eventType = WebConstants.EVENT_EDIT;
             this.showMessage("sp.common.save.success", false, null);
+            saveAudit(_product,product);
         } catch (Exception ex) {
             showError(ex);
         }
     }
 
-//    private Listcell initDeleteButton(final Listitem listItem) {
-//        Listcell cell = new Listcell();
-//        final Button button = new Button();
-//        button.setClass("open gray");
-//        button.setImage("/images/icon-remove.png");
-//        button.addEventListener("onClick", new EventListener() {
-//
-//            @Override
-//            public void onEvent(Event arg0) throws Exception {
-//                listItem.getParent().removeChild(listItem);
-//            }
-//        });
-//
-//        button.setParent(cell);
-//        return cell;
-//    }
+
+    public void saveAudit(Product fCustomerOld ,Product fCustomerNew){
+        EJBRequest request1 = new EJBRequest();
+        EJBRequest request2 = new EJBRequest();            
+        String result = "";
+         String oldValue ="";
+        request1.setParam(fCustomerOld);
+        request2.setParam(fCustomerNew);
+
+        try {
+            result = auditoryEJB.getNaturalFieldProduct(request1, request2);
+        } catch (Exception ex) {
+            
+        }
+
+        if(!result.isEmpty()||!"".equals(result)){
+            String name = fCustomerOld.getDescription();
+            String actNpNsn = fCustomerOld.getActNpNsn();
+            String batchNumber = fCustomerOld.getBatchNumber();
+            String box = fCustomerOld.getUbicationBox();
+            String folder = fCustomerOld.getUbicationFolder();
+            String partNumber = fCustomerOld.getPartNumber();
+            String amount = String.valueOf(fCustomerOld.getAmount());
+            oldValue = "Description:"+name+"|ActNpNsn:"+actNpNsn+"|BatchNumber:"+batchNumber
+                    +"|UbicationBox:"+box+"|UbicationFolder:"+folder+"|PartNumber:"+partNumber+"|Amount:"+amount;
+            
+            try {
+				EJBRequest ejbRequest = new EJBRequest();
+				ejbRequest.setParam(eventType);
+				Event ev = auditoryEJB.loadEvent(ejbRequest);
+				Audit audit = new Audit();
+				EJBRequest auditRequest = new EJBRequest();
+				audit.setUser(user);
+				audit.setEvent(ev);
+				Permission permission = PermissionManager.getInstance().getPermissionById(2L);
+				audit.setPermission(permission);
+				audit.setCreationDate(new Timestamp((new java.util.Date().getTime())));
+				audit.setTableName("Product");
+				audit.setRemoteIp(ipAddress);
+				audit.setOriginalValues(oldValue);
+				audit.setNewValues(result);
+				audit.setResponsibleType("usuario");
+				auditRequest.setParam(audit);
+				audit = auditoryEJB.saveAudit(auditRequest);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+        }
+    }
 }

@@ -22,6 +22,7 @@
         </div>
         <separator/>
         <div align="right">
+            <button id="btnAdd" label="${c:l('sp.common.actions.add')}" width="150px" class="open orange" tooltiptext="${c:l('sp.common.actions.add.tooltip')}" visible="true"/>
             <button  id="btnSelect" width="150px" label="${c:l('sp.common.select')}" class="open orange"/>
             <button  id="btnCancel" width="150px" label="${c:l('sp.common.actions.cancel')}" class="open gray" />
         </div>
