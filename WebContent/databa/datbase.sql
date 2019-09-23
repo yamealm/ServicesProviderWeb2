@@ -918,4 +918,18 @@ ADD CONSTRAINT `fk_audit_event1`
   
   ALTER TABLE `services`.`event` 
 CHANGE COLUMN `id` `id` INT(3) NOT NULL ;
+
+
+//23-09-2019 Yamelis
+ALTER TABLE `services`.`metrological_control_history` 
+ADD COLUMN `category` INT(3) NULL AFTER `observation`,
+ADD INDEX `fk_metrological_control_history_category` (`category` ASC) INVISIBLE;
+;
+ALTER TABLE `services`.`metrological_control_history` 
+ADD CONSTRAINT `fk_metrological_control_history_category`
+  FOREIGN KEY (`category`)
+  REFERENCES `services`.`category` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
   
