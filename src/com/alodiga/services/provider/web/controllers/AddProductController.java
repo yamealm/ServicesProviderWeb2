@@ -95,13 +95,7 @@ public class AddProductController extends GenericAbstractAdminController {
     }
 
     public Boolean validateEmpty() {
-    	   if (txtRealAmount.getText().isEmpty()) {
-           	txtRealAmount.setFocus(true);
-               this.showMessage("sp.error.field.cannotNull", true, null);
-           }  if (txtInitialAmount.getText().isEmpty()) {
-           	txtInitialAmount.setFocus(true);
-               this.showMessage("sp.error.field.cannotNull", true, null);
-           } if (txtBachNumber.getText().isEmpty()) {
+    	    if (txtBachNumber.getText().isEmpty()) {
            	txtBachNumber.setFocus(true);
                this.showMessage("sp.error.field.cannotNull", true, null);
            } if (txtUbicationFolder.getText().isEmpty()) {
@@ -134,13 +128,7 @@ public class AddProductController extends GenericAbstractAdminController {
            }if (!GeneralUtils.isNumeric(txtAmount.getText())) {
            	txtAmount.setFocus(true);
                this.showMessage("sp.error.field.number", true, null);
-           }if (!GeneralUtils.isNumeric(txtRealAmount.getText())) {
-           	txtAmount.setFocus(true);
-               this.showMessage("sp.error.field.number", true, null);
-           }if (!GeneralUtils.isNumeric(txtInitialAmount.getText())) {
-           	txtInitialAmount.setFocus(true);
-               this.showMessage("sp.error.field.number", true, null);
-           }  else {
+           } else {
             return true;
         }
         return false;

@@ -105,6 +105,7 @@ public class AdminMarkController extends GenericAbstractAdminController {
             braund.setName(txtName.getText());            
             braund = utilsEJB.saveBraund(braund);   
             this.showMessage("sp.common.save.success", false, null);
+            saveAudit(_braund, braund);
         } catch (Exception ex) {
            showError(ex);
         }
@@ -155,27 +156,15 @@ public class AdminMarkController extends GenericAbstractAdminController {
         request2.setParam(controlNew);
 
         try {
-            result = auditoryEJB.getNaturalFieldMetrologicalControl(request1, request2);
+            result = auditoryEJB.getNaturalFieldBraund(request1, request2);
         } catch (Exception ex) {
            
         }
 
         if(!result.isEmpty()||!"".equals(result)){
             String descrip = controlOld.getName();
-            String controlType = controlOld.getControlType();
-            String braund = controlOld.getBraund().getName();
-            String designation = controlOld.getDesignation();
-            String enter = controlOld.getEnterCalibration().getName();
-            String model = controlOld.getModel().getName();
-            String instrument = controlOld.getInstrument();
-            String rango =controlOld.getRango();
-            String scale = controlOld.getScale();
-            String serie = controlOld.getSerie();
-            String ubication = controlOld.getUbication();
-            oldValue = "Name:"+descrip+"|ControlType:"+controlType+"|Braund:"+braund
-            		+"|Designation:"+designation+"|EnterCAlibration"+enter+"|Model"+model
-            		+"|Instrument:"+instrument+"|Rango:"+rango+"|Scale:"+scale+"|Serie:"+serie
-            		+"|Ubication:"+ubication;
+            
+            oldValue = "Name:"+descrip;
             
 			try {
 				EJBRequest ejbRequest = new EJBRequest();
@@ -188,7 +177,7 @@ public class AdminMarkController extends GenericAbstractAdminController {
 				Permission permission = PermissionManager.getInstance().getPermissionById(2L);
 				audit.setPermission(permission);
 				audit.setCreationDate(new Timestamp((new java.util.Date().getTime())));
-				audit.setTableName("Metrological Control");
+				audit.setTableName("Braund");
 				audit.setRemoteIp(ipAddress);
 				audit.setOriginalValues(oldValue);
 				audit.setNewValues(result);

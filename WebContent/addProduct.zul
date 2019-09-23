@@ -3,8 +3,8 @@
 <?page title="${c:l('sp.common.page.title')}"?>
 <?link rel="icon" tye="image/x-icon" href="/images/favicon.ico"?>
 <zk xmlns:n="native">
-    <window id="winAddProductView" apply ="com.alodiga.services.provider.web.controllers.AddProductController" width="600px" height="380px" closable="true" border="normal">
-        <caption image="/images/icon-alodiga-1.png" label="${c:l('sp.common.customer')}"/>
+    <window id="winAddProductView" apply ="com.alodiga.services.provider.web.controllers.AddProductController" width="650px" height="450px" closable="true" border="normal">
+        <caption image="/images/icon-alodiga-1.png" label="${c:l('sp.common.product')}"/>
         <style src="/css/general.css"/>
         <div>
         	<vlayout>
@@ -42,7 +42,6 @@
         					<hlayout>
         						<textbox id="txtPartNumber" maxlength="45" width="320px" constraint="no empty: ${c:l('error.field.required')}" />
         						<label value="*" sclass="lblreq" />
-        						<label value="${c:l('sp.common.max45')}" sclass="lblexample" />
         					</hlayout>
         				</row>
         				<row>
@@ -59,9 +58,7 @@
         				<row>
         					<label value="${c:l('sp.common.actNpNsn')}" sclass="lblbold" />
         					<hlayout>
-        						<textbox id="txtactNpNsn" maxlength="45" width="320px" constraint="no empty: ${c:l('error.field.required')}" />
-        						<label value="*" sclass="lblreq" />
-        						<label value="${c:l('sp.common.max45')}" sclass="lblexample" />
+        						<textbox id="txtactNpNsn" maxlength="45" width="320px"  />
         					</hlayout>
         				</row>
         				<row>
@@ -70,7 +67,6 @@
         					<hlayout>
         						<textbox id="txtUbicationBox" maxlength="45" width="320px" constraint="no empty: ${c:l('error.field.required')}" />
         						<label value="*" sclass="lblreq" />
-        						<label value="${c:l('sp.common.max45')}" sclass="lblexample" />
         					</hlayout>
         				</row>
         				<row>
@@ -78,24 +74,36 @@
         					<hlayout>
         						<textbox id="txtUbicationFolder" maxlength="45" width="320px" constraint="no empty: ${c:l('error.field.required')}" />
         						<label value="*" sclass="lblreq" />
-        						<label value="${c:l('sp.common.max45')}" sclass="lblexample" />
         					</hlayout>
         				</row>
         				<row>
         					<label
         						value="${c:l('sp.common.batchNumber')}" sclass="lblbold" />
         					<hlayout>
-        						<textbox id="txtBachNumber" maxlength="45" width="320px" constraint="no empty: ${c:l('error.field.required')}" />
-        						<label value="*" sclass="lblreq" />
-        						<label value="${c:l('sp.common.max45')}" sclass="lblexample" />
+        						<textbox id="txtBachNumber" maxlength="45" width="320px" />
         					</hlayout>
         				</row>
-        				<row>
-        					<label value="${c:l('sp.common.enabled')}" sclass="lblbold" />
-        					<hlayout>
-        						<checkbox id="cbxEnabled" checked="true" />
-        					</hlayout>
-        				</row>
+        				 <row>
+                           <label value="${c:l('sp.common.amount')}" sclass="lblbold"/>
+                             <hlayout>
+                              <textbox id="txtAmount" width="320px" maxlength="45" constraint="no empty: ${c:l('error.field.required')}"/>
+                              <label value="*" sclass="lblreq" />
+                             </hlayout>
+                          </row>
+                            <row>
+                             <label value="${c:l('sp.common.stockMin')}" sclass="lblbold"/>
+                               <hlayout>
+                               <intbox id="intStockMin" width="320px" maxlength="45" constraint="no empty: ${c:l('error.field.required')}"/>
+                                 <label value="*" sclass="lblreq" />
+                               </hlayout>
+                            </row> 
+                           <row>
+                             <label value="${c:l('sp.common.stockMax')}" sclass="lblbold"/>
+                             <hlayout>
+                               <intbox id="intStockMax" width="320px" maxlength="45" constraint="no empty: ${c:l('error.field.required')}"/>
+                               <label value="*" sclass="lblreq" />
+                             </hlayout>
+                           </row>
         			</rows>
         		</grid>
 
@@ -107,7 +115,7 @@
         <!--Buttons-->
         <div align="right">
         	<button id="btnSave" width="150px" label="${c:l('sp.common.actions.save')}" class="open orange" />
-<!--         	<button id="btnBack" width="150px" label="${c:l('sp.common.actions.back')}" class="open gray" onClick="Executions.sendRedirect(&quot;catCustomer.zul&quot;)" /> -->
+<!--         	<button id="btnBack" width="150px" label="${c:l('sp.common.actions.back')}" class="open gray" onClick="Executions.sendRedirect(&quot;catProducts.zul&quot;)" /> -->
         	<button id="btnBack" width="150px" label="${c:l('sp.common.actions.back')}" class="open gray"/>
         </div>
     </window>

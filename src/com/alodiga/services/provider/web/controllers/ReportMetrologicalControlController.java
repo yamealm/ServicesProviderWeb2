@@ -95,37 +95,39 @@ public class ReportMetrologicalControlController extends GenericAbstractListCont
             clearMessage();
             EJBRequest _request = new EJBRequest();
             Map<String, Object> params = new HashMap<String, Object>();
-            params.put(QueryConstants.PARAM_BEGINNING_DATE, dtbBeginningDate.getValue());
-            params.put(QueryConstants.PARAM_ENDING_DATE, dtbEndingDate.getValue());
-            params.put(QueryConstants.PARAM_CATEGORY_ID, Category.WAIT);
-            if (dtbEndingDate.getValue().getTime() >= dtbBeginningDate.getValue().getTime()) {
-              
-                if (cmbBraund.getSelectedItem() != null && cmbBraund.getSelectedIndex() != 0) {
-                    params.put(QueryConstants.PARAM_BRAUND_ID, ((Provider) cmbBraund.getSelectedItem().getValue()).getId());
-                }
-                if (cmbModel.getSelectedItem() != null && cmbModel.getSelectedIndex() != 0) {
-                  params.put(QueryConstants.PARAM_MODEL_ID, ((Product) cmbModel.getSelectedItem().getValue()).getId());
-                }
-                if (cmbEnterCalibration.getSelectedItem() != null && cmbEnterCalibration.getSelectedIndex() != 0) {
-                    params.put(QueryConstants.PARAM_ENTER_CALIBRATION_ID, ((Customer) cmbEnterCalibration.getSelectedItem().getValue()).getId());
-                }
-               
-                if (txtSerial.getText() != null && txtSerial.getText() !="") {
-                    params.put(QueryConstants.PARAM_SERIAL, txtSerial.getText());
-                }
-                if (txtDesignation.getText() != null && txtDesignation.getText() !="") {
-                    params.put(QueryConstants.PARAM_DESIGNATION, txtDesignation.getText());
-                }
-                if (txtInstrument.getText() != null && txtInstrument.getText() !="") {
-                    params.put(QueryConstants.PARAM_INSTRUMENT, txtInstrument.getText());
-                }
-                _request.setParams(params);
-                _request.setParam(true);
-                metrologicalControls = productEJB.searchMetrologicalControl(_request);
-                loadList(metrologicalControls);
-            } else  {
-                this.showMessage("sp.error.date.invalid", true, null);
-            }
+			if (dtbEndingDate.getValue() != null && dtbBeginningDate.getValue() != null) {
+				params.put(QueryConstants.PARAM_BEGINNING_DATE, dtbBeginningDate.getValue());
+				params.put(QueryConstants.PARAM_ENDING_DATE, dtbEndingDate.getValue());
+				if (dtbEndingDate.getValue().getTime() >= dtbBeginningDate.getValue().getTime()) {
+
+				} else {
+					this.showMessage("sp.error.date.invalid", true, null);
+				}
+			}
+			if (cmbBraund.getSelectedItem() != null && cmbBraund.getSelectedIndex() != 0) {
+				params.put(QueryConstants.PARAM_BRAUND_ID, ((Braund) cmbBraund.getSelectedItem().getValue()).getId());
+			}
+			if (cmbModel.getSelectedItem() != null && cmbModel.getSelectedIndex() != 0) {
+				params.put(QueryConstants.PARAM_MODEL_ID, ((Model) cmbModel.getSelectedItem().getValue()).getId());
+			}
+			if (cmbEnterCalibration.getSelectedItem() != null && cmbEnterCalibration.getSelectedIndex() != 0) {
+				params.put(QueryConstants.PARAM_ENTER_CALIBRATION_ID,
+						((EnterCalibration) cmbEnterCalibration.getSelectedItem().getValue()).getId());
+			}
+
+			if (txtSerial.getText() != null && txtSerial.getText() != "") {
+				params.put(QueryConstants.PARAM_SERIAL, txtSerial.getText());
+			}
+			if (txtDesignation.getText() != null && txtDesignation.getText() != "") {
+				params.put(QueryConstants.PARAM_DESIGNATION, txtDesignation.getText());
+			}
+			if (txtInstrument.getText() != null && txtInstrument.getText() != "") {
+				params.put(QueryConstants.PARAM_INSTRUMENT, txtInstrument.getText());
+			}
+			_request.setParams(params);
+			_request.setParam(true);
+			metrologicalControls = productEJB.searchMetrologicalControl(_request);
+			 loadList(metrologicalControls);
         } catch (GeneralException ex) {
             showError(ex);
         } catch (NullParameterException ex) {
@@ -137,21 +139,20 @@ public class ReportMetrologicalControlController extends GenericAbstractListCont
 
     private void loadBraunds(Braund braund) {
         try {
-            cmbBraund.getItems().clear();
-            braunds = utilsEJB.getBraunds();
-            for (Braund e : braunds) {
-                Comboitem cmbItem = new Comboitem();
-                cmbItem.setLabel(e.getName());
-                cmbItem.setValue(e);
-                cmbItem.setParent(cmbBraund);
-                if (braund != null && braund.getId().equals(e.getId())) {
-                	cmbBraund.setSelectedItem(cmbItem);
-                } else {
-                	cmbBraund.setSelectedIndex(0);
-                	braund = (Braund) cmbBraund.getSelectedItem().getValue();
-                }
-            }
-            loadModel(braund);
+			cmbBraund.getItems().clear();
+			braunds = utilsEJB.getBraunds();
+			Comboitem cmbItem = new Comboitem();
+			cmbItem.setLabel(Labels.getLabel("sp.common.all"));
+			cmbItem.setParent(cmbBraund);
+			cmbBraund.setSelectedItem(cmbItem);
+			for (Braund e : braunds) {
+				cmbItem = new Comboitem();
+				cmbItem.setLabel(e.getName());
+				cmbItem.setValue(e);
+				cmbItem.setParent(cmbBraund);
+
+			}
+			loadModel(braund);
         } catch (EmptyListException ex) {
             
         }catch (Exception ex) {
@@ -159,42 +160,50 @@ public class ReportMetrologicalControlController extends GenericAbstractListCont
         }
     }
 
-       
-    private void loadModel(Braund braund) {
-
-
-            try {
-            	cmbModel.getItems().clear();
-                models = utilsEJB.getModelsByBraund(braund.getId());
-                for (int i = 0; i < models.size(); i++) {
-                    Comboitem item = new Comboitem();
-                    item.setValue(models.get(i));
-                    item.setLabel(models.get(i).getName());
-                    item.setParent(cmbModel);
-                }
-                cmbModel.setSelectedIndex(0);
-            } catch (EmptyListException ex) {
-               
-            } catch (Exception ex) {
-                ex.getStackTrace();
-            }
-        
+    public void onChange$cmbBraund() {
+		if (cmbBraund.getSelectedItem().getValue() != null) {
+			Braund braund = (Braund) cmbBraund.getSelectedItem().getValue();
+			loadModel(braund);
+		} else
+			loadModel(null);
     }
+    
+    private void loadModel(Braund braund) {
+		try {
+			cmbModel.getItems().clear();
+			if (braund != null) {
+				models = utilsEJB.getModelsByBraund(braund.getId());
+				for (int i = 0; i < models.size(); i++) {
+					Comboitem item = new Comboitem();
+					item.setValue(models.get(i));
+					item.setLabel(models.get(i).getName());
+					item.setParent(cmbModel);
+				}
+				cmbModel.setSelectedIndex(0);
+			} else {
+				Comboitem item = new Comboitem();
+				item.setLabel(Labels.getLabel("sp.common.all"));
+				item.setParent(cmbModel);
+				cmbModel.setSelectedItem(item);
+			}
+		} catch (EmptyListException ex) {
+
+		} catch (Exception ex) {
+			ex.getStackTrace();
+		}
+
+	}
 
     private void loadEnterCalibration(EnterCalibration enterCalibration) {
         try {
         	cmbEnterCalibration.getItems().clear();
         	enterCalibrations = utilsEJB.getEnterCalibrations();
+        	Comboitem cmbItem = new Comboitem();
+        	cmbItem.setLabel(Labels.getLabel("sp.common.all"));
             for (EnterCalibration e : enterCalibrations) {
-                Comboitem cmbItem = new Comboitem();
                 cmbItem.setLabel(e.getName());
                 cmbItem.setValue(e);
                 cmbItem.setParent(cmbEnterCalibration);
-                if (enterCalibration != null && enterCalibration.getId().equals(e.getId())) {
-                	cmbEnterCalibration.setSelectedItem(cmbItem);
-                } else {
-                	cmbEnterCalibration.setSelectedIndex(0);
-                }
             }
         }catch (EmptyListException ex) {
             

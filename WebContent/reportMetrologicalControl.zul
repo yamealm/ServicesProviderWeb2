@@ -68,7 +68,7 @@
                                                 </hlayout> 
                                                  <hlayout>                                     
                                                     <label value="${c:l('sp.common.control.designation')}" sclass="lblbold"/>
-                                                    <combobox id="txtDesignation" width="160px" mold="rounded" readonly="true"/>
+                                                    <textbox id="txtDesignation" width="160px" />
                                                     <label value="${c:l('sp.common.control.id.instrument')}" sclass="lblbold"/>
                                                     <textbox id="txtInstrument"  maxlength="45" width="320px"/>
                                                     <label value="${c:l('sp.common.enter.name')}" sclass="lblbold"/>
