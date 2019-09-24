@@ -1,4 +1,5 @@
 package com.alodiga.services.provider.web.controllers;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -56,6 +57,10 @@ public class ListAuditController extends GenericAbstractAdminController {
         try {            
             accessControlEJB = (AccessControlEJB) EJBServiceLocator.getInstance().get(EjbConstants.ACCESS_CONTROL_EJB);
             auditoryEJB = (AuditoryEJB) EJBServiceLocator.getInstance().get(EjbConstants.AUDITORY_EJB);
+            datefrom.setFormat("dd/MM/yyyy");
+            datefrom.setValue(new Timestamp(new java.util.Date().getTime()));
+            dateuntil.setFormat("dd/MM/yyyy");
+            dateuntil.setValue(new Timestamp(new java.util.Date().getTime()));
             loadUsers();             
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -128,9 +133,9 @@ public class ListAuditController extends GenericAbstractAdminController {
 				item.appendChild(new Listcell(au.getUser().getLogin()));
 				item.appendChild(new Listcell(au.getUser().getFirstName() + " " + au.getUser().getLastName()));
 				item.appendChild(new Listcell(au.getPermission().getName().toString()));
+				item.appendChild(new Listcell(au.getCreationDate().toString()));
 				item.appendChild(new Listcell(au.getOriginalValues()));
 				item.appendChild(new Listcell(au.getNewValues()));
-				item.appendChild(new Listcell(au.getCreationDate().toString()));
 				item.setParent(listAudits);
 			}
 		} else {

@@ -64,7 +64,7 @@
                                             </vlayout>
                                             <separator/>
                                             <!--Record Listbox-->
-                                            <listbox id="lbxRecords" fixedLayout="true" width="1395px" height="530px" mold="paging" pageSize="28">
+                                            <listbox id="listAudits" fixedLayout="true" width="1395px" height="530px" mold="paging" pageSize="28">
                                                 <listhead>
                                                     <listheader label="${c:l('sp.auditActions.userLogin')}" width="225px" sort="auto"/>
                                                     <listheader label="${c:l('sp.auditActions.userName')}" width="225px" sort="auto"/>
