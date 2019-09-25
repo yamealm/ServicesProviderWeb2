@@ -932,4 +932,6 @@ ADD CONSTRAINT `fk_metrological_control_history_category`
   ON DELETE NO ACTION
   ON UPDATE NO ACTION;
 
+ALTER TABLE `services`.`product` 
+CHANGE COLUMN `actNpNsn` `actNpNsn` VARCHAR(45) NULL DEFAULT NULL ;
   

@@ -1,7 +1,5 @@
 package com.alodiga.services.provider.web.controllers;
 
-import java.sql.Blob;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -11,7 +9,6 @@ import org.zkoss.zhtml.Filedownload;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
-import org.zkoss.zk.ui.SuspendNotAllowedException;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
@@ -19,7 +16,6 @@ import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
-import org.zkoss.zul.Window;
 
 import com.alodiga.services.provider.commons.ejbs.ProductEJB;
 import com.alodiga.services.provider.commons.ejbs.TransactionEJB;
@@ -27,7 +23,6 @@ import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
 import com.alodiga.services.provider.commons.genericEJB.EJBRequest;
 import com.alodiga.services.provider.commons.models.Category;
 import com.alodiga.services.provider.commons.models.Condicion;
-import com.alodiga.services.provider.commons.models.Customer;
 import com.alodiga.services.provider.commons.models.Enterprise;
 import com.alodiga.services.provider.commons.models.ProductSerie;
 import com.alodiga.services.provider.commons.models.Provider;
@@ -131,19 +126,13 @@ public class ViewStockController extends GenericAbstractAdminController {
     }
 
     public Boolean validateEmpty() {
-    	if (txtBachNumber.getText().isEmpty()) {
-        	txtBachNumber.setFocus(true);
-            this.showMessage("sp.error.field.cannotNull", true, null);
-        } if (txtUbicationFolder.getText().isEmpty()) {
+    	if (txtUbicationFolder.getText().isEmpty()) {
         	txtUbicationFolder.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
         } if (txtUbicationBox.getText().isEmpty()) {
         	txtUbicationBox.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        } if (txtactNpNsn.getText().isEmpty()) {
-        	txtactNpNsn.setFocus(true);
-            this.showMessage("sp.error.field.cannotNull", true, null);
-        } if (txtDescription.getText().isEmpty()) {
+        }  if (txtDescription.getText().isEmpty()) {
         	txtDescription.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
         }if (txtPartNumber.getText().isEmpty()) {
@@ -229,10 +218,12 @@ public class ViewStockController extends GenericAbstractAdminController {
     	intStockMax.setValue(productSerie.getProduct().getStockMax());
     	intStockMin.setValue(productSerie.getProduct().getStockMin());
     	txtAmount.setText(String.valueOf(productSerie.getProduct().getAmount()));
-		txtBachNumber.setText(productSerie.getProduct().getBatchNumber());
+    	if (productSerie.getProduct().getBatchNumber()!=null && !productSerie.getProduct().getBatchNumber().equals(""))
+    		txtBachNumber.setText(productSerie.getProduct().getBatchNumber());
 		txtUbicationFolder.setText(productSerie.getProduct().getUbicationFolder());
 		txtUbicationBox.setText(productSerie.getProduct().getUbicationBox());
-		txtactNpNsn.setText(productSerie.getProduct().getActNpNsn());
+		if (productSerie.getProduct().getActNpNsn()!=null && !productSerie.getProduct().getActNpNsn().equals(""))
+			txtactNpNsn.setText(productSerie.getProduct().getActNpNsn());
 		txtDescription.setText(productSerie.getProduct().getDescription());
 		txtInvoice.setText(productSerie.getBeginTransactionId().getInvoice() );
 		txtPartNumber.setText(productSerie.getProduct().getPartNumber());

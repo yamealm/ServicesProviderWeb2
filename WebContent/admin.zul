@@ -78,34 +78,34 @@
                                     <vlayout id="vltLogin">
                                     
                                         <hlayout>
-                                            <button id="btnLogin" style="cursor:pointer" width="120px" height="23px" class="small1 orange" label="${c:l('sp.common.actions.signIn')}"/>
-                                            <button id="btnRecoverPassword" style="cursor:pointer" width="120px" height="23px" class="small1 gray" label="${c:l('sp.common.forgotPassword')}"/>
+                                            <button id="btnLogin" style="cursor:pointer" width="140px" height="23px" class="small1 orange" label="${c:l('sp.common.actions.signIn')}"/>
+                                            <button id="btnRecoverPassword" style="cursor:pointer" width="140px" height="23px" class="small1 gray" label="${c:l('sp.common.forgotPassword')}"/>
                                         </hlayout>
                                     </vlayout>
                                     <vlayout id="vltPasswordRecovery" visible="false">
 
                                         <hlayout>
-                                            <button id="btnGeneratePassword" style="cursor:pointer" width="120px" height="23px" class="small1 orange" label="${c:l('sp.common.generatePassword')}"/>
-                                            <button id="btnBack" style="cursor:pointer" width="120px" height="23px" class="small1 gray" label="${c:l('sp.common.actions.cancel')}"/>
+                                            <button id="btnGeneratePassword" style="cursor:pointer" width="140px" height="23px" class="small1 orange" label="${c:l('sp.common.generatePassword')}"/>
+                                            <button id="btnBack" style="cursor:pointer" width="140px" height="23px" class="small1 gray" label="${c:l('sp.common.actions.cancel')}"/>
                                         </hlayout>
                                     </vlayout>
                                 </vlayout>
                             </hlayout>
                         </groupbox>
-                          <groupbox id="gbxRecoverPass" mold="3d" width="230px" visible="false" class="borderedFrame">
+                          <groupbox id="gbxRecoverPass" mold="3d" width="350px" visible="false" class="borderedFrame">
                                             <caption label="${c:l('sp.common.loginTitle')}" />
                                             <hlayout >
                                                 <vlayout>
-                                                    <grid fixedLayout="true" width="225px">
+                                                    <grid fixedLayout="true" width="290px">
                                                         <columns >
                                                             <column label="" width="80px" />
-                                                            <column label="" width="140px"/>
+                                                            <column label="" width="200px"/>
                                                         </columns>
                                                         <rows>
                                                             <row>
                                                                 <label value="${c:l('sp.common.login')}" width="80px" class="lblbold"/>
                                                                 <hlayout>
-                                                                    <textbox id="txtRecoverLogin" width="120px" constraint="no empty: ${c:l('sp.error.field.required')}"/>
+                                                                    <textbox id="txtRecoverLogin" width="150px" constraint="no empty: ${c:l('sp.error.field.required')}"/>
                                                                 </hlayout>
                                                             </row>
                                                         </rows>
@@ -113,8 +113,8 @@
                                                     <vlayout>
                                                         <div align="center">
                                                             <hlayout>
-                                                                <button id="btnRecoverPass" label="${c:l('sp.common.generatePassword')}" width="100px" class="open orange" tooltiptext="${c:l('sp.common.actions.search.filter.tooltip')}"/>
-                                                                <button id="btnCancelRecoverPassword" label="${c:l('sp.common.actions.cancel')}"  width="100px" class="open gray" tooltiptext="${c:l('sp.common.actions.cancel.filter.tooltip')}"/>
+                                                                <button id="btnRecoverPass" label="${c:l('sp.common.generatePassword')}" width="140px" class="open orange" tooltiptext="${c:l('sp.common.actions.search.filter.tooltip')}"/>
+                                                                <button id="btnCancelRecoverPassword" label="${c:l('sp.common.actions.cancel')}"  width="140px" class="open gray" tooltiptext="${c:l('sp.common.actions.cancel.filter.tooltip')}"/>
                                                             </hlayout>
                                                         </div>
                                                     </vlayout>
@@ -123,13 +123,13 @@
                                        </groupbox>
                         <div id="divInfo" height="20px" width="100%" style="background:#B6E59E;" align="left" visible="false"/>
                         <separator/>
-                        <div align="center">
+<!--                         <div align="center"> -->
 
-                            <label value="${c:l('sp.common.page.copyright1')}" style="color:#837E76;"/>
-                            <separator/>
-                            <label value="${c:l('sp.common.page.copyright2')}" style="color:#837E76;"/>
+<!--                             <label value="${c:l('sp.common.page.copyright1')}" style="color:#837E76;"/> -->
+<!--                             <separator/> -->
+<!--                             <label value="${c:l('sp.common.page.copyright2')}" style="color:#837E76;"/> -->
                             
-                        </div>
+<!--                         </div> -->
                     </vlayout>
                 </div>
             </center>

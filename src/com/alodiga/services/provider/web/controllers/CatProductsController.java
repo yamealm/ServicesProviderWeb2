@@ -9,6 +9,8 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.SuspendNotAllowedException;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
@@ -27,6 +29,9 @@ import com.alodiga.services.provider.commons.models.Profile;
 import com.alodiga.services.provider.commons.models.User;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
+import com.alodiga.services.provider.web.components.ChangeStatusButton;
+import com.alodiga.services.provider.web.components.EditButton;
+import com.alodiga.services.provider.web.components.ListcellEditButton;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractListController;
 import com.alodiga.services.provider.web.utils.AccessControl;
 import com.alodiga.services.provider.web.utils.WebConstants;
@@ -71,6 +76,7 @@ public class CatProductsController extends GenericAbstractListController<Product
             currentUser = AccessControl.loadCurrentUser();
             currentProfile = currentUser.getCurrentProfile(Enterprise.TURBINES);
             productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
+            checkPermissions();
             getData();
             loadList(products);
         } catch (Exception ex) {
@@ -117,11 +123,13 @@ public class CatProductsController extends GenericAbstractListController<Product
                     item.appendChild(new Listcell(product.getPartNumber()));
                     item.appendChild(new Listcell(product.getDescription()));
                     item.appendChild(new Listcell(String.valueOf(product.getAmount())));
+                    item.appendChild(permissionEdit ? initEnabledButton(product.getEnabled(), item) : new Listcell());
                     item.setParent(lbxRecords);
                 }
             } else {
                 item = new Listitem();
                 item.appendChild(new Listcell(Labels.getLabel("sp.error.empty.list")));
+                item.appendChild(new Listcell());
                 item.appendChild(new Listcell());
                 item.appendChild(new Listcell());
                 item.setParent(lbxRecords);
@@ -180,4 +188,42 @@ public class CatProductsController extends GenericAbstractListController<Product
 		
 	}
     
+	 private Listcell initEnabledButton(final Boolean enabled, final Listitem listItem) {
+	        Listcell cell = new Listcell();
+	        cell.setValue("");
+	        final EditButton button = new EditButton();
+	        button.setTooltiptext(Labels.getLabel("sp.common.actions.edit"));
+	        button.setClass("open orange");
+	        button.addEventListener("onClick", new EventListener() {
+	            public void onEvent(Event event) throws Exception {
+	                changeStatus(button, listItem);
+	            }
+	        });
+
+	        button.setParent(cell);
+	        return cell;
+	    }
+	 
+	 private void changeStatus(EditButton button, Listitem listItem) {
+	        try {
+	            Product product = (Product) listItem.getValue();
+	            AccessControl.saveAction(Permission.EDIT_PRODUCT, "edit product = " + product.getPartNumber());
+	        	Sessions.getCurrent().setAttribute("object",product);
+	        	Sessions.getCurrent().setAttribute("eventType", WebConstants.EVENT_EDIT);
+	        	winProductsView.detach();
+	            Window window = (Window)Executions.createComponents("addProduct.zul", null, null);
+	            Sessions.getCurrent().setAttribute("page1","catProducts.zul");
+	            try {
+	    			window.doModal();
+	    		} catch (SuspendNotAllowedException e) {
+	    			// TODO Auto-generated catch block
+	    			e.printStackTrace();
+	    		} catch (InterruptedException e) {
+	    			// TODO Auto-generated catch block
+	    			e.printStackTrace();
+	    		}
+	        } catch (Exception ex) {
+	            showError(ex);
+	        }
+	    }
 }

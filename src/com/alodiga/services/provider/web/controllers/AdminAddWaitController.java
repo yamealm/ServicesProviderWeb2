@@ -110,6 +110,7 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
         transactionEJB = (TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
         customerEJB = (CustomerEJB) EJBServiceLocator.getInstance().get(EjbConstants.CUSTOMER_EJB);
         user = AccessControl.loadCurrentUser();
+        eventType =WebConstants.EVENT_ADD;
         if (customer != null && productParam !=null) {
 			loadFields(productParam!=null?productParam:null);
             loadEnterprises(productParam!=null?productParam.getEnterprise():null);
@@ -172,19 +173,13 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
     }
 
     public Boolean validateEmpty() {
-    	if (txtBachNumber.getText().isEmpty()) {
-        	txtBachNumber.setFocus(true);
-            this.showMessage("sp.error.field.cannotNull", true, null);
-        } if (txtUbicationFolder.getText().isEmpty()) {
+    	if (txtUbicationFolder.getText().isEmpty()) {
         	txtUbicationFolder.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
         } if (txtUbicationBox.getText().isEmpty()) {
         	txtUbicationBox.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        } if (txtactNpNsn.getText().isEmpty()) {
-        	txtactNpNsn.setFocus(true);
-            this.showMessage("sp.error.field.cannotNull", true, null);
-        } if (txtDescription.getText().isEmpty()) {
+        }  if (txtDescription.getText().isEmpty()) {
         	txtDescription.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
         }if (txtPartNumber.getText().isEmpty()) {
@@ -274,10 +269,12 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
 			intStockMax.setValue(product.getStockMax());
 			intStockMin.setValue(product.getStockMin());
 			txtAmount.setText(String.valueOf(product.getAmount()));
-			txtBachNumber.setText(product.getBatchNumber());
+			if (product.getBatchNumber()!=null && !product.getBatchNumber().equals(""))
+				txtBachNumber.setText(product.getBatchNumber());
 			txtUbicationFolder.setText(product.getUbicationFolder());
 			txtUbicationBox.setText(product.getUbicationBox());
-			txtactNpNsn.setText(product.getActNpNsn());
+			if (product.getActNpNsn()!=null && !product.getActNpNsn().equals(""))
+				txtactNpNsn.setText(product.getActNpNsn());
 			txtDescription.setText(product.getDescription());
 			txtPartNumber.setText(product.getPartNumber());
 			try {
@@ -430,8 +427,8 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
             productParam.setRealAmount(Float.valueOf(txtAmount.getText()));
             productParam.setUbicationBox(txtUbicationBox.getText());
             productParam.setUbicationFolder(txtUbicationFolder.getText());
-            productParam.setStockMax(intStockMin.getValue());
             productParam.setStockMin(intStockMin.getValue());
+            productParam.setStockMax(intStockMax.getValue());
             transaction.setProduct(productParam);
 			List<ProductSerie> productSeries = new ArrayList<ProductSerie>();
 			if (ra2.isChecked()) {

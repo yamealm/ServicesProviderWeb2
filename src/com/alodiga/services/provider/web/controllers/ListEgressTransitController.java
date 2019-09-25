@@ -13,6 +13,7 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
 
 import com.alodiga.services.provider.commons.ejbs.ProductEJB;
@@ -187,16 +188,33 @@ public class ListEgressTransitController extends GenericAbstractListController<P
         return cell;
     }
     
-    private void deleteProductSerie( Listitem listItem) {
-        try {
-            ProductSerie productSerie = (ProductSerie) listItem.getValue();
-            transactionEJB.deleteStock(productSerie.getBeginTransactionId(), productSerie);
-            AccessControl.saveAction(Permission.REMOVE_TRANSIT, "product = " + productSerie.getProduct().getId() + " and product serie = " + productSerie.getSerie());
-            loadData();
-        } catch (Exception ex) {
-            showError(ex);
-        }
-    }
+	private void deleteProductSerie(Listitem listItem) {
+		try {
+			Messagebox.show(Labels.getLabel("sp.common.actions.delete.question"),
+					Labels.getLabel("sp.common.actions.delete.confirm"), Messagebox.YES | Messagebox.NO,
+					Messagebox.QUESTION, new EventListener() {
+						@Override
+						public void onEvent(final Event evt) throws InterruptedException {
+							if ("onYes".equals(evt.getName())) {
+								try {
+									ProductSerie productSerie = (ProductSerie) listItem.getValue();
+									transactionEJB.deleteStock(productSerie.getBeginTransactionId(), productSerie);
+									AccessControl.saveAction(Permission.REMOVE_TRANSIT,
+											"product = " + productSerie.getProduct().getId() + " and product serie = "
+													+ productSerie.getSerie());
+									loadData();
+								} catch (Exception ex) {
+									showError(ex);
+								}
+							}
+						}
+					});
+
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+	}
 
 
     public void getData() {

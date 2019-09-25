@@ -136,17 +136,11 @@ public class AdminEgressStockController extends GenericAbstractAdminController {
     }
 
     public Boolean validateEmpty() {
-    	if (txtBachNumber.getText().isEmpty()) {
-        	txtBachNumber.setFocus(true);
-            this.showMessage("sp.error.field.cannotNull", true, null);
-        } if (txtUbicationFolder.getText().isEmpty()) {
+    	if (txtUbicationFolder.getText().isEmpty()) {
         	txtUbicationFolder.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
         } if (txtUbicationBox.getText().isEmpty()) {
         	txtUbicationBox.setFocus(true);
-            this.showMessage("sp.error.field.cannotNull", true, null);
-        } if (txtactNpNsn.getText().isEmpty()) {
-        	txtactNpNsn.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
         } if (txtDescription.getText().isEmpty()) {
         	txtDescription.setFocus(true);
@@ -230,10 +224,12 @@ public class AdminEgressStockController extends GenericAbstractAdminController {
     	intStockMax.setValue(product.getStockMax());
     	intStockMin.setValue(product.getStockMin());
     	txtAmount.setText(String.valueOf(product.getAmount()));
-		txtBachNumber.setText(product.getBatchNumber());
+    	if (product.getBatchNumber()!=null && !product.getBatchNumber().equals(""))
+			txtBachNumber.setText(product.getBatchNumber());
 		txtUbicationFolder.setText(product.getUbicationFolder());
 		txtUbicationBox.setText(product.getUbicationBox());
-		txtactNpNsn.setText(product.getActNpNsn());
+		if (product.getActNpNsn()!=null && !product.getActNpNsn().equals(""))
+			txtactNpNsn.setText(product.getActNpNsn());
 		txtDescription.setText(product.getDescription());
 		txtPartNumber.setText(product.getPartNumber());
 		try {

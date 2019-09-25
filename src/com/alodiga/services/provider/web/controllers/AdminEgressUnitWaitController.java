@@ -170,17 +170,11 @@ public class AdminEgressUnitWaitController extends GenericAbstractAdminControlle
     }
 
     public Boolean validateEmpty() {
-    	if (txtBachNumber.getText().isEmpty()) {
-        	txtBachNumber.setFocus(true);
-            this.showMessage("sp.error.field.cannotNull", true, null);
-        } if (txtUbicationFolder.getText().isEmpty()) {
+    	if (txtUbicationFolder.getText().isEmpty()) {
         	txtUbicationFolder.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
         } if (txtUbicationBox.getText().isEmpty()) {
         	txtUbicationBox.setFocus(true);
-            this.showMessage("sp.error.field.cannotNull", true, null);
-        } if (txtactNpNsn.getText().isEmpty()) {
-        	txtactNpNsn.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
         } if (txtDescription.getText().isEmpty()) {
         	txtDescription.setFocus(true);
@@ -247,10 +241,12 @@ public class AdminEgressUnitWaitController extends GenericAbstractAdminControlle
     	intStockMax.setValue(productSerie.getProduct().getStockMax());
     	intStockMin.setValue(productSerie.getProduct().getStockMin());
     	txtAmount.setText(String.valueOf(productSerie.getProduct().getAmount()));
-		txtBachNumber.setText(productSerie.getProduct().getBatchNumber());
+    	if (productSerie.getProduct().getBatchNumber()!=null && !productSerie.getProduct().getBatchNumber().equals(""))
+    		txtBachNumber.setText(productSerie.getProduct().getBatchNumber());
 		txtUbicationFolder.setText(productSerie.getProduct().getUbicationFolder());
 		txtUbicationBox.setText(productSerie.getProduct().getUbicationBox());
-		txtactNpNsn.setText(productSerie.getProduct().getActNpNsn());
+		if (productSerie.getProduct().getActNpNsn()!=null && !productSerie.getProduct().getActNpNsn().equals(""))
+			txtactNpNsn.setText(productSerie.getProduct().getActNpNsn());
 		txtDescription.setText(productSerie.getProduct().getDescription());
 		txtPartNumber.setText(productSerie.getProduct().getPartNumber());
 		txtQuarantine.setText(productSerie.getQuarantineReason());

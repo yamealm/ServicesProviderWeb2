@@ -1,7 +1,6 @@
 package com.alodiga.services.provider.web.controllers;
 
 import java.sql.Blob;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -141,19 +140,13 @@ public class ViewQuarantineController extends GenericAbstractAdminController {
     }
 
     public Boolean validateEmpty() {
-    	if (txtBachNumber.getText().isEmpty()) {
-        	txtBachNumber.setFocus(true);
-            this.showMessage("sp.error.field.cannotNull", true, null);
-        } if (txtUbicationFolder.getText().isEmpty()) {
+    	if (txtUbicationFolder.getText().isEmpty()) {
         	txtUbicationFolder.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
         } if (txtUbicationBox.getText().isEmpty()) {
         	txtUbicationBox.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        } if (txtactNpNsn.getText().isEmpty()) {
-        	txtactNpNsn.setFocus(true);
-            this.showMessage("sp.error.field.cannotNull", true, null);
-        } if (txtDescription.getText().isEmpty()) {
+        }if (txtDescription.getText().isEmpty()) {
         	txtDescription.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
         }if (txtPartNumber.getText().isEmpty()) {
@@ -245,10 +238,12 @@ public class ViewQuarantineController extends GenericAbstractAdminController {
     	intStockMax.setValue(productSerie.getProduct().getStockMax());
     	intStockMin.setValue(productSerie.getProduct().getStockMin());
     	txtAmount.setText(String.valueOf(productSerie.getProduct().getAmount()));
-		txtBachNumber.setText(productSerie.getProduct().getBatchNumber());
+    	if (productSerie.getProduct().getBatchNumber()!=null && !productSerie.getProduct().getBatchNumber().equals(""))
+    		txtBachNumber.setText(productSerie.getProduct().getBatchNumber());
 		txtUbicationFolder.setText(productSerie.getProduct().getUbicationFolder());
 		txtUbicationBox.setText(productSerie.getProduct().getUbicationBox());
-		txtactNpNsn.setText(productSerie.getProduct().getActNpNsn());
+		if (productSerie.getProduct().getActNpNsn()!=null && !productSerie.getProduct().getActNpNsn().equals(""))
+			txtactNpNsn.setText(productSerie.getProduct().getActNpNsn());
 		txtDescription.setText(productSerie.getProduct().getDescription());
 		txtInvoice.setText(productSerie.getBeginTransactionId().getInvoice() );
 		txtPartNumber.setText(productSerie.getProduct().getPartNumber());

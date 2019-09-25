@@ -59,6 +59,7 @@
         					<label value="${c:l('sp.common.actNpNsn')}" sclass="lblbold" />
         					<hlayout>
         						<textbox id="txtactNpNsn" maxlength="45" width="320px"  />
+        						<label value="${c:l('sp.common.max45')}" sclass="lblexample" />
         					</hlayout>
         				</row>
         				<row>
@@ -67,6 +68,7 @@
         					<hlayout>
         						<textbox id="txtUbicationBox" maxlength="45" width="320px" constraint="no empty: ${c:l('error.field.required')}" />
         						<label value="*" sclass="lblreq" />
+        						<label value="${c:l('sp.common.max45')}" sclass="lblexample" />
         					</hlayout>
         				</row>
         				<row>
@@ -74,6 +76,7 @@
         					<hlayout>
         						<textbox id="txtUbicationFolder" maxlength="45" width="320px" constraint="no empty: ${c:l('error.field.required')}" />
         						<label value="*" sclass="lblreq" />
+        						<label value="${c:l('sp.common.max45')}" sclass="lblexample" />
         					</hlayout>
         				</row>
         				<row>
@@ -81,6 +84,7 @@
         						value="${c:l('sp.common.batchNumber')}" sclass="lblbold" />
         					<hlayout>
         						<textbox id="txtBachNumber" maxlength="45" width="320px" />
+        						<label value="${c:l('sp.common.max45')}" sclass="lblexample" />
         					</hlayout>
         				</row>
         				 <row>
@@ -104,6 +108,12 @@
                                <label value="*" sclass="lblreq" />
                              </hlayout>
                            </row>
+                             <row>
+                               <label value="${c:l('sp.common.enabled')}" sclass="lblbold"/>
+                               <hlayout>
+                                  <checkbox id="cbxEnabled" checked="true"/>
+                               </hlayout>
+                             </row>
         			</rows>
         		</grid>
 

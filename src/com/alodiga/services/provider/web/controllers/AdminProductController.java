@@ -38,8 +38,8 @@ public class AdminProductController extends GenericAbstractAdminController {
     private Combobox cmbEnterprise;
     private Checkbox cbxEnabled;
     private Textbox txtAmount;
-    private Textbox txtRealAmount;
-    private Textbox txtInitialAmount;
+//    private Textbox txtRealAmount;
+//    private Textbox txtInitialAmount;
     private Textbox txtBachNumber;
     private Textbox txtUbicationFolder;
     private Textbox txtUbicationBox;
@@ -88,8 +88,8 @@ public class AdminProductController extends GenericAbstractAdminController {
 
     public void clearFields() {
 		cbxEnabled.setChecked(false);
-		txtRealAmount.setRawValue(null);
-		txtInitialAmount.setRawValue(null);
+//		txtRealAmount.setRawValue(null);
+//		txtInitialAmount.setRawValue(null);
 		txtBachNumber.setRawValue(null);
 		txtUbicationFolder.setRawValue(null);
 		txtUbicationBox.setRawValue(null);
@@ -103,8 +103,8 @@ public class AdminProductController extends GenericAbstractAdminController {
     public void blockFields() {
 
     	cbxEnabled.setChecked(false);
-		txtRealAmount.setReadonly(true);
-		txtInitialAmount.setReadonly(true);
+//		txtRealAmount.setReadonly(true);
+//		txtInitialAmount.setReadonly(true);
 		txtBachNumber.setReadonly(true);
 		txtUbicationFolder.setReadonly(true);
 		txtUbicationBox.setReadonly(true);
@@ -120,24 +120,26 @@ public class AdminProductController extends GenericAbstractAdminController {
     }
 
     public Boolean validateEmpty() {
-        if (txtRealAmount.getText().isEmpty()) {
-        	txtRealAmount.setFocus(true);
-            this.showMessage("sp.error.field.cannotNull", true, null);
-        }  if (txtInitialAmount.getText().isEmpty()) {
-        	txtInitialAmount.setFocus(true);
-            this.showMessage("sp.error.field.cannotNull", true, null);
-        } if (txtBachNumber.getText().isEmpty()) {
-        	txtBachNumber.setFocus(true);
-            this.showMessage("sp.error.field.cannotNull", true, null);
-        } if (txtUbicationFolder.getText().isEmpty()) {
+//        if (txtRealAmount.getText().isEmpty()) {
+//        	txtRealAmount.setFocus(true);
+//            this.showMessage("sp.error.field.cannotNull", true, null);
+//        }  if (txtInitialAmount.getText().isEmpty()) {
+//        	txtInitialAmount.setFocus(true);
+//            this.showMessage("sp.error.field.cannotNull", true, null);
+//        } 
+//    if (txtBachNumber.getText().isEmpty()) {
+//        	txtBachNumber.setFocus(true);
+//            this.showMessage("sp.error.field.cannotNull", true, null);
+//        } 
+    if (txtUbicationFolder.getText().isEmpty()) {
         	txtUbicationFolder.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
         } if (txtUbicationBox.getText().isEmpty()) {
         	txtUbicationBox.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        } if (txtactNpNsn.getText().isEmpty()) {
-        	txtactNpNsn.setFocus(true);
-            this.showMessage("sp.error.field.cannotNull", true, null);
+//        } if (txtactNpNsn.getText().isEmpty()) {
+//        	txtactNpNsn.setFocus(true);
+//            this.showMessage("sp.error.field.cannotNull", true, null);
         } if (txtDescription.getText().isEmpty()) {
         	txtDescription.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
@@ -159,13 +161,14 @@ public class AdminProductController extends GenericAbstractAdminController {
         }if (!GeneralUtils.isNumeric(txtAmount.getText())) {
         	txtAmount.setFocus(true);
             this.showMessage("sp.error.field.number", true, null);
-        }if (!GeneralUtils.isNumeric(txtRealAmount.getText())) {
-        	txtAmount.setFocus(true);
-            this.showMessage("sp.error.field.number", true, null);
-        }if (!GeneralUtils.isNumeric(txtInitialAmount.getText())) {
-        	txtInitialAmount.setFocus(true);
-            this.showMessage("sp.error.field.number", true, null);
         }
+//        if (!GeneralUtils.isNumeric(txtRealAmount.getText())) {
+//        	txtAmount.setFocus(true);
+//            this.showMessage("sp.error.field.number", true, null);
+//        }if (!GeneralUtils.isNumeric(txtInitialAmount.getText())) {
+//        	txtInitialAmount.setFocus(true);
+//            this.showMessage("sp.error.field.number", true, null);
+//        }
         
         
         else {
@@ -221,8 +224,8 @@ public class AdminProductController extends GenericAbstractAdminController {
     	intStockMax.setValue(product.getStockMax());
     	intStockMin.setValue(product.getStockMin());
     	txtAmount.setText(String.valueOf(product.getAmount()));
-    	txtRealAmount.setText(String.valueOf(product.getRealAmount()));
-		txtInitialAmount.setText(String.valueOf(product.getInictialAmount()));
+//    	txtRealAmount.setText(String.valueOf(product.getRealAmount()));
+//		txtInitialAmount.setText(String.valueOf(product.getInictialAmount()));
 		txtBachNumber.setText(product.getBatchNumber());
 		txtUbicationFolder.setText(product.getUbicationFolder());
 		txtUbicationBox.setText(product.getUbicationBox());
@@ -266,9 +269,9 @@ public class AdminProductController extends GenericAbstractAdminController {
             product.setActNpNsn(txtactNpNsn.getText());
             product.setBatchNumber(txtBachNumber.getText());
             product.setEnabled(cbxEnabled.isChecked());
-            product.setInictialAmount(Float.valueOf(txtInitialAmount.getText()));
+//            product.setInictialAmount(Float.valueOf(txtInitialAmount.getText()));
             product.setPartNumber(txtPartNumber.getText());
-            product.setRealAmount(Float.valueOf(txtRealAmount.getText()));
+//            product.setRealAmount(Float.valueOf(txtRealAmount.getText()));
             product.setUbicationBox(txtUbicationBox.getText());
             product.setUbicationFolder(txtUbicationFolder.getText());
             product.setStockMax(intStockMin.getValue());
