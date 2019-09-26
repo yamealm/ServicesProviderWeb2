@@ -121,7 +121,7 @@ public class ListProductSerieController extends GenericAbstractListController<Pr
                 if (cmbTransactionType.getSelectedItem() != null && cmbTransactionType.getSelectedIndex() != 0) {
                     params.put(QueryConstants.PARAM_TRANSACTION_TYPE_ID, ((TransactionType) cmbTransactionType.getSelectedItem().getValue()).getId());
                 }
-                if (txtWorkOrder.getText() != null && txtWorkOrder.getText() !="") {
+                if (txtWorkOrder.getText() != null && !txtWorkOrder.getText().equals("")) {
                     params.put(QueryConstants.PARAM_WORK_ORDER, txtWorkOrder.getText());
                 }
                 _request.setParams(params);

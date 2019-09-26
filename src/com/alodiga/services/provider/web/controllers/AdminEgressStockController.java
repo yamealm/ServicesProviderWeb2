@@ -387,8 +387,7 @@ public class AdminEgressStockController extends GenericAbstractAdminController {
             transaction.setCustomer(customer);
             transaction.setUser(user);
             transaction.setCreationDate(new Timestamp((new java.util.Date().getTime())));
-            TransactionType transactionType = new TransactionType();
-            transactionType.setId(TransactionType.REMOVE);
+            TransactionType transactionType = transactionEJB.loadTransactionTypebyId(TransactionType.REMOVE);
             transaction.setTransactionType(transactionType);
             transaction.setAmount(Float.valueOf(txtAmount.getText()));
             transaction.setOrderWord(txtWorkOrder.getText());
@@ -403,7 +402,7 @@ public class AdminEgressStockController extends GenericAbstractAdminController {
 					int quantity = intVal.getValue();
 					totalQuantity = totalQuantity + quantity;
 					ProductSerie productSerie = (ProductSerie) lml.getValue();
-					ProductSerie productSerie2 = (ProductSerie) lml.getValue();
+					ProductSerie productSerie2 =(ProductSerie)productSerie.clone();
 					productSerie.setEndingDate(new Timestamp(dtxExit.getValue().getTime()));
 					int oldQuantity = productSerie.getQuantity();
 					productSerie.setQuantity(quantity);
