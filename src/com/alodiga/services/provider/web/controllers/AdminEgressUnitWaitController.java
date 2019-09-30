@@ -57,7 +57,6 @@ public class AdminEgressUnitWaitController extends GenericAbstractAdminControlle
     private Textbox txtactNpNsn;
     private Textbox txtDescription;
     private Textbox txtPartNumber;
-    private Textbox txtQuarantine;
     private Textbox txtInvoice;
     private Textbox txtObservation;
     private Textbox txtSerial;
@@ -127,7 +126,6 @@ public class AdminEgressUnitWaitController extends GenericAbstractAdminControlle
 		txtBachNumber.setRawValue(null);
 		txtUbicationFolder.setRawValue(null);
 		txtUbicationBox.setRawValue(null);
-		txtQuarantine.setRawValue(null);
 		txtactNpNsn.setRawValue(null);
 		txtDescription.setRawValue(null);
 		txtPartNumber.setRawValue(null);
@@ -154,11 +152,9 @@ public class AdminEgressUnitWaitController extends GenericAbstractAdminControlle
     	dtxExpiration.setReadonly(true);
     	dtxCure.setReadonly(true);
     	dtxCreation.setReadonly(true);
-    	txtQuarantine.setReadonly(true);
     	dtxExpiration.setDisabled(true);
     	dtxCure.setDisabled(true);
     	dtxCreation.setDisabled(true);
-    	txtQuarantine.setReadonly(true);
     	txtSerial.setReadonly(true);
     	cmbCategory.setReadonly(true);
     	cmbCondition.setReadonly(true);
@@ -249,7 +245,6 @@ public class AdminEgressUnitWaitController extends GenericAbstractAdminControlle
 			txtactNpNsn.setText(productSerie.getProduct().getActNpNsn());
 		txtDescription.setText(productSerie.getProduct().getDescription());
 		txtPartNumber.setText(productSerie.getProduct().getPartNumber());
-		txtQuarantine.setText(productSerie.getQuarantineReason());
 		txtSerial.setText(productSerie.getSerie());
 		txtObservation.setText(productSerie.getObservation());
 		
@@ -395,8 +390,7 @@ public class AdminEgressUnitWaitController extends GenericAbstractAdminControlle
 				transaction.setCustomer(null);
             transaction.setUser(user);
             transaction.setCreationDate(new Timestamp(dtxExit.getValue().getTime()));
-            TransactionType transactionType = new TransactionType();
-            transactionType.setId(TransactionType.REMOVE);
+            TransactionType transactionType = transactionEJB.loadTransactionTypebyId(TransactionType.REMOVE);
             transaction.setTransactionType(transactionType);
             transaction.setAmount(Float.valueOf(txtAmount.getText()));
             productSerieParam.getProduct().setAmount(Float.valueOf(txtAmount.getText()));
@@ -405,10 +399,8 @@ public class AdminEgressUnitWaitController extends GenericAbstractAdminControlle
 			transaction.setCondition(productSerieParam.getCondition());
 			transaction.setProvider(productSerieParam.getProvider());
 			transaction.setObservation(txtObservation.getText());
-			transaction.setQuarantineReason(txtQuarantine.getText());
 			transaction.setOrderWord(txtWorkOrder.getText());
 			transaction.setWork(txtWork.getText());
-			productSerieParam.setQuarantineReason(txtQuarantine.getText());
 			productSerieParam.setEndingTransactionId(transaction);
 			productSerieParam.setOrderWord(txtWorkOrder.getText());
 			productSerieParam.setWork(txtWork.getText());

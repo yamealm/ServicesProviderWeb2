@@ -26,9 +26,9 @@
                                             <hlayout>
                                                 <toolbarbutton label="${c:l('sp.bread.crumb.home')}" onClick='Executions.sendRedirect(&quot;home-admin.zul&quot;)'/>
                                                  |
-                                                <toolbarbutton label="${c:l('sp.crud.product.list.quarantine')}" onClick='Executions.sendRedirect(&quot;listQuarantine.zul&quot;)'/>
+                                                <toolbarbutton label="${c:l('sp.crud.product.list.wait')}" onClick='Executions.sendRedirect(&quot;listEgressWait.zul&quot;)'/>
                                                  |
-                                                <toolbarbutton label="${c:l('sp.common.quarantine.egress')}" />
+                                                <toolbarbutton label="${c:l('sp.common.wait.egress')}" />
                                             </hlayout>
                                         </div>
                                         <div height="5px" width="100%" style="background:#333;" align="left"></div>
@@ -211,12 +211,6 @@
                                                             <label value="${c:l('sp.common.work.to.do')}" sclass="lblbold"/>
                                                             <hlayout>
                                                                <textbox id="txtWork"  rows="4" maxlength="45" width="320px"/>                                 
-                                                            </hlayout>
-                                                        </row>
-                                                        <row>
-                                                            <label value="${c:l('sp.common.quaratine.reason')}" sclass="lblbold"/>
-                                                            <hlayout>
-                                                               <textbox id="txtQuarantine"  rows="4" maxlength="45" width="320px"/>                                 
                                                             </hlayout>
                                                         </row>
                                                          <row>

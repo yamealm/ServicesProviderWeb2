@@ -408,8 +408,7 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
             transaction.setUser(user);
             transaction.setCreationDate(new Timestamp(dtxCreation.getValue().getTime()));
             transaction.setQuantity(intQuantity.getValue());
-            TransactionType transactionType = new TransactionType();
-            transactionType.setId(TransactionType.ADD);
+            TransactionType transactionType = transactionEJB.loadTransactionTypebyId(TransactionType.ADD);
             transaction.setTransactionType(transactionType);
             transaction.setAmount(Float.valueOf(txtAmount.getText()));
             transaction.setInvoice(txtInvoice.getText());

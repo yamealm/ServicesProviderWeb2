@@ -26,7 +26,7 @@
                                             <hlayout>
                                                 <toolbarbutton label="${c:l('sp.bread.crumb.home')}" onClick='Executions.sendRedirect(&quot;home-admin.zul&quot;)'/>
                                                  |
-                                                <toolbarbutton label="${c:l('sp.crud.product.list.quarantine')}" onClick='Executions.sendRedirect(&quot;listQuarantine.zul&quot;)'/>
+                                                <toolbarbutton label="${c:l('sp.crud.product.list.quarantine')}" onClick='Executions.sendRedirect(&quot;listEgressQuarantine.zul&quot;)'/>
                                                  |
                                                 <toolbarbutton label="${c:l('sp.common.quarantine.egress')}" />
                                             </hlayout>
@@ -214,9 +214,9 @@
                                                             </hlayout>
                                                         </row>
                                                         <row>
-                                                            <label value="${c:l('sp.common.condition')}" sclass="lblbold"/>
+                                                            <label value="${c:l('sp.common.status')}" sclass="lblbold"/>
                                                             <hlayout>
-                                                                <combobox id="cmbStatus" width="190px" mold="rounded" readonly="true"/>
+                                                                <combobox id="cmbStatus" width="190px" />
                                                                 <label value="*" sclass="lblreq" />
                                                             </hlayout>
                                                         </row>

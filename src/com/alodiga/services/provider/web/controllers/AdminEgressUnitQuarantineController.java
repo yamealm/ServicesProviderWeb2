@@ -154,19 +154,15 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
     	dtxExpiration.setReadonly(true);
     	dtxCure.setReadonly(true);
     	dtxCreation.setReadonly(true);
-    	txtQuarantine.setReadonly(true);
     	dtxExpiration.setDisabled(true);
     	dtxCure.setDisabled(true);
     	dtxCreation.setDisabled(true);
-    	txtQuarantine.setReadonly(true);
     	txtSerial.setReadonly(true);
     	cmbCategory.setReadonly(true);
     	cmbCondition.setReadonly(true);
     	cmbProvider.setReadonly(true);
     	cmbCategory.setDisabled(true);
-    	cmbCondition.setDisabled(true);
     	cmbProvider.setDisabled(true);
-    	cmbStatus.setDisabled(true);
     }
 
     public Boolean validateEmpty() {
@@ -414,8 +410,7 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
 				transaction.setCustomer(null);
             transaction.setUser(user);
             transaction.setCreationDate(new Timestamp(dtxExit.getValue().getTime()));
-            TransactionType transactionType = new TransactionType();
-            transactionType.setId(TransactionType.REMOVE);
+            TransactionType transactionType = transactionEJB.loadTransactionTypebyId(TransactionType.REMOVE);
             transaction.setTransactionType(transactionType);
             transaction.setAmount(Float.valueOf(txtAmount.getText()));
             productSerieParam.getProduct().setAmount(Float.valueOf(txtAmount.getText()));
