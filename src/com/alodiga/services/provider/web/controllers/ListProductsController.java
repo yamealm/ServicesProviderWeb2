@@ -149,7 +149,7 @@ public class ListProductsController extends GenericAbstractListController<Produc
                     item.appendChild(new Listcell(String.valueOf(product.getStockMax())));
                     item.appendChild(permissionChangeStatus ? initEnabledButton(product.getEnabled(), item) : new Listcell());
                     item.appendChild(permissionEdit ? new ListcellEditButton(adminPage, product,Permission.EDIT_PRODUCT) : new Listcell());
-                    item.appendChild(permissionRead ? new ListcellViewButton(adminPage, product,Permission.VIEW_PRODUCT) : new Listcell());
+//                    item.appendChild(permissionRead ? new ListcellViewButton(adminPage, product,Permission.VIEW_PRODUCT) : new Listcell());
                     item.setParent(lbxRecords);
                 }
             } else {

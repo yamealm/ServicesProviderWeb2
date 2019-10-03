@@ -219,7 +219,8 @@
                                                         <row>
                                                             <label value="${c:l('sp.common.quaratine.reason')}" sclass="lblbold"/>
                                                             <hlayout>
-                                                               <textbox id="txtQuarantine"  rows="4" maxlength="45" width="320px"/>                                 
+                                                               <textbox id="txtQuarantine"  rows="4" maxlength="45" width="320px" constraint="no empty: ${c:l('error.field.required')}"/>
+                                                                <label value="*" sclass="lblreq" />                                 
                                                             </hlayout>
                                                         </row>
                                                         <row>

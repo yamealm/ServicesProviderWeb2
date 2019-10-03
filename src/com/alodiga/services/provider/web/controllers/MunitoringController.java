@@ -246,11 +246,11 @@ public class MunitoringController extends GenericAbstractListController<ProductS
                     item.setValue(productSerie);
                   
                     
-                    item.appendChild(new Listcell(productSerie.getId().toString()));
                     item.appendChild(new Listcell(productSerie.getProduct().getPartNumber()));
                     item.appendChild(new Listcell(productSerie.getProduct().getDescription()));
+                    item.appendChild(new Listcell(productSerie.getSerie()!=null?productSerie.getSerie():""));
                     item.appendChild(new Listcell(productSerie.getProvider().getName()));
-              
+                    item.appendChild(new Listcell(productSerie.getCondition().getName()));
                     Listcell listCellEnding = new Listcell(productSerie.getExpirationDate().toString());
                     listCellEnding.setStyle("color:red");
                     
@@ -301,10 +301,11 @@ public class MunitoringController extends GenericAbstractListController<ProductS
                     item.setValue(productSerie);
                   
                     
-                    item.appendChild(new Listcell(productSerie.getId().toString()));
                     item.appendChild(new Listcell(productSerie.getProduct().getPartNumber()));
                     item.appendChild(new Listcell(productSerie.getProduct().getDescription()));
+                    item.appendChild(new Listcell(productSerie.getSerie()!=null?productSerie.getSerie():""));
                     item.appendChild(new Listcell(productSerie.getProvider().getName()));
+                    item.appendChild(new Listcell(productSerie.getCondition().getName()));
               
                     Listcell listCellEnding = new Listcell(productSerie.getExpirationDate().toString());
                     
@@ -355,10 +356,11 @@ public class MunitoringController extends GenericAbstractListController<ProductS
                 	
                     item = new Listitem();
                     item.setValue(productSerie);
-                    item.appendChild(new Listcell(productSerie.getId().toString()));
                     item.appendChild(new Listcell(productSerie.getProduct().getPartNumber()));
                     item.appendChild(new Listcell(productSerie.getProduct().getDescription()));
+                    item.appendChild(new Listcell(productSerie.getSerie()!=null?productSerie.getSerie():""));
                     item.appendChild(new Listcell(productSerie.getProvider().getName()));
+                    item.appendChild(new Listcell(productSerie.getCondition().getName()));
               
                     Listcell listCellEnding = new Listcell(productSerie.getCure().toString());
                     
@@ -404,9 +406,9 @@ public class MunitoringController extends GenericAbstractListController<ProductS
                 	
                     item = new Listitem();
                     item.setValue(product);
-                    item.appendChild(new Listcell(product.getId().toString()));
                     item.appendChild(new Listcell(product.getPartNumber()));
                     item.appendChild(new Listcell(product.getDescription()));
+                    item.appendChild(new Listcell(product.getActNpNsn()));
                     item.appendChild(new Listcell(product.getUbicationBox()));
                     item.appendChild(new Listcell(String.valueOf(product.getStockMin())));
                     item.appendChild(new Listcell(String.valueOf(product.getStockMax())));
@@ -453,7 +455,6 @@ public class MunitoringController extends GenericAbstractListController<ProductS
                     item.setValue(controlHistory);
                   
                     
-                    item.appendChild(new Listcell(controlHistory.getId().toString()));
                     item.appendChild(new Listcell(controlHistory.getMetrologicalControl().getDesignation()));
                     item.appendChild(new Listcell(controlHistory.getMetrologicalControl().getInstrument()));
                     item.appendChild(new Listcell(controlHistory.getMetrologicalControl().getBraund().getName()+ "/"+

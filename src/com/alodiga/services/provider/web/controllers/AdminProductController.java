@@ -1,7 +1,9 @@
 package com.alodiga.services.provider.web.controllers;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
@@ -16,6 +18,7 @@ import org.zkoss.zul.Textbox;
 import com.alodiga.services.provider.commons.ejbs.AuditoryEJB;
 import com.alodiga.services.provider.commons.ejbs.ProductEJB;
 import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
+import com.alodiga.services.provider.commons.exceptions.RegisterNotFoundException;
 import com.alodiga.services.provider.commons.genericEJB.EJBRequest;
 import com.alodiga.services.provider.commons.managers.PermissionManager;
 import com.alodiga.services.provider.commons.models.Audit;
@@ -28,6 +31,7 @@ import com.alodiga.services.provider.commons.models.User;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
 import com.alodiga.services.provider.commons.utils.GeneralUtils;
+import com.alodiga.services.provider.commons.utils.QueryConstants;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractAdminController;
 import com.alodiga.services.provider.web.utils.AccessControl;
 import com.alodiga.services.provider.web.utils.WebConstants;
@@ -264,27 +268,42 @@ public class AdminProductController extends GenericAbstractAdminController {
 
             if (_product != null) 
                 product.setId(_product.getId());
-            product.setDescription(txtDescription.getText());
-            product.setAmount(Float.valueOf(txtAmount.getText()));
-            product.setActNpNsn(txtactNpNsn.getText());
-            product.setBatchNumber(txtBachNumber.getText());
-            product.setEnabled(cbxEnabled.isChecked());
-//            product.setInictialAmount(Float.valueOf(txtInitialAmount.getText()));
-            product.setPartNumber(txtPartNumber.getText());
-//            product.setRealAmount(Float.valueOf(txtRealAmount.getText()));
-            product.setUbicationBox(txtUbicationBox.getText());
-            product.setUbicationFolder(txtUbicationFolder.getText());
-            product.setStockMax(intStockMin.getValue());
-            product.setStockMin(intStockMin.getValue());
-            Enterprise e = (Enterprise) cmbEnterprise.getSelectedItem().getValue();
-            product.setEnterprise(e);
-            request.setParam(product);
-            request.setAuditData(null);
-            product = productEJB.saveProduct(request);
-            productParam = product;
-            eventType = WebConstants.EVENT_EDIT;
-            this.showMessage("sp.common.save.success", false, null);
-            saveAudit(_product,product);
+            Map params = new HashMap<String, Object>();
+            params.put(QueryConstants.PARAM_PART_NUMBER, txtPartNumber.getText());
+            request.setParams(params);
+			if (_product == null) {
+				try {
+					productParam = productEJB.loadProductByPartNumber(request);
+					eventType = WebConstants.EVENT_EDIT;
+					loadData();
+				} catch (RegisterNotFoundException ex) {
+					productParam = null;
+				}
+			}
+			if (_product == null && productParam != null) {
+				this.showMessage("sp.error.part.number.exist", true, null);
+
+			} else {
+				product.setDescription(txtDescription.getText());
+				product.setAmount(Float.valueOf(txtAmount.getText()));
+				product.setActNpNsn(txtactNpNsn.getText());
+				product.setBatchNumber(txtBachNumber.getText());
+				product.setEnabled(cbxEnabled.isChecked());
+				product.setPartNumber(txtPartNumber.getText());
+				product.setUbicationBox(txtUbicationBox.getText());
+				product.setUbicationFolder(txtUbicationFolder.getText());
+				product.setStockMin(intStockMin.getValue());
+				product.setStockMax(intStockMax.getValue());
+				Enterprise e = (Enterprise) cmbEnterprise.getSelectedItem().getValue();
+				product.setEnterprise(e);
+				request.setParam(product);
+				request.setAuditData(null);
+				product = productEJB.saveProduct(request);
+				productParam = product;
+				eventType = WebConstants.EVENT_EDIT;
+				this.showMessage("sp.common.save.success", false, null);
+				saveAudit(_product, product);
+			}
         } catch (Exception ex) {
             showError(ex);
         }
