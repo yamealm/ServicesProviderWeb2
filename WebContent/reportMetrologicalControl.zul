@@ -57,6 +57,8 @@
                                             <!--Filters for Searching-->
                                             <vlayout>
                                                 <hlayout id="hParams" style="text-align:right">
+                                                    <label value="${c:l('sp.common.category')}" sclass="lblbold"/>
+                                                    <combobox id="cmbCategory" width="190px" mold="rounded" readonly="true"/>
                                                     <label value="${c:l('sp.common.control.braund')}" sclass="lblbold"/>
                                                     <combobox id="cmbBraund" width="160px" mold="rounded" readonly="true"/>
                                                     <label value="${c:l('sp.common.control.model')}" sclass="lblbold"/>

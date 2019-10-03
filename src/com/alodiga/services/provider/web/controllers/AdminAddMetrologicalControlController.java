@@ -21,13 +21,13 @@ import com.alodiga.services.provider.commons.genericEJB.EJBRequest;
 import com.alodiga.services.provider.commons.managers.PermissionManager;
 import com.alodiga.services.provider.commons.models.Audit;
 import com.alodiga.services.provider.commons.models.Braund;
+import com.alodiga.services.provider.commons.models.Category;
 import com.alodiga.services.provider.commons.models.EnterCalibration;
 import com.alodiga.services.provider.commons.models.Event;
 import com.alodiga.services.provider.commons.models.MetrologicalControl;
 import com.alodiga.services.provider.commons.models.MetrologicalControlHistory;
 import com.alodiga.services.provider.commons.models.Model;
 import com.alodiga.services.provider.commons.models.Permission;
-import com.alodiga.services.provider.commons.models.Profile;
 import com.alodiga.services.provider.commons.models.User;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
@@ -41,6 +41,7 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
     private Combobox cmbBraund;
     private Combobox cmbModel;
     private Combobox cmbEnterCalibration;
+    private Combobox cmbCategory;
     private Textbox txtDesignation;
     private Textbox txtInstrument;
     private Textbox txtType;
@@ -60,6 +61,7 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
     private List<Braund> braunds;
     private List<Model> models;
     private List<EnterCalibration> enterCalibrations;
+    private List<Category> categories;
     private String ipAddress;
 
     private User user;
@@ -175,13 +177,12 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
             case WebConstants.EVENT_VIEW:
                 loadFields(metrologicalControlParam);
                 loadBraunds(metrologicalControlParam.getBraund());
-//                loadControlType(metrologicalControlParam.getControlType());
                 loadEnterCalibration(metrologicalControlParam.getEnterCalibration());
                 blockFields();
                 break;
             case WebConstants.EVENT_ADD:
             	loadBraunds(null);
-//                loadControlType(null);
+                loadCategory(null);
                 loadEnterCalibration(null);
                 break;
             default:
@@ -202,11 +203,12 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
     	MetrologicalControlHistory history = null;
 		try {
 			history = transactionEJB.loadLastMetrologicalControlHistoryByMetrologicalControlId(metrologicalControlParam.getId());
+			dtxCalibration.setValue(history.getCalibrationDate());
+			dtxExpiration.setValue(history.getExpirationDate());
+			loadCategory(history.getCategory());
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 
-    	dtxCalibration.setValue(history.getCalibrationDate());
-    	dtxExpiration.setValue(history.getExpirationDate());
     	
     	txtUbication.setText(metrologicalControlParam.getUbication());
     	txtScale.setText(metrologicalControlParam.getScale());
@@ -286,6 +288,26 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
         }
     }
     
+    private void loadCategory(Category category) {
+        try {
+        	cmbCategory.getItems().clear();
+        	categories = transactionEJB.getCategories();
+			for (Category e : categories) {
+				if (e.getId().equals(Category.QUARANTINE) || e.getId().equals(Category.METEOROLOGICAL_CONTROL)) {
+					Comboitem cmbItem = new Comboitem();
+					cmbItem.setLabel(e.getName());
+					cmbItem.setValue(e);
+					cmbItem.setParent(cmbCategory);
+					if (category != null && category.getId().equals(e.getId())) {
+						cmbCategory.setSelectedItem(cmbItem);
+					}
+				}
+			}
+        } catch (Exception ex) {
+            showError(ex);
+        }
+    }
+    
     private void saveMetreologicalControl(MetrologicalControl _metrologicalControl) {
     	MetrologicalControl metrologicalControl = new MetrologicalControl();
         try {
@@ -297,6 +319,7 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
             Model model = (Model) cmbModel.getSelectedItem().getValue();
             metrologicalControl.setModel(model);
             EnterCalibration enterCalibration = (EnterCalibration) cmbEnterCalibration.getSelectedItem().getValue();
+            Category category =(Category) cmbCategory.getSelectedItem().getValue();
             metrologicalControl.setEnterCalibration(enterCalibration);
             metrologicalControl.setDesignation(txtDesignation.getText());
             metrologicalControl.setInstrument(txtInstrument.getText());
@@ -306,12 +329,16 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
             metrologicalControl.setCreationDate(new Timestamp((new java.util.Date().getTime())));
             metrologicalControl.setScale(txtScale.getText());
             metrologicalControl.setUbication(txtUbication.getText());
-            metrologicalControl.setEnabled(true);
-
+            if(category.getId().equals(Category.METEOROLOGICAL_CONTROL))
+            	metrologicalControl.setEnabled(true);
+            else
+            	metrologicalControl.setEnabled(false);
             MetrologicalControlHistory metrologicalControlHistory = new MetrologicalControlHistory();
+            metrologicalControlHistory.setCategory(category);
             metrologicalControlHistory.setCreationDate(new Timestamp((new java.util.Date().getTime())));
             metrologicalControlHistory.setCalibrationDate(new Timestamp(dtxCalibration.getValue().getTime()));
             metrologicalControlHistory.setExpirationDate(new Timestamp(dtxExpiration.getValue().getTime()));
+            metrologicalControlHistory.setObservation(txtObservation.getText());
             metrologicalControl = transactionEJB.saveMetrologicalControl(metrologicalControl,metrologicalControlHistory);
 
             this.showMessage("sp.common.save.success", false, null);

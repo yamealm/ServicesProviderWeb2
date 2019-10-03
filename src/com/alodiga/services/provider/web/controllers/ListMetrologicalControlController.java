@@ -35,7 +35,6 @@ import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
 import com.alodiga.services.provider.web.components.ChangeStatusButton;
 import com.alodiga.services.provider.web.components.ListcellEditButton;
-import com.alodiga.services.provider.web.components.ListcellViewButton;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractListController;
 import com.alodiga.services.provider.web.utils.AccessControl;
 import com.alodiga.services.provider.web.utils.PDFUtil;
@@ -139,7 +138,6 @@ public class ListMetrologicalControlController extends GenericAbstractListContro
                     item.appendChild(new Listcell(metrologicalControl.getControlType()));
                     item.appendChild(permissionDelete ? initEnabledButton(metrologicalControl.isEnabled(), item) : new Listcell());
                     item.appendChild(permissionEdit ? new ListcellEditButton(adminPage, metrologicalControl,Permission.EDIT_METEOROLOGICAL_CONTROL) : new Listcell());
-//                    item.appendChild(permissionRead ? new ListcellViewButton(adminPage, metrologicalControl,Permission.VIEW_METEOROLOGICAL_CONTROL) : new Listcell());
                     item.setParent(lbxRecords);
                 }
             } else {

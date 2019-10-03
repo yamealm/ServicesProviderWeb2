@@ -934,4 +934,14 @@ ADD CONSTRAINT `fk_metrological_control_history_category`
 
 ALTER TABLE `services`.`product` 
 CHANGE COLUMN `actNpNsn` `actNpNsn` VARCHAR(45) NULL DEFAULT NULL ;
+
+ALTER TABLE `services`.`metrological_control_history` 
+DROP FOREIGN KEY `fk_metrological_control_history_category`;
+ALTER TABLE `services`.`metrological_control_history` 
+CHANGE COLUMN `category` `categoryId` INT(3) NULL DEFAULT NULL ;
+ALTER TABLE `services`.`metrological_control_history` 
+ADD CONSTRAINT `fk_metrological_control_history_category`
+  FOREIGN KEY (`categoryId`)
+  REFERENCES `services`.`category` (`id`);
+
   

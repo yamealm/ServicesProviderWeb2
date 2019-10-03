@@ -20,6 +20,7 @@ import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Textbox;
 
 import com.alodiga.services.provider.commons.ejbs.ProductEJB;
+import com.alodiga.services.provider.commons.ejbs.TransactionEJB;
 import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
 import com.alodiga.services.provider.commons.exceptions.EmptyListException;
 import com.alodiga.services.provider.commons.exceptions.GeneralException;
@@ -27,12 +28,9 @@ import com.alodiga.services.provider.commons.exceptions.NullParameterException;
 import com.alodiga.services.provider.commons.genericEJB.EJBRequest;
 import com.alodiga.services.provider.commons.models.Braund;
 import com.alodiga.services.provider.commons.models.Category;
-import com.alodiga.services.provider.commons.models.Customer;
 import com.alodiga.services.provider.commons.models.EnterCalibration;
 import com.alodiga.services.provider.commons.models.MetrologicalControlHistory;
 import com.alodiga.services.provider.commons.models.Model;
-import com.alodiga.services.provider.commons.models.Product;
-import com.alodiga.services.provider.commons.models.Provider;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
 import com.alodiga.services.provider.commons.utils.QueryConstants;
@@ -46,6 +44,7 @@ public class ReportMetrologicalControlController extends GenericAbstractListCont
     private Listbox lbxReport;
     private Combobox cmbBraund;
     private Combobox cmbModel;
+    private Combobox cmbCategory;
     private Combobox cmbEnterCalibration;
     private Button btnExportPdf;
     private Datebox dtbBeginningDate;
@@ -55,10 +54,12 @@ public class ReportMetrologicalControlController extends GenericAbstractListCont
     private Textbox txtInstrument;
     private UtilsEJB utilsEJB = null;
     private ProductEJB productEJB = null;
+    private TransactionEJB transactionEJB = null;
     private List<Braund> braunds;
     private List<Model> models;
     private List<EnterCalibration> enterCalibrations;
     List<MetrologicalControlHistory> metrologicalControls = null;
+    List<Category> categories = null;
     private Label lblInfo;
 
     @Override
@@ -78,6 +79,7 @@ public class ReportMetrologicalControlController extends GenericAbstractListCont
             adminPage = "adminTransaction.zul";
             utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
             productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
+            transactionEJB = (TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
             getData();
         } catch (Exception ex) {
             showError(ex);
@@ -104,6 +106,10 @@ public class ReportMetrologicalControlController extends GenericAbstractListCont
 					this.showMessage("sp.error.date.invalid", true, null);
 				}
 			}
+	    	if (cmbCategory.getSelectedItem() != null && cmbCategory.getSelectedIndex() != 0) {
+	            params.put(QueryConstants.PARAM_CATEGORY_ID, ((Category) cmbCategory.getSelectedItem().getValue()).getId());
+	        }
+	    	
 			if (cmbBraund.getSelectedItem() != null && cmbBraund.getSelectedIndex() != 0) {
 				params.put(QueryConstants.PARAM_BRAUND_ID, ((Braund) cmbBraund.getSelectedItem().getValue()).getId());
 			}
@@ -159,6 +165,29 @@ public class ReportMetrologicalControlController extends GenericAbstractListCont
             showError(ex);
         }
     }
+    
+    private void loadCategory() {
+        try {
+        	cmbCategory.getItems().clear();
+        	categories = transactionEJB.getCategories();
+        	Comboitem item = new Comboitem();
+            item.setLabel(Labels.getLabel("sp.common.all"));
+            item.setParent(cmbCategory);
+            item.setParent(cmbCategory);
+			for (Category e : categories) {
+				if (e.getId().equals(Category.QUARANTINE) || e.getId().equals(Category.METEOROLOGICAL_CONTROL)) {
+					Comboitem cmbItem = new Comboitem();
+					cmbItem.setLabel(e.getName());
+					cmbItem.setValue(e);
+					cmbItem.setParent(cmbCategory);
+
+				}
+			}
+        } catch (Exception ex) {
+            showError(ex);
+        }
+    }
+    
 
     public void onChange$cmbBraund() {
 		if (cmbBraund.getSelectedItem().getValue() != null) {
@@ -301,6 +330,7 @@ public class ReportMetrologicalControlController extends GenericAbstractListCont
         dtbEndingDate.setValue(new Timestamp(new java.util.Date().getTime()));
         loadBraunds(null);
         loadEnterCalibration(null);
+        loadCategory();
     }
 
     public void onClick$btnAdd() throws InterruptedException {

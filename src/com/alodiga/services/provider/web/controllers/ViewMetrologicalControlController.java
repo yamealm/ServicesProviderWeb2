@@ -34,6 +34,7 @@ public class ViewMetrologicalControlController extends GenericAbstractAdminContr
     private Combobox cmbBraund;
     private Combobox cmbModel;
     private Combobox cmbEnterCalibration;
+    private Combobox cmbCategory;
     private Textbox txtDesignation;
     private Textbox txtInstrument;
     private Textbox txtType;
@@ -48,7 +49,7 @@ public class ViewMetrologicalControlController extends GenericAbstractAdminContr
     private List<Braund> braunds;
     private List<Model> models;
     private List<EnterCalibration> enterCalibrations;
-
+    private List<Category> categories;
     private UtilsEJB utilsEJB = null;
     private TransactionEJB transactionEJB = null;
     private MetrologicalControl controlParam;
@@ -181,6 +182,7 @@ public class ViewMetrologicalControlController extends GenericAbstractAdminContr
     	MetrologicalControlHistory history = null;
 		try {
 			history = transactionEJB.loadLastMetrologicalControlHistoryByMetrologicalControlId(metrologicalControlParam.getId());
+			loadCategory(history.getCategory());
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 
@@ -195,6 +197,25 @@ public class ViewMetrologicalControlController extends GenericAbstractAdminContr
 
     }
     
+    private void loadCategory(Category category) {
+        try {
+    	cmbCategory.getItems().clear();
+    	categories = transactionEJB.getCategories();
+		for (Category e : categories) {
+			if (e.getId().equals(Category.QUARANTINE) || e.getId().equals(Category.METEOROLOGICAL_CONTROL)) {
+				Comboitem cmbItem = new Comboitem();
+				cmbItem.setLabel(e.getName());
+				cmbItem.setValue(e);
+				cmbItem.setParent(cmbCategory);
+				if (category != null && category.getId().equals(e.getId())) {
+					cmbCategory.setSelectedItem(cmbItem);
+				}
+			}
+		}
+    } catch (Exception ex) {
+        showError(ex);
+    }
+}
   
 
     private void loadBraunds(Braund braund) {
@@ -275,6 +296,7 @@ public class ViewMetrologicalControlController extends GenericAbstractAdminContr
             metrologicalControl.setBraund(braund);
             Model model = (Model) cmbModel.getSelectedItem().getValue();
             metrologicalControl.setModel(model);
+            Category category =(Category) cmbCategory.getSelectedItem().getValue();
             EnterCalibration enterCalibration = (EnterCalibration) cmbEnterCalibration.getSelectedItem().getValue();
             metrologicalControl.setEnterCalibration(enterCalibration);
             metrologicalControl.setDesignation(txtDesignation.getText());
@@ -285,9 +307,13 @@ public class ViewMetrologicalControlController extends GenericAbstractAdminContr
             metrologicalControl.setCreationDate(new Timestamp((new java.util.Date().getTime())));
             metrologicalControl.setScale(txtScale.getText());
             metrologicalControl.setUbication(txtUbication.getText());
-            metrologicalControl.setEnabled(true);
+            if(category.getId().equals(Category.METEOROLOGICAL_CONTROL))
+            	metrologicalControl.setEnabled(true);
+            else
+            	metrologicalControl.setEnabled(false);
 
             MetrologicalControlHistory metrologicalControlHistory = new MetrologicalControlHistory();
+            metrologicalControlHistory.setCategory(category);
             metrologicalControlHistory.setCreationDate(new Timestamp((new java.util.Date().getTime())));
             metrologicalControlHistory.setCalibrationDate(new Timestamp(dtxCalibration.getValue().getTime()));
             metrologicalControlHistory.setExpirationDate(new Timestamp(dtxExpiration.getValue().getTime()));
