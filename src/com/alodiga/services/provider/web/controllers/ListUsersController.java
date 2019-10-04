@@ -194,6 +194,7 @@ public class ListUsersController extends GenericAbstractListController<User> {
     public void onClick$btnDownload() throws InterruptedException {
         try {
             Utils.exportExcel(lbxRecords, Labels.getLabel("sp.crud.user.list"));
+            AccessControl.saveAction(Permission.LIST_USERS, "Se descargo listado de productos en stock formato excel");
         } catch (Exception ex) {
             showError(ex);
         }

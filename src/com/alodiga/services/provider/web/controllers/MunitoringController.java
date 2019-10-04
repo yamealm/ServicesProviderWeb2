@@ -108,7 +108,7 @@ public class MunitoringController extends GenericAbstractListController<ProductS
 		} catch (NullParameterException e) {
 			e.printStackTrace();
 		} catch (EmptyListException e) {
-			e.printStackTrace();
+			loadList2(null);
 		}
     	
     }
@@ -125,7 +125,7 @@ public class MunitoringController extends GenericAbstractListController<ProductS
 		} catch (NullParameterException e) {
 			e.printStackTrace();
 		} catch (EmptyListException e) {
-			e.printStackTrace();
+			loadList5(null);
 		}
     	
     }
@@ -165,7 +165,7 @@ public class MunitoringController extends GenericAbstractListController<ProductS
 		} catch (NullParameterException e) {
 			e.printStackTrace();
 		} catch (EmptyListException e) {
-			e.printStackTrace();
+			loadList4(null);
 		}
     	
     }
@@ -181,7 +181,7 @@ public class MunitoringController extends GenericAbstractListController<ProductS
         } catch (NullParameterException ex) {
             showError(ex);
         } catch (EmptyListException ex) {
-            loadList(null);
+            loadList4(null);
         }
     }
 
@@ -200,7 +200,7 @@ public class MunitoringController extends GenericAbstractListController<ProductS
         } catch (NullParameterException ex) {
             showError(ex);
         } catch (EmptyListException ex) {
-            loadList(null);
+        	loadList2(null);
         }
     }
 
@@ -228,6 +228,7 @@ public class MunitoringController extends GenericAbstractListController<ProductS
     
 
 
+    
     public void loadList(List<ProductSerie> list) {
         try {
             lbxReport.getItems().clear();

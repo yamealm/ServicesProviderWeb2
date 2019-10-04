@@ -29,6 +29,7 @@ import com.alodiga.services.provider.commons.genericEJB.EJBRequest;
 import com.alodiga.services.provider.commons.models.Category;
 import com.alodiga.services.provider.commons.models.Customer;
 import com.alodiga.services.provider.commons.models.Enterprise;
+import com.alodiga.services.provider.commons.models.Permission;
 import com.alodiga.services.provider.commons.models.Product;
 import com.alodiga.services.provider.commons.models.ProductSerie;
 import com.alodiga.services.provider.commons.models.Transaction;
@@ -421,8 +422,7 @@ public class AdminEgressStockController extends GenericAbstractAdminController {
     		if (totalQuantity>0) {
     			transaction.setQuantity(totalQuantity);
     			transaction = transactionEJB.saveEgressStock(transaction,productSeries);
-//            productParam = product;
-//            eventType = WebConstants.EVENT_EDIT;
+    			AccessControl.saveAction(Permission.REMOVE_STOCK, "Extraer producto de stock = " + productParam.getPartNumber() + " la cantidad de:" + totalQuantity);
     			this.showMessage(Labels.getLabel("sp.common.save.success"), false, null);
     		}else
     			 showError(Labels.getLabel("sp.error.validate.transaction"));

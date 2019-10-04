@@ -138,6 +138,7 @@ public class AddCustomerController extends GenericAbstractAdminController {
             customerParam = customerEJB.saveCustomer(request);
             blockFields();
             this.showMessage("sp.common.save.success", false, null);
+            
             saveAudit(_customer, customer);
         } catch (Exception ex) {
             showError(ex);

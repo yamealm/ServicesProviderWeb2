@@ -31,10 +31,12 @@ import com.alodiga.services.provider.commons.models.Category;
 import com.alodiga.services.provider.commons.models.EnterCalibration;
 import com.alodiga.services.provider.commons.models.MetrologicalControlHistory;
 import com.alodiga.services.provider.commons.models.Model;
+import com.alodiga.services.provider.commons.models.Permission;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
 import com.alodiga.services.provider.commons.utils.QueryConstants;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractListController;
+import com.alodiga.services.provider.web.utils.AccessControl;
 import com.alodiga.services.provider.web.utils.PDFUtil;
 import com.alodiga.services.provider.web.utils.Utils;
 
@@ -134,6 +136,7 @@ public class ReportMetrologicalControlController extends GenericAbstractListCont
 			_request.setParam(true);
 			metrologicalControls = productEJB.searchMetrologicalControl(_request);
 			 loadList(metrologicalControls);
+			 AccessControl.saveAction(Permission.REPORT_METEOROLOGICAL_CONTROL, "Se busco reporte de Control Metrologico");
         } catch (GeneralException ex) {
             showError(ex);
         } catch (NullParameterException ex) {
@@ -310,6 +313,7 @@ public class ReportMetrologicalControlController extends GenericAbstractListCont
     public void onClick$btnDownload() throws InterruptedException {
         try {
             Utils.exportExcel(lbxReport, Labels.getLabel("sp.crud.metrological.control.list.reporte"));
+            AccessControl.saveAction(Permission.REPORT_METEOROLOGICAL_CONTROL, "Se descargo reporte de Control Metrologico formato excel");
         } catch (Exception ex) {
             showError(ex);
         }
@@ -318,6 +322,7 @@ public class ReportMetrologicalControlController extends GenericAbstractListCont
     public void onClick$btnExportPdf() throws InterruptedException {
         try {
         	PDFUtil.exportPdf((Labels.getLabel("sp.common.meteorological"))+".pdf", Labels.getLabel("sp.crud.metrological.control.list.reporte"), lbxReport,0);
+        	AccessControl.saveAction(Permission.REPORT_METEOROLOGICAL_CONTROL, "Se descargo reporte de Control Metrologico stock formato pdf");
         } catch (Exception ex) {
             showError(ex);
         }

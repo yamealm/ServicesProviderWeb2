@@ -30,6 +30,7 @@ import com.alodiga.services.provider.commons.genericEJB.EJBRequest;
 import com.alodiga.services.provider.commons.models.Category;
 import com.alodiga.services.provider.commons.models.Condicion;
 import com.alodiga.services.provider.commons.models.Customer;
+import com.alodiga.services.provider.commons.models.Permission;
 import com.alodiga.services.provider.commons.models.Product;
 import com.alodiga.services.provider.commons.models.ProductSerie;
 import com.alodiga.services.provider.commons.models.Provider;
@@ -38,6 +39,7 @@ import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
 import com.alodiga.services.provider.commons.utils.QueryConstants;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractListController;
+import com.alodiga.services.provider.web.utils.AccessControl;
 import com.alodiga.services.provider.web.utils.PDFUtil;
 import com.alodiga.services.provider.web.utils.Utils;
 
@@ -128,6 +130,7 @@ public class ReportTransitController extends GenericAbstractListController<Produ
                 _request.setParam(true);
                 productSeries = productEJB.searchProductSerie(_request);
                 loadList(productSeries);
+                AccessControl.saveAction(Permission.REPORT_TRANSIT, "Se busco reporte de productos en transito");
             } else  {
                 this.showMessage("sp.error.date.invalid", true, null);
             }
@@ -315,6 +318,7 @@ public class ReportTransitController extends GenericAbstractListController<Produ
     public void onClick$btnDownload() throws InterruptedException {
         try {
             Utils.exportExcel(lbxReport, Labels.getLabel("sp.report.title"));
+            AccessControl.saveAction(Permission.REPORT_TRANSIT, "Se descargo reporte de productos en stock formato excel");
         } catch (Exception ex) {
             showError(ex);
         }
@@ -323,6 +327,7 @@ public class ReportTransitController extends GenericAbstractListController<Produ
     public void onClick$btnExportPdf() throws InterruptedException {
         try {
         	PDFUtil.exportPdf((Labels.getLabel("sp.common.stock"))+".pdf", Labels.getLabel("sp.crud.product.list.reporte"), lbxReport,0);
+        	 AccessControl.saveAction(Permission.REPORT_TRANSIT, "Se descargo reporte de productos en stock formato excel");
         } catch (Exception ex) {
             showError(ex);
         }

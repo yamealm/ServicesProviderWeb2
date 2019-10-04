@@ -146,7 +146,7 @@
                                                          <row>
                                                             <label value="${c:l('sp.common.category')}" sclass="lblbold"/>
                                                             <hlayout>
-                                                                <combobox id="cmbCategory" width="190px" mold="rounded" readonly="true"/>
+                                                                <combobox id="cmbCategory" width="220px" mold="rounded" readonly="true"/>
                                                                 <label value="*" sclass="lblreq" />
                                                             </hlayout>
                                                         </row>

@@ -89,8 +89,8 @@
                                             </div>
                                         </div>
                                                   <div align="right">
-                                           				   <button id="btnDownload" label="${c:l('sp.common.actions.download')}"  width="80px" class="open gray" tooltiptext="${c:l('sp.common.actions.download.tooltip')}"/>
-                                          				  <button id="btnExportPdf" label="${c:l('sp.common.actions.download.pdf')}"  width="80px" class="open orange" tooltiptext="${c:l('sp.common.actions.download.pdf')}"/>
+                                           				   <button id="btnDownload" label="${c:l('sp.common.actions.download')}"  width="90px" class="open gray" tooltiptext="${c:l('sp.common.actions.download.tooltip')}"/>
+                                          				  <button id="btnExportPdf" label="${c:l('sp.common.actions.download.pdf')}"  width="90px" class="open orange" tooltiptext="${c:l('sp.common.actions.download.pdf')}"/>
                                         			</div>
                                                  
                                                 </vlayout>
@@ -133,8 +133,8 @@
                                             </div>
                                         </div>
                                                    <div align="right">
-                                           				   <button id="btnDownload2" label="${c:l('sp.common.actions.download')}"  width="80px" class="open gray" tooltiptext="${c:l('sp.common.actions.download.tooltip')}"/>
-                                          				  <button id="btnExportPdf2" label="${c:l('sp.common.actions.download.pdf')}"  width="80px" class="open orange" tooltiptext="${c:l('sp.common.actions.download.pdf')}"/>
+                                           				   <button id="btnDownload2" label="${c:l('sp.common.actions.download')}"  width="90px" class="open gray" tooltiptext="${c:l('sp.common.actions.download.tooltip')}"/>
+                                          				  <button id="btnExportPdf2" label="${c:l('sp.common.actions.download.pdf')}"  width="90px" class="open orange" tooltiptext="${c:l('sp.common.actions.download.pdf')}"/>
                                         			</div>
                                                  
                                                 </vlayout>
@@ -164,8 +164,8 @@
                                             </div>
                                         </div>
                                                    <div align="right">
-                                           				   <button id="btnDownload23" label="${c:l('sp.common.actions.download')}"  width="80px" class="open gray" tooltiptext="${c:l('sp.common.actions.download.tooltip')}"/>
-                                          				  <button id="btnExportPdf23" label="${c:l('sp.common.actions.download.pdf')}"  width="80px" class="open orange" tooltiptext="${c:l('sp.common.actions.download.pdf')}"/>
+                                           				   <button id="btnDownload23" label="${c:l('sp.common.actions.download')}"  width="90px" class="open gray" tooltiptext="${c:l('sp.common.actions.download.tooltip')}"/>
+                                          				  <button id="btnExportPdf23" label="${c:l('sp.common.actions.download.pdf')}"  width="90px" class="open orange" tooltiptext="${c:l('sp.common.actions.download.pdf')}"/>
                                         			</div> 
                                                 </vlayout>
                                             </tabpanel>
@@ -178,7 +178,7 @@
                                             <vlayout>
                                                 <hlayout id="hParams4" style="text-align:left">
                                                     <label value="${c:l('sp.munitoring.expirate.day')}" sclass="lblbold"/>
-                                                    <intbox id="intCuradoStock4" width="160px" />
+                                                    <intbox id="intCuradoStock4" width="160px" constraint="no empty: ${c:l('error.field.required')}"/>
                                                 </hlayout>
                                                 <hlayout>
                                                     <button id="btnSearch4" label="${c:l('sp.common.actions.search')}" width="80px" class="open orange" tooltiptext="${c:l('sp.common.actions.search.filter.tooltip')}"/>
@@ -196,7 +196,7 @@
                                                         <listheader label="${c:l('sp.common.serial')}" width="190px"/>
                                                         <listheader label="${c:l('sp.common.provider')}" width="190px"/>
                                                         <listheader label="${c:l('sp.common.condition')}" width="190px"/>
-                                                        <listheader label="${c:l('sp.common.label.expirationDate')}" width="190px"/>
+                                                        <listheader label="${c:l('sp.common.date.cure')}" width="190px"/>
                                                         <listheader label="${c:l('sp.transaction.amount')}" width="150px"/>
                                                         <listheader label="${c:l('sp.common.quantity')}" width="100px"/>
                                                     </listhead>
@@ -204,8 +204,8 @@
                                             </div>
                                         </div>
                                                    <div align="right">
-                                           				   <button id="btnDownload4" label="${c:l('sp.common.actions.download')}"  width="80px" class="open gray" tooltiptext="${c:l('sp.common.actions.download.tooltip')}"/>
-                                          				  <button id="btnExportPdf4" label="${c:l('sp.common.actions.download.pdf')}"  width="80px" class="open orange" tooltiptext="${c:l('sp.common.actions.download.pdf')}"/>
+                                           				   <button id="btnDownload4" label="${c:l('sp.common.actions.download')}"  width="90px" class="open gray" tooltiptext="${c:l('sp.common.actions.download.tooltip')}"/>
+                                          				  <button id="btnExportPdf4" label="${c:l('sp.common.actions.download.pdf')}"  width="90px" class="open orange" tooltiptext="${c:l('sp.common.actions.download.pdf')}"/>
                                         			</div> 
                                                 </vlayout>
                                             </tabpanel>      
@@ -236,8 +236,8 @@
                                             </div>
                                         </div>
                                                   <div align="right">
-                                           				   <button id="btnDownload5" label="${c:l('sp.common.actions.download')}"  width="80px" class="open gray" tooltiptext="${c:l('sp.common.actions.download.tooltip')}"/>
-                                          				  <button id="btnExportPdf5" label="${c:l('sp.common.actions.download.pdf')}"  width="80px" class="open orange" tooltiptext="${c:l('sp.common.actions.download.pdf')}"/>
+                                           				   <button id="btnDownload5" label="${c:l('sp.common.actions.download')}"  width="90px" class="open gray" tooltiptext="${c:l('sp.common.actions.download.tooltip')}"/>
+                                          				  <button id="btnExportPdf5" label="${c:l('sp.common.actions.download.pdf')}"  width="90px" class="open orange" tooltiptext="${c:l('sp.common.actions.download.pdf')}"/>
                                         			</div>
                                                  
                                                 </vlayout>

@@ -167,6 +167,7 @@ public class ListStockController extends GenericAbstractListController<Product> 
     public void onClick$btnSearch() throws InterruptedException {
         try {
             loadList(getFilteredList(txtAlias.getText()));
+            AccessControl.saveAction(Permission.STOCK, "Se busco listado de productos en stock");
         } catch (Exception ex) {
             showError(ex);
         }
@@ -175,6 +176,7 @@ public class ListStockController extends GenericAbstractListController<Product> 
     public void onClick$btnExportPdf() throws InterruptedException {
         try {
         	PDFUtil.exportPdf((Labels.getLabel("sp.common.product"))+".pdf", Labels.getLabel("sp.crud.product.list.reporte"), lbxRecords,3);
+        	AccessControl.saveAction(Permission.STOCK, "Se descargo listado de productos en stock formato pdf");
         } catch (Exception ex) {
             showError(ex);
         }
@@ -183,6 +185,7 @@ public class ListStockController extends GenericAbstractListController<Product> 
     public void onClick$btnDownload() throws InterruptedException {
         try {
             Utils.exportExcel(lbxRecords, Labels.getLabel("sp.crud.product.list"));
+            AccessControl.saveAction(Permission.STOCK, "Se descargo listado de productos en stock formato excel");
         } catch (Exception ex) {
             showError(ex);
         }

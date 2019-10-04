@@ -129,7 +129,8 @@ public class ListProvidersController extends GenericAbstractListController<Provi
             request.setParam(provider);
             productEJB.saveProvider(request);
             AccessControl.saveAction(Permission.CHANGE_PROVIDER_STATUS, "changeStatus provider = " + provider.getId() + " to status = " + !provider.getEnabled());
-
+            getData();
+            loadList(providers);
         } catch (Exception ex) {
             showError(ex);
         }
@@ -186,6 +187,7 @@ public class ListProvidersController extends GenericAbstractListController<Provi
     public void onClick$btnDownload() throws InterruptedException {
         try {
             Utils.exportExcel(lbxRecords, Labels.getLabel("sp.crud.provider.list"));
+            AccessControl.saveAction(Permission.LIST_PROVIDERS, "Se descargo listado de proveedores formato excel");
         } catch (Exception ex) {
             showError(ex);
         }

@@ -194,6 +194,7 @@ public class ListProfilesController extends GenericAbstractListController<Profil
     public void onClick$btnDownload() throws InterruptedException {
         try {
             Utils.exportExcel(lbxRecords, Labels.getLabel("sp.bread.crumb.profile.list"));
+            AccessControl.saveAction(Permission.LIST_PROFILES, "Se descargo listado de perfiles formato excel");
         } catch (Exception ex) {
             showError(ex);
         }

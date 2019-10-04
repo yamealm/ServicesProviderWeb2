@@ -21,6 +21,7 @@ import com.alodiga.services.provider.commons.models.EnterCalibration;
 import com.alodiga.services.provider.commons.models.MetrologicalControl;
 import com.alodiga.services.provider.commons.models.MetrologicalControlHistory;
 import com.alodiga.services.provider.commons.models.Model;
+import com.alodiga.services.provider.commons.models.Permission;
 import com.alodiga.services.provider.commons.models.User;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
@@ -318,7 +319,7 @@ public class ViewMetrologicalControlController extends GenericAbstractAdminContr
             metrologicalControlHistory.setCalibrationDate(new Timestamp(dtxCalibration.getValue().getTime()));
             metrologicalControlHistory.setExpirationDate(new Timestamp(dtxExpiration.getValue().getTime()));
             metrologicalControl = transactionEJB.saveMetrologicalControl(metrologicalControl,metrologicalControlHistory);
-
+            AccessControl.saveAction(Permission.EDIT_METEOROLOGICAL_CONTROL, "Se edito producto en control metrologico ID Instrumento: " + metrologicalControl.getInstrument()!=null?metrologicalControl.getInstrument():"");
             this.showMessage("sp.common.save.success", false, null);
         } catch (NullParameterException ex) {
         	showMessage("sp.error.field.number", true, null);

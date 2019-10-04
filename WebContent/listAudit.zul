@@ -79,7 +79,7 @@
                                         <!--Download button-->
                                           <label id="lblInfo" value="" sclass="lblbold" visible="false"/>
                                         <div align="right">
-                                            <button id="btnDownload" label="${c:l('sp.common.actions.download')}"  width="80px" class="open gray" tooltiptext="${c:l('sp.common.actions.download.tooltip')}"/>
+                                            <button id="btnDownload" label="${c:l('sp.common.actions.download')}"  width="90px" class="open gray" tooltiptext="${c:l('sp.common.actions.download.tooltip')}"/>
                                         </div>
                                     </vlayout>
                                 </div>

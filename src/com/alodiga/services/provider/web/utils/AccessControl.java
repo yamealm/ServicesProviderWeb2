@@ -24,6 +24,7 @@ import com.alodiga.services.provider.commons.exceptions.GeneralException;
 import com.alodiga.services.provider.commons.exceptions.NullParameterException;
 import com.alodiga.services.provider.commons.exceptions.RegisterNotFoundException;
 import com.alodiga.services.provider.commons.genericEJB.EJBRequest;
+import com.alodiga.services.provider.commons.managers.PermissionManager;
 import com.alodiga.services.provider.commons.models.Audit;
 import com.alodiga.services.provider.commons.models.AuditAction;
 import com.alodiga.services.provider.commons.models.Customer;
@@ -220,7 +221,8 @@ public class AccessControl {
             action.setDate(new Timestamp(new Date().getTime()));
             action.setHost(host);
             action.setUser(loadCurrentUser());
-            action.setPermission(permissionId != null ? new Permission(permissionId) : null);
+            Permission permission = PermissionManager.getInstance().getPermissionById(permissionId);
+            action.setPermission(permission);
             action.setInfo(info);
             auditoryEJB = (AuditoryEJB) EJBServiceLocator.getInstance().get(EjbConstants.AUDITORY_EJB);
             auditoryEJB.saveAuditAction(action);

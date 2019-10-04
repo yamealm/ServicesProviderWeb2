@@ -162,6 +162,7 @@ public class ListTransitController extends GenericAbstractListController<Product
     public void onClick$btnSearch() throws InterruptedException {
         try {
             loadList(getFilteredList(txtAlias.getText()));
+            AccessControl.saveAction(Permission.TRANSIT, "Se busco listado de productos en transito");
         } catch (Exception ex) {
             showError(ex);
         }
@@ -170,6 +171,7 @@ public class ListTransitController extends GenericAbstractListController<Product
     public void onClick$btnExportPdf() throws InterruptedException {
         try {
         	PDFUtil.exportPdf((Labels.getLabel("sp.common.product"))+".pdf", Labels.getLabel("sp.crud.product.list.reporte"), lbxRecords,3);
+        	AccessControl.saveAction(Permission.TRANSIT, "Se descargo listado de productos en transito formato pdf");
         } catch (Exception ex) {
             showError(ex);
         }
@@ -178,6 +180,7 @@ public class ListTransitController extends GenericAbstractListController<Product
     public void onClick$btnDownload() throws InterruptedException {
         try {
             Utils.exportExcel(lbxRecords, Labels.getLabel("sp.crud.product.list"));
+            AccessControl.saveAction(Permission.TRANSIT, "Se descargo listado de productos en transito formato excel");
         } catch (Exception ex) {
             showError(ex);
         }

@@ -81,8 +81,8 @@
                                         </div>
                                         <!--Download button-->
                                         <div align="right">
-                                            <button id="btnDownload" label="${c:l('sp.common.actions.download')}"  width="80px" class="open gray" tooltiptext="${c:l('sp.common.actions.download.tooltip')}"/>
-                                            <button id="btnExportPdf" label="${c:l('sp.common.actions.download.pdf')}"  width="80px" class="open orange" tooltiptext="${c:l('sp.common.actions.download.pdf')}"/>
+                                            <button id="btnDownload" label="${c:l('sp.common.actions.download')}"  width="90px" class="open gray" tooltiptext="${c:l('sp.common.actions.download.tooltip')}"/>
+                                            <button id="btnExportPdf" label="${c:l('sp.common.actions.download.pdf')}"  width="90px" class="open orange" tooltiptext="${c:l('sp.common.actions.download.pdf')}"/>
                                         </div>
                                     </vlayout>
                                 </div>

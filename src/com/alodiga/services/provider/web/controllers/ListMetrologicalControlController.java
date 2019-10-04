@@ -151,7 +151,7 @@ public class ListMetrologicalControlController extends GenericAbstractListContro
                 item.appendChild(new Listcell());
                 item.setParent(lbxRecords);
             }
-
+            AccessControl.saveAction(Permission.METEOROLOGICAL_CONTROL, "Se busco listado de Control Metrologico");
         } catch (Exception ex) {
             showError(ex);
         }
@@ -181,7 +181,6 @@ public class ListMetrologicalControlController extends GenericAbstractListContro
             listItem.setValue(metrologicalControl);
             request.setParam(metrologicalControl);
             transactionEJB.saveMetrologicalControl(metrologicalControl);
-            AccessControl.saveAction(Permission.EDIT_METEOROLOGICAL_CONTROL, "changeStatus metrological control = " + metrologicalControl.getId() + " to status = " + !metrologicalControl.isEnabled());
         } catch (Exception ex) {
             showError(ex);
         }
@@ -212,6 +211,7 @@ public class ListMetrologicalControlController extends GenericAbstractListContro
     public void onClick$btnSearch() throws InterruptedException {
         try {
             loadList(getFilteredList(txtAlias.getText()));
+            AccessControl.saveAction(Permission.METEOROLOGICAL_CONTROL, "Se busco listado de Control Metrologico");
         } catch (Exception ex) {
             showError(ex);
         }
@@ -220,6 +220,7 @@ public class ListMetrologicalControlController extends GenericAbstractListContro
     public void onClick$btnExportPdf() throws InterruptedException {
         try {
         	PDFUtil.exportPdf((Labels.getLabel("sp.common.meteorological"))+".pdf", Labels.getLabel("sp.crud.metrological.control.list.reporte"), lbxRecords,3);
+        	AccessControl.saveAction(Permission.METEOROLOGICAL_CONTROL, "Se descargo listado de Control Metrologico formato pdf");
         } catch (Exception ex) {
             showError(ex);
         }
@@ -228,6 +229,7 @@ public class ListMetrologicalControlController extends GenericAbstractListContro
     public void onClick$btnDownload() throws InterruptedException {
         try {
             Utils.exportExcel(lbxRecords, Labels.getLabel("sp.crud.product.list.meteorological"));
+            AccessControl.saveAction(Permission.METEOROLOGICAL_CONTROL, "Se descargo listado de Control Metrologico formato excel");
         } catch (Exception ex) {
             showError(ex);
         }

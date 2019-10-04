@@ -27,6 +27,7 @@ import com.alodiga.services.provider.commons.models.Category;
 import com.alodiga.services.provider.commons.models.Condicion;
 import com.alodiga.services.provider.commons.models.Customer;
 import com.alodiga.services.provider.commons.models.Enterprise;
+import com.alodiga.services.provider.commons.models.Permission;
 import com.alodiga.services.provider.commons.models.ProductSerie;
 import com.alodiga.services.provider.commons.models.Provider;
 import com.alodiga.services.provider.commons.models.Transaction;
@@ -409,7 +410,7 @@ public class AdminEgressUnitWaitController extends GenericAbstractAdminControlle
     		transaction.setQuantity(intQuantity.getValue());
     		transaction = transactionEJB.saveEgressStock(transaction,productSeries);
     		this.showMessage(Labels.getLabel("sp.common.save.success"), false, null);
-    		
+    		AccessControl.saveAction(Permission.REMOVE_WAIT, "Extraer producto de espera = " + productSerieParam.getProduct().getPartNumber() + " la cantidad de:" + intQuantity.getValue());
         } catch (Exception ex) {
             showError(ex);
         }

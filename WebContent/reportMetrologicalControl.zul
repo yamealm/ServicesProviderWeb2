@@ -58,7 +58,7 @@
                                             <vlayout>
                                                 <hlayout id="hParams" style="text-align:right">
                                                     <label value="${c:l('sp.common.category')}" sclass="lblbold"/>
-                                                    <combobox id="cmbCategory" width="190px" mold="rounded" readonly="true"/>
+                                                    <combobox id="cmbCategory" width="220px" mold="rounded" readonly="true"/>
                                                     <label value="${c:l('sp.common.control.braund')}" sclass="lblbold"/>
                                                     <combobox id="cmbBraund" width="160px" mold="rounded" readonly="true"/>
                                                     <label value="${c:l('sp.common.control.model')}" sclass="lblbold"/>
@@ -108,8 +108,8 @@
                                         <!--Download button-->
                                         <div align="right">
                                             <label id="lblInfo" value="" sclass="lblbold" visible="false"/>
-                                            <button id="btnDownload" label="${c:l('sp.common.actions.download')}"  width="80px" class="open gray" tooltiptext="${c:l('sp.common.actions.download.tooltip')}"/>
-                                             <button id="btnExportPdf" label="${c:l('sp.common.actions.download.pdf')}"  width="80px" class="open orange" tooltiptext="${c:l('sp.common.actions.download.pdf')}"/>
+                                            <button id="btnDownload" label="${c:l('sp.common.actions.download')}"  width="90px" class="open gray" tooltiptext="${c:l('sp.common.actions.download.tooltip')}"/>
+                                             <button id="btnExportPdf" label="${c:l('sp.common.actions.download.pdf')}"  width="90px" class="open orange" tooltiptext="${c:l('sp.common.actions.download.pdf')}"/>
                                         </div>
                                     </vlayout>
                                 </div>

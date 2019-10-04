@@ -29,6 +29,7 @@ import com.alodiga.services.provider.commons.models.Category;
 import com.alodiga.services.provider.commons.models.Condicion;
 import com.alodiga.services.provider.commons.models.Customer;
 import com.alodiga.services.provider.commons.models.Enterprise;
+import com.alodiga.services.provider.commons.models.Permission;
 import com.alodiga.services.provider.commons.models.ProductSerie;
 import com.alodiga.services.provider.commons.models.Provider;
 import com.alodiga.services.provider.commons.models.Transaction;
@@ -429,9 +430,8 @@ public class ViewQuarantineController extends GenericAbstractAdminController {
 				productSerie.setCure(new Timestamp(dtxCure.getValue().getTime()));
     		transaction = transactionEJB.modificarStock(transaction, productSerie);
     		Sessions.getCurrent().removeAttribute("customer");
-//            productParam = product;
-//            eventType = WebConstants.EVENT_EDIT;
-    			this.showMessage(Labels.getLabel("sp.common.save.success"), false, null);
+    		AccessControl.saveAction(Permission.EDIT_QUARANTINE, "Se edito producto en quarentena = " + productSerie.getProduct().getPartNumber() + " la cantidad de:" + intQuantity.getValue()+" numero de serie"+productSerie.getSerie()!=null?productSerie.getSerie():"");
+    		this.showMessage(Labels.getLabel("sp.common.save.success"), false, null);
     		
         } catch (Exception ex) {
             showError(ex);

@@ -33,6 +33,7 @@ import com.alodiga.services.provider.commons.models.Category;
 import com.alodiga.services.provider.commons.models.Condicion;
 import com.alodiga.services.provider.commons.models.Customer;
 import com.alodiga.services.provider.commons.models.Enterprise;
+import com.alodiga.services.provider.commons.models.Permission;
 import com.alodiga.services.provider.commons.models.Product;
 import com.alodiga.services.provider.commons.models.ProductSerie;
 import com.alodiga.services.provider.commons.models.Provider;
@@ -479,6 +480,7 @@ public class AdminAddQuarantineController extends GenericAbstractAdminController
 			}
 
             transaction = transactionEJB.saveTransactionStock(transaction,productSeries);
+            AccessControl.saveAction(Permission.ADD_QUARANTINE, "Agrego producto a quarentena = " + productParam.getPartNumber() + " la cantidad de:" + intQuantity.getValue());
             Sessions.getCurrent().removeAttribute("customer");
             this.showMessage("sp.common.save.success", false, null);
         } catch (NullParameterException ex) {

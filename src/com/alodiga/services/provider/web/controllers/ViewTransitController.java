@@ -28,6 +28,7 @@ import com.alodiga.services.provider.commons.models.Category;
 import com.alodiga.services.provider.commons.models.Condicion;
 import com.alodiga.services.provider.commons.models.Customer;
 import com.alodiga.services.provider.commons.models.Enterprise;
+import com.alodiga.services.provider.commons.models.Permission;
 import com.alodiga.services.provider.commons.models.ProductSerie;
 import com.alodiga.services.provider.commons.models.Provider;
 import com.alodiga.services.provider.commons.models.Transaction;
@@ -430,7 +431,7 @@ public class ViewTransitController extends GenericAbstractAdminController {
     		transaction = transactionEJB.modificarStock(transaction, productSerie);
     		Sessions.getCurrent().removeAttribute("customer");
     		this.showMessage(Labels.getLabel("sp.common.save.success"), false, null);
-    		
+    		AccessControl.saveAction(Permission.EDIT_TRANSIT, "Se edito producto en transito = " + productSerie.getProduct().getPartNumber() + " la cantidad de:" + intQuantity.getValue()+" numero de serie"+productSerie.getSerie()!=null?productSerie.getSerie():"");
         } catch (Exception ex) {
             showError(ex);
         }

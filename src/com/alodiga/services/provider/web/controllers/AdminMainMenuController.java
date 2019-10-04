@@ -177,8 +177,8 @@ public class AdminMainMenuController extends GenericForwardComposer {
     private void loadSecurityManagementGroup(PermissionGroup permissionGroup) {
 
         Listgroup listgroup = createListGroup(permissionGroup);
-        createCell(Permission.AUDIT_ACTIONS, "listAuditActions.zul", permissionGroup, listgroup);
-        createCell(Permission.LIST_AUDI, "listAudit.zul", permissionGroup, listgroup);
+//        createCell(Permission.AUDIT_ACTIONS, "listAuditActions.zul", permissionGroup, listgroup);
+        createCell(Permission.LIST_AUDI, "listAuditActions.zul", permissionGroup, listgroup);
         createCell(Permission.LIST_PROFILES, "listProfiles.zul", permissionGroup, listgroup);
         createCell(Permission.LIST_USERS, "listUsers.zul", permissionGroup, listgroup);
     }

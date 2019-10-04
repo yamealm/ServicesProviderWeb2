@@ -163,6 +163,7 @@ public class ListQuarantineController extends GenericAbstractListController<Prod
     public void onClick$btnSearch() throws InterruptedException {
         try {
             loadList(getFilteredList(txtAlias.getText()));
+            AccessControl.saveAction(Permission.QUARANTINE, "Se busco listado de productos en quarentena");
         } catch (Exception ex) {
             showError(ex);
         }
@@ -171,6 +172,7 @@ public class ListQuarantineController extends GenericAbstractListController<Prod
     public void onClick$btnExportPdf() throws InterruptedException {
         try {
         	PDFUtil.exportPdf((Labels.getLabel("sp.common.product"))+".pdf", Labels.getLabel("sp.crud.product.list.reporte"), lbxRecords,3);
+        	AccessControl.saveAction(Permission.QUARANTINE, "Se descargo listado de productos en quarentena formato pdf");
         } catch (Exception ex) {
             showError(ex);
         }
@@ -179,6 +181,7 @@ public class ListQuarantineController extends GenericAbstractListController<Prod
     public void onClick$btnDownload() throws InterruptedException {
         try {
             Utils.exportExcel(lbxRecords, Labels.getLabel("sp.crud.product.list"));
+            AccessControl.saveAction(Permission.QUARANTINE, "Se descargo listado de productos en quarentena formato excel");
         } catch (Exception ex) {
             showError(ex);
         }
