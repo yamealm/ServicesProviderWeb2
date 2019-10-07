@@ -238,6 +238,7 @@ public class ListMetrologicalControlController extends GenericAbstractListContro
 	@Override
 	public void onClick$btnAdd() throws InterruptedException {
 		Sessions.getCurrent().setAttribute("eventType", WebConstants.EVENT_ADD);
+		Sessions.getCurrent().setAttribute("object", null);
 		Executions.sendRedirect("./adminAddMetrorologicalControl.zul");
 	}
     
