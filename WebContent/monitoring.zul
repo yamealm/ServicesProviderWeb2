@@ -51,7 +51,7 @@
                                             </hlayout>
                                         </div>
                                         
-                                        <tabbox id="tbxRechargeTabs" width="1400px" height="490px">
+                                        <tabbox id="tbxRechargeTabs" width="1400px" height="590px">
                                         <tabs>
                                             <tab id="tabEnding" label="${c:l('sp.munitoring.expirate')}" />
                                             <tab id="tabProxEnding" label="${c:l('sp.munitoring.expirate.next')}" />
@@ -74,7 +74,7 @@
                                                    <!--Record Listbox-->
                                             <separator/>
                                             <div align="left">
-                                                <listbox id="lbxReport" width="1390px" height="360px" mold="paging">
+                                                <listbox id="lbxReport" width="1390px" height="460px" mold="paging">
                                                     <listhead>
 														<listheader label="${c:l('sp.common.PartNumber')}" width="190px"/>
                                                         <listheader label="${c:l('sp.common.name')}" width="190px"/>
@@ -118,7 +118,7 @@
                                                    <!--Record Listbox-->
                                             <separator/>
                                             <div align="left">
-                                                <listbox id="lbxReport2" width="1390px" height="330px" mold="paging">
+                                                <listbox id="lbxReport2" width="1390px" height="440px" mold="paging">
                                                     <listhead>
                                                        <listheader label="${c:l('sp.common.PartNumber')}" width="190px"/>
                                                         <listheader label="${c:l('sp.common.name')}" width="190px"/>
@@ -151,7 +151,7 @@
                                                    <!--Record Listbox-->
                                             <separator/>
                                             <div align="left">
-                                                <listbox id="lbxReport3" width="1390px" height="360px" mold="paging">
+                                                <listbox id="lbxReport3" width="1390px" height="460px" mold="paging">
                                                     <listhead>
                                                        <listheader label="${c:l('sp.common.PartNumber')}" width="230px"/>
                                                         <listheader label="${c:l('sp.common.name')}" width="230px"/>
@@ -189,7 +189,7 @@
                                                    <!--Record Listbox-->
                                             <separator/>
                                             <div align="left">
-                                                <listbox id="lbxReport4" width="1390px" height="330px" mold="paging">
+                                                <listbox id="lbxReport4" width="1390px" height="440px" mold="paging">
                                                     <listhead>
                                                        <listheader label="${c:l('sp.common.PartNumber')}" width="190px"/>
                                                         <listheader label="${c:l('sp.common.name')}" width="190px"/>
@@ -223,7 +223,7 @@
                                                    <!--Record Listbox-->
                                             <separator/>
                                             <div align="left">
-                                                <listbox id="lbxReport5" width="1390px" height="360px" mold="paging">
+                                                <listbox id="lbxReport5" width="1390px" height="460px" mold="paging">
                                                     <listhead>
                                                         <listheader label="${c:l('sp.common.control.designation')}" width="240px" sort="auto"/>
                                                         <listheader label="${c:l('sp.common.control.id.instrument')}" width="240px" sort="auto"/>

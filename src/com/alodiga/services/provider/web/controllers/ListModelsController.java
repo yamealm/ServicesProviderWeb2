@@ -81,19 +81,22 @@ public class ListModelsController extends GenericAbstractListController<Model> {
     }
 
     public List<Model> getFilteredList(String filter) {
-    	 List<Model> auxList = new ArrayList<Model>();
-         for (Iterator<Model> i = models.iterator(); i.hasNext();) {
-        	 Model tmp = i.next();
-             String field = tmp.getName().toLowerCase();
-             if (field.indexOf(filter.trim().toLowerCase()) >= 0) {
-                 auxList.add(tmp);
-             }
-         }
+    	List<Model> auxList = new ArrayList<Model>();
+		if (models != null) {
+			for (Iterator<Model> i = models.iterator(); i.hasNext();) {
+				Model tmp = i.next();
+				String field = tmp.getName().toLowerCase();
+				if (field.indexOf(filter.trim().toLowerCase()) >= 0) {
+					auxList.add(tmp);
+				}
+			}
+		}
          return auxList;
     }
 
     public void onClick$btnAdd() throws InterruptedException {
         Sessions.getCurrent().setAttribute("eventType", WebConstants.EVENT_ADD);
+        Sessions.getCurrent().removeAttribute("object");
         Executions.getCurrent().sendRedirect(adminPage);
 
     }

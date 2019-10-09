@@ -60,12 +60,12 @@
                                                     <listheader label="${c:l('sp.common.control.braund')}" width="100px" sort="auto"/>
                                                     <listheader label="${c:l('sp.common.control.model')}" width="100px" sort="auto"/>
                                                     <listheader label="${c:l('sp.common.control.serial')}" width="125px" sort="auto"/>
-                                                    <listheader label="${c:l('sp.common.control.rank')}" width="115px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.common.control.rank')}" width="105px" sort="auto"/>
                                                      <listheader label="${c:l('sp.common.control.date.calibration')}" width="145px" sort="auto"/>
-                                                     <listheader label="${c:l('sp.common.control.due.date')}" width="155px"/>
-                                                    <listheader label="${c:l('sp.common.control.ubication')}" width="175px" sort="auto"/>
-                                                    <listheader label="${c:l('sp.common.control.minimun.scale')}" width="120px" sort="auto"/>
-                                                     <listheader label="${c:l('sp.common.control.type')}" width="65px" sort="auto"/>
+                                                     <listheader label="${c:l('sp.common.control.due.date')}" width="145px"/>
+                                                    <listheader label="${c:l('sp.common.control.ubication')}" width="195px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.common.control.minimun.scale')}" width="115px" sort="auto"/>
+                                                     <listheader label="${c:l('sp.common.control.type')}" width="55px" sort="auto"/>
                                                     <listheader label="-" width="45px"/>
                                                     <listheader label="-" width="45px"/>
                                                     

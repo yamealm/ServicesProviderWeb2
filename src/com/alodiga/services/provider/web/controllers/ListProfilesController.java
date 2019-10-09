@@ -111,14 +111,18 @@ public class ListProfilesController extends GenericAbstractListController<Profil
     }
 
     public List<Profile> getFilteredList(String filter) {
-        List<Profile> list = new ArrayList<Profile>();
-        for (Iterator<Profile> i = profiles.iterator(); i.hasNext();) {
-            Profile tmp = i.next();
-            String field = tmp.getProfileDataByLanguageId(languageId) != null ? tmp.getProfileDataByLanguageId(languageId).getAlias() : tmp.getName();
-            if (field.toLowerCase().indexOf(filter.trim().toLowerCase()) >= 0) {
-                list.add(tmp);
-            }
-        }
+		List<Profile> list = new ArrayList<Profile>();
+		if (profiles != null) {
+			for (Iterator<Profile> i = profiles.iterator(); i.hasNext();) {
+				Profile tmp = i.next();
+				String field = tmp.getProfileDataByLanguageId(languageId) != null
+						? tmp.getProfileDataByLanguageId(languageId).getAlias()
+						: tmp.getName();
+				if (field.toLowerCase().indexOf(filter.trim().toLowerCase()) >= 0) {
+					list.add(tmp);
+				}
+			}
+		}
         return list;
     }
 

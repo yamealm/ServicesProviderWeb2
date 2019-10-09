@@ -102,13 +102,15 @@ public class ListEgressQuarantineController extends GenericAbstractListControlle
    
     public List<Product> getFilteredList(String filter) {
         List<Product> auxList = new ArrayList<Product>();
-        for (Iterator<Product> i = products.iterator(); i.hasNext();) {
-            Product tmp = i.next();
-            String field = tmp.getDescription().toLowerCase();
-            if (field.indexOf(filter.trim().toLowerCase()) >= 0) {
-                auxList.add(tmp);
-            }
-        }
+		if (products != null) {
+			for (Iterator<Product> i = products.iterator(); i.hasNext();) {
+				Product tmp = i.next();
+				String field = tmp.getDescription().toLowerCase();
+				if (field.indexOf(filter.trim().toLowerCase()) >= 0) {
+					auxList.add(tmp);
+				}
+			}
+		}
         return auxList;
     }
 

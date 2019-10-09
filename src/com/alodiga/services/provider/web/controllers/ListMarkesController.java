@@ -81,19 +81,22 @@ public class ListMarkesController extends GenericAbstractListController<Braund> 
     }
 
     public List<Braund> getFilteredList(String filter) {
-    	 List<Braund> auxList = new ArrayList<Braund>();
-         for (Iterator<Braund> i = braunds.iterator(); i.hasNext();) {
-        	 Braund tmp = i.next();
-             String field = tmp.getName().toLowerCase();
-             if (field.indexOf(filter.trim().toLowerCase()) >= 0) {
-                 auxList.add(tmp);
-             }
-         }
+    	List<Braund> auxList = new ArrayList<Braund>();
+		if (braunds != null) {
+			for (Iterator<Braund> i = braunds.iterator(); i.hasNext();) {
+				Braund tmp = i.next();
+				String field = tmp.getName().toLowerCase();
+				if (field.indexOf(filter.trim().toLowerCase()) >= 0) {
+					auxList.add(tmp);
+				}
+			}
+		}
          return auxList;
     }
 
     public void onClick$btnAdd() throws InterruptedException {
         Sessions.getCurrent().setAttribute("eventType", WebConstants.EVENT_ADD);
+        Sessions.getCurrent().removeAttribute("object");
         Executions.getCurrent().sendRedirect(adminPage);
 
     }

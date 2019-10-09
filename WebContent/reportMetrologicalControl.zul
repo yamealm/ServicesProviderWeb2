@@ -47,7 +47,7 @@
                                             <hlayout>
                                                 <toolbarbutton label="${c:l('sp.bread.crumb.home')}" onClick='Executions.sendRedirect(&quot;home-admin.zul&quot;)'/>
                                                  |
-                                                <toolbarbutton label="${c:l('sp.crud.transaction.list')}" onClick='Executions.sendRedirect(&quot;listTransactions.zul&quot;)'/>
+                                                <toolbarbutton label="${c:l('sp.crud.metrological.control.list.reporte')}" />
                                             </hlayout>
                                         </div>
                                         <div height="5px" width="100%" style="background:#333;" align="left"></div>
@@ -90,17 +90,17 @@
                                             <div align="center">
                                                 <listbox id="lbxReport" width="1395px" height="560px" mold="paging">
                                                     <listhead>
-                                                       <listheader label="${c:l('sp.common.control.designation')}" width="140px" sort="auto"/>
-                                                       <listheader label="${c:l('sp.common.control.id.instrument')}" width="140px" sort="auto"/>
+                                                       <listheader label="${c:l('sp.common.control.designation')}" width="130px" sort="auto"/>
+                                                       <listheader label="${c:l('sp.common.control.id.instrument')}" width="130px" sort="auto"/>
                                                        <listheader label="${c:l('sp.common.control.braund')}" width="130px"/>
                                                         <listheader label="${c:l('sp.common.control.model')}" width="140px"/>
                                                         <listheader label="${c:l('sp.common.serial')}" width="100px"/>
-                                                        <listheader label="${c:l('sp.common.control.rank')}" width="130px"/>
+                                                        <listheader label="${c:l('sp.common.control.rank')}" width="120px"/>
                                                         <listheader label="${c:l('sp.common.control.date.calibration')}" width="140px"/>
                                                         <listheader label="${c:l('sp.common.control.due.date')}" width="140px"/>
-                                                        <listheader label="${c:l('sp.common.control.ubication')}" width="135px"/>
+                                                        <listheader label="${c:l('sp.common.control.ubication')}" width="200px"/>
                                                         <listheader label="${c:l('sp.common.control.minimun.scale')}" width="100px"/>
-                                                        <listheader label="${c:l('sp.common.control.type')}" width="100px"/>
+                                                        <listheader label="${c:l('sp.common.control.type')}" width="65px"/>
                                                     </listhead>
                                                 </listbox>
                                             </div>

@@ -86,19 +86,22 @@ public class ListCalibrationEntityController extends GenericAbstractListControll
     }
 
     public List<EnterCalibration> getFilteredList(String filter) {
-    	 List<EnterCalibration> auxList = new ArrayList<EnterCalibration>();
-         for (Iterator<EnterCalibration> i = calibrations.iterator(); i.hasNext();) {
-        	 EnterCalibration tmp = i.next();
-             String field = tmp.getName().toLowerCase();
-             if (field.indexOf(filter.trim().toLowerCase()) >= 0) {
-                 auxList.add(tmp);
-             }
-         }
+    	List<EnterCalibration> auxList = new ArrayList<EnterCalibration>();
+		if (calibrations != null) {
+			for (Iterator<EnterCalibration> i = calibrations.iterator(); i.hasNext();) {
+				EnterCalibration tmp = i.next();
+				String field = tmp.getName().toLowerCase();
+				if (field.indexOf(filter.trim().toLowerCase()) >= 0) {
+					auxList.add(tmp);
+				}
+			}
+		}
          return auxList;
     }
 
     public void onClick$btnAdd() throws InterruptedException {
         Sessions.getCurrent().setAttribute("eventType", WebConstants.EVENT_ADD);
+        Sessions.getCurrent().removeAttribute("object");
         Executions.getCurrent().sendRedirect(adminPage);
 
     }

@@ -112,13 +112,15 @@ public class ListCustomersController extends GenericAbstractListController<Custo
 
     public List<Customer> getFilteredList(String filter) {
         List<Customer> listAux = new ArrayList<Customer>();
-        for (Iterator<Customer> i = customers.iterator(); i.hasNext();) {
-            Customer tmp = i.next();
-            String field = tmp.getFirstName();
-            if (field.toLowerCase().indexOf(filter.trim().toLowerCase()) >= 0) {
-                listAux.add(tmp);
-            }
-        }
+		if (customers != null) {
+			for (Iterator<Customer> i = customers.iterator(); i.hasNext();) {
+				Customer tmp = i.next();
+				String field = tmp.getFirstName();
+				if (field.toLowerCase().indexOf(filter.trim().toLowerCase()) >= 0) {
+					listAux.add(tmp);
+				}
+			}
+		}
         return listAux;
     }
 

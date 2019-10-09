@@ -93,13 +93,15 @@ public class ListMetrologicalControlController extends GenericAbstractListContro
 
     public List<MetrologicalControl> getFilteredList(String filter) {
         List<MetrologicalControl> auxList = new ArrayList<MetrologicalControl>();
-        for (Iterator<MetrologicalControl> i = metrologicalControls.iterator(); i.hasNext();) {
-        	MetrologicalControl tmp = i.next();
-            String field = tmp.getBraund().getName().toLowerCase();
-            if (field.indexOf(filter.trim().toLowerCase()) >= 0) {
-                auxList.add(tmp);
-            }
-        }
+		if (metrologicalControls != null) {
+			for (Iterator<MetrologicalControl> i = metrologicalControls.iterator(); i.hasNext();) {
+				MetrologicalControl tmp = i.next();
+				String field = tmp.getBraund().getName().toLowerCase();
+				if (field.indexOf(filter.trim().toLowerCase()) >= 0) {
+					auxList.add(tmp);
+				}
+			}
+		}
         return auxList;
     }
 

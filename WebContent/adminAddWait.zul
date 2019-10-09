@@ -239,7 +239,7 @@
                                                          <row>
                                                             <label value="${c:l('sp.common.observations')}" sclass="lblbold"/>
                                                             <hlayout>
-                                                               <textbox id="txtObservation"  rows="4" maxlength="45" width="320px"/>                                 
+                                                               <textbox id="txtObservation"  rows="4" maxlength="150" width="320px"/>                                 
                                                             </hlayout>
                                                         </row>
                                                         <row>

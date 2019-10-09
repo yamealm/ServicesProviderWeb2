@@ -107,11 +107,13 @@ public class ListUsersController extends GenericAbstractListController<User> {
 
     public List<User> getFilteredList(String filter) {
         List<User> list= new ArrayList<User>();
-		for (Iterator<User> i = users.iterator(); i.hasNext();) {
-			User tmp = i.next();
-			String field = tmp.getFirstName().toLowerCase();
-			if (field.indexOf(filter.trim().toLowerCase()) >= 0) {
-				list.add(tmp);
+		if (users != null) {
+			for (Iterator<User> i = users.iterator(); i.hasNext();) {
+				User tmp = i.next();
+				String field = tmp.getFirstName().toLowerCase();
+				if (field.indexOf(filter.trim().toLowerCase()) >= 0) {
+					list.add(tmp);
+				}
 			}
 		}
         return list;

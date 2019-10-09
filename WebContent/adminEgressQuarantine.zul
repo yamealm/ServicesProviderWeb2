@@ -177,13 +177,13 @@
                                                         <row>
                                                             <label value="${c:l('sp.common.quaratine.reason')}" sclass="lblbold"/>
                                                             <hlayout>
-                                                               <textbox id="txtQuarantine"  rows="4" maxlength="45" width="320px"/>                                 
+                                                               <textbox id="txtQuarantine"  rows="4" maxlength="150" width="320px"/>                                 
                                                             </hlayout>
                                                         </row>
                                                          <row>
                                                             <label value="${c:l('sp.common.observations')}" sclass="lblbold"/>
                                                             <hlayout>
-                                                               <textbox id="txtObservation"  rows="3" maxlength="45" width="320px"/>                                 
+                                                               <textbox id="txtObservation"  rows="3" maxlength="150" width="320px"/>                                 
                                                             </hlayout>
                                                         </row>
                                                        

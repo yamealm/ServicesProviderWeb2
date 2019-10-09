@@ -90,6 +90,39 @@
                                                         </row>
                                                     </rows>
                                                 </grid>
+                                                  <grid width="1390px">
+                                                    <columns>
+                                                        <column label="" width="180px"/>
+                                                        <column label="" width="1200px"/>
+                                                    </columns>
+                                                    <rows>
+                                                       <row>
+                                                            <label value="${c:l('sp.automatic.service.name')}" sclass="lblbold"/>
+                                                            <label value="${c:l('sp.automatic.service.control.update')}"/>
+                                                        </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.automatic.service.date')}" sclass="lblbold"/>
+                                                            <label id="lblTopUpUpdateDate"/>
+                                                        </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.automatic.service.description')}" sclass="lblbold"/>
+                                                            <label value="${c:l('sp.automatic.service.stock.update.description')}"/>
+                                                       </row>
+                                                        <row>
+                                                           <label value="${c:l('sp.automatic.service.interval')}" sclass="lblbold"/>
+                                                            <label id="lblTopUpUpdateInterval"/>
+                                                        </row>
+                                                        <row>
+                                                            <label value="${c:l('sp.automatic.service.options')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <button id="btnTTRestart" label="${c:l('sp.automatic.commission.restart')}" width="150px" height="25px" orient="vertical" class="open orange" />
+                                                                <button id="btnTTStop" label="${c:l('sp.automatic.commission.stop')}" width="150px" height="25px" orient="vertical" class="open gray"/>
+                                                                <button id="btnTTTimeout" label="${c:l('sp.automatic.commission.timeout')}" width="150px" height="25px" orient="vertical" class="open gray"/>
+                                                                <button id="btnTTNextExecution" label="${c:l('sp.automatic.commission.date')}" width="180px" height="25px" orient="vertical" class="open gray"/>
+                                                           </hlayout>
+                                                        </row>
+                                                    </rows>
+                                                </grid>
                                         </vlayout>
                                     </vlayout>
                                 </groupbox>

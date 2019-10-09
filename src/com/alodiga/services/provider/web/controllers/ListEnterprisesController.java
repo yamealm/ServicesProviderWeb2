@@ -98,17 +98,19 @@ public class ListEnterprisesController extends GenericAbstractListController<Ent
     public List<Enterprise> getFilteredList(String filter) {
         System.out.println("filter " + filter);
         List<Enterprise> enterprisesAux = new ArrayList<Enterprise>();
-        for (Iterator<Enterprise> i = enterprises.iterator(); i.hasNext();) {
-            Enterprise tmp = i.next();
-            String field = tmp.getName();
-            System.out.println("field " + field);
-            if (field.indexOf(filter.trim().toLowerCase()) >= 0) {
-                System.out.println("TRUE");
-                enterprisesAux.add(tmp);
-            }
-        }
-        return enterprisesAux;
-    }
+		if (enterprises != null) {
+			for (Iterator<Enterprise> i = enterprises.iterator(); i.hasNext();) {
+				Enterprise tmp = i.next();
+				String field = tmp.getName();
+				System.out.println("field " + field);
+				if (field.indexOf(filter.trim().toLowerCase()) >= 0) {
+					System.out.println("TRUE");
+					enterprisesAux.add(tmp);
+				}
+			}
+		}
+		return enterprisesAux;
+	}
 
     public void onClick$btnAdd() throws InterruptedException {
         Sessions.getCurrent().setAttribute("eventType", WebConstants.EVENT_ADD);

@@ -12,6 +12,7 @@ import org.zkoss.zul.Button;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Messagebox;
 
+import com.alodiga.services.provider.commons.ejbs.AutomaticProcessControlTimerEJB;
 import com.alodiga.services.provider.commons.ejbs. AutomaticProcessTimerEJB;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
@@ -20,11 +21,12 @@ import com.alodiga.services.provider.web.generic.controllers.GenericAbstractCont
 public class AdminAutomaticServicesController extends GenericAbstractController {
 
     private Label lblInfo;
-
+    private Label lblTopUpUpdateDate;
+    private Label lblTopUpUpdateInterval;
     private Label lblUpdateDate;
     private Label lblUpdateInterval;
     private AutomaticProcessTimerEJB automaticProcessTimerEJB = null;
-    private Button btnPPNSubmitFile;
+    private AutomaticProcessControlTimerEJB automaticProcessControlTimerEJB = null;
             
     @Override
     public void doAfterCompose(Component comp) throws Exception {
@@ -37,9 +39,10 @@ public class AdminAutomaticServicesController extends GenericAbstractController 
         try {
             super.initialize();
             automaticProcessTimerEJB = (AutomaticProcessTimerEJB) EJBServiceLocator.getInstance().get(EjbConstants.AUTOMATIC_PROCESS_TIMER_EJB);
+            automaticProcessControlTimerEJB = (AutomaticProcessControlTimerEJB) EJBServiceLocator.getInstance().get(EjbConstants.AUTOMATIC_PROCESS_CONTROL_TIMER_EJB);
 
             showExecutionDates();
-
+            showTTExecutionDates();
         } catch (Exception ex) {
             ex.printStackTrace();
             lblInfo.setValue(Labels.getLabel("sp.error.general"));
@@ -53,7 +56,7 @@ public class AdminAutomaticServicesController extends GenericAbstractController 
         lblUpdateInterval.setValue(dailyInterval.toString());
 
     }
-
+	
     public void onClick$btnRestart() {
         try {
         	automaticProcessTimerEJB.restart();
@@ -97,4 +100,58 @@ public class AdminAutomaticServicesController extends GenericAbstractController 
         }
     }
   
+    private void showTTExecutionDates() {
+    	Date date1 = automaticProcessControlTimerEJB.getNextExecutionDate();
+    	lblTopUpUpdateDate.setValue(date1 != null ? date1.toString() : Labels.getLabel("sp.automatic.commission.noDate"));
+    	Long dailyInterval = automaticProcessControlTimerEJB.getTimeoutInterval() / 86400000;// 86400000 Milisegundos en un dia
+    	lblTopUpUpdateInterval.setValue(dailyInterval.toString());
+    	
+    }
+    
+	public void onClick$btnTTRestart() {
+		try {
+			automaticProcessControlTimerEJB.restart();
+			String response = Labels.getLabel("sp.automatic.commission.success");
+			lblInfo.setValue(response);
+			showTTExecutionDates();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			lblInfo.setValue(Labels.getLabel("sp.error.general"));
+		}
+	}
+
+	public void onClick$btnTTStop() {
+		try {
+			automaticProcessControlTimerEJB.stop();
+			lblInfo.setValue(Labels.getLabel("sp.automatic.commission.success"));
+			showTTExecutionDates();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			lblInfo.setValue(Labels.getLabel("sp.error.general"));
+		}
+	}   
+	
+	public void onClick$btnTTTimeout() {
+		try {
+
+			automaticProcessControlTimerEJB.forceTimeout();
+			String response = Labels.getLabel("sp.automatic.commission.timeoutMessage");
+			lblInfo.setValue(response);
+			showTTExecutionDates();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			lblInfo.setValue(Labels.getLabel("sp.error.general"));
+		}
+	}
+	
+	public void onClick$btnTTNextExecution() {
+		try {
+			showTTExecutionDates();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			lblInfo.setValue(Labels.getLabel("sp.error.general"));
+
+		}
+	}
+		
 }

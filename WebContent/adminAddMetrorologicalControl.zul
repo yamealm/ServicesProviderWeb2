@@ -124,9 +124,9 @@
                                                       <row>
                                                             <label value="${c:l('sp.common.control.ubication')}" sclass="lblbold"/>
                                                             <hlayout>
-                                                                <textbox id="txtUbication" maxlength="45" width="320px" constraint="no empty: ${c:l('error.field.required')}"/>
+                                                                <textbox id="txtUbication" maxlength="75" width="320px" constraint="no empty: ${c:l('error.field.required')}"/>
                                                                 <label value="*" sclass="lblreq" />
-                                                                <label value="${c:l('sp.common.max45')}" sclass="lblexample"/>
+                                                                <label value="${c:l('sp.common.max75')}" sclass="lblexample"/>
                                                             </hlayout>
                                                         </row>
                                                         <row>
@@ -153,7 +153,7 @@
                                                         <row>
                                                             <label value="${c:l('sp.common.observations')}" sclass="lblbold"/>
                                                             <hlayout>
-                                                               <textbox id="txtObservation"  rows="4" maxlength="45" width="320px"/>                                 
+                                                               <textbox id="txtObservation"  rows="4" maxlength="150" width="320px"/>                                 
                                                             </hlayout>
                                                         </row>
                                                     </rows>

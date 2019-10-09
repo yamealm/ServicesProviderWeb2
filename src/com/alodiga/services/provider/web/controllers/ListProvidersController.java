@@ -103,13 +103,15 @@ public class ListProvidersController extends GenericAbstractListController<Provi
 
     public List<Provider> getFilteredList(String filter) {
         List<Provider> providersaux = new ArrayList<Provider>();
-        for (Iterator<Provider> i = providers.iterator(); i.hasNext();) {
-            Provider tmp = i.next();
-            String field = tmp.getName().toLowerCase();
-            if (field.indexOf(filter.trim().toLowerCase()) >= 0) {
-                providersaux.add(tmp);
-            }
-        }
+		if (providers != null) {
+			for (Iterator<Provider> i = providers.iterator(); i.hasNext();) {
+				Provider tmp = i.next();
+				String field = tmp.getName().toLowerCase();
+				if (field.indexOf(filter.trim().toLowerCase()) >= 0) {
+					providersaux.add(tmp);
+				}
+			}
+		}
         return providersaux;
     }
 
