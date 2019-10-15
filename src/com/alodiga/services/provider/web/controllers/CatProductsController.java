@@ -14,6 +14,7 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
@@ -172,10 +173,18 @@ public class CatProductsController extends GenericAbstractListController<Product
     }
     
     public void onClick$btnSelect() {
-    	Product product = (Product) lbxRecords.getSelectedItem().getValue();
-    	Sessions.getCurrent().setAttribute("object",product);
-    	String page = (String) Sessions.getCurrent().getAttribute("page");
-   	 	Executions.sendRedirect("./"+page);
+		if (lbxRecords.getSelectedItem() != null) {
+			Product product = (Product) lbxRecords.getSelectedItem().getValue();
+			Sessions.getCurrent().setAttribute("object", product);
+			String page = (String) Sessions.getCurrent().getAttribute("page");
+			Executions.sendRedirect("./" + page);
+		} else {
+			try {
+				Messagebox.show(Labels.getLabel("sp.error.products.notSelected"));
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
    }
     
     public void onClick$btnCancel() {

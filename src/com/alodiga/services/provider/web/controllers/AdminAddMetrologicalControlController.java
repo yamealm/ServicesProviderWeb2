@@ -7,6 +7,7 @@ import java.util.List;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zul.Button;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Datebox;
@@ -63,6 +64,7 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
     private List<EnterCalibration> enterCalibrations;
     private List<Category> categories;
     private String ipAddress;
+    private Button btnSave;
 
     private User user;
     @Override
@@ -343,6 +345,8 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
 
             this.showMessage("sp.common.save.success", false, null);
             saveAudit(_metrologicalControl, metrologicalControl);
+            AccessControl.saveAction(Permission.ADD_METEOROLOGICAL_CONTROL, "Ingreso producto a Control Metrologico= " + metrologicalControl.getDesignation());
+            btnSave.setVisible(false);
         } catch (NullParameterException ex) {
         	showMessage("sp.error.field.number", true, null);
         } catch (Exception ex) {

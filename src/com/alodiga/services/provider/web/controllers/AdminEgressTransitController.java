@@ -438,6 +438,7 @@ public class AdminEgressTransitController extends GenericAbstractAdminController
     			transaction = transactionEJB.saveEgressStock(transaction,productSeries);
     			AccessControl.saveAction(Permission.REMOVE_TRANSIT, "Extraer producto de transito = " + productParam.getPartNumber() + " la cantidad de:" + totalQuantity);
     			this.showMessage(Labels.getLabel("sp.common.save.success"), false, null);
+    			btnSave.setVisible(false);
     		}else
     			 showError(Labels.getLabel("sp.error.validate.transaction"));
         } catch (Exception ex) {

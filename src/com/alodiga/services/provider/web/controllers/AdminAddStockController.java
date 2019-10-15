@@ -10,6 +10,7 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.SuspendNotAllowedException;
+import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
@@ -87,6 +88,7 @@ public class AdminAddStockController extends GenericAbstractAdminController {
     private String extForm = null;
     private String nameForm = null;
     private boolean uploaded = false;
+    private Button btnSave; 
 //    private Product product;
 
     private ProductEJB productEJB = null;
@@ -360,8 +362,6 @@ public class AdminAddStockController extends GenericAbstractAdminController {
                 cmbItem.setParent(cmbProvider);
                 if (provider != null && provider.getId().equals(e.getId())) {
                 	cmbProvider.setSelectedItem(cmbItem);
-                } else {
-                	cmbProvider.setSelectedIndex(0);
                 }
             }
         } catch (Exception ex) {
@@ -475,6 +475,7 @@ public class AdminAddStockController extends GenericAbstractAdminController {
             transaction = transactionEJB.saveTransactionStock(transaction,productSeries);
             AccessControl.saveAction(Permission.ADD_STOCK, "Agrego producto a stock = " + productParam.getPartNumber() + " la cantidad de:" + intQuantity.getValue());
             this.showMessage("sp.common.save.success", false, null);
+            btnSave.setVisible(false);
         } catch (NullParameterException ex) {
         	showMessage("sp.error.field.number", true, null);
         } catch (Exception ex) {

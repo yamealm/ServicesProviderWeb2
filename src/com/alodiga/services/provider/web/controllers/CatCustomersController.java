@@ -12,6 +12,7 @@ import org.zkoss.zk.ui.SuspendNotAllowedException;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
@@ -164,10 +165,18 @@ public class CatCustomersController extends GenericAbstractListController<Custom
     }
     
     public void onClick$btnSelect() {
-    	Customer customer = (Customer) lbxRecords.getSelectedItem().getValue();
-    	Sessions.getCurrent().setAttribute("customer",customer);
-     	String page = (String) Sessions.getCurrent().getAttribute("page");
-    	Executions.sendRedirect("./"+page);
+		if (lbxRecords.getSelectedItem() != null) {
+			Customer customer = (Customer) lbxRecords.getSelectedItem().getValue();
+			Sessions.getCurrent().setAttribute("customer", customer);
+			String page = (String) Sessions.getCurrent().getAttribute("page");
+			Executions.sendRedirect("./" + page);
+		} else {
+			try {
+				Messagebox.show(Labels.getLabel("sp.error.customers.notSelected"));
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+	}
    }
     
     public void onClick$btnCancel() {

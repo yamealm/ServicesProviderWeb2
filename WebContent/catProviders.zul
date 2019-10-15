@@ -15,7 +15,7 @@
             <listbox id="lbxRecords" fixedLayout="true" width="580px" height="320px">
                 <listhead>
                     <listheader label="${c:l('sp.common.name')}" width="140px" sort="auto"/>
-                    <listheader label="${c:l('sp.common.address')}" width="300px" sort="auto"/>
+                    <listheader label="${c:l('sp.common.address')}" width="440px" sort="auto"/>
                 </listhead>
             </listbox>
         </div>

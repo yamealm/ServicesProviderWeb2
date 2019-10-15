@@ -10,6 +10,7 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.SuspendNotAllowedException;
+import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
@@ -101,6 +102,7 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
     private List<Customer> customers;
     private User user;
     private Customer customer = null;
+    private Button btnSave;
     
     @Override
     public void doAfterCompose(Component comp) throws Exception {
@@ -110,8 +112,12 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
         utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
         transactionEJB = (TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
         customerEJB = (CustomerEJB) EJBServiceLocator.getInstance().get(EjbConstants.CUSTOMER_EJB);
+        productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
         user = AccessControl.loadCurrentUser();
         eventType =WebConstants.EVENT_ADD;
+        dtxExpiration.setValue(new Timestamp(new Date().getTime()));
+        dtxCure.setValue(new Timestamp(new Date().getTime()));
+        dtxCreation.setValue(new Timestamp(new Date().getTime()));
         if (customer != null && productParam !=null) {
 			loadFields(productParam!=null?productParam:null);
             loadEnterprises(productParam!=null?productParam.getEnterprise():null);
@@ -136,10 +142,6 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
     public void initialize() {
         super.initialize();
         try {
-            productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
-            dtxExpiration.setValue(new Timestamp(new Date().getTime()));
-            dtxCure.setValue(new Timestamp(new Date().getTime()));
-            dtxCreation.setValue(new Timestamp(new Date().getTime()));
             loadData();
         } catch (Exception ex) {
             showError(ex);
@@ -383,9 +385,7 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
                 cmbItem.setParent(cmbCustomer);
                 if (customer != null && customer.getId().equals(e.getId())) {
                 	cmbCustomer.setSelectedItem(cmbItem);
-                } else {
-                	cmbCustomer.setSelectedIndex(0);
-                }
+                } 
             }
         } catch (Exception ex) {
             showError(ex);
@@ -401,9 +401,11 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
             Category category = (Category) cmbCategory.getSelectedItem().getValue();
             transaction.setCategory(category);
             Condicion condition = (Condicion) cmbCondition.getSelectedItem().getValue();
-            transaction.setCondition(condition);
-            Customer customer = (Customer) cmbCustomer.getSelectedItem().getValue();
-            transaction.setCustomer(customer);
+			transaction.setCondition(condition);
+			if (cmbCustomer.getSelectedItem() != null) {
+				Customer customer = (Customer) cmbCustomer.getSelectedItem().getValue();
+				transaction.setCustomer(customer);
+			}
             Provider provider = (Provider) cmbProvider.getSelectedItem().getValue();
             transaction.setProvider(provider);
             transaction.setUser(user);
@@ -470,7 +472,7 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
 				productSerie.setCategory(category);
 				productSerie.setCustomer(customer);
 				productSerie.setOrderWord(txtWorkOrder.getText());
-//				   productSerie.setWork(txtWork.getText());// agregar campo base da datos
+				productSerie.setWork(txtWork.getText());// agregar campo base da datos
 				if (ra1.isChecked()) {
 					if (txtSerial.getText().isEmpty())
 						throw  new NullParameterException("Serial vacio");
@@ -487,6 +489,7 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
             Sessions.getCurrent().removeAttribute("customer");
             AccessControl.saveAction(Permission.ADD_WAIT, "Agrego producto a espera = " + productParam.getPartNumber() + " la cantidad de:" + intQuantity.getValue());
             this.showMessage("sp.common.save.success", false, null);
+            btnSave.setVisible(false);
         } catch (NullParameterException ex) {
         	showMessage("sp.error.field.number", true, null);
         } catch (Exception ex) {

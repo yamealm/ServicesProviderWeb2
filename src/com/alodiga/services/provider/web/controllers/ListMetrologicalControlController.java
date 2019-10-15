@@ -96,7 +96,7 @@ public class ListMetrologicalControlController extends GenericAbstractListContro
 		if (metrologicalControls != null) {
 			for (Iterator<MetrologicalControl> i = metrologicalControls.iterator(); i.hasNext();) {
 				MetrologicalControl tmp = i.next();
-				String field = tmp.getBraund().getName().toLowerCase();
+				String field = tmp.getInstrument().toLowerCase();
 				if (field.indexOf(filter.trim().toLowerCase()) >= 0) {
 					auxList.add(tmp);
 				}

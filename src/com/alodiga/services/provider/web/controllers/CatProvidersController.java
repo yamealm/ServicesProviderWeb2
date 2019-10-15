@@ -12,6 +12,7 @@ import org.zkoss.zk.ui.SuspendNotAllowedException;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
@@ -160,10 +161,18 @@ public class CatProvidersController extends GenericAbstractListController<Provid
     }
     
     public void onClick$btnSelect() {
-    	Provider provider = (Provider) lbxRecords.getSelectedItem().getValue();
-    	Sessions.getCurrent().setAttribute("provider",provider);
-     	String page = (String) Sessions.getCurrent().getAttribute("page");
-    	Executions.sendRedirect("./"+page);
+		if (lbxRecords.getSelectedItem() != null) {
+			Provider provider = (Provider) lbxRecords.getSelectedItem().getValue();
+			Sessions.getCurrent().setAttribute("provider", provider);
+			String page = (String) Sessions.getCurrent().getAttribute("page");
+			Executions.sendRedirect("./" + page);
+		} else {
+			try {
+				Messagebox.show(Labels.getLabel("sp.error.providers.notSelected"));
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
    }
     
     public void onClick$btnCancel() {

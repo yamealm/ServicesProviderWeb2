@@ -436,7 +436,8 @@ public class AdminEgressMetrologicalControlController extends GenericAbstractAdm
     			transaction = transactionEJB.saveEgressStock(transaction,productSeries);
 //            productParam = product;
 //            eventType = WebConstants.EVENT_EDIT;
-    			this.showMessage(Labels.getLabel("sp.common.save.success"), false, null);
+    		this.showMessage(Labels.getLabel("sp.common.save.success"), false, null);
+    		btnSave.setVisible(false);
     		}else
     			 showError(Labels.getLabel("sp.error.validate.transaction"));
         } catch (Exception ex) {

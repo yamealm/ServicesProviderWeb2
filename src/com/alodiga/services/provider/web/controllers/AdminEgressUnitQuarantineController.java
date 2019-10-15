@@ -10,6 +10,7 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.SuspendNotAllowedException;
+import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
@@ -85,6 +86,7 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
     private List<Condicion> conditions;
     private User user;
     private Customer customer = null;
+    private Button btnSave;
     
     @Override
     public void doAfterCompose(Component comp) throws Exception {
@@ -167,53 +169,21 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
     }
 
     public Boolean validateEmpty() {
-    	if (txtUbicationFolder.getText().isEmpty()) {
-        	txtUbicationFolder.setFocus(true);
-            this.showMessage("sp.error.field.cannotNull", true, null);
-        } if (txtUbicationBox.getText().isEmpty()) {
-        	txtUbicationBox.setFocus(true);
-            this.showMessage("sp.error.field.cannotNull", true, null);
-        } if (txtDescription.getText().isEmpty()) {
-        	txtDescription.setFocus(true);
-            this.showMessage("sp.error.field.cannotNull", true, null);
-        }if (txtPartNumber.getText().isEmpty()) {
-        	txtPartNumber.setFocus(true);
+    	if (cmbStatus.getText().isEmpty()) {
+        	cmbStatus.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null); 
-        }if (intStockMax.getText().isEmpty()) {
-        	intStockMax.setFocus(true);
-            this.showMessage("sp.error.field.cannotNull", true, null);
-        }if (intStockMin.getText().isEmpty()) {
-        	intStockMin.setFocus(true);
-            this.showMessage("sp.error.field.cannotNull", true, null);
-        } if (txtPartNumber.getText().isEmpty()) {
-        	txtPartNumber.setFocus(true);
-            this.showMessage("sp.error.field.cannotNull", true, null);
-        }if (intStockMin.getValue()>intStockMax.getValue()) {
-        	intStockMin.setFocus(true);
-            this.showMessage("sp.common.stock.min.error", true, null);
-        }if (!GeneralUtils.isNumeric(txtAmount.getText())) {
-        	txtAmount.setFocus(true);
-            this.showMessage("sp.error.field.number", true, null);
-        }
-       
-        
-        
-        else {
+        } else {
             return true;
         }
         return false;
     }
 
 
-    public void onClick$btnSave() {
-            switch (eventType) {
-                case WebConstants.EVENT_DELETE:
-                    saveProduct();
-                    break;
-                default:
-                    break;
-            }
-    }
+	public void onClick$btnSave() {
+		if (validateEmpty())
+			saveProduct();
+
+	}
 
     
 
@@ -330,6 +300,8 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
                 	cmbCustomer.setSelectedItem(cmbItem);
                 }  
             }
+            if (!customers.isEmpty())
+            	cmbCustomer.setSelectedIndex(1);
         } catch (Exception ex) {
             showError(ex);
         }
@@ -430,6 +402,7 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
     		transaction.setQuantity(intQuantity.getValue());
     		transaction = transactionEJB.saveEgressStock(transaction,productSeries);
     		this.showMessage(Labels.getLabel("sp.common.save.success"), false, null);
+    		btnSave.setVisible(false);
     		AccessControl.saveAction(Permission.REMOVE_QUARANTINE, "Extraer producto de quarentena = " + productSerieParam.getProduct().getPartNumber() + " la cantidad de:" + intQuantity.getValue());
         } catch (Exception ex) {
             showError(ex);

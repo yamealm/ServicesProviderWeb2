@@ -9,6 +9,7 @@ import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
@@ -78,6 +79,8 @@ public class AdminEgressUnitMetrologicalControlController extends GenericAbstrac
     private List<Provider> providers;
     private List<Condicion> conditions;
     private User user;
+    private Button btnSave;
+    
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
@@ -196,16 +199,9 @@ public class AdminEgressUnitMetrologicalControlController extends GenericAbstrac
     }
 
 
-    public void onClick$btnSave() {
-            switch (eventType) {
-                case WebConstants.EVENT_DELETE:
-                    saveProduct();
-                    break;
-                default:
-                    break;
-            }
-    }
-
+	public void onClick$btnSave() {
+		saveProduct();
+	}
     
 
     public void onClick$btnBack() {
@@ -398,7 +394,7 @@ public class AdminEgressUnitMetrologicalControlController extends GenericAbstrac
     		transaction.setQuantity(intQuantity.getValue());
     		transaction = transactionEJB.saveEgressStock(transaction,productSeries);
     		this.showMessage(Labels.getLabel("sp.common.save.success"), false, null);
-    		
+    		 btnSave.setVisible(false);
         } catch (Exception ex) {
             showError(ex);
         }

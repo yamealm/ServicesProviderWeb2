@@ -10,6 +10,7 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.SuspendNotAllowedException;
+import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
@@ -82,6 +83,7 @@ public class AdminEgressUnitTransitController extends GenericAbstractAdminContro
     private List<Condicion> conditions;
     private User user;
     private Customer customer = null;
+    private Button btnSave;
     
     @Override
     public void doAfterCompose(Component comp) throws Exception {
@@ -203,15 +205,9 @@ public class AdminEgressUnitTransitController extends GenericAbstractAdminContro
     }
 
 
-    public void onClick$btnSave() {
-            switch (eventType) {
-                case WebConstants.EVENT_DELETE:
-                    saveProduct();
-                    break;
-                default:
-                    break;
-            }
-    }
+	public void onClick$btnSave() {
+		saveProduct();
+	}
 
     
 
@@ -406,6 +402,7 @@ public class AdminEgressUnitTransitController extends GenericAbstractAdminContro
     		transaction = transactionEJB.saveEgressStock(transaction,productSeries);
     		this.showMessage(Labels.getLabel("sp.common.save.success"), false, null);
     		AccessControl.saveAction(Permission.REMOVE_TRANSIT, "Extraer producto de transito = " + productSerieParam.getProduct().getPartNumber() + " la cantidad de:" + intQuantity.getValue());
+    		btnSave.setVisible(false);
         } catch (Exception ex) {
             showError(ex);
         }

@@ -10,6 +10,7 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.SuspendNotAllowedException;
+import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
@@ -83,6 +84,7 @@ public class AdminEgressUnitWaitController extends GenericAbstractAdminControlle
     private List<Condicion> conditions;
     private User user;
     private Customer customer = null;
+    private Button btnSave;
     
     @Override
     public void doAfterCompose(Component comp) throws Exception {
@@ -205,15 +207,9 @@ public class AdminEgressUnitWaitController extends GenericAbstractAdminControlle
     }
 
 
-    public void onClick$btnSave() {
-            switch (eventType) {
-                case WebConstants.EVENT_DELETE:
-                    saveProduct();
-                    break;
-                default:
-                    break;
-            }
-    }
+	public void onClick$btnSave() {
+		saveProduct();
+	}
 
     
 
@@ -264,7 +260,7 @@ public class AdminEgressUnitWaitController extends GenericAbstractAdminControlle
         }
 		intQuantity.setValue(productSerie.getQuantity());
 		txtWorkOrder.setText(productSerie.getOrderWord());
-		txtWork.setText(productSerie.getOrderWord());
+		txtWork.setText(productSerie.getWork());
 
     }
     
@@ -411,6 +407,7 @@ public class AdminEgressUnitWaitController extends GenericAbstractAdminControlle
     		transaction = transactionEJB.saveEgressStock(transaction,productSeries);
     		this.showMessage(Labels.getLabel("sp.common.save.success"), false, null);
     		AccessControl.saveAction(Permission.REMOVE_WAIT, "Extraer producto de espera = " + productSerieParam.getProduct().getPartNumber() + " la cantidad de:" + intQuantity.getValue());
+    		btnSave.setVisible(false);
         } catch (Exception ex) {
             showError(ex);
         }

@@ -24,7 +24,7 @@
         		<label value="${c:l('sp.common.data.basic')}" sclass="lblbold" />
         		<grid fixedLayout="true">
         			<columns>
-        				<column label="" width="200px" />
+        				<column label="" width="180px" />
         				<column label="" width="400px" />
         			</columns>
         			<rows>

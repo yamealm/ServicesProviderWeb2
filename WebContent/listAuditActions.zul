@@ -69,8 +69,8 @@
                                                     <listheader label="${c:l('sp.auditActions.userLogin')}" width="275px" sort="auto"/>
                                                     <listheader label="${c:l('sp.auditActions.userName')}" width="275px" sort="auto"/>
                                                     <listheader label="${c:l('sp.auditActions.permission')}" width="275px" sort="auto"/>
-                                                    <listheader label="${c:l('sp.auditActions.date')}" width="275px" sort="auto"/>
-                                                    <listheader label="${c:l('sp.auditActions.info')}" width="295px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.auditActions.date')}" width="175px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.auditActions.info')}" width="395px" sort="auto"/>
                                                 </listhead>
                                             </listbox>
 

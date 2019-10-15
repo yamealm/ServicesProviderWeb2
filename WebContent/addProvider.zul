@@ -25,7 +25,7 @@
         		<grid fixedLayout="true">
         			<columns>
         				<column label="" width="200px" />
-        				<column label="" width="400px" />
+        				<column label="" width="380px" />
         			</columns>
         			<rows>
         				<row>
@@ -40,7 +40,7 @@
         				<row>
         					<label value="${c:l('sp.common.address')}" width="100px" sclass="lblbold" />
         					<hlayout>
-        						<textbox id="txtAddress" width="320px" rows="2" maxlength="255" constraint="no empty: ${c:l('error.field.required')}" />
+        						<textbox id="txtAddress" width="310px" rows="2" maxlength="255" constraint="no empty: ${c:l('error.field.required')}" />
         						<label value="*" sclass="lblreq" />
         						<label value="${c:l('sp.common.max255')}" sclass="lblexample" />
         					</hlayout>

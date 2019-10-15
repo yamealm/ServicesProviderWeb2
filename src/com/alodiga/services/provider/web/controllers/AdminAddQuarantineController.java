@@ -10,6 +10,7 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.SuspendNotAllowedException;
+import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
@@ -101,6 +102,7 @@ public class AdminAddQuarantineController extends GenericAbstractAdminController
     private List<Customer> customers;
     private User user;
     private Customer customer = null;
+    private Button btnSave;
     
     
     @Override
@@ -384,9 +386,7 @@ public class AdminAddQuarantineController extends GenericAbstractAdminController
                 cmbItem.setParent(cmbCustomer);
                 if (customer != null && customer.getId().equals(e.getId())) {
                 	cmbCustomer.setSelectedItem(cmbItem);
-                } else {
-                	cmbCustomer.setSelectedIndex(0);
-                }
+                } 
             }
         } catch (Exception ex) {
             showError(ex);
@@ -403,8 +403,10 @@ public class AdminAddQuarantineController extends GenericAbstractAdminController
             transaction.setCategory(category);
             Condicion condition = (Condicion) cmbCondition.getSelectedItem().getValue();
             transaction.setCondition(condition);
-            Customer customer = (Customer) cmbCustomer.getSelectedItem().getValue();
-            transaction.setCustomer(customer);
+			if (cmbCustomer.getSelectedItem() != null) {
+				Customer customer = (Customer) cmbCustomer.getSelectedItem().getValue();
+				transaction.setCustomer(customer);
+			}
             Provider provider = (Provider) cmbProvider.getSelectedItem().getValue();
             transaction.setProvider(provider);
             transaction.setUser(user);
@@ -483,6 +485,7 @@ public class AdminAddQuarantineController extends GenericAbstractAdminController
             AccessControl.saveAction(Permission.ADD_QUARANTINE, "Agrego producto a quarentena = " + productParam.getPartNumber() + " la cantidad de:" + intQuantity.getValue());
             Sessions.getCurrent().removeAttribute("customer");
             this.showMessage("sp.common.save.success", false, null);
+            btnSave.setVisible(false);
         } catch (NullParameterException ex) {
         	showMessage("sp.error.field.number", true, null);
         } catch (Exception ex) {

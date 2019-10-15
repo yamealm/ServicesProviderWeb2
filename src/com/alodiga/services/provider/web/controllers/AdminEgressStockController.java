@@ -12,6 +12,7 @@ import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
@@ -75,6 +76,7 @@ public class AdminEgressStockController extends GenericAbstractAdminController {
     private List<Category> categories;
     private List<Customer> customers;
     private User user;
+    private Button btnSave;
 
     @Override
     public void doAfterCompose(Component comp) throws Exception {
@@ -424,6 +426,7 @@ public class AdminEgressStockController extends GenericAbstractAdminController {
     			transaction = transactionEJB.saveEgressStock(transaction,productSeries);
     			AccessControl.saveAction(Permission.REMOVE_STOCK, "Extraer producto de stock = " + productParam.getPartNumber() + " la cantidad de:" + totalQuantity);
     			this.showMessage(Labels.getLabel("sp.common.save.success"), false, null);
+    			btnSave.setVisible(false);
     		}else
     			 showError(Labels.getLabel("sp.error.validate.transaction"));
         } catch (Exception ex) {

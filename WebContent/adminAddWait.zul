@@ -199,7 +199,8 @@
                                                          <row>
                                                             <label value="${c:l('sp.common.date.add')}" sclass="lblbold"/>
                                                              <hlayout>
-                                                            <datebox id="dtxCreation" width="120px" format="dd-MM-yyyy"/>
+                                                            <datebox id="dtxCreation" width="120px" format="dd-MM-yyyy"  constraint="no empty: ${c:l('error.field.required')}"/>
+                                                            <label value="*" sclass="lblreq" />
                                                             </hlayout>
                                                         </row>
                                                          <row>
