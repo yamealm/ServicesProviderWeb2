@@ -245,6 +245,12 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
         }
     }
 
+    public void onChange$cmbBraund() {
+
+        Braund braund = (Braund) cmbBraund.getSelectedItem().getValue();
+        loadModel(braund);
+
+    }
        
     private void loadModel(Braund braund) {
 
