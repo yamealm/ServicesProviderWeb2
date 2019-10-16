@@ -105,7 +105,8 @@ public class AdminMarkController extends GenericAbstractAdminController {
             braund.setName(txtName.getText());            
             braund = utilsEJB.saveBraund(braund);   
             this.showMessage("sp.common.save.success", false, null);
-            saveAudit(_braund, braund);
+            AccessControl.saveAction(Permission.ADD_MARK, "Ingreso la marca= " +braund.getName());
+//            saveAudit(_braund, braund);
         } catch (Exception ex) {
            showError(ex);
         }

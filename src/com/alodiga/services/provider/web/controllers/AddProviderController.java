@@ -8,10 +8,12 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
 import com.alodiga.services.provider.commons.ejbs.ProductEJB;
+import com.alodiga.services.provider.commons.models.Permission;
 import com.alodiga.services.provider.commons.models.Provider;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractAdminController;
+import com.alodiga.services.provider.web.utils.AccessControl;
 import com.alodiga.services.provider.web.utils.WebConstants;
 
 public class AddProviderController extends GenericAbstractAdminController {
@@ -83,6 +85,7 @@ public class AddProviderController extends GenericAbstractAdminController {
             providerParam = provider;
             eventType = WebConstants.EVENT_EDIT;
             this.showMessage("sp.common.save.success", false, null);
+            AccessControl.saveAction(Permission.ADD_PROVIDER, "Ingreso el proveedor= " + provider.getName());
         } catch (Exception ex) {
             showError(ex);
         }

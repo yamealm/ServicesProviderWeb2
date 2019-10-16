@@ -13,6 +13,7 @@ import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Textbox;
 
+import com.alodiga.services.provider.commons.ejbs.ProductEJB;
 import com.alodiga.services.provider.commons.ejbs.TransactionEJB;
 import com.alodiga.services.provider.commons.exceptions.EmptyListException;
 import com.alodiga.services.provider.commons.exceptions.GeneralException;
@@ -40,6 +41,7 @@ public class ListWaitController extends GenericAbstractListController<Product> {
     private Listbox lbxRecords;
     private Textbox txtAlias;
     private TransactionEJB transactionEJB = null;
+    private ProductEJB productEJB = null;
     private List<Product> products = null;
     private User currentUser;
     private Profile currentProfile;
@@ -74,6 +76,7 @@ public class ListWaitController extends GenericAbstractListController<Product> {
             currentUser = AccessControl.loadCurrentUser();
             currentProfile = currentUser.getCurrentProfile(Enterprise.TURBINES);
             checkPermissions();
+            productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
             transactionEJB = (TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
             loadPermission(new Provider());
             startListener();
@@ -107,24 +110,26 @@ public class ListWaitController extends GenericAbstractListController<Product> {
             if (list != null && !list.isEmpty()) {
                 btnDownload.setVisible(true);
                 for (Product product : list) {
-                	try {
-                		int  currentQuantity = transactionEJB.loadQuantityByProductId(product.getId(),Category.WAIT);
-                		stock = currentQuantity;
-                	} catch (Exception ex) {
-                		stock = 0;
-                    }
-                    item = new Listitem();
-                    item.setValue(product);
-                    item.appendChild(new Listcell(product.getPartNumber()));
-                    item.appendChild(new Listcell(product.getDescription()));
-                    item.appendChild(new Listcell(product.getUbicationBox()));
-                    item.appendChild(new Listcell(product.getUbicationFolder()));
-                    item.appendChild(new Listcell(String.valueOf(product.getAmount())));
-                    item.appendChild(new Listcell(String.valueOf(stock)));
-                    item.appendChild(permissionAdd ? new ListcellAddButton("adminAddWait.zul", product,Permission.ADD_WAIT) : new Listcell());
-//                    item.appendChild(permissionDelete && stock>0? new ListcellRemoveButton("adminEgressWait.zul", product,Permission.REMOVE_WAIT) : new Listcell());
-//                    item.appendChild(permissionRead  && stock>0? new ListcellViewButton("listAddWait.zul", product,Permission.VIEW_WAIT) : new Listcell());
-                    item.setParent(lbxRecords);
+                	if (product.getEnabled()) {
+	                	try {
+	                		int  currentQuantity = transactionEJB.loadQuantityByProductId(product.getId(),Category.WAIT);
+	                		stock = currentQuantity;
+	                	} catch (Exception ex) {
+	                		stock = 0;
+	                    }
+	                    item = new Listitem();
+	                    item.setValue(product);
+	                    item.appendChild(new Listcell(product.getPartNumber()));
+	                    item.appendChild(new Listcell(product.getDescription()));
+	                    item.appendChild(new Listcell(product.getUbicationBox()));
+	                    item.appendChild(new Listcell(product.getUbicationFolder()));
+	                    item.appendChild(new Listcell(String.valueOf(product.getAmount())));
+	                    item.appendChild(new Listcell(String.valueOf(stock)));
+	                    item.appendChild(permissionAdd ? new ListcellAddButton("adminAddWait.zul", product,Permission.ADD_WAIT) : new Listcell());
+	//                    item.appendChild(permissionDelete && stock>0? new ListcellRemoveButton("adminEgressWait.zul", product,Permission.REMOVE_WAIT) : new Listcell());
+	//                    item.appendChild(permissionRead  && stock>0? new ListcellViewButton("listAddWait.zul", product,Permission.VIEW_WAIT) : new Listcell());
+	                    item.setParent(lbxRecords);
+                	}
                 }
             } else {
                 btnDownload.setVisible(false);
@@ -144,10 +149,10 @@ public class ListWaitController extends GenericAbstractListController<Product> {
     public void getData() {
         products = new ArrayList<Product>();
         try {
-            request.setFirst(0);
-            request.setLimit(null);
-            request.setAuditData(null);
-            products = transactionEJB.listProducts();
+        	 request.setFirst(0);
+             request.setLimit(null);
+             request.setAuditData(null);
+             products = productEJB.getProducts(request);
         } catch (NullParameterException ex) {
             showError(ex);
         } catch (EmptyListException ex) {

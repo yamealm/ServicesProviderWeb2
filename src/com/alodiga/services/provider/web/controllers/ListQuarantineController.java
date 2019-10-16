@@ -13,6 +13,7 @@ import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Textbox;
 
+import com.alodiga.services.provider.commons.ejbs.ProductEJB;
 import com.alodiga.services.provider.commons.ejbs.TransactionEJB;
 import com.alodiga.services.provider.commons.exceptions.EmptyListException;
 import com.alodiga.services.provider.commons.exceptions.GeneralException;
@@ -40,6 +41,7 @@ public class ListQuarantineController extends GenericAbstractListController<Prod
     private Listbox lbxRecords;
     private Textbox txtAlias;
     private TransactionEJB transactionEJB = null;
+    private ProductEJB productEJB = null;
     private List<Product> products = null;
     private User currentUser;
     private Profile currentProfile;
@@ -75,6 +77,7 @@ public class ListQuarantineController extends GenericAbstractListController<Prod
             checkPermissions();
             adminPage = "adminAddQuarantine.zul";
             transactionEJB = (TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
+            productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
             loadPermission(new Provider());
             startListener();
             getData();
@@ -107,24 +110,24 @@ public class ListQuarantineController extends GenericAbstractListController<Prod
             if (list != null && !list.isEmpty()) {
                 btnDownload.setVisible(true);
                 for (Product product : list) {
-                	try {
-                		int  currentQuantity = transactionEJB.loadQuantityByProductId(product.getId(), Category.QUARANTINE);
-                		stock = currentQuantity;
-                	} catch (Exception ex) {
-                		stock = 0;
-                    }
-                    item = new Listitem();
-                    item.setValue(product);
-                    item.appendChild(new Listcell(product.getPartNumber()));
-                    item.appendChild(new Listcell(product.getDescription()));
-                    item.appendChild(new Listcell(product.getUbicationBox()));
-                    item.appendChild(new Listcell(product.getUbicationFolder()));
-                    item.appendChild(new Listcell(String.valueOf(product.getAmount())));
-                    item.appendChild(new Listcell(String.valueOf(stock)));
-                    item.appendChild(permissionAdd ? new ListcellAddButton("adminAddQuarantine.zul", product,Permission.ADD_QUARANTINE) : new Listcell());
-//                    item.appendChild(permissionDelete && stock>0? new ListcellRemoveButton("adminEgressQuarantine.zul", product,Permission.REMOVE_QUARANTINE) : new Listcell());
-//                    item.appendChild(permissionRead  && stock>0? new ListcellViewButton("listAddQuarantine.zul", product,Permission.VIEW_QUARANTINE) : new Listcell());
-                    item.setParent(lbxRecords);
+                	if (product.getEnabled()) {
+	                	try {
+	                		int  currentQuantity = transactionEJB.loadQuantityByProductId(product.getId(), Category.QUARANTINE);
+	                		stock = currentQuantity;
+	                	} catch (Exception ex) {
+	                		stock = 0;
+	                    }
+	                    item = new Listitem();
+	                    item.setValue(product);
+	                    item.appendChild(new Listcell(product.getPartNumber()));
+	                    item.appendChild(new Listcell(product.getDescription()));
+	                    item.appendChild(new Listcell(product.getUbicationBox()));
+	                    item.appendChild(new Listcell(product.getUbicationFolder()));
+	                    item.appendChild(new Listcell(String.valueOf(product.getAmount())));
+	                    item.appendChild(new Listcell(String.valueOf(stock)));
+	                    item.appendChild(permissionAdd ? new ListcellAddButton("adminAddQuarantine.zul", product,Permission.ADD_QUARANTINE) : new Listcell());
+	                    item.setParent(lbxRecords);
+                	}
                 }
             } else {
                 btnDownload.setVisible(false);
@@ -144,10 +147,10 @@ public class ListQuarantineController extends GenericAbstractListController<Prod
     public void getData() {
         products = new ArrayList<Product>();
         try {
-            request.setFirst(0);
-            request.setLimit(null);
-            request.setAuditData(null);
-            products = transactionEJB.listProducts();
+        	 request.setFirst(0);
+             request.setLimit(null);
+             request.setAuditData(null);
+             products = productEJB.getProducts(request);
         } catch (NullParameterException ex) {
             showError(ex);
         } catch (EmptyListException ex) {

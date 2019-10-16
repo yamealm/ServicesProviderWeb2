@@ -37,73 +37,77 @@ import org.zkoss.zul.Textbox;
 
 public class ListProductsController extends GenericAbstractListController<Product> {
 
-    private static final long serialVersionUID = -9145887024839938515L;
-    private Listbox lbxRecords;
-    private Textbox txtAlias;
-    private ProductEJB productEJB = null;
-    private List<Product> products = null;
-    private User currentUser;
-    private Profile currentProfile;
+	private static final long serialVersionUID = -9145887024839938515L;
+	private Listbox lbxRecords;
+	private Textbox txtAlias;
+	private ProductEJB productEJB = null;
+	private List<Product> products = null;
+	private User currentUser;
+	private Profile currentProfile;
 
-    @Override
-    public void doAfterCompose(Component comp) throws Exception {
-        super.doAfterCompose(comp);
-        initialize();
-    }
+	@Override
+	public void doAfterCompose(Component comp) throws Exception {
+		super.doAfterCompose(comp);
+		initialize();
+	}
 
-    @Override
-    public void checkPermissions() {
-        try {
-            btnAdd.setVisible(PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.ADD_PRODUCT));
-            permissionEdit = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.EDIT_PRODUCT);
-            permissionRead = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.VIEW_PRODUCT);
-            permissionChangeStatus = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.CHANGE_PRODUCT_STATUS);
-        } catch (Exception ex) {
-            showError(ex);
-        }
+	@Override
+	public void checkPermissions() {
+		try {
+			btnAdd.setVisible(
+					PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.ADD_PRODUCT));
+			permissionEdit = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(),
+					Permission.EDIT_PRODUCT);
+			permissionRead = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(),
+					Permission.VIEW_PRODUCT);
+			permissionChangeStatus = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(),
+					Permission.CHANGE_PRODUCT_STATUS);
+		} catch (Exception ex) {
+			showError(ex);
+		}
 
-    }
+	}
 
-    public void startListener() {
-    }
+	public void startListener() {
+	}
 
-    @Override
-    public void initialize() {
-        super.initialize();
-        try {
-            currentUser = AccessControl.loadCurrentUser();
-            currentProfile = currentUser.getCurrentProfile(Enterprise.TURBINES);
-            checkPermissions();
-            adminPage = "adminProduct.zul";
-            productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
-            loadPermission(new Provider());
-            startListener();
-            getData();
-            loadList(products);
-        } catch (Exception ex) {
-            showError(ex);
-        }
-    }
+	@Override
+	public void initialize() {
+		super.initialize();
+		try {
+			currentUser = AccessControl.loadCurrentUser();
+			currentProfile = currentUser.getCurrentProfile(Enterprise.TURBINES);
+			checkPermissions();
+			adminPage = "adminProduct.zul";
+			productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
+			loadPermission(new Provider());
+			startListener();
+			getData();
+			loadList(products);
+		} catch (Exception ex) {
+			showError(ex);
+		}
+	}
 
-    private Listcell initEnabledButton(final Boolean enabled, final Listitem listItem) {
-        Listcell cell = new Listcell();
-        cell.setValue("");
-        final ChangeStatusButton button = new ChangeStatusButton(enabled);
-        button.setTooltiptext(Labels.getLabel("sp.common.actions.changeStatus"));
-        button.setClass("open orange");
-        button.addEventListener("onClick", new EventListener() {
-            public void onEvent(Event event) throws Exception {
-                changeStatus(button, listItem);
-            }
-        });
+	private Listcell initEnabledButton(final Boolean enabled, final Listitem listItem) {
+		Listcell cell = new Listcell();
+		cell.setValue("");
+		final ChangeStatusButton button = new ChangeStatusButton(enabled);
+		button.setTooltiptext(Labels.getLabel("sp.common.actions.changeStatus"));
+		button.setClass("open orange");
+		button.addEventListener("onClick", new EventListener() {
+			public void onEvent(Event event) throws Exception {
+				changeStatus(button, listItem);
+			}
+		});
 
-        button.setParent(cell);
-        return cell;
-    }
+		button.setParent(cell);
+		return cell;
+	}
 
-    public List<Product> getFilteredList(String filter) {
-        List<Product> auxList = new ArrayList<Product>();
-        if (products != null) {
+	public List<Product> getFilteredList(String filter) {
+		List<Product> auxList = new ArrayList<Product>();
+		if (products != null) {
 			for (Iterator<Product> i = products.iterator(); i.hasNext();) {
 				Product tmp = i.next();
 				String field = tmp.getDescription().toLowerCase();
@@ -112,47 +116,50 @@ public class ListProductsController extends GenericAbstractListController<Produc
 				}
 			}
 		}
-        return auxList;
-    }
+		return auxList;
+	}
 
-    public void onClick$btnAdd() throws InterruptedException {
-        Sessions.getCurrent().setAttribute("eventType", WebConstants.EVENT_ADD);
-        Sessions.getCurrent().removeAttribute("object");
-        Executions.getCurrent().sendRedirect(adminPage);
-    }
+	public void onClick$btnAdd() throws InterruptedException {
+		Sessions.getCurrent().setAttribute("eventType", WebConstants.EVENT_ADD);
+		Sessions.getCurrent().removeAttribute("object");
+		Executions.getCurrent().sendRedirect(adminPage);
+	}
 
-    private void changeStatus(ChangeStatusButton button, Listitem listItem) {
-        try {
-            Product product = (Product) listItem.getValue();
-            button.changeImageStatus(product.getEnabled());
-            product.setEnabled(!product.getEnabled());
-            listItem.setValue(product);
-            request.setParam(product);
-            productEJB.saveProduct(request);
-            AccessControl.saveAction(Permission.CHANGE_PRODUCT_STATUS, "changeStatus product = " + product.getId() + " to status = " + !product.getEnabled());
-        } catch (Exception ex) {
-            showError(ex);
-        }
-    }
+	private void changeStatus(ChangeStatusButton button, Listitem listItem) {
+		try {
+			Product product = (Product) listItem.getValue();
+			button.changeImageStatus(product.getEnabled());
+			product.setEnabled(!product.getEnabled());
+			listItem.setValue(product);
+			request.setParam(product);
+			productEJB.saveProduct(request);
+			AccessControl.saveAction(Permission.CHANGE_PRODUCT_STATUS,
+					"changeStatus product = " + product.getId() + " to status = " + !product.getEnabled());
+		} catch (Exception ex) {
+			showError(ex);
+		}
+	}
 
-    public void loadList(List<Product> list) {
+	public void loadList(List<Product> list) {
         try {
             lbxRecords.getItems().clear();
             Listitem item = null;
             if (list != null && !list.isEmpty()) {
                 btnDownload.setVisible(true);
                 for (Product product : list) {
-                    item = new Listitem();
-                    item.setValue(product);
-                    item.appendChild(new Listcell(product.getPartNumber()));
-                    item.appendChild(new Listcell(product.getDescription()));
-                    item.appendChild(new Listcell(String.valueOf(product.getAmount())));
-                    item.appendChild(new Listcell(String.valueOf(product.getStockMin())));
-                    item.appendChild(new Listcell(String.valueOf(product.getStockMax())));
-                    item.appendChild(permissionChangeStatus ? initEnabledButton(product.getEnabled(), item) : new Listcell());
-                    item.appendChild(permissionEdit ? new ListcellEditButton(adminPage, product,Permission.EDIT_PRODUCT) : new Listcell());
-//                    item.appendChild(permissionRead ? new ListcellViewButton(adminPage, product,Permission.VIEW_PRODUCT) : new Listcell());
-                    item.setParent(lbxRecords);
+					if (product.getEnabled()) {
+						item = new Listitem();
+						item.setValue(product);
+						item.appendChild(new Listcell(product.getPartNumber()));
+						item.appendChild(new Listcell(product.getDescription()));
+						item.appendChild(new Listcell(String.valueOf(product.getUbicationBox())));
+						item.appendChild(new Listcell(String.valueOf(product.getUbicationFolder())));
+						item.appendChild(new Listcell(String.valueOf(product.getStockMin())));
+						item.appendChild(new Listcell(String.valueOf(product.getStockMax())));
+						item.appendChild(permissionChangeStatus ? initEnabledButton(product.getEnabled(), item)	: new Listcell());
+						item.appendChild(permissionEdit ? new ListcellEditButton(adminPage, product, Permission.EDIT_PRODUCT): new Listcell());
+						item.setParent(lbxRecords);
+					}
                 }
             } else {
                 btnDownload.setVisible(false);
@@ -168,50 +175,51 @@ public class ListProductsController extends GenericAbstractListController<Produc
         }
     }
 
-    public void getData() {
-        products = new ArrayList<Product>();
-        try {
-            request.setFirst(0);
-            request.setLimit(null);
-            request.setAuditData(null);
-            products = productEJB.getProducts(request);
-        } catch (NullParameterException ex) {
-            showError(ex);
-        } catch (EmptyListException ex) {
-        } catch (GeneralException ex) {
-            showError(ex);
-        }
-    }
+	public void getData() {
+		products = new ArrayList<Product>();
+		try {
+			request.setFirst(0);
+			request.setLimit(null);
+			request.setAuditData(null);
+			products = productEJB.getProducts(request);
+		} catch (NullParameterException ex) {
+			showError(ex);
+		} catch (EmptyListException ex) {
+		} catch (GeneralException ex) {
+			showError(ex);
+		}
+	}
 
-    public void onClick$btnClear() throws InterruptedException {
-        txtAlias.setText("");
-    }
+	public void onClick$btnClear() throws InterruptedException {
+		txtAlias.setText("");
+	}
 
-    public void onClick$btnSearch() throws InterruptedException {
-        try {
-            loadList(getFilteredList(txtAlias.getText()));
-            AccessControl.saveAction(Permission.LIST_PRODUCTS, "Se busco listado de productos");
-        } catch (Exception ex) {
-            showError(ex);
-        }
-    }
-    
-    public void onClick$btnExportPdf() throws InterruptedException {
-        try {
-        	PDFUtil.exportPdf((Labels.getLabel("sp.common.product"))+".pdf", Labels.getLabel("sp.crud.product.list.reporte"), lbxRecords,3);
-        	AccessControl.saveAction(Permission.LIST_PRODUCTS, "Se descargo listado de productos formato pdf");
-        } catch (Exception ex) {
-            showError(ex);
-        }
-    }
-    
-    public void onClick$btnDownload() throws InterruptedException {
-        try {
-            Utils.exportExcel(lbxRecords, Labels.getLabel("sp.crud.product.list"));
-            AccessControl.saveAction(Permission.LIST_PRODUCTS, "Se descargo listado de productos formato excel");
-        } catch (Exception ex) {
-            showError(ex);
-        }
-    }
-    
+	public void onClick$btnSearch() throws InterruptedException {
+		try {
+			loadList(getFilteredList(txtAlias.getText()));
+			AccessControl.saveAction(Permission.LIST_PRODUCTS, "Se busco listado de productos");
+		} catch (Exception ex) {
+			showError(ex);
+		}
+	}
+
+	public void onClick$btnExportPdf() throws InterruptedException {
+		try {
+			PDFUtil.exportPdf((Labels.getLabel("sp.common.product")) + ".pdf",
+					Labels.getLabel("sp.crud.product.list.reporte"), lbxRecords, 3);
+			AccessControl.saveAction(Permission.LIST_PRODUCTS, "Se descargo listado de productos formato pdf");
+		} catch (Exception ex) {
+			showError(ex);
+		}
+	}
+
+	public void onClick$btnDownload() throws InterruptedException {
+		try {
+			Utils.exportExcel(lbxRecords, Labels.getLabel("sp.crud.product.list"));
+			AccessControl.saveAction(Permission.LIST_PRODUCTS, "Se descargo listado de productos formato excel");
+		} catch (Exception ex) {
+			showError(ex);
+		}
+	}
+
 }

@@ -344,7 +344,7 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
             metrologicalControl = transactionEJB.saveMetrologicalControl(metrologicalControl,metrologicalControlHistory);
 
             this.showMessage("sp.common.save.success", false, null);
-            saveAudit(_metrologicalControl, metrologicalControl);
+//            saveAudit(_metrologicalControl, metrologicalControl);
             AccessControl.saveAction(Permission.ADD_METEOROLOGICAL_CONTROL, "Ingreso producto a Control Metrologico= " + metrologicalControl.getDesignation());
             btnSave.setVisible(false);
         } catch (NullParameterException ex) {

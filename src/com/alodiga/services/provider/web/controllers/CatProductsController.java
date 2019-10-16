@@ -1,8 +1,10 @@
 package com.alodiga.services.provider.web.controllers;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
@@ -19,6 +21,7 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
 import com.alodiga.services.provider.commons.ejbs.ProductEJB;
+import com.alodiga.services.provider.commons.ejbs.TransactionEJB;
 import com.alodiga.services.provider.commons.exceptions.EmptyListException;
 import com.alodiga.services.provider.commons.exceptions.GeneralException;
 import com.alodiga.services.provider.commons.exceptions.NullParameterException;
@@ -30,6 +33,7 @@ import com.alodiga.services.provider.commons.models.Profile;
 import com.alodiga.services.provider.commons.models.User;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
+import com.alodiga.services.provider.commons.utils.QueryConstants;
 import com.alodiga.services.provider.web.components.ChangeStatusButton;
 import com.alodiga.services.provider.web.components.EditButton;
 import com.alodiga.services.provider.web.components.ListcellEditButton;
@@ -43,6 +47,7 @@ public class CatProductsController extends GenericAbstractListController<Product
     private Listbox lbxRecords;
     private Textbox txtAlias;
     private ProductEJB productEJB = null;
+    private TransactionEJB transactionEJB = null;
     private List<Product> products = null;
     private User currentUser;
     private Profile currentProfile;
@@ -77,6 +82,7 @@ public class CatProductsController extends GenericAbstractListController<Product
             currentUser = AccessControl.loadCurrentUser();
             currentProfile = currentUser.getCurrentProfile(Enterprise.TURBINES);
             productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
+            transactionEJB = (TransactionEJB)EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
             checkPermissions();
             getData();
             loadList(products);
@@ -119,13 +125,15 @@ public class CatProductsController extends GenericAbstractListController<Product
             Listitem item = null;
             if (list != null && !list.isEmpty()) {
                 for (Product product : list) {
-                    item = new Listitem();
-                    item.setValue(product);
-                    item.appendChild(new Listcell(product.getPartNumber()));
-                    item.appendChild(new Listcell(product.getDescription()));
-                    item.appendChild(new Listcell(String.valueOf(product.getAmount())));
-                    item.appendChild(permissionEdit ? initEnabledButton(product.getEnabled(), item) : new Listcell());
-                    item.setParent(lbxRecords);
+                	if (product.getEnabled()) {
+	                    item = new Listitem();
+	                    item.setValue(product);
+	                    item.appendChild(new Listcell(product.getPartNumber()));
+	                    item.appendChild(new Listcell(product.getDescription()));
+	                    item.appendChild(new Listcell(String.valueOf(product.getAmount())));
+	                    item.appendChild(permissionEdit ? initEnabledButton(product.getEnabled(), item) : new Listcell());
+	                    item.setParent(lbxRecords);
+                	}
                 }
             } else {
                 item = new Listitem();

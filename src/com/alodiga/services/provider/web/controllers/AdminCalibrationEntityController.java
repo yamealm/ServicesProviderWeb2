@@ -9,9 +9,11 @@ import org.zkoss.zul.Textbox;
 
 import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
 import com.alodiga.services.provider.commons.models.EnterCalibration;
+import com.alodiga.services.provider.commons.models.Permission;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractAdminController;
+import com.alodiga.services.provider.web.utils.AccessControl;
 import com.alodiga.services.provider.web.utils.WebConstants;
 
 public class AdminCalibrationEntityController extends GenericAbstractAdminController {
@@ -87,6 +89,7 @@ public class AdminCalibrationEntityController extends GenericAbstractAdminContro
             calibration.setName(txtName.getText());            
             calibration = utilsEJB.saveEnterCalibration(calibration);   
             this.showMessage("sp.common.save.success", false, null);
+            AccessControl.saveAction(Permission.ADD_CALIBRATION, "Ingreso el ente de calibracion= " + calibration.getName());
         } catch (Exception ex) {
            showError(ex);
         }

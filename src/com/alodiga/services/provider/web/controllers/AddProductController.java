@@ -207,6 +207,7 @@ public class AddProductController extends GenericAbstractAdminController {
 				request.setAuditData(null);
 				product = productEJB.saveProduct(request);
 				this.showMessage("sp.common.save.success", false, null);
+				AccessControl.saveAction(Permission.ADD_PRODUCT, "Ingreso el producto= " + product.getPartNumber());
 				saveAudit(_product, product);
 			}
 		} catch (Exception ex) {
@@ -240,6 +241,7 @@ public class AddProductController extends GenericAbstractAdminController {
 		txtactNpNsn.setText(product.getActNpNsn());
 		txtDescription.setText(product.getDescription());
 		txtPartNumber.setText(product.getPartNumber());
+		txtPartNumber.setReadonly(true);
 		cbxEnabled.setChecked(product.getEnabled());
     }
 

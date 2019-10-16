@@ -236,6 +236,7 @@ public class AdminEgressWaitController extends GenericAbstractAdminController {
 			txtactNpNsn.setText(product.getActNpNsn());
 		txtDescription.setText(product.getDescription());
 		txtPartNumber.setText(product.getPartNumber());
+		txtPartNumber.setReadonly(true);
 		try {
     		int  quantity = transactionEJB.loadQuantityByProductId(product.getId(), Category.WAIT);
     		intStock.setValue(quantity);

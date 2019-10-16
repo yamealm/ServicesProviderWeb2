@@ -233,6 +233,7 @@ public class AdminEgressUnitMetrologicalControlController extends GenericAbstrac
 			txtactNpNsn.setText(productSerie.getProduct().getActNpNsn());
 		txtDescription.setText(productSerie.getProduct().getDescription());
 		txtPartNumber.setText(productSerie.getProduct().getPartNumber());
+		txtPartNumber.setReadonly(true);
 		txtQuarantine.setText(productSerie.getQuarantineReason());
 		txtSerial.setText(productSerie.getSerie());
 		txtObservation.setText(productSerie.getObservation());

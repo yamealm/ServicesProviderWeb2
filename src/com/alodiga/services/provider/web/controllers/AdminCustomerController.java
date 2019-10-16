@@ -152,6 +152,7 @@ public class AdminCustomerController extends GenericAbstractAdminController {
             request.setParam(customer);
             customerParam = customerEJB.saveCustomer(request);
             this.showMessage("sp.common.save.success", false, null);
+            AccessControl.saveAction(Permission.EDIT_CUSTOMER, "Ingreso el cliente= " + customer.getFirstName() + " "+customer.getLastName());
         } catch (Exception ex) {
             showError(ex);
         }

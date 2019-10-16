@@ -13,6 +13,7 @@ import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Textbox;
 
+import com.alodiga.services.provider.commons.ejbs.ProductEJB;
 import com.alodiga.services.provider.commons.ejbs.TransactionEJB;
 import com.alodiga.services.provider.commons.exceptions.EmptyListException;
 import com.alodiga.services.provider.commons.exceptions.GeneralException;
@@ -42,6 +43,7 @@ public class ListStockController extends GenericAbstractListController<Product> 
     private Listbox lbxRecords;
     private Textbox txtAlias;
     private TransactionEJB transactionEJB = null;
+    private ProductEJB productEJB = null;
     private List<Product> products = null;
     private User currentUser;
     private Profile currentProfile;
@@ -77,6 +79,7 @@ public class ListStockController extends GenericAbstractListController<Product> 
             checkPermissions();
             adminPage = "adminAddStock.zul";
             transactionEJB = (TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
+            productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
             loadPermission(new Provider());
             startListener();
             getData();
@@ -111,24 +114,26 @@ public class ListStockController extends GenericAbstractListController<Product> 
             if (list != null && !list.isEmpty()) {
                 btnDownload.setVisible(true);
                 for (Product product : list) {
-                	try {
-                		int  currentQuantity = transactionEJB.loadQuantityByProductId(product.getId(), Category.STOCK);
-                		stock = currentQuantity;
-                	} catch (Exception ex) {
-                		stock = 0;
-                    }
-                    item = new Listitem();
-                    item.setValue(product);
-                    item.appendChild(new Listcell(product.getPartNumber()));
-                    item.appendChild(new Listcell(product.getDescription()));
-                    item.appendChild(new Listcell(product.getUbicationBox()));
-                    item.appendChild(new Listcell(product.getUbicationFolder()));
-                    item.appendChild(new Listcell(String.valueOf(product.getAmount())));
-                    item.appendChild(new Listcell(String.valueOf(stock)));
-                    item.appendChild(permissionAdd ? new ListcellAddButton(adminPage, product,Permission.ADD_STOCK) : new Listcell());
-                    item.appendChild(permissionDelete && stock>0? new ListcellRemoveButton("adminEgressStock.zul", product,Permission.REMOVE_STOCK) : new Listcell());
-                    item.appendChild(permissionRead ? new ListcellViewButton("listAddStock.zul", product,Permission.VIEW_STOCK) : new Listcell());
-                    item.setParent(lbxRecords);
+                	if (product.getEnabled()) {
+	                	try {
+	                		int  currentQuantity = transactionEJB.loadQuantityByProductId(product.getId(), Category.STOCK);
+	                		stock = currentQuantity;
+	                	} catch (Exception ex) {
+	                		stock = 0;
+	                    }
+	                    item = new Listitem();
+	                    item.setValue(product);
+	                    item.appendChild(new Listcell(product.getPartNumber()));
+	                    item.appendChild(new Listcell(product.getDescription()));
+	                    item.appendChild(new Listcell(product.getUbicationBox()));
+	                    item.appendChild(new Listcell(product.getUbicationFolder()));
+	                    item.appendChild(new Listcell(String.valueOf(product.getAmount())));
+	                    item.appendChild(new Listcell(String.valueOf(stock)));
+	                    item.appendChild(permissionAdd ? new ListcellAddButton(adminPage, product,Permission.ADD_STOCK) : new Listcell());
+	                    item.appendChild(permissionDelete && stock>0? new ListcellRemoveButton("adminEgressStock.zul", product,Permission.REMOVE_STOCK) : new Listcell());
+	                    item.appendChild(permissionRead ? new ListcellViewButton("listAddStock.zul", product,Permission.VIEW_STOCK) : new Listcell());
+	                    item.setParent(lbxRecords);
+                	}
                 }
             } else {
                 btnDownload.setVisible(false);
@@ -151,7 +156,7 @@ public class ListStockController extends GenericAbstractListController<Product> 
             request.setFirst(0);
             request.setLimit(null);
             request.setAuditData(null);
-            products = transactionEJB.listProducts();
+            products = productEJB.getProducts(request);
         } catch (NullParameterException ex) {
             showError(ex);
         } catch (EmptyListException ex) {

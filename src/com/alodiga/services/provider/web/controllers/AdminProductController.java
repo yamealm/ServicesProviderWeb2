@@ -236,6 +236,7 @@ public class AdminProductController extends GenericAbstractAdminController {
 		txtactNpNsn.setText(product.getActNpNsn());
 		txtDescription.setText(product.getDescription());
 		txtPartNumber.setText(product.getPartNumber());
+		txtPartNumber.setReadonly(true);
 		cbxEnabled.setChecked(product.getEnabled());
     }
 
@@ -302,6 +303,7 @@ public class AdminProductController extends GenericAbstractAdminController {
 				productParam = product;
 				eventType = WebConstants.EVENT_EDIT;
 				this.showMessage("sp.common.save.success", false, null);
+				AccessControl.saveAction(Permission.ADD_PRODUCT, "Ingreso el producto= " + product.getPartNumber());
 				saveAudit(_product, product);
 			}
         } catch (Exception ex) {

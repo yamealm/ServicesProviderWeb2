@@ -134,6 +134,7 @@ public class AdminModelController extends GenericAbstractAdminController {
                model.setBraund(braund);
                model = utilsEJB.saveModel(model);   
                this.showMessage("sp.common.save.success", false, null);
+               AccessControl.saveAction(Permission.ADD_MODEL, "Ingreso el modelo= " +model.getName());
                saveAudit(_model, model);
            } catch (Exception ex) {
               showError(ex);

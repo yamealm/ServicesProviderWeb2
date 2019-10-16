@@ -242,6 +242,7 @@ public class AdminEgressUnitWaitController extends GenericAbstractAdminControlle
 			txtactNpNsn.setText(productSerie.getProduct().getActNpNsn());
 		txtDescription.setText(productSerie.getProduct().getDescription());
 		txtPartNumber.setText(productSerie.getProduct().getPartNumber());
+		txtPartNumber.setReadonly(true);
 		txtSerial.setText(productSerie.getSerie());
 		txtObservation.setText(productSerie.getObservation());
 		
