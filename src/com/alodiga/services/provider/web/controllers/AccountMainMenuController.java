@@ -48,7 +48,6 @@ public class AccountMainMenuController extends GenericForwardComposer {
     private static String OPTION_ROYALTIES = "ltcRoyalties";
     private static String OPTION_PROMOTIONES = "ltcPromotiones";
     private static String OPTION_ACCESSNUMBER = "ltcAccessNumber";
-    private String currencySymbol;
 
 
     @Override

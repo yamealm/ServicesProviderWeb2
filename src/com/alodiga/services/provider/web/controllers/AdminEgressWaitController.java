@@ -109,7 +109,6 @@ public class AdminEgressWaitController extends GenericAbstractAdminController {
 		cbxExpiration.setChecked(false);
 		cbxCure.setChecked(false);
 		cbxSerialVarius.setChecked(false);
-//		intQuantity.setRawValue(null);
 		txtBachNumber.setRawValue(null);
 		txtUbicationFolder.setRawValue(null);
 		txtUbicationBox.setRawValue(null);
@@ -136,41 +135,37 @@ public class AdminEgressWaitController extends GenericAbstractAdminController {
 		txtPartNumber.setReadonly(true);
     	intStockMax.setReadonly(true);
     	intStockMin.setReadonly(true);
-//    	intQuantity.setReadonly(true);
     }
 
     public Boolean validateEmpty() {
     	if (txtUbicationFolder.getText().isEmpty()) {
         	txtUbicationFolder.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        } if (txtUbicationBox.getText().isEmpty()) {
+        } else if (txtUbicationBox.getText().isEmpty()) {
         	txtUbicationBox.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        } if (txtDescription.getText().isEmpty()) {
+        } else if (txtDescription.getText().isEmpty()) {
         	txtDescription.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        }if (txtPartNumber.getText().isEmpty()) {
+        }else if (txtPartNumber.getText().isEmpty()) {
         	txtPartNumber.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null); 
-        }if (intStockMax.getText().isEmpty()) {
+        }else if (intStockMax.getText().isEmpty()) {
         	intStockMax.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        }if (intStockMin.getText().isEmpty()) {
+        }else if (intStockMin.getText().isEmpty()) {
         	intStockMin.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        } if (txtPartNumber.getText().isEmpty()) {
+        } else if (txtPartNumber.getText().isEmpty()) {
         	txtPartNumber.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        }if (intStockMin.getValue()>intStockMax.getValue()) {
+        }else if (intStockMin.getValue()>intStockMax.getValue()) {
         	intStockMin.setFocus(true);
             this.showMessage("sp.common.stock.min.error", true, null);
-        }if (!GeneralUtils.isNumeric(txtAmount.getText())) {
+        }else if (!GeneralUtils.isNumeric(txtAmount.getText())) {
         	txtAmount.setFocus(true);
             this.showMessage("sp.error.field.number", true, null);
         }
-       
-        
-        
         else {
             return true;
         }
@@ -397,7 +392,7 @@ public class AdminEgressWaitController extends GenericAbstractAdminController {
             transaction.setAmount(Float.valueOf(txtAmount.getText()));
             productParam.setAmount(Float.valueOf(txtAmount.getText()));
             transaction.setOrderWord(txtWorkOrder.getText());
-            transaction.setWork(txtWork.getText());// agregar campo base da datos trabajo a realizar
+            transaction.setWork(txtWork.getText());
             List<ProductSerie> productSeries = new ArrayList<ProductSerie>();
             int totalQuantity = 0;
             List<Listitem> listitems = lbxRecords.getItems();
@@ -417,7 +412,7 @@ public class AdminEgressWaitController extends GenericAbstractAdminController {
 					productSerie.setEndingTransactionId(transaction);
 					productSerie.setCustomer(customer);
 					productSerie.setOrderWord(txtWorkOrder.getText());
-//			          productSerie.setWork(txtWork.getText());// agregar campo base da datos trabajo a realizar
+			         productSerie.setWork(txtWork.getText());
 					productSeries.add(productSerie);
 					if ((oldQuantity - quantity) > 0) {
 						productSerie2.setId(null);

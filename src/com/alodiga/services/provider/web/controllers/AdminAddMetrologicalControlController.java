@@ -117,26 +117,26 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
     		txtDesignation.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
         } 
-    	if (txtInstrument.getText().isEmpty()) {
+    	else if (txtInstrument.getText().isEmpty()) {
     		txtInstrument.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
         } 
-    	if (txtRank.getText().isEmpty()) {
+    	else if (txtRank.getText().isEmpty()) {
     		txtRank.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        } if (txtSerilNumber.getText().isEmpty()) {
+        } else if (txtSerilNumber.getText().isEmpty()) {
         	txtSerilNumber.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        } if (cmbBraund.getText().isEmpty()) {
+        } else if (cmbBraund.getText().isEmpty()) {
         	cmbBraund.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        } if (cmbModel.getText().isEmpty()) {
+        } else if (cmbModel.getText().isEmpty()) {
         	cmbModel.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        } if (cmbEnterCalibration.getText().isEmpty()) {
+        } else if (cmbEnterCalibration.getText().isEmpty()) {
         	cmbEnterCalibration.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        }if (txtUbication.getText().isEmpty()) {
+        }else if (txtUbication.getText().isEmpty()) {
         	txtUbication.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null); 
         }

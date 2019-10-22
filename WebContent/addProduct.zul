@@ -3,7 +3,7 @@
 <?page title="${c:l('sp.common.page.title')}"?>
 <?link rel="icon" tye="image/x-icon" href="/images/favicon.ico"?>
 <zk xmlns:n="native">
-    <window id="winAddProductView" apply ="com.alodiga.services.provider.web.controllers.AddProductController" width="650px" height="450px" closable="true" border="normal">
+    <window id="winAddProductView" apply ="com.alodiga.services.provider.web.controllers.AddProductController" width="670px" height="470px" closable="true" border="normal">
         <caption image="/images/icon-alodiga-1.png" label="${c:l('sp.common.product')}"/>
         <style src="/css/general.css"/>
         <div>

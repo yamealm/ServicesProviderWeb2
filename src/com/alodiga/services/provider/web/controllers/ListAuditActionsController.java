@@ -19,15 +19,11 @@ import com.alodiga.services.provider.commons.ejbs.AuditoryEJB;
 import com.alodiga.services.provider.commons.exceptions.EmptyListException;
 import com.alodiga.services.provider.commons.genericEJB.EJBRequest;
 import com.alodiga.services.provider.commons.models.AuditAction;
-import com.alodiga.services.provider.commons.models.Enterprise;
 import com.alodiga.services.provider.commons.models.Permission;
-import com.alodiga.services.provider.commons.models.Profile;
-import com.alodiga.services.provider.commons.models.User;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
 import com.alodiga.services.provider.commons.utils.GeneralUtils;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractListController;
-import com.alodiga.services.provider.web.utils.AccessControl;
 import com.alodiga.services.provider.web.utils.Utils;
 
 public class ListAuditActionsController extends GenericAbstractListController<AuditAction> {
@@ -37,8 +33,6 @@ public class ListAuditActionsController extends GenericAbstractListController<Au
     private Textbox txtName;
     private Textbox txtLogin;
     private Combobox cmbPermissions;
-    private User currentUser;
-    private Profile currentProfile;
     private AccessControlEJB accessControlEJB;
     private AuditoryEJB auditoryEJB;
     private Datebox dtbBeginningDate;
@@ -51,20 +45,6 @@ public class ListAuditActionsController extends GenericAbstractListController<Au
         initialize();
     }
 
-    @Override
-    public void checkPermissions() {
-        try {
-
-//            permissionAdd = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.ADD_DISTRIBUTOR);
-//            btnAdd.setVisible(permissionAdd);
-//            permissionEdit = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.EDIT_DISTRIBUTOR);
-//            permissionRead = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.VIEW_DISTRIBUTOR);
-//            permissionChangeStatus = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.CHANGE_DISTRIBUTOR_STATUS);
-        } catch (Exception ex) {
-            showError(ex);
-        }
-
-    }
 
     public void startListener() {
     }
@@ -74,8 +54,6 @@ public class ListAuditActionsController extends GenericAbstractListController<Au
         super.initialize();
         try {
             adminPage = "adminAccount.zul";
-            currentUser = AccessControl.loadCurrentUser();
-            currentProfile = currentUser.getCurrentProfile(Enterprise.TURBINES);
             checkPermissions();
             dtbBeginningDate.setFormat("yyyy/MM/dd");
             dtbBeginningDate.setValue(new Timestamp(new java.util.Date().getTime()));

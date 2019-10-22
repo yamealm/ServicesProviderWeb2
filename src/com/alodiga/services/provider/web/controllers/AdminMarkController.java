@@ -16,8 +16,6 @@ import com.alodiga.services.provider.commons.managers.PermissionManager;
 import com.alodiga.services.provider.commons.models.Audit;
 import com.alodiga.services.provider.commons.models.Braund;
 import com.alodiga.services.provider.commons.models.Event;
-import com.alodiga.services.provider.commons.models.Language;
-import com.alodiga.services.provider.commons.models.MetrologicalControl;
 import com.alodiga.services.provider.commons.models.Permission;
 import com.alodiga.services.provider.commons.models.User;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;

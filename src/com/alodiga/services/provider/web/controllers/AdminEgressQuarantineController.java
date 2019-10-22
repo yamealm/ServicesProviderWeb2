@@ -17,31 +17,22 @@ import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Datebox;
-import org.zkoss.zul.Grid;
 import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
-import org.zkoss.zul.Radio;
-import org.zkoss.zul.Radiogroup;
-import org.zkoss.zul.Row;
-import org.zkoss.zul.Rows;
 import org.zkoss.zul.Textbox;
 
 import com.alodiga.services.provider.commons.ejbs.CustomerEJB;
-import com.alodiga.services.provider.commons.ejbs.ProductEJB;
 import com.alodiga.services.provider.commons.ejbs.TransactionEJB;
 import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
 import com.alodiga.services.provider.commons.genericEJB.EJBRequest;
 import com.alodiga.services.provider.commons.models.Category;
-import com.alodiga.services.provider.commons.models.Condicion;
 import com.alodiga.services.provider.commons.models.Customer;
 import com.alodiga.services.provider.commons.models.Enterprise;
 import com.alodiga.services.provider.commons.models.Permission;
 import com.alodiga.services.provider.commons.models.Product;
-import com.alodiga.services.provider.commons.models.ProductHistory;
 import com.alodiga.services.provider.commons.models.ProductSerie;
-import com.alodiga.services.provider.commons.models.Provider;
 import com.alodiga.services.provider.commons.models.Transaction;
 import com.alodiga.services.provider.commons.models.TransactionType;
 import com.alodiga.services.provider.commons.models.User;
@@ -150,28 +141,28 @@ public class AdminEgressQuarantineController extends GenericAbstractAdminControl
     	if (txtUbicationFolder.getText().isEmpty()) {
         	txtUbicationFolder.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        } if (txtUbicationBox.getText().isEmpty()) {
+        }else if (txtUbicationBox.getText().isEmpty()) {
         	txtUbicationBox.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        } if (txtDescription.getText().isEmpty()) {
+        } else if (txtDescription.getText().isEmpty()) {
         	txtDescription.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        }if (txtPartNumber.getText().isEmpty()) {
+        }else if (txtPartNumber.getText().isEmpty()) {
         	txtPartNumber.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null); 
-        }if (intStockMax.getText().isEmpty()) {
+        }else if (intStockMax.getText().isEmpty()) {
         	intStockMax.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        }if (intStockMin.getText().isEmpty()) {
+        }else if (intStockMin.getText().isEmpty()) {
         	intStockMin.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        } if (txtPartNumber.getText().isEmpty()) {
+        } else if (txtPartNumber.getText().isEmpty()) {
         	txtPartNumber.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        }if (intStockMin.getValue()>intStockMax.getValue()) {
+        }else if (intStockMin.getValue()>intStockMax.getValue()) {
         	intStockMin.setFocus(true);
             this.showMessage("sp.common.stock.min.error", true, null);
-        }if (!GeneralUtils.isNumeric(txtAmount.getText())) {
+        }else if (!GeneralUtils.isNumeric(txtAmount.getText())) {
         	txtAmount.setFocus(true);
             this.showMessage("sp.error.field.number", true, null);
         }

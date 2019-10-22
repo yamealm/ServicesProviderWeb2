@@ -22,7 +22,6 @@ import com.alodiga.services.provider.commons.models.MetrologicalControl;
 import com.alodiga.services.provider.commons.models.MetrologicalControlHistory;
 import com.alodiga.services.provider.commons.models.Model;
 import com.alodiga.services.provider.commons.models.Permission;
-import com.alodiga.services.provider.commons.models.User;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractAdminController;
@@ -54,8 +53,7 @@ public class ViewMetrologicalControlController extends GenericAbstractAdminContr
     private UtilsEJB utilsEJB = null;
     private TransactionEJB transactionEJB = null;
     private MetrologicalControl controlParam;
-    private User currentUser;
-//    private Profile currentProfile;
+
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
@@ -69,13 +67,11 @@ public class ViewMetrologicalControlController extends GenericAbstractAdminContr
         super.initView(eventType, "sp.crud.product");
     }
 
-
     
     @Override
     public void initialize() {
         super.initialize();
         try {
-        	currentUser = AccessControl.loadCurrentUser();
             utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
             transactionEJB = (TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
             loadData();
@@ -96,32 +92,28 @@ public class ViewMetrologicalControlController extends GenericAbstractAdminContr
     	if (txtDesignation.getText().isEmpty()) {
     		txtDesignation.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        } 
-    	if (txtInstrument.getText().isEmpty()) {
+        } else if (txtInstrument.getText().isEmpty()) {
     		txtInstrument.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        }
-    	if (txtRank.getText().isEmpty()) {
+        } else if (txtRank.getText().isEmpty()) {
     		txtRank.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        } if (txtSerilNumber.getText().isEmpty()) {
+        } else if (txtSerilNumber.getText().isEmpty()) {
         	txtSerilNumber.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        } if (cmbBraund.getText().isEmpty()) {
+        } else if (cmbBraund.getText().isEmpty()) {
         	cmbBraund.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        } if (cmbModel.getText().isEmpty()) {
+        } else if (cmbModel.getText().isEmpty()) {
         	cmbModel.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        } if (cmbEnterCalibration.getText().isEmpty()) {
+        } else if (cmbEnterCalibration.getText().isEmpty()) {
         	cmbEnterCalibration.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        }if (txtUbication.getText().isEmpty()) {
+        }else if (txtUbication.getText().isEmpty()) {
         	txtUbication.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null); 
-        }
-        
-        
+        } 
         else {
             return true;
         }
@@ -133,7 +125,8 @@ public class ViewMetrologicalControlController extends GenericAbstractAdminContr
     	  if (validateEmpty()) {
             switch (eventType) {
                 case WebConstants.EVENT_EDIT:
-                	saveMetreologicalControl(controlParam);
+                	if (validateEmpty())
+                		saveMetreologicalControl(controlParam);
                     break;
                 default:
                     break;

@@ -42,8 +42,6 @@ public class AdminProductController extends GenericAbstractAdminController {
     private Combobox cmbEnterprise;
     private Checkbox cbxEnabled;
     private Textbox txtAmount;
-//    private Textbox txtRealAmount;
-//    private Textbox txtInitialAmount;
     private Textbox txtBachNumber;
     private Textbox txtUbicationFolder;
     private Textbox txtUbicationBox;
@@ -92,8 +90,6 @@ public class AdminProductController extends GenericAbstractAdminController {
 
     public void clearFields() {
 		cbxEnabled.setChecked(false);
-//		txtRealAmount.setRawValue(null);
-//		txtInitialAmount.setRawValue(null);
 		txtBachNumber.setRawValue(null);
 		txtUbicationFolder.setRawValue(null);
 		txtUbicationBox.setRawValue(null);
@@ -105,10 +101,7 @@ public class AdminProductController extends GenericAbstractAdminController {
     }
 
     public void blockFields() {
-
     	cbxEnabled.setChecked(false);
-//		txtRealAmount.setReadonly(true);
-//		txtInitialAmount.setReadonly(true);
 		txtBachNumber.setReadonly(true);
 		txtUbicationFolder.setReadonly(true);
 		txtUbicationBox.setReadonly(true);
@@ -124,57 +117,35 @@ public class AdminProductController extends GenericAbstractAdminController {
     }
 
     public Boolean validateEmpty() {
-//        if (txtRealAmount.getText().isEmpty()) {
-//        	txtRealAmount.setFocus(true);
-//            this.showMessage("sp.error.field.cannotNull", true, null);
-//        }  if (txtInitialAmount.getText().isEmpty()) {
-//        	txtInitialAmount.setFocus(true);
-//            this.showMessage("sp.error.field.cannotNull", true, null);
-//        } 
-//    if (txtBachNumber.getText().isEmpty()) {
-//        	txtBachNumber.setFocus(true);
-//            this.showMessage("sp.error.field.cannotNull", true, null);
-//        } 
-    if (txtUbicationFolder.getText().isEmpty()) {
+    	if (txtUbicationFolder.getText().isEmpty()) {
         	txtUbicationFolder.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        } if (txtUbicationBox.getText().isEmpty()) {
+        } else if (txtUbicationBox.getText().isEmpty()) {
         	txtUbicationBox.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-//        } if (txtactNpNsn.getText().isEmpty()) {
-//        	txtactNpNsn.setFocus(true);
-//            this.showMessage("sp.error.field.cannotNull", true, null);
-        } if (txtDescription.getText().isEmpty()) {
+        } else if (txtDescription.getText().isEmpty()) {
         	txtDescription.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        }if (txtPartNumber.getText().isEmpty()) {
+        }else if (txtPartNumber.getText().isEmpty()) {
         	txtPartNumber.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null); 
-        }if (intStockMax.getText().isEmpty()) {
+        }else if (intStockMax.getText().isEmpty()) {
         	intStockMax.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        }if (intStockMin.getText().isEmpty()) {
+        }else if (intStockMin.getText().isEmpty()) {
         	intStockMin.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        } if (txtPartNumber.getText().isEmpty()) {
+        } else if (txtPartNumber.getText().isEmpty()) {
         	txtPartNumber.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        }if (intStockMin.getValue()>intStockMax.getValue()) {
+        }else if (intStockMin.getValue()>intStockMax.getValue()) {
         	intStockMin.setFocus(true);
             this.showMessage("sp.common.stock.min.error", true, null);
-        }if (!GeneralUtils.isNumeric(txtAmount.getText())) {
+        }else if (!GeneralUtils.isNumeric(txtAmount.getText())) {
         	txtAmount.setFocus(true);
             this.showMessage("sp.error.field.number", true, null);
         }
-//        if (!GeneralUtils.isNumeric(txtRealAmount.getText())) {
-//        	txtAmount.setFocus(true);
-//            this.showMessage("sp.error.field.number", true, null);
-//        }if (!GeneralUtils.isNumeric(txtInitialAmount.getText())) {
-//        	txtInitialAmount.setFocus(true);
-//            this.showMessage("sp.error.field.number", true, null);
-//        }
-        
-        
+      
         else {
             return true;
         }

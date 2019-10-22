@@ -48,12 +48,10 @@ public class ListEgressMetrologicalControlController extends GenericAbstractList
     private List<Product> products = null;
     private User currentUser;
     private Profile currentProfile;
-    private User user;
 
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
-        user = AccessControl.loadCurrentUser();
         initialize();
     }
 

@@ -47,13 +47,11 @@ public class ListAddStockController extends GenericAbstractListController<Produc
     private User currentUser;
     private Profile currentProfile;
     private Product productParam;
-    private User user;
 
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
         productParam = (Sessions.getCurrent().getAttribute("object") != null) ? (Product) Sessions.getCurrent().getAttribute("object") : null;
-        user = AccessControl.loadCurrentUser();
         initialize();
     }
 
@@ -87,30 +85,13 @@ public class ListAddStockController extends GenericAbstractListController<Produc
         }
     }
 
-    private Listcell initEnabledButton(final Listitem listItem) {
-
-        Listcell cell = new Listcell();
-        cell.setValue("");
-        final DeleteButton button = new DeleteButton();
-        button.setTooltiptext(Labels.getLabel("sp.common.actions.delete"));
-        button.setClass("open orange");
-        button.addEventListener("onClick", new EventListener() {
-
-            public void onEvent(Event event) throws Exception {
-                deleteProductSerie( listItem);
-            }
-        });
-
-        button.setParent(cell);
-        return cell;
-    }
 
     public List<Product> getFilteredList(String filter) {
         List<Product> auxList = new ArrayList<Product>();
         if (products != null) {
 			for (Iterator<Product> i = products.iterator(); i.hasNext();) {
 				Product tmp = i.next();
-				String field = tmp.getDescription().toLowerCase();
+				String field = tmp.getPartNumber().toLowerCase();
 				if (field.indexOf(filter.trim().toLowerCase()) >= 0) {
 					auxList.add(tmp);
 				}
@@ -233,7 +214,7 @@ public class ListAddStockController extends GenericAbstractListController<Produc
     
     public void onClick$btnExportPdf() throws InterruptedException {
         try {
-        	PDFUtil.exportPdf((Labels.getLabel("sp.common.product"))+".pdf", Labels.getLabel("sp.crud.product.list.reporte"), lbxRecords,3);
+        	PDFUtil.exportPdf((Labels.getLabel("sp.common.product"))+".pdf", Labels.getLabel("sp.crud.product.list.reporte.stock"), lbxRecords,3);
         } catch (Exception ex) {
             showError(ex);
         }

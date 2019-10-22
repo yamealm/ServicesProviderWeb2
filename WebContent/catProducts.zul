@@ -3,7 +3,7 @@
 <?page title="${c:l('sp.common.page.title')}"?>
 <?link rel="icon" tye="image/x-icon" href="/images/favicon.ico"?>
 <zk xmlns:n="native">
-    <window id="winProductsView" apply ="com.alodiga.services.provider.web.controllers.CatProductsController" width="600px" height="480px" closable="true" border="normal">
+    <window id="winProductsView" apply ="com.alodiga.services.provider.web.controllers.CatProductsController" width="620px" height="480px" closable="true" border="normal">
         <caption image="/images/icon-alodiga-1.png" label="${c:l('sp.common.product')}"/>
         <style src="/css/general.css"/>
         <groupbox closable="false" height="40px">
@@ -12,10 +12,10 @@
         </groupbox>
         <separator/>
         <div>
-            <listbox id="lbxRecords" fixedLayout="true" width="590px" height="320px">
+            <listbox id="lbxRecords" fixedLayout="true" width="610px" height="320px">
                 <listhead>
                     <listheader label="${c:l('sp.common.PartNumber')}" width="140px" sort="auto"/>
-                    <listheader label="${c:l('sp.common.descripton')}" width="300px" sort="auto"/>
+                    <listheader label="${c:l('sp.common.descripton')}" width="290px" sort="auto"/>
                     <listheader label="${c:l('sp.common.amount')}" width="105px" sort="auto"/>
                     <listheader label="-" width="45px"/>
                 </listhead>

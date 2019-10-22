@@ -5,7 +5,6 @@
 
 package com.alodiga.services.provider.web.controllers;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 

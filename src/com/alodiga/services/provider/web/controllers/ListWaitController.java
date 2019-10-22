@@ -59,7 +59,6 @@ public class ListWaitController extends GenericAbstractListController<Product> {
             permissionAdd = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.ADD_STOCK);
             permissionDelete = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.REMOVE_STOCK);
             permissionRead = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.VIEW_STOCK);
-//            permissionEdit = PermissionManager.getInstance().hasPermisssion(currentProfile.getId(), Permission.EDIT_STOCK);
         } catch (Exception ex) {
             showError(ex);
         }
@@ -92,7 +91,7 @@ public class ListWaitController extends GenericAbstractListController<Product> {
         if (products != null) {
 			for (Iterator<Product> i = products.iterator(); i.hasNext();) {
 				Product tmp = i.next();
-				String field = tmp.getDescription().toLowerCase();
+				String field = tmp.getPartNumber().toLowerCase();
 				if (field.indexOf(filter.trim().toLowerCase()) >= 0) {
 					auxList.add(tmp);
 				}
@@ -126,8 +125,6 @@ public class ListWaitController extends GenericAbstractListController<Product> {
 	                    item.appendChild(new Listcell(String.valueOf(product.getAmount())));
 	                    item.appendChild(new Listcell(String.valueOf(stock)));
 	                    item.appendChild(permissionAdd ? new ListcellAddButton("adminAddWait.zul", product,Permission.ADD_WAIT) : new Listcell());
-	//                    item.appendChild(permissionDelete && stock>0? new ListcellRemoveButton("adminEgressWait.zul", product,Permission.REMOVE_WAIT) : new Listcell());
-	//                    item.appendChild(permissionRead  && stock>0? new ListcellViewButton("listAddWait.zul", product,Permission.VIEW_WAIT) : new Listcell());
 	                    item.setParent(lbxRecords);
                 	}
                 }
@@ -178,7 +175,7 @@ public class ListWaitController extends GenericAbstractListController<Product> {
     
     public void onClick$btnExportPdf() throws InterruptedException {
         try {
-        	PDFUtil.exportPdf((Labels.getLabel("sp.common.product"))+".pdf", Labels.getLabel("sp.crud.product.list.reporte"), lbxRecords,3);
+        	PDFUtil.exportPdf((Labels.getLabel("sp.common.product"))+".pdf", Labels.getLabel("sp.crud.product.list.reporte.wait"), lbxRecords,3);
         	AccessControl.saveAction(Permission.WAIT, "Se descargo listado de productos en espera formato pdf");
         } catch (Exception ex) {
             showError(ex);
@@ -187,7 +184,7 @@ public class ListWaitController extends GenericAbstractListController<Product> {
     
     public void onClick$btnDownload() throws InterruptedException {
         try {
-            Utils.exportExcel(lbxRecords, Labels.getLabel("sp.crud.product.list"));
+            Utils.exportExcel(lbxRecords, Labels.getLabel("sp.crud.product.list.wait"));
             AccessControl.saveAction(Permission.WAIT, "Se descargo listado de productos en espera formato excel");
         } catch (Exception ex) {
             showError(ex);

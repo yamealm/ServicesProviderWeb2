@@ -1,6 +1,5 @@
 package com.alodiga.services.provider.web.controllers;
 
-import java.sql.Blob;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -33,7 +32,6 @@ import com.alodiga.services.provider.commons.models.Permission;
 import com.alodiga.services.provider.commons.models.ProductSerie;
 import com.alodiga.services.provider.commons.models.Provider;
 import com.alodiga.services.provider.commons.models.Transaction;
-import com.alodiga.services.provider.commons.models.User;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
 import com.alodiga.services.provider.commons.utils.GeneralUtils;
@@ -69,7 +67,6 @@ public class ViewQuarantineController extends GenericAbstractAdminController {
     private Datebox dtxExpiration;
     private Datebox dtxCure;
     private Datebox dtxCreation;
-    private Blob blob = null;
     private Textbox txtForm;
     private byte[] form =	null;
     private String extForm = null;
@@ -87,7 +84,6 @@ public class ViewQuarantineController extends GenericAbstractAdminController {
     private List<Condicion> conditions;
     private List<Customer> customers;
     private Customer customer = null;
-    private User currentUser;
 
     @Override
     public void doAfterCompose(Component comp) throws Exception {
@@ -109,11 +105,11 @@ public class ViewQuarantineController extends GenericAbstractAdminController {
     public void initialize() {
         super.initialize();
         try {
-        	currentUser = AccessControl.loadCurrentUser();
             productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
             utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
             transactionEJB = (TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
             customerEJB = (CustomerEJB) EJBServiceLocator.getInstance().get(EjbConstants.CUSTOMER_EJB);
+            dtxCreation.setValue(new Timestamp(new Date().getTime()));
             dtxExpiration.setValue(new Timestamp(new Date().getTime()));
             dtxCure.setValue(new Timestamp(new Date().getTime()));
             loadData();
@@ -141,37 +137,43 @@ public class ViewQuarantineController extends GenericAbstractAdminController {
     }
 
     public Boolean validateEmpty() {
-    	if (txtUbicationFolder.getText().isEmpty()) {
+    	if (cmbProvider.getText().isEmpty()) {
+        	cmbProvider.setFocus(true);
+            this.showMessage("sp.error.field.cannotNull", true, null);
+        }else if (dtxCreation.getText().isEmpty()) {
+        	dtxCreation.setFocus(true);
+            this.showMessage("sp.error.field.cannotNull", true, null);
+        }else if (txtUbicationFolder.getText().isEmpty()) {
         	txtUbicationFolder.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        } if (txtUbicationBox.getText().isEmpty()) {
+        } else if (txtUbicationBox.getText().isEmpty()) {
         	txtUbicationBox.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        }if (txtDescription.getText().isEmpty()) {
+        }else if (txtDescription.getText().isEmpty()) {
         	txtDescription.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        }if (txtPartNumber.getText().isEmpty()) {
+        }else if (txtPartNumber.getText().isEmpty()) {
         	txtPartNumber.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null); 
-        }if (intStockMax.getText().isEmpty()) {
+        }else if (intStockMax.getText().isEmpty()) {
         	intStockMax.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        }if (intStockMin.getText().isEmpty()) {
+        }else if (intStockMin.getText().isEmpty()) {
         	intStockMin.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        } if (txtPartNumber.getText().isEmpty()) {
+        } else if (txtPartNumber.getText().isEmpty()) {
         	txtPartNumber.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        }if (intStockMin.getValue()>intStockMax.getValue()) {
+        }else if (intStockMin.getValue()>intStockMax.getValue()) {
         	intStockMin.setFocus(true);
             this.showMessage("sp.common.stock.min.error", true, null);
-        }if (!GeneralUtils.isNumeric(txtAmount.getText())) {
+        }else if (!GeneralUtils.isNumeric(txtAmount.getText())) {
         	txtAmount.setFocus(true);
             this.showMessage("sp.error.field.number", true, null);
-        }if (intQuantity.getText().isEmpty()) {
+        }else if (intQuantity.getText().isEmpty()) {
         	intQuantity.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        }if (txtSerial.getText().isEmpty()) {
+        }else if (txtSerial.getText().isEmpty()) {
         	txtSerial.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
         }
@@ -189,7 +191,7 @@ public class ViewQuarantineController extends GenericAbstractAdminController {
     	  if (validateEmpty()) {
             switch (eventType) {
                 case WebConstants.EVENT_EDIT:
-                    saveProductSerie(productSerieParam);
+                	saveProductSerie(productSerieParam);
                     break;
                 default:
                     break;

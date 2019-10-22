@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zul.Listbox;
@@ -49,12 +48,10 @@ public class ListEgressWaitController extends GenericAbstractListController<Prod
     private List<Product> products = null;
     private User currentUser;
     private Profile currentProfile;
-    private User user;
 
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
-        user = AccessControl.loadCurrentUser();
         initialize();
     }
 
@@ -77,8 +74,7 @@ public class ListEgressWaitController extends GenericAbstractListController<Prod
     public void initialize() {
         super.initialize();
         try {
-        	Sessions.getCurrent().removeAttribute("customer");
-            currentUser = AccessControl.loadCurrentUser();
+        	currentUser = AccessControl.loadCurrentUser();
             currentProfile = currentUser.getCurrentProfile(Enterprise.TURBINES);
             checkPermissions();
             productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);

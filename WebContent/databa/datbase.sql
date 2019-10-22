@@ -945,3 +945,6 @@ ADD CONSTRAINT `fk_metrological_control_history_category`
   REFERENCES `services`.`category` (`id`);
 
   
+//Yamelis 21-102019
+ALTER TABLE `services`.`customer` 
+CHANGE COLUMN `lastName` `lastName` VARCHAR(45) NULL DEFAULT NULL ;

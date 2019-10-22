@@ -62,8 +62,7 @@
                                                           <row>
                                                             <label value="${c:l('sp.common.lastName')}" sclass="lblbold"/>
                                                             <hlayout>
-                                                                <textbox id="txtLastName" width="320px" constraint="no empty: ${c:l('error.field.required')}" maxlength="45"/>
-                                                                <label value="*" sclass="lblreq" />
+                                                                <textbox id="txtLastName" width="320px"  maxlength="45"/>
                                                                 <label value="${c:l('sp.common.max45')}" sclass="lblexample"/>
                                                             </hlayout>
                                                         </row>
@@ -81,17 +80,16 @@
                                                         <row>
                                                             <label value="${c:l('sp.common.phoneNumber')}" sclass="lblbold"/>
                                                             <hlayout>
-                                                                <textbox id="txtPhoneNumber" width="100px" constraint="no empty: ${c:l('error.field.required')};" maxlength="15"/>
-                                                                <label value="*" sclass="lblreq"/>
+                                                                <textbox id="txtPhoneNumber" width="100px"  maxlength="15"/>
                                                                 <label value="${c:l('sp.common.phoneNumber.example')}" sclass="lblexample"/>
                                                             </hlayout>
                                                         </row>
                                                         <row>
                                                             <label value="${c:l('sp.common.dni')}" sclass="lblbold"/>
                                                             <hlayout>
-                                                                <textbox id="txtDNI" width="320px" rows="2" maxlength="255"/>
+                                                                <textbox id="txtDNI" width="320px"  constraint="no empty: ${c:l('error.field.required')};" maxlength="45"/>
                                                                 <label value="*" sclass="lblreq"/>
-                                                                <label value="${c:l('sp.common.max255')}" sclass="lblexample"/>
+                                                                <label value="${c:l('sp.common.max45')}" sclass="lblexample"/>
                                                             </hlayout>
                                                         </row>
                                                        <row>

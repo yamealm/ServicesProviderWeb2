@@ -96,19 +96,10 @@ public class AddCustomerController extends GenericAbstractAdminController {
     	if (txtFirstName.getText().isEmpty()) {
             txtFirstName.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        } else if (txtLastName.getText().isEmpty()) {
-            txtLastName.setFocus(true);
-            this.showMessage("sp.error.field.cannotNull", true, null);
-        } else if (txtEmail.getText().isEmpty()) {
+        }else if (txtEmail.getText().isEmpty()) {
             txtEmail.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        } else if (txtPhoneNumber.getText().isEmpty()) {
-            txtPhoneNumber.setFocus(true);
-            this.showMessage("sp.error.field.cannotNull", true, null);
-        }   else if (txtAddress.getText().isEmpty()) {
-            txtAddress.setFocus(true);
-            this.showMessage("sp.error.field.cannotNull", true, null);
-        } else if (txtDNI.getText().isEmpty()) {
+        }   else if (txtDNI.getText().isEmpty()) {
         	txtDNI.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
         }  else {

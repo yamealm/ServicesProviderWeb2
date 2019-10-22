@@ -37,10 +37,8 @@ import com.alodiga.services.provider.commons.models.TransactionType;
 import com.alodiga.services.provider.commons.models.User;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
-import com.alodiga.services.provider.commons.utils.GeneralUtils;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractAdminController;
 import com.alodiga.services.provider.web.utils.AccessControl;
-import com.alodiga.services.provider.web.utils.WebConstants;
 
 public class AdminEgressUnitQuarantineController extends GenericAbstractAdminController {
 
@@ -182,10 +180,8 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
 	public void onClick$btnSave() {
 		if (validateEmpty())
 			saveProduct();
-
 	}
-
-    
+   
 
     public void onClick$btnBack() {
     	 Executions.sendRedirect("./listEgressQuarantine.zul");

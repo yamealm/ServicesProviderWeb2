@@ -9,10 +9,10 @@ import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
-import org.zkoss.zul.Textbox;
 
 import com.alodiga.services.provider.commons.ejbs.ProductEJB;
 import com.alodiga.services.provider.commons.ejbs.TransactionEJB;
@@ -24,24 +24,17 @@ import com.alodiga.services.provider.commons.models.Category;
 import com.alodiga.services.provider.commons.models.Enterprise;
 import com.alodiga.services.provider.commons.models.Permission;
 import com.alodiga.services.provider.commons.models.Product;
-import com.alodiga.services.provider.commons.models.ProductHistory;
 import com.alodiga.services.provider.commons.models.ProductSerie;
 import com.alodiga.services.provider.commons.models.Profile;
-import com.alodiga.services.provider.commons.models.Provider;
 import com.alodiga.services.provider.commons.models.User;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
-import com.alodiga.services.provider.web.components.ChangeStatusButton;
 import com.alodiga.services.provider.web.components.DeleteButton;
-import com.alodiga.services.provider.web.components.ListcellAddButton;
-import com.alodiga.services.provider.web.components.ListcellDeleteButton;
 import com.alodiga.services.provider.web.components.ListcellEditButton;
-import com.alodiga.services.provider.web.components.ListcellRemoveButton;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractListController;
 import com.alodiga.services.provider.web.utils.AccessControl;
 import com.alodiga.services.provider.web.utils.PDFUtil;
 import com.alodiga.services.provider.web.utils.Utils;
-import org.zkoss.zk.ui.event.EventListener;
 
 public class ListAddMetrologicalControlController extends GenericAbstractListController<Product> {
 
@@ -53,13 +46,11 @@ public class ListAddMetrologicalControlController extends GenericAbstractListCon
     private User currentUser;
     private Profile currentProfile;
     private Product productParam;
-    private User user;
 
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
         productParam = (Sessions.getCurrent().getAttribute("object") != null) ? (Product) Sessions.getCurrent().getAttribute("object") : null;
-        user = AccessControl.loadCurrentUser();
         initialize();
     }
 
@@ -91,24 +82,6 @@ public class ListAddMetrologicalControlController extends GenericAbstractListCon
         } catch (Exception ex) {
             showError(ex);
         }
-    }
-
-    private Listcell initEnabledButton(final Listitem listItem) {
-
-        Listcell cell = new Listcell();
-        cell.setValue("");
-        final DeleteButton button = new DeleteButton();
-        button.setTooltiptext(Labels.getLabel("sp.common.actions.delete"));
-        button.setClass("open orange");
-        button.addEventListener("onClick", new EventListener() {
-
-            public void onEvent(Event event) throws Exception {
-                deleteProductSerie( listItem);
-            }
-        });
-
-        button.setParent(cell);
-        return cell;
     }
 
     public List<Product> getFilteredList(String filter) {

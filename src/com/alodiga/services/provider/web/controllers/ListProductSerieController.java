@@ -312,7 +312,7 @@ public class ListProductSerieController extends GenericAbstractListController<Pr
 
     public void onClick$btnDownload() throws InterruptedException {
         try {
-            Utils.exportExcel(lbxReport, Labels.getLabel("sp.report.title"));
+            Utils.exportExcel(lbxReport, Labels.getLabel("sp.crud.product.list.reporte.stock"));
             AccessControl.saveAction(Permission.STOCK, "Se descargo listado de productos en stock formato excel");
         } catch (Exception ex) {
             showError(ex);
@@ -321,7 +321,7 @@ public class ListProductSerieController extends GenericAbstractListController<Pr
     
     public void onClick$btnExportPdf() throws InterruptedException {
         try {
-        	PDFUtil.exportPdf((Labels.getLabel("sp.common.stock"))+".pdf", Labels.getLabel("sp.crud.product.list.reporte"), lbxReport,0);
+        	PDFUtil.exportPdf((Labels.getLabel("sp.common.stock"))+".pdf", Labels.getLabel("sp.crud.product.list.reporte.stock"), lbxReport,0);
         	AccessControl.saveAction(Permission.STOCK, "Se descargo listado de productos en stock formato pdf");
         } catch (Exception ex) {
             showError(ex);

@@ -3,11 +3,6 @@ package com.alodiga.services.provider.web.controllers;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zul.Textbox;
 
-import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
-import com.alodiga.services.provider.commons.genericEJB.EJBRequest;
-import com.alodiga.services.provider.commons.models.Enterprise;
-import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
-import com.alodiga.services.provider.commons.utils.EjbConstants;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractController;
 
 public class TestMailController extends GenericAbstractController {
@@ -16,8 +11,8 @@ public class TestMailController extends GenericAbstractController {
     private Textbox txtEmail;
     private Textbox txtSubject;
     private Textbox txtContent;
-    private UtilsEJB utilsEJB = null;
-    private Enterprise enterprise;
+//    private UtilsEJB utilsEJB = null;
+//    private Enterprise enterprise;
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
@@ -28,8 +23,8 @@ public class TestMailController extends GenericAbstractController {
     public void initialize() {
         super.initialize();
         try {
-            utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
-            enterprise = utilsEJB.loadEnterprise(new EJBRequest(Enterprise.TURBINES));
+//            utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
+//            enterprise = utilsEJB.loadEnterprise(new EJBRequest(Enterprise.TURBINES));
         } catch (Exception ex) {
             showError(ex);
         }

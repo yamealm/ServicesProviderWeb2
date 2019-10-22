@@ -10,14 +10,12 @@ import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
-import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Textbox;
 
 import com.alodiga.services.provider.commons.ejbs.CustomerEJB;
-import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
 import com.alodiga.services.provider.commons.exceptions.EmptyListException;
 import com.alodiga.services.provider.commons.exceptions.GeneralException;
 import com.alodiga.services.provider.commons.exceptions.NullParameterException;
@@ -44,8 +42,6 @@ public class ListCustomersController extends GenericAbstractListController<Custo
     private Textbox txtName;
     private Textbox txtLogin;
     private Textbox txtEmail;
-    private Combobox cmbEnterprises;
-    private UtilsEJB utilsEJB = null;
     private CustomerEJB customerEJB = null;
     private List<Customer> customers = null;
     private User currentUser;
@@ -84,7 +80,6 @@ public class ListCustomersController extends GenericAbstractListController<Custo
             currentProfile = currentUser.getCurrentProfile(Enterprise.TURBINES);
             checkPermissions();
             customerEJB = (CustomerEJB) EJBServiceLocator.getInstance().get(EjbConstants.CUSTOMER_EJB);
-            utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
         } catch (Exception ex) {
             showError(ex);
         }
@@ -147,16 +142,6 @@ public class ListCustomersController extends GenericAbstractListController<Custo
         }
     }
 
-    private void forwardData(Customer customer) {
-        try {
-
-            //request.setAuditData(AccessControl.getCurrentAudit());
-            request.setParam(customer);
-            customerEJB.saveCustomer(request);
-        } catch (Exception ex) {
-            showError(ex);
-        }
-    }
 
     public void loadList(List<Customer> list) {
         try {
@@ -175,9 +160,6 @@ public class ListCustomersController extends GenericAbstractListController<Custo
                     item.appendChild(permissionChangeStatus ? initEnabledButton(customer.getEnabled(), item) : new Listcell());
                     item.appendChild(permissionEdit ? new ListcellEditButton(adminPage, customer,Permission.EDIT_CUSTOMER) : new Listcell());
                     item.appendChild(permissionRead ? new ListcellViewButton(adminPage, customer,Permission.VIEW_CUSTOMER) : new Listcell());
-//                    item.appendChild(sendDistributorData ? initForwardDataButton(distributor) : new Listcell());
-//                    item.appendChild(permissionAdd ? new ListcellAddDescendantButton(adminPage, customer,Permission.ADD_DISTRIBUTOR) : new Listcell());
-//                    item.appendChild(distributorMonitory ? new ListcellDetailsButton("viewMonitoringDistributor.zul", distributor, Permission.DISTRIBUTION_MONITORY) : new Listcell());
                     item.setParent(lbxRecords);
                 }
             } else {

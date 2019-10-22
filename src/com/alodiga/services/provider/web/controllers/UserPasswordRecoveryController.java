@@ -1,5 +1,14 @@
 package com.alodiga.services.provider.web.controllers;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.zkoss.util.resource.Labels;
+import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.util.GenericForwardComposer;
+import org.zkoss.zul.Label;
+import org.zkoss.zul.Textbox;
+
 import com.alodiga.services.provider.commons.ejbs.UserEJB;
 import com.alodiga.services.provider.commons.exceptions.RegisterNotFoundException;
 import com.alodiga.services.provider.commons.models.User;
@@ -8,21 +17,12 @@ import com.alodiga.services.provider.commons.utils.EjbConstants;
 import com.alodiga.services.provider.commons.utils.QueryConstants;
 import com.alodiga.services.provider.web.generic.controllers.GenericSPController;
 import com.alodiga.services.provider.web.utils.AccessControl;
-import java.awt.Button;
-import java.awt.Window;
-import java.util.HashMap;
-import java.util.Map;
-import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.util.GenericForwardComposer;
-import org.zkoss.util.resource.Labels;
-import org.zkoss.zul.Label;
-import org.zkoss.zul.Textbox;
 
 
 public class UserPasswordRecoveryController extends GenericForwardComposer implements GenericSPController {
 
     private static final long serialVersionUID = -9145887024839938515L;
-    private Window winPasswordRecoveryView;
+//    private Window winPasswordRecoveryView;
     private Textbox txtLogin;
     private Label lblInfo;
     private UserEJB userEJB = null;

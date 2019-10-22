@@ -1,5 +1,15 @@
 package com.alodiga.services.provider.web.controllers;
 
+import java.util.List;
+
+import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zul.Label;
+import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listcell;
+import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Textbox;
+
 import com.alodiga.services.provider.commons.ejbs.UserEJB;
 import com.alodiga.services.provider.commons.models.Enterprise;
 import com.alodiga.services.provider.commons.models.User;
@@ -10,15 +20,6 @@ import com.alodiga.services.provider.commons.utils.Encoder;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractAdminController;
 import com.alodiga.services.provider.web.utils.AccessControl;
 import com.alodiga.services.provider.web.utils.WebConstants;
-import java.util.List;
-import org.zkoss.zk.ui.Component;
-import org.zkoss.zul.Checkbox;
-import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listcell;
-import org.zkoss.zul.Listitem;
-import org.zkoss.zul.Textbox;
-import org.zkoss.zk.ui.Sessions;
-import org.zkoss.zul.Label;
 
 public class MyAccountController extends GenericAbstractAdminController {
 

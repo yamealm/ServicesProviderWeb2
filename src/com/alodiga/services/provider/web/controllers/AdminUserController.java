@@ -1,9 +1,24 @@
 package com.alodiga.services.provider.web.controllers;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zul.Checkbox;
+import org.zkoss.zul.Combobox;
+import org.zkoss.zul.Comboitem;
+import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listcell;
+import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Textbox;
+
 import com.alodiga.services.provider.commons.ejbs.AccessControlEJB;
 import com.alodiga.services.provider.commons.ejbs.UserEJB;
 import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
-import com.alodiga.services.provider.commons.genericEJB.EJBRequest;
 import com.alodiga.services.provider.commons.models.Enterprise;
 import com.alodiga.services.provider.commons.models.Profile;
 import com.alodiga.services.provider.commons.models.User;
@@ -14,20 +29,6 @@ import com.alodiga.services.provider.commons.utils.Encoder;
 import com.alodiga.services.provider.commons.utils.QueryConstants;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractAdminController;
 import com.alodiga.services.provider.web.utils.WebConstants;
-import java.util.ArrayList;
-import java.util.List;
-import org.zkoss.zk.ui.Component;
-import org.zkoss.zul.Checkbox;
-import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listcell;
-import org.zkoss.zul.Listitem;
-import org.zkoss.zul.Textbox;
-import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.Map;
-import org.zkoss.zk.ui.Sessions;
-import org.zkoss.zul.Combobox;
-import org.zkoss.zul.Comboitem;
 
 public class AdminUserController extends GenericAbstractAdminController {
 
@@ -231,9 +232,9 @@ public class AdminUserController extends GenericAbstractAdminController {
             request.setParam(user);
             userParam = userEJB.saveUser(request);
 
-            if (eventType.equals(WebConstants.EVENT_ADD)) {
-                sendRegistrationMail(user, profile, txtPassword.getText());
-            }
+//            if (eventType.equals(WebConstants.EVENT_ADD)) {
+//                sendRegistrationMail(user, profile, txtPassword.getText());
+//            }
 
 
             eventType = WebConstants.EVENT_EDIT;
@@ -339,15 +340,15 @@ public class AdminUserController extends GenericAbstractAdminController {
         }
     }
 
-    private void sendRegistrationMail(User user, Profile profile, String password) {
-
-        try {
-            Enterprise enterprise = utilsEJB.loadEnterprise(new EJBRequest(Enterprise.TURBINES));
-          //  Mail mail = CommonMails.getUserRegistrationMail(user, profile, password, enterprise);
-           // utilsEJB.sendMail(mail);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-    }
+//    private void sendRegistrationMail(User user, Profile profile, String password) {
+//
+//        try {
+//            Enterprise enterprise = utilsEJB.loadEnterprise(new EJBRequest(Enterprise.TURBINES));
+//          //  Mail mail = CommonMails.getUserRegistrationMail(user, profile, password, enterprise);
+//           // utilsEJB.sendMail(mail);
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
+//
+//    }
 }

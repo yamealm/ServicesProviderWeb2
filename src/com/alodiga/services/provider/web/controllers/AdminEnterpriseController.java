@@ -9,7 +9,6 @@ import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
-import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Textbox;
 
 import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
@@ -37,7 +36,6 @@ public class AdminEnterpriseController extends GenericAbstractAdminController {
     private UtilsEJB utilsEJB = null;
     private Enterprise enterpriseParam;
     private Button btnSave;
-    private Listbox lbxTinTypes;
     
     @Override
     public void doAfterCompose(Component comp) throws Exception {
