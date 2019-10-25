@@ -7,6 +7,7 @@ import java.util.List;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
@@ -17,7 +18,9 @@ import com.alodiga.services.provider.commons.ejbs.AuditoryEJB;
 import com.alodiga.services.provider.commons.ejbs.TransactionEJB;
 import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
 import com.alodiga.services.provider.commons.exceptions.EmptyListException;
+import com.alodiga.services.provider.commons.exceptions.GeneralException;
 import com.alodiga.services.provider.commons.exceptions.NullParameterException;
+import com.alodiga.services.provider.commons.exceptions.RegisterNotFoundException;
 import com.alodiga.services.provider.commons.genericEJB.EJBRequest;
 import com.alodiga.services.provider.commons.managers.PermissionManager;
 import com.alodiga.services.provider.commons.models.Audit;
@@ -153,7 +156,19 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
         if (validateEmpty()) {
             switch (eventType) {
                 case WebConstants.EVENT_ADD:
-                	saveMetreologicalControl(null);
+				try {
+					metrologicalControlParam = transactionEJB.loadMetrologicalControlByInstrument(txtInstrument.getText());
+					eventType = WebConstants.EVENT_EDIT;
+					loadData();
+					this.showMessage("sp.error.instrument.exist", true, null);
+				} catch (RegisterNotFoundException e) {
+					saveMetreologicalControl(null);
+				} catch (NullParameterException e) {
+					txtInstrument.setFocus(true);
+		            this.showMessage("sp.error.field.cannotNull", true, null);
+				} catch (GeneralException e) {
+					saveMetreologicalControl(null);
+				}
                     break;
                 case WebConstants.EVENT_EDIT:
                 	saveMetreologicalControl(metrologicalControlParam);
@@ -176,7 +191,7 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
                 loadFields(metrologicalControlParam);
                 loadBraunds(metrologicalControlParam.getBraund());
                 break;
-            case WebConstants.EVENT_VIEW:
+            case WebConstants.EVENT_EDIT:
                 loadFields(metrologicalControlParam);
                 loadBraunds(metrologicalControlParam.getBraund());
                 loadEnterCalibration(metrologicalControlParam.getEnterCalibration());
