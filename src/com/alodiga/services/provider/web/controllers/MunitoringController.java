@@ -116,7 +116,7 @@ public class MunitoringController extends GenericAbstractListController<ProductS
     public void onClick$tabControl() {
     	try {
     		
-    		controlHistories = productEJB.getMetrologicalControlDefeated(5);
+    		controlHistories = transactionEJB.getMetrologicalControlDefeated(5);
 			intDay.setValue(5);
 			loadList5(controlHistories);
 			
@@ -476,8 +476,8 @@ public class MunitoringController extends GenericAbstractListController<ProductS
                 btnDownload5.setVisible(false);
                 btnExportPdf5.setVisible(false);
                 item = new Listitem();
-                item.appendChild(new Listcell());
                 item.appendChild(new Listcell(Labels.getLabel("sp.error.empty.list")));
+                item.appendChild(new Listcell());
                 item.appendChild(new Listcell());
                 item.appendChild(new Listcell());
                 item.appendChild(new Listcell());
