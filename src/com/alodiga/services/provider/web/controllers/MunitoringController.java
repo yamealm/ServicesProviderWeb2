@@ -136,12 +136,15 @@ public class MunitoringController extends GenericAbstractListController<ProductS
 			EJBRequest request2 = new EJBRequest();
 			List<Product> products = new ArrayList<Product>();
 			products = productEJB.getProducts(request2);
+			
 			List<Product> productsReturn = new ArrayList<Product>();
 			for (Product p : products) {
-				int quantity = transactionEJB.loadQuantityByProductId(p.getId(), Category.STOCK);
-				if (quantity < p.getStockMin()) {
-					p.setStockMax(quantity);
-					productsReturn.add(p);
+				if (p.getEnabled() && p.getCategory().getId().equals(Category.STOCK)) {
+					int quantity = transactionEJB.loadQuantityByProductId(p.getId(), Category.STOCK);
+					if (quantity < p.getStockMin()) {
+						p.setStockMax(quantity);
+						productsReturn.add(p);
+					}
 				}
 			}
 			loadList3(productsReturn);
@@ -252,6 +255,7 @@ public class MunitoringController extends GenericAbstractListController<ProductS
                     item.appendChild(new Listcell(productSerie.getSerie()!=null?productSerie.getSerie():""));
                     item.appendChild(new Listcell(productSerie.getProvider().getName()));
                     item.appendChild(new Listcell(productSerie.getCondition().getName()));
+                    item.appendChild(new Listcell(productSerie.getCategory().getName()));
                     Listcell listCellEnding = new Listcell(productSerie.getExpirationDate().toString());
                     listCellEnding.setStyle("color:red");
                     
@@ -307,7 +311,7 @@ public class MunitoringController extends GenericAbstractListController<ProductS
                     item.appendChild(new Listcell(productSerie.getSerie()!=null?productSerie.getSerie():""));
                     item.appendChild(new Listcell(productSerie.getProvider().getName()));
                     item.appendChild(new Listcell(productSerie.getCondition().getName()));
-              
+                    item.appendChild(new Listcell(productSerie.getCategory().getName()));
                     Listcell listCellEnding = new Listcell(productSerie.getExpirationDate().toString());
                     
                     if(productSerie.getExpirationDate().getTime()< new Date().getTime()) {

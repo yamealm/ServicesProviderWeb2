@@ -374,7 +374,7 @@ public class AdminEgressUnitMetrologicalControlController extends GenericAbstrac
 				transaction.setCustomer(null);
             transaction.setUser(user);
             transaction.setCreationDate(new Timestamp(dtxExit.getValue().getTime()));
-            TransactionType transactionType = transactionEJB.loadTransactionTypebyId(TransactionType.REMOVE);
+            TransactionType transactionType = transactionEJB.loadTransactionTypebyId(TransactionType.EXIT);
             transaction.setTransactionType(transactionType);
             transaction.setAmount(Float.valueOf(txtAmount.getText()));
             productSerieParam.getProduct().setAmount(Float.valueOf(txtAmount.getText()));

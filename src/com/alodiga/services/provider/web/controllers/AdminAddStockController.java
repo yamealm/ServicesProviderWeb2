@@ -408,7 +408,7 @@ public class AdminAddStockController extends GenericAbstractAdminController {
             transaction.setUser(user);
             transaction.setCreationDate(new Timestamp((new java.util.Date().getTime())));
             transaction.setQuantity(intQuantity.getValue());
-            TransactionType transactionType = transactionEJB.loadTransactionTypebyId(TransactionType.ADD);
+            TransactionType transactionType = transactionEJB.loadTransactionTypebyId(TransactionType.ENTRY);
             transaction.setTransactionType(transactionType);
             transaction.setAmount(Float.valueOf(txtAmount.getText()));
             transaction.setInvoice(txtInvoice.getText());
@@ -587,8 +587,10 @@ public class AdminAddStockController extends GenericAbstractAdminController {
     }
     
     public void onClick$btnSearch() {
-   	 Window window = (Window)Executions.createComponents("catProducts.zul", null, null);
    	 Sessions.getCurrent().setAttribute("page","adminAddStock.zul");
+     Category category =(Category) cmbCategory.getSelectedItem().getValue();
+     Sessions.getCurrent().setAttribute("category",category);
+     Window window = (Window)Executions.createComponents("catProducts.zul", null, null);
         try {
 			window.doModal();
 		} catch (SuspendNotAllowedException e) {

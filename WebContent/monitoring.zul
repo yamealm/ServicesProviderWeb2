@@ -76,14 +76,15 @@
                                             <div align="left">
                                                 <listbox id="lbxReport" width="1390px" height="460px" mold="paging">
                                                     <listhead>
-														<listheader label="${c:l('sp.common.PartNumber')}" width="190px"/>
-                                                        <listheader label="${c:l('sp.common.name')}" width="190px"/>
-                                                        <listheader label="${c:l('sp.common.serial')}" width="190px"/>
-                                                        <listheader label="${c:l('sp.common.provider')}" width="190px"/>
+														<listheader label="${c:l('sp.common.PartNumber')}" width="160px"/>
+                                                        <listheader label="${c:l('sp.common.name')}" width="180px"/>
+                                                        <listheader label="${c:l('sp.common.serial')}" width="160px"/>
+                                                        <listheader label="${c:l('sp.common.provider')}" width="160px"/>
                                                         <listheader label="${c:l('sp.common.condition')}" width="190px"/>
+                                                        <listheader label="${c:l('sp.common.category')}" width="150px"/>
                                                         <listheader label="${c:l('sp.common.label.expirationDate')}" width="190px"/>
-                                                        <listheader label="${c:l('sp.transaction.amount')}" width="150px"/>
-                                                        <listheader label="${c:l('sp.common.quantity')}" width="100px"/>
+                                                        <listheader label="${c:l('sp.transaction.amount')}" width="130px"/>
+                                                        <listheader label="${c:l('sp.common.quantity')}" width="70px"/>
                                                     </listhead>
                                                 </listbox>
                                             </div>
@@ -120,14 +121,15 @@
                                             <div align="left">
                                                 <listbox id="lbxReport2" width="1390px" height="440px" mold="paging">
                                                     <listhead>
-                                                       <listheader label="${c:l('sp.common.PartNumber')}" width="190px"/>
-                                                        <listheader label="${c:l('sp.common.name')}" width="190px"/>
-                                                        <listheader label="${c:l('sp.common.serial')}" width="190px"/>
-                                                        <listheader label="${c:l('sp.common.provider')}" width="190px"/>
+                                                      	<listheader label="${c:l('sp.common.PartNumber')}" width="160px"/>
+                                                        <listheader label="${c:l('sp.common.name')}" width="180px"/>
+                                                        <listheader label="${c:l('sp.common.serial')}" width="160px"/>
+                                                        <listheader label="${c:l('sp.common.provider')}" width="160px"/>
                                                         <listheader label="${c:l('sp.common.condition')}" width="190px"/>
+                                                        <listheader label="${c:l('sp.common.category')}" width="150px"/>
                                                         <listheader label="${c:l('sp.common.label.expirationDate')}" width="190px"/>
-                                                        <listheader label="${c:l('sp.transaction.amount')}" width="150px"/>
-                                                        <listheader label="${c:l('sp.common.quantity')}" width="100px"/>
+                                                        <listheader label="${c:l('sp.transaction.amount')}" width="130px"/>
+                                                        <listheader label="${c:l('sp.common.quantity')}" width="70px"/>
                                                     </listhead>
                                                 </listbox>
                                             </div>

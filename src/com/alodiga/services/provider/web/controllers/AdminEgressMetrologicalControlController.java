@@ -402,7 +402,7 @@ public class AdminEgressMetrologicalControlController extends GenericAbstractAdm
             transaction.setUser(user);
             transaction.setCreationDate(new Timestamp((new java.util.Date().getTime())));
             TransactionType transactionType = new TransactionType();
-            transactionType.setId(TransactionType.REMOVE);
+            transactionType.setId(TransactionType.EXIT);
             transaction.setTransactionType(transactionType);
             transaction.setAmount(Float.valueOf(txtAmount.getText()));
             productParam.setAmount(Float.valueOf(txtAmount.getText()));

@@ -114,7 +114,7 @@ public class ListStockController extends GenericAbstractListController<Product> 
             if (list != null && !list.isEmpty()) {
                 btnDownload.setVisible(true);
                 for (Product product : list) {
-                	if (product.getEnabled()) {
+                	if (product.getEnabled() && product.getCategory().getId().equals(Category.STOCK)) {
 	                	try {
 	                		int  currentQuantity = transactionEJB.loadQuantityByProductId(product.getId(), Category.STOCK);
 	                		stock = currentQuantity;

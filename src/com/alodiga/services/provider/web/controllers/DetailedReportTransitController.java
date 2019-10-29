@@ -43,7 +43,7 @@ import com.alodiga.services.provider.web.utils.AccessControl;
 import com.alodiga.services.provider.web.utils.PDFUtil;
 import com.alodiga.services.provider.web.utils.Utils;
 
-public class ListProductSerieController extends GenericAbstractListController<ProductSerie> {
+public class DetailedReportTransitController extends GenericAbstractListController<ProductSerie> {
 
     private static final long serialVersionUID = -9145887024839938515L;
     private Listbox lbxReport;
@@ -102,7 +102,7 @@ public class ListProductSerieController extends GenericAbstractListController<Pr
             Map<String, Object> params = new HashMap<String, Object>();
             params.put(QueryConstants.PARAM_BEGINNING_DATE, dtbBeginningDate.getValue());
             params.put(QueryConstants.PARAM_ENDING_DATE, dtbEndingDate.getValue());
-            params.put(QueryConstants.PARAM_CATEGORY_ID, Category.STOCK);
+            params.put(QueryConstants.PARAM_CATEGORY_ID, Category.TRANSIT);
             if (dtbEndingDate.getValue().getTime() >= dtbBeginningDate.getValue().getTime()) {
               
                 if (cmbProvider.getSelectedItem() != null && cmbProvider.getSelectedIndex() != 0) {
@@ -123,14 +123,14 @@ public class ListProductSerieController extends GenericAbstractListController<Pr
                 if (cmbTransactionType.getSelectedItem() != null && cmbTransactionType.getSelectedIndex() != 0) {
                     params.put(QueryConstants.PARAM_TRANSACTION_TYPE_ID, ((TransactionType) cmbTransactionType.getSelectedItem().getValue()).getId());
                 }
-                if (txtWorkOrder.getText() != null && !txtWorkOrder.getText().equals("")) {
+                if (txtWorkOrder.getText() != null && txtWorkOrder.getText() !="") {
                     params.put(QueryConstants.PARAM_WORK_ORDER, txtWorkOrder.getText());
                 }
                 _request.setParams(params);
                 _request.setParam(true);
                 productSeries = productEJB.searchProductSerie(_request);
                 loadList(productSeries);
-                AccessControl.saveAction(Permission.STOCK, "Se busco listado de productos en stock");
+                AccessControl.saveAction(Permission.REPORT_TRANSIT, "Se busco reporte de productos en transito");
             } else  {
                 this.showMessage("sp.error.date.invalid", true, null);
             }
@@ -233,7 +233,7 @@ public class ListProductSerieController extends GenericAbstractListController<Pr
             item.setParent(cmbProduct);
             cmbProduct.setSelectedItem(item);
             for (int i = 0; i < products.size(); i++) {
-				if (products.get(i).getCategory().getId().equals(Category.STOCK)) {
+				if (products.get(i).getCategory().getId().equals(Category.TRANSIT)) {
 					item = new Comboitem();
 					item.setValue(products.get(i));
 					item.setLabel(products.get(i).getDescription());
@@ -258,9 +258,14 @@ public class ListProductSerieController extends GenericAbstractListController<Pr
                     item.appendChild(new Listcell(productSerie.getProduct().getPartNumber()));
                     item.appendChild(new Listcell(productSerie.getProduct().getDescription()));
                     item.appendChild(new Listcell(productSerie.getProvider().getName()));
-                    item.appendChild(new Listcell(productSerie.getCategory().getName()));
+                    if (productSerie.getEndingTransactionId()==null)
+                    	item.appendChild(new Listcell(Labels.getLabel("sp.common.entry")));
+                    else
+                    	item.appendChild(new Listcell(Labels.getLabel("sp.common.exit")));
                     item.appendChild(new Listcell(productSerie.getCondition().getName()));
                     item.appendChild(new Listcell(productSerie.getSerie()));
+                    item.appendChild(new Listcell(productSerie.getCustomer()!=null?productSerie.getCustomer().getFirstName()+" " +
+                    		productSerie.getCustomer().getLastName():null));
                     item.appendChild(new Listcell(productSerie.getOrderWord()));
                     item.appendChild(new Listcell(productSerie.getAmount().toString()));
                     item.appendChild(new Listcell(String.valueOf(productSerie.getQuantityInto())));
@@ -294,6 +299,9 @@ public class ListProductSerieController extends GenericAbstractListController<Pr
                 item.appendChild(new Listcell());
                 item.appendChild(new Listcell());
                 item.appendChild(new Listcell());
+                item.appendChild(new Listcell());
+                item.appendChild(new Listcell());
+                item.appendChild(new Listcell());
                 item.setParent(lbxReport);
             }
         } catch (Exception ex) {
@@ -314,8 +322,8 @@ public class ListProductSerieController extends GenericAbstractListController<Pr
 
     public void onClick$btnDownload() throws InterruptedException {
         try {
-            Utils.exportExcel(lbxReport, Labels.getLabel("sp.crud.product.list.reporte.stock"));
-            AccessControl.saveAction(Permission.STOCK, "Se descargo listado de productos en stock formato excel");
+            Utils.exportExcel(lbxReport, Labels.getLabel("sp.report.title"));
+            AccessControl.saveAction(Permission.REPORT_TRANSIT, "Se descargo reporte de productos en stock formato excel");
         } catch (Exception ex) {
             showError(ex);
         }
@@ -323,8 +331,8 @@ public class ListProductSerieController extends GenericAbstractListController<Pr
     
     public void onClick$btnExportPdf() throws InterruptedException {
         try {
-        	PDFUtil.exportPdf((Labels.getLabel("sp.common.stock"))+".pdf", Labels.getLabel("sp.crud.product.list.reporte.stock"), lbxReport,0);
-        	AccessControl.saveAction(Permission.STOCK, "Se descargo listado de productos en stock formato pdf");
+        	PDFUtil.exportPdf((Labels.getLabel("sp.common.stock"))+".pdf", Labels.getLabel("sp.crud.product.list.reporte"), lbxReport,0);
+        	 AccessControl.saveAction(Permission.REPORT_TRANSIT, "Se descargo reporte de productos en stock formato excel");
         } catch (Exception ex) {
             showError(ex);
         }

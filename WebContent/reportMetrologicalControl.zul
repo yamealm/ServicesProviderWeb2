@@ -88,7 +88,7 @@
                                                    <!--Record Listbox-->
                                             <separator/>
                                             <div align="center">
-                                                <listbox id="lbxReport" width="1395px" height="560px" mold="paging">
+                                                 <listbox id="lbxReport" fixedLayout="true" width="1395px" height="550px" mold="paging">
                                                     <listhead>
                                                        <listheader label="${c:l('sp.common.control.designation')}" width="130px" sort="auto"/>
                                                        <listheader label="${c:l('sp.common.control.id.instrument')}" width="130px" sort="auto"/>

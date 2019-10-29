@@ -380,7 +380,7 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
 				transaction.setCustomer(null);
             transaction.setUser(user);
             transaction.setCreationDate(new Timestamp(dtxExit.getValue().getTime()));
-            TransactionType transactionType = transactionEJB.loadTransactionTypebyId(TransactionType.REMOVE);
+            TransactionType transactionType = transactionEJB.loadTransactionTypebyId(TransactionType.EXIT);
             transaction.setTransactionType(transactionType);
             transaction.setAmount(Float.valueOf(txtAmount.getText()));
             productSerieParam.getProduct().setAmount(Float.valueOf(txtAmount.getText()));
@@ -407,8 +407,10 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
     }
     
 	 public void onClick$btnSearch() {
-    	 Window window = (Window)Executions.createComponents("catProducts.zul", null, null);
     	 Sessions.getCurrent().setAttribute("page","adminEgressInitQuarantine.zul");
+    	 Category category =(Category) cmbCategory.getSelectedItem().getValue();
+    	 Sessions.getCurrent().setAttribute("category",category);
+    	 Window window = (Window)Executions.createComponents("catProducts.zul", null, null);
          try {
 			window.doModal();
 		} catch (SuspendNotAllowedException e) {

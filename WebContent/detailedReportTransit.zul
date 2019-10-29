@@ -4,7 +4,7 @@
 <?link rel="icon" tye="image/x-icon" href="/images/favicon.ico"?>
 <?init class="com.alodiga.services.provider.web.security.InitiatorLoggedUser" ?>
 <zk xmlns:n="native">
-    <window width="100%" height="100%" apply="com.alodiga.services.provider.web.controllers.ListProductSerieController" class="general-window">
+    <window width="100%" height="100%" apply="com.alodiga.services.provider.web.controllers.DetailedReportTransitController" class="general-window">
         <style src="/css/general.css"/>
         <borderlayout width="100%" height="100%" class="content-transparent">
             <north border="none" size="52px" class="content-transparent">
@@ -13,7 +13,7 @@
                         <div align="center">
                             <hlayout style="background:#232323; repeat center center; border:none;">
                                 <div ></div>
-                                <div width="1700px" height="18px" align="center">
+                                <div width="1800px" height="18px" align="center">
                                     <label value="${c:l('sp.common.page.title')}" style="color:#837E76; font-size:16px;"/>
                                 </div>
                                 <div></div>
@@ -47,7 +47,7 @@
                                             <hlayout>
                                                 <toolbarbutton label="${c:l('sp.bread.crumb.home')}" onClick='Executions.sendRedirect(&quot;home-admin.zul&quot;)'/>
                                                  |
-                                                <toolbarbutton label="${c:l('sp.crud.product.list.reporte.stock')}"/>
+                                                <toolbarbutton label="${c:l('sp.crud.product.list.reporte.transit')}" />
                                             </hlayout>
                                         </div>
                                         <div height="5px" width="100%" style="background:#333;" align="left"></div>
@@ -65,8 +65,8 @@
                                                     <datebox id="dtbBeginningDate"  format="dd-MM-yyyy" tooltiptext="${c:l('sp.common.searching.filter')}"/>
                                                     <label value="${c:l('sp.common.endingDate')}" sclass="lblbold"/>
                                                     <datebox id="dtbEndingDate" format="dd-MM-yyyy" tooltiptext="${c:l('sp.common.searching.filter')}"/>
-                                                </hlayout>    
-                                                 <hlayout>                                  
+                                                </hlayout>   
+                                                 <hlayout>                                           
                                                     <label value="${c:l('sp.common.customer')}" sclass="lblbold"/>
                                                     <combobox id="cmbCustomer" width="160px" mold="rounded" readonly="true"/>
                                                     <label value="${c:l('sp.common.work.order')}" sclass="lblbold"/>
@@ -86,20 +86,20 @@
                                                    <!--Record Listbox-->
                                             <separator/>
                                             <div align="center">
-                                             <listbox id="lbxReport" fixedLayout="true" width="1395px" height="550px" mold="paging">
+                                                 <listbox id="lbxReport" fixedLayout="true" width="1395px" height="550px" mold="paging">
                                                     <listhead>
                                                         <listheader label="${c:l('sp.common.PartNumber')}" width="110px"/>
                                                         <listheader label="${c:l('sp.common.name')}" width="200px"/>
-                                                        <listheader label="${c:l('sp.common.provider')}" width="100px"/>
-                                                        <listheader label="${c:l('sp.common.category')}" width="105px"/>
+                                                        <listheader label="${c:l('sp.common.provider')}" width="90px"/>
+                                                        <listheader label="${c:l('sp.common.transaction.type')}" width="125px"/>
                                                         <listheader label="${c:l('sp.common.condition')}" width="90px"/>
-                                                         <listheader label="${c:l('sp.common.serial')}" width="125px"/>
-<!--                                                         <listheader label="${c:l('sp.common.customer')}" width="85px"/> -->
+                                                         <listheader label="${c:l('sp.common.serial')}" width="115px"/>
+                                                        <listheader label="${c:l('sp.common.customer')}" width="105px"/>
                                                          <listheader label="${c:l('sp.common.work.order')}" width="125px"/>
-                                                        <listheader label="${c:l('sp.transaction.amount')}" width="90px"/>
-                                                        <listheader label="${c:l('sp.common.quantity')}" width="170px"/>
-                                                        <listheader label="${c:l('sp.common.creationDate')}" width="140px"/>
-                                                        <listheader label="${c:l('sp.common.date.expiration')}" width="140px"/>
+                                                        <listheader label="${c:l('sp.transaction.amount')}" width="85px"/>
+                                                        <listheader label="${c:l('sp.common.quantity')}" width="80px"/>
+                                                        <listheader label="${c:l('sp.common.creationDate')}" width="135px"/>
+                                                        <listheader label="${c:l('sp.common.date.expiration')}" width="135px"/>
                                                     </listhead>
                                                 </listbox>
                                             </div>

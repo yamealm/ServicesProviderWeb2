@@ -233,10 +233,12 @@ public class ReportWaitController extends GenericAbstractListController<ProductS
             item.setParent(cmbProduct);
             cmbProduct.setSelectedItem(item);
             for (int i = 0; i < products.size(); i++) {
-                item = new Comboitem();
-                item.setValue(products.get(i));
-                item.setLabel(products.get(i).getDescription());
-                item.setParent(cmbProduct);
+				if (products.get(i).getCategory().getId().equals(Category.WAIT)) {
+					item = new Comboitem();
+					item.setValue(products.get(i));
+					item.setLabel(products.get(i).getDescription());
+					item.setParent(cmbProduct);
+				}
             }
         } catch (Exception ex) {
             this.showError(ex);

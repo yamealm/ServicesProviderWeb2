@@ -17,11 +17,13 @@ import org.zkoss.zul.Textbox;
 
 import com.alodiga.services.provider.commons.ejbs.AuditoryEJB;
 import com.alodiga.services.provider.commons.ejbs.ProductEJB;
+import com.alodiga.services.provider.commons.ejbs.TransactionEJB;
 import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
 import com.alodiga.services.provider.commons.exceptions.RegisterNotFoundException;
 import com.alodiga.services.provider.commons.genericEJB.EJBRequest;
 import com.alodiga.services.provider.commons.managers.PermissionManager;
 import com.alodiga.services.provider.commons.models.Audit;
+import com.alodiga.services.provider.commons.models.Category;
 import com.alodiga.services.provider.commons.models.Customer;
 import com.alodiga.services.provider.commons.models.Enterprise;
 import com.alodiga.services.provider.commons.models.Event;
@@ -40,6 +42,7 @@ public class AdminProductController extends GenericAbstractAdminController {
 
     private static final long serialVersionUID = -9145887024839938515L;
     private Combobox cmbEnterprise;
+    private Combobox cmbCategory;
     private Checkbox cbxEnabled;
     private Textbox txtAmount;
     private Textbox txtBachNumber;
@@ -52,9 +55,11 @@ public class AdminProductController extends GenericAbstractAdminController {
     private Intbox intStockMin;
 
     private ProductEJB productEJB = null;
+    private TransactionEJB transactionEJB = null;
     private UtilsEJB utilsEJB = null;
     private Product productParam;
     private List<Enterprise> enterprises;
+    private List<Category> categories;
     private Button btnAddDenomination;
     private Button btnSave;
     private User user;
@@ -83,6 +88,7 @@ public class AdminProductController extends GenericAbstractAdminController {
         	auditoryEJB = (AuditoryEJB) EJBServiceLocator.getInstance().get(EjbConstants.AUDITORY_EJB);
             productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
             utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
+            transactionEJB = (TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
         } catch (Exception ex) {
             showError(ex);
         }
@@ -112,6 +118,7 @@ public class AdminProductController extends GenericAbstractAdminController {
     	intStockMin.setReadonly(true);
         cbxEnabled.setDisabled(true);
         cmbEnterprise.setDisabled(true);
+        cmbCategory.setDisabled(true);
         btnAddDenomination.setVisible(false);
         btnSave.setVisible(false);
     }
@@ -179,14 +186,17 @@ public class AdminProductController extends GenericAbstractAdminController {
             case WebConstants.EVENT_EDIT:
                 loadFields(productParam);
                 loadEnterprises(productParam.getEnterprise());
+                loadCategory(productParam.getCategory());
                 break;
             case WebConstants.EVENT_VIEW:
                 loadFields(productParam);
                 loadEnterprises(productParam.getEnterprise());
+                loadCategory(productParam.getCategory());
                 blockFields();
                 break;
             case WebConstants.EVENT_ADD:
                 loadEnterprises(null);
+                loadCategory(null);
                 break;
             default:
                 break;
@@ -232,6 +242,25 @@ public class AdminProductController extends GenericAbstractAdminController {
         }
     }
 
+    private void loadCategory(Category category) {
+        try {
+        	cmbCategory.getItems().clear();
+        	categories = transactionEJB.getCategories();
+            for (Category e : categories) {
+                Comboitem cmbItem = new Comboitem();
+                cmbItem.setLabel(e.getName());
+                cmbItem.setValue(e);
+                cmbItem.setParent(cmbCategory);
+                if (category != null && category.getId().equals(e.getId())) {
+                    cmbEnterprise.setSelectedItem(cmbItem);
+                } else {
+                    cmbEnterprise.setSelectedIndex(0);
+                }
+            }
+        } catch (Exception ex) {
+            showError(ex);
+        }
+    }
 
 
     private void saveProduct(Product _product) {
@@ -268,6 +297,8 @@ public class AdminProductController extends GenericAbstractAdminController {
 				product.setStockMax(intStockMax.getValue());
 				Enterprise e = (Enterprise) cmbEnterprise.getSelectedItem().getValue();
 				product.setEnterprise(e);
+				Category category = (Category) cmbCategory.getSelectedItem().getValue();
+				product.setCategory(category);
 				request.setParam(product);
 				request.setAuditData(null);
 				product = productEJB.saveProduct(request);

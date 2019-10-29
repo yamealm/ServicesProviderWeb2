@@ -948,3 +948,42 @@ ADD CONSTRAINT `fk_metrological_control_history_category`
 //Yamelis 21-102019
 ALTER TABLE `services`.`customer` 
 CHANGE COLUMN `lastName` `lastName` VARCHAR(45) NULL DEFAULT NULL ;
+
+ALTER TABLE `services`.`product` 
+ADD COLUMN `categoryId` INT(3) NULL DEFAULT NULL AFTER `enabled`;
+
+ALTER TABLE `services`.`product` 
+ADD INDEX `fk_product_category1` (`categoryId` ASC) VISIBLE;
+;
+ALTER TABLE `services`.`product` 
+ADD CONSTRAINT `fk_product_category1`
+  FOREIGN KEY (`categoryId`)
+  REFERENCES `services`.`category` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+  
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('137', '1', 'reportDetailStock', 'product', 'reportDetailStock', '1');
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('138', '1', 'reportDetailTransit', 'product', 'reportDetailTransit', '1');
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('139', '1', 'reportDetailQuarantine', 'product', 'reportDetailQuarantine', '1');
+INSERT INTO `services`.`permission` (`id`, `permissionGroupId`, `action`, `entity`, `name`, `enabled`) VALUES ('140', '1', 'reportDetailWait', 'product', 'reportDetailWait', '1');
+
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('271', '137', '1', 'Detailed Report Stock ', 'Detailed Report Stock ');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('272', '137', '2', 'Reporte Detallado de Stock', 'Reporte Detallado de Stock');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('273', '138', '1', 'Detailed Report Transit', 'Detailed Report Transit');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('274', '138', '2', 'Reporte Detallado de Transito', 'Reporte Detallado de Transito');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('275', '139', '1', 'Detailed Report Quarantine', 'Detailed Report Quarantine');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('276', '139', '2', 'Reporte Detallado de Cuarentena', 'Reporte Detallado de Cuarentena');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('277', '140', '1', 'Detailed Report Wait', 'Detailed Report Wait');
+INSERT INTO `services`.`permission_data` (`id`, `permissionId`, `languageId`, `alias`, `description`) VALUES ('278', '140', '2', 'Reporte Detallado de Espera', 'Reporte Detallado de Espera');
+
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('2597', '137', '1');
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('2598', '138', '1');
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('2599', '139', '1');
+INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileId`) VALUES ('2600', '140', '1');
+
+UPDATE `services`.`transaction_type` SET `name` = 'ENTRY' WHERE (`id` = '1');
+UPDATE `services`.`transaction_type` SET `name` = 'EXIT' WHERE (`id` = '2');
+
+
+
+

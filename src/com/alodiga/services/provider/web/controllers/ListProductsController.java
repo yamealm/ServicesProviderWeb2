@@ -157,6 +157,7 @@ public class ListProductsController extends GenericAbstractListController<Produc
 						item.appendChild(new Listcell(String.valueOf(product.getUbicationFolder())));
 						item.appendChild(new Listcell(String.valueOf(product.getStockMin())));
 						item.appendChild(new Listcell(String.valueOf(product.getStockMax())));
+						item.appendChild(new Listcell(product.getCategory().getName()));
 						item.appendChild(permissionChangeStatus ? initEnabledButton(product.getEnabled(), item)	: new Listcell());
 						item.appendChild(permissionEdit ? new ListcellEditButton(adminPage, product, Permission.EDIT_PRODUCT): new Listcell());
 						item.setParent(lbxRecords);

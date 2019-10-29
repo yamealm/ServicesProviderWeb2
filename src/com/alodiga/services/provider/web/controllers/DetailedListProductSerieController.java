@@ -43,7 +43,7 @@ import com.alodiga.services.provider.web.utils.AccessControl;
 import com.alodiga.services.provider.web.utils.PDFUtil;
 import com.alodiga.services.provider.web.utils.Utils;
 
-public class ListProductSerieController extends GenericAbstractListController<ProductSerie> {
+public class DetailedListProductSerieController extends GenericAbstractListController<ProductSerie> {
 
     private static final long serialVersionUID = -9145887024839938515L;
     private Listbox lbxReport;
@@ -258,7 +258,10 @@ public class ListProductSerieController extends GenericAbstractListController<Pr
                     item.appendChild(new Listcell(productSerie.getProduct().getPartNumber()));
                     item.appendChild(new Listcell(productSerie.getProduct().getDescription()));
                     item.appendChild(new Listcell(productSerie.getProvider().getName()));
-                    item.appendChild(new Listcell(productSerie.getCategory().getName()));
+                    if (productSerie.getEndingTransactionId()==null)
+                    	item.appendChild(new Listcell(Labels.getLabel("sp.common.entry")));
+                    else
+                    	item.appendChild(new Listcell(Labels.getLabel("sp.common.exit")));
                     item.appendChild(new Listcell(productSerie.getCondition().getName()));
                     item.appendChild(new Listcell(productSerie.getSerie()));
                     item.appendChild(new Listcell(productSerie.getOrderWord()));

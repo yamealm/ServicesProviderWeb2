@@ -53,7 +53,7 @@
                                             </vlayout>
                                             <separator/>
                                             <!--Record Listbox-->
-                                            <listbox id="lbxRecords" fixedLayout="true" width="1395px" height="530px">
+                                            <listbox id="lbxRecords" fixedLayout="true" width="1395px" height="550px" mold="paging">
                                                 <listhead>
                                                     <listheader label="${c:l('sp.common.PartNumber')}" width="225px" sort="auto"/>
                                                     <listheader label="${c:l('sp.common.descripton')}" width="325px" sort="auto"/>

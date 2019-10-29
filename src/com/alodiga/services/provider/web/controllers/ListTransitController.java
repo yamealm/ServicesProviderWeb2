@@ -109,7 +109,7 @@ public class ListTransitController extends GenericAbstractListController<Product
             if (list != null && !list.isEmpty()) {
                 btnDownload.setVisible(true);
                 for (Product product : list) {
-                	if (product.getEnabled()) {
+                	if (product.getEnabled() && product.getCategory().getId().equals(Category.TRANSIT)) {
 	                	try {
 	                		int  currentQuantity = transactionEJB.loadQuantityByProductId(product.getId(),Category.TRANSIT);
 	                		stock = currentQuantity;

@@ -387,7 +387,7 @@ public class AdminEgressWaitController extends GenericAbstractAdminController {
             transaction.setCustomer(customer);
             transaction.setUser(user);
             transaction.setCreationDate(new Timestamp((new java.util.Date().getTime())));
-            TransactionType transactionType = transactionEJB.loadTransactionTypebyId(TransactionType.REMOVE);
+            TransactionType transactionType = transactionEJB.loadTransactionTypebyId(TransactionType.EXIT);
             transaction.setTransactionType(transactionType);
             transaction.setAmount(Float.valueOf(txtAmount.getText()));
             productParam.setAmount(Float.valueOf(txtAmount.getText()));

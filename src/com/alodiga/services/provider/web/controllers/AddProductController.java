@@ -24,6 +24,7 @@ import com.alodiga.services.provider.commons.exceptions.RegisterNotFoundExceptio
 import com.alodiga.services.provider.commons.genericEJB.EJBRequest;
 import com.alodiga.services.provider.commons.managers.PermissionManager;
 import com.alodiga.services.provider.commons.models.Audit;
+import com.alodiga.services.provider.commons.models.Category;
 import com.alodiga.services.provider.commons.models.Enterprise;
 import com.alodiga.services.provider.commons.models.Event;
 import com.alodiga.services.provider.commons.models.Permission;
@@ -64,11 +65,13 @@ public class AddProductController extends GenericAbstractAdminController {
     private User user;
     private AuditoryEJB auditoryEJB;
     private String ipAddress;
+    private Category category; 
 
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
         productParam = (Sessions.getCurrent().getAttribute("object") != null) ? (Product) Sessions.getCurrent().getAttribute("object") : null;
+        category = (Sessions.getCurrent().getAttribute("category") != null) ? (Category) Sessions.getCurrent().getAttribute("category") : null;
         user = AccessControl.loadCurrentUser();
         initialize();
     }
@@ -203,6 +206,7 @@ public class AddProductController extends GenericAbstractAdminController {
 				product.setStockMax(intStockMax.getValue());
 				Enterprise e = (Enterprise) cmbEnterprise.getSelectedItem().getValue();
 				product.setEnterprise(e);
+				product.setCategory(category);
 				request.setParam(product);
 				request.setAuditData(null);
 				product = productEJB.saveProduct(request);

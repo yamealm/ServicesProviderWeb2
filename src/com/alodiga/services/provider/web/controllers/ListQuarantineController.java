@@ -110,7 +110,7 @@ public class ListQuarantineController extends GenericAbstractListController<Prod
             if (list != null && !list.isEmpty()) {
                 btnDownload.setVisible(true);
                 for (Product product : list) {
-                	if (product.getEnabled()) {
+                	if (product.getEnabled() && product.getCategory().getId().equals(Category.QUARANTINE)) {
 	                	try {
 	                		int  currentQuantity = transactionEJB.loadQuantityByProductId(product.getId(), Category.QUARANTINE);
 	                		stock = currentQuantity;

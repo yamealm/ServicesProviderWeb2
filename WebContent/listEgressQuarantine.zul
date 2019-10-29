@@ -57,7 +57,7 @@
                                                     <listheader label="${c:l('sp.common.descripton')}" width="220px" sort="auto"/>
                                                      <listheader label="${c:l('sp.common.provider')}" width="130px" sort="auto"/>
                                                     <listheader label="${c:l('sp.common.serial')}" width="120px" sort="auto"/>
-                                                    <listheader label="${c:l('sp.common.stock')}" width="115px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.common.quantity')}" width="115px" sort="auto"/>
                                                     <listheader label="${c:l('sp.common.category')}" width="115px" sort="auto"/>
                                                      <listheader label="${c:l('sp.common.ubicationBox')}" width="140px" sort="auto"/>
                                                     <listheader label="${c:l('sp.common.date.expiration')}" width="140px" sort="auto"/>

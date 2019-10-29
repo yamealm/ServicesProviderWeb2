@@ -23,6 +23,7 @@ import com.alodiga.services.provider.commons.exceptions.EmptyListException;
 import com.alodiga.services.provider.commons.exceptions.GeneralException;
 import com.alodiga.services.provider.commons.exceptions.NullParameterException;
 import com.alodiga.services.provider.commons.managers.PermissionManager;
+import com.alodiga.services.provider.commons.models.Category;
 import com.alodiga.services.provider.commons.models.Enterprise;
 import com.alodiga.services.provider.commons.models.Permission;
 import com.alodiga.services.provider.commons.models.Product;
@@ -44,11 +45,13 @@ public class CatProductsController extends GenericAbstractListController<Product
     private List<Product> products = null;
     private User currentUser;
     private Profile currentProfile;
+    private Category category;
     private Window winProductsView;
 
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
+        category = (Sessions.getCurrent().getAttribute("category") != null) ? (Category) Sessions.getCurrent().getAttribute("category") : null;
         initialize();
     }
 
@@ -98,6 +101,7 @@ public class CatProductsController extends GenericAbstractListController<Product
     public void onClick$btnAdd() throws InterruptedException {
     	winProductsView.detach();
         Sessions.getCurrent().setAttribute("eventType", WebConstants.EVENT_ADD);
+        Sessions.getCurrent().setAttribute("category",category);
         Window window = (Window)Executions.createComponents("addProduct.zul", null, null);
         Sessions.getCurrent().setAttribute("page1","catProducts.zul");
         try {
@@ -117,7 +121,7 @@ public class CatProductsController extends GenericAbstractListController<Product
             Listitem item = null;
             if (list != null && !list.isEmpty()) {
                 for (Product product : list) {
-                	if (product.getEnabled()) {
+                	if (product.getEnabled() && product.getCategory().getId().equals(category.getId())) {
 	                    item = new Listitem();
 	                    item.setValue(product);
 	                    item.appendChild(new Listcell(product.getPartNumber()));

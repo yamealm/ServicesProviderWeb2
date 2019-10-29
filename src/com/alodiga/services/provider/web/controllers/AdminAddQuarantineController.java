@@ -417,7 +417,7 @@ public class AdminAddQuarantineController extends GenericAbstractAdminController
             transaction.setUser(user);
             transaction.setCreationDate(new Timestamp(dtxCreation.getValue().getTime()));
             transaction.setQuantity(intQuantity.getValue());
-            TransactionType transactionType = transactionEJB.loadTransactionTypebyId(TransactionType.ADD);
+            TransactionType transactionType = transactionEJB.loadTransactionTypebyId(TransactionType.ENTRY);
             transaction.setTransactionType(transactionType);
             transaction.setAmount(Float.valueOf(txtAmount.getText()));
             transaction.setInvoice(txtInvoice.getText());
@@ -593,8 +593,10 @@ public class AdminAddQuarantineController extends GenericAbstractAdminController
 	}
 	
 	 public void onClick$btnSearch() {
-    	 Window window = (Window)Executions.createComponents("catProducts.zul", null, null);
+    	 Category category =(Category) cmbCategory.getSelectedItem().getValue();
+    	 Sessions.getCurrent().setAttribute("category",category);
     	 Sessions.getCurrent().setAttribute("page","adminAddQuarantine.zul");
+    	 Window window = (Window)Executions.createComponents("catProducts.zul", null, null);
          try {
 			window.doModal();
 		} catch (SuspendNotAllowedException e) {

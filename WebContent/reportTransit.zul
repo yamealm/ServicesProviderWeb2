@@ -86,7 +86,7 @@
                                                    <!--Record Listbox-->
                                             <separator/>
                                             <div align="center">
-                                                <listbox id="lbxReport" width="1395px" height="560px" mold="paging">
+                                                 <listbox id="lbxReport" fixedLayout="true" width="1395px" height="550px" mold="paging">
                                                     <listhead>
                                                         <listheader label="${c:l('sp.common.PartNumber')}" width="100px"/>
                                                         <listheader label="${c:l('sp.common.name')}" width="200px"/>
