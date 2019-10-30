@@ -56,25 +56,9 @@
                                             <separator/>
                                             <!--Filters for Searching-->
                                             <vlayout>
-                                                <hlayout id="hParams" style="text-align:right">
-                                                    <label value="${c:l('sp.common.provider')}" sclass="lblbold"/>
-                                                    <combobox id="cmbProvider" width="160px" mold="rounded" readonly="true"/>
-                                                    <label value="${c:l('sp.common.product')}" sclass="lblbold"/>
-                                                    <combobox id="cmbProduct" width="160px" mold="rounded" readonly="true"/>
-                                                    <label value="${c:l('sp.common.beginningDate')}"  sclass="lblbold"/>
-                                                    <datebox id="dtbBeginningDate"  format="dd-MM-yyyy" tooltiptext="${c:l('sp.common.searching.filter')}"/>
-                                                    <label value="${c:l('sp.common.endingDate')}" sclass="lblbold"/>
-                                                    <datebox id="dtbEndingDate" format="dd-MM-yyyy" tooltiptext="${c:l('sp.common.searching.filter')}"/>
-                                                </hlayout>    
-                                                 <hlayout>                                  
-                                                    <label value="${c:l('sp.common.customer')}" sclass="lblbold"/>
-                                                    <combobox id="cmbCustomer" width="160px" mold="rounded" readonly="true"/>
-                                                    <label value="${c:l('sp.common.work.order')}" sclass="lblbold"/>
-                                                    <textbox id="txtWorkOrder"  maxlength="45" width="320px"/>
-                                                    <label value="${c:l('sp.common.condition')}" sclass="lblbold"/>
-                                                    <combobox id="cmbCondition" width="160px" mold="rounded" readonly="true"/>
-                                                    <label value="${c:l('sp.common.transaction.type')}" sclass="lblbold"/>
-                                                    <combobox id="cmbTransactionType" width="160px" mold="rounded" readonly="true"/>
+                                                <hlayout style="text-align:right">
+                                                    <label value="${c:l('sp.common.PartNumber')}" width="80px" sclass="lblbold"/>
+                                                    <textbox id="txtAlias" value="" width="150px" tooltiptext="${c:l('sp.common.searching.filter')}"/>
                                                 </hlayout>
                                                 <hlayout>
                                                     <button id="btnSearch" label="${c:l('sp.common.actions.search')}" width="80px" class="open orange" tooltiptext="${c:l('sp.common.actions.search.filter.tooltip')}"/>
@@ -86,22 +70,21 @@
                                                    <!--Record Listbox-->
                                             <separator/>
                                             <div align="center">
-                                             <listbox id="lbxReport" fixedLayout="true" width="1395px" height="550px" mold="paging">
-                                                    <listhead>
-                                                        <listheader label="${c:l('sp.common.PartNumber')}" width="110px"/>
-                                                        <listheader label="${c:l('sp.common.name')}" width="200px"/>
-                                                        <listheader label="${c:l('sp.common.provider')}" width="100px"/>
-                                                        <listheader label="${c:l('sp.common.category')}" width="105px"/>
-                                                        <listheader label="${c:l('sp.common.condition')}" width="90px"/>
-                                                         <listheader label="${c:l('sp.common.serial')}" width="125px"/>
-<!--                                                         <listheader label="${c:l('sp.common.customer')}" width="85px"/> -->
-                                                         <listheader label="${c:l('sp.common.work.order')}" width="125px"/>
-                                                        <listheader label="${c:l('sp.transaction.amount')}" width="90px"/>
-                                                        <listheader label="${c:l('sp.common.quantity')}" width="170px"/>
-                                                        <listheader label="${c:l('sp.common.creationDate')}" width="140px"/>
-                                                        <listheader label="${c:l('sp.common.date.expiration')}" width="140px"/>
-                                                    </listhead>
-                                                </listbox>
+                                             <listbox id="lbxRecords" fixedLayout="true" width="1395px" height="550px" mold="paging">
+                                                <listhead>
+                                                    <listheader label="${c:l('sp.common.PartNumber')}" width="155px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.common.descripton')}" width="275px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.common.actNpNsn')}" width="180px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.common.ubicationBox')}" width="145px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.common.ubicationFolder')}" width="145px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.common.batchNumber')}" width="180px" sort="auto"/>
+                                                    <listheader label="${c:l('sp.common.amount')}" width="90px" sort="auto"/>
+                                                    <listheader label="min" width="50px"/>
+                                                    <listheader label="max" width="50px"/>
+                                                    <listheader label="${c:l('sp.common.quantity')}" width="75px" sort="auto"/>
+                                                    <listheader label="-" width="50px"/>
+                                                </listhead>
+                                            </listbox>
                                             </div>
                                         </div>
                                         <!--Download button-->

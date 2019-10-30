@@ -8,28 +8,7 @@
         <style src="/css/general.css"/>
         <borderlayout width="100%" height="100%" class="content-transparent">
             <north border="none" size="52px" class="content-transparent">
-                <borderlayout height="80px" class="content-transparent">
-                    <north size="50px" border="0" class="content-transparent">
-                        <div align="center">
-                            <hlayout style="background:#232323; repeat center center; border:none;">
-                                <div ></div>
-                                <div width="1700px" height="18px" align="center">
-                                    <label value="${c:l('sp.common.page.title')}" style="color:#837E76; font-size:16px;"/>
-                                </div>
-                                <div></div>
-                            </hlayout>
-                            <hlayout class="yellow1">
-                                <div></div>
-                                <div align="center">
-                                    <include src="adminHeaderMenu.zul"/>
-                                </div>
-                                <div></div>
-                            </hlayout>
-                        </div>
-                    </north>
-                    <south height="0px" border="0" >
-                    </south>
-                </borderlayout>
+                <include src="adminHeader.zul"/>
             </north>
             <center border="none" flex="true" class="content-transparent" autoscroll="true">
                 <div align="center" >
@@ -88,18 +67,19 @@
                                             <div align="center">
                                              <listbox id="lbxReport" fixedLayout="true" width="1395px" height="550px" mold="paging">
                                                     <listhead>
-                                                        <listheader label="${c:l('sp.common.PartNumber')}" width="140px"/>
-                                                        <listheader label="${c:l('sp.common.name')}" width="200px"/>
+                                                        <listheader label="${c:l('sp.common.PartNumber')}" width="135px" />
+                                                        <listheader label="${c:l('sp.common.name')}" width="190px"/>
                                                         <listheader label="${c:l('sp.common.provider')}" width="100px"/>
-                                                        <listheader label="${c:l('sp.common.transaction.type')}" width="145px"/>
+                                                        <listheader label="${c:l('sp.common.userType')}" width="80px"/>
                                                         <listheader label="${c:l('sp.common.condition')}" width="90px"/>
-                                                         <listheader label="${c:l('sp.common.serial')}" width="125px"/>
-<!--                                                         <listheader label="${c:l('sp.common.customer')}" width="105px"/> -->
+                                                         <listheader label="${c:l('sp.common.serial')}" width="115px"/>
                                                          <listheader label="${c:l('sp.common.work.order')}" width="135px"/>
                                                         <listheader label="${c:l('sp.transaction.amount')}" width="90px"/>
                                                         <listheader label="${c:l('sp.common.quantity')}" width="80px"/>
-                                                        <listheader label="${c:l('sp.common.creationDate')}" width="135px"/>
-                                                        <listheader label="${c:l('sp.common.date.expiration')}" width="135px"/>
+                                                        <listheader label="${c:l('sp.common.entry')}" width="95px"/>
+                                                        <listheader label="${c:l('sp.common.label.expirationDate')}" width="95px"/>
+                                                        <listheader label="${c:l('sp.munitoring.expirate.curado')}" width="95px"/>
+                                                        <listheader label="${c:l('sp.common.exit')}" width="95px"/>
                                                     </listhead>
                                                 </listbox>
                                             </div>

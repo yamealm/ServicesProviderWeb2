@@ -95,45 +95,49 @@ public class ReportWaitController extends GenericAbstractListController<ProductS
     }
 
     public void onClick$btnSearch() {
-        try {
-            clearFields();
-            clearMessage();
-            EJBRequest _request = new EJBRequest();
-            Map<String, Object> params = new HashMap<String, Object>();
-            params.put(QueryConstants.PARAM_BEGINNING_DATE, dtbBeginningDate.getValue());
-            params.put(QueryConstants.PARAM_ENDING_DATE, dtbEndingDate.getValue());
-            params.put(QueryConstants.PARAM_CATEGORY_ID, Category.WAIT);
-            if (dtbEndingDate.getValue().getTime() >= dtbBeginningDate.getValue().getTime()) {
-              
-                if (cmbProvider.getSelectedItem() != null && cmbProvider.getSelectedIndex() != 0) {
-                    params.put(QueryConstants.PARAM_PROVIDER_ID, ((Provider) cmbProvider.getSelectedItem().getValue()).getId());
-                }
-                if (cmbProduct.getSelectedItem() != null && cmbProduct.getSelectedIndex() != 0) {
-                  params.put(QueryConstants.PARAM_PRODUCT_ID, ((Product) cmbProduct.getSelectedItem().getValue()).getId());
-                }
-                if (cmbCustomer.getSelectedItem() != null && cmbCustomer.getSelectedIndex() != 0) {
-                    params.put(QueryConstants.PARAM_CUSTOMER_ID, ((Customer) cmbCustomer.getSelectedItem().getValue()).getId());
-                }
-                if (cmbCustomer.getSelectedItem() != null && cmbCustomer.getSelectedIndex() != 0) {
-                    params.put(QueryConstants.PARAM_CUSTOMER_ID, ((Customer) cmbCustomer.getSelectedItem().getValue()).getId());
-                }
-                if (cmbCondition.getSelectedItem() != null && cmbCondition.getSelectedIndex() != 0) {
-                    params.put(QueryConstants.PARAM_CONDITION_ID, ((Condicion) cmbCondition.getSelectedItem().getValue()).getId());
-                }
-                if (cmbTransactionType.getSelectedItem() != null && cmbTransactionType.getSelectedIndex() != 0) {
-                    params.put(QueryConstants.PARAM_TRANSACTION_TYPE_ID, ((TransactionType) cmbTransactionType.getSelectedItem().getValue()).getId());
-                }
-                if (txtWorkOrder.getText() != null && txtWorkOrder.getText() !="") {
-                    params.put(QueryConstants.PARAM_WORK_ORDER, txtWorkOrder.getText());
-                }
-                _request.setParams(params);
-                _request.setParam(true);
-                productSeries = productEJB.searchProductSerie(_request);
-                loadList(productSeries);
-                AccessControl.saveAction(Permission.REPORT_WAIT, "Se busco reporte de productos en espera");
-            } else  {
-                this.showMessage("sp.error.date.invalid", true, null);
+		try {
+			clearFields();
+			clearMessage();
+			EJBRequest _request = new EJBRequest();
+			Map<String, Object> params = new HashMap<String, Object>();
+			if (dtbEndingDate.getValue() != null && dtbBeginningDate.getValue() != null) {
+				params.put(QueryConstants.PARAM_BEGINNING_DATE, dtbBeginningDate.getValue());
+				params.put(QueryConstants.PARAM_ENDING_DATE, dtbEndingDate.getValue());
+				if (dtbEndingDate.getValue().getTime() >= dtbBeginningDate.getValue().getTime()) {
+
+				} else {
+					this.showMessage("sp.error.date.invalid", true, null);
+				}
+			}
+			params.put(QueryConstants.PARAM_CATEGORY_ID, Category.WAIT);
+
+			if (cmbProvider.getSelectedItem() != null && cmbProvider.getSelectedIndex() != 0) {
+				params.put(QueryConstants.PARAM_PROVIDER_ID, ((Provider) cmbProvider.getSelectedItem().getValue()).getId());
+			}
+            if (cmbProduct.getSelectedItem() != null && cmbProduct.getSelectedIndex() != 0) {
+              params.put(QueryConstants.PARAM_PRODUCT_ID, ((Product) cmbProduct.getSelectedItem().getValue()).getId());
             }
+            if (cmbCustomer.getSelectedItem() != null && cmbCustomer.getSelectedIndex() != 0) {
+                params.put(QueryConstants.PARAM_CUSTOMER_ID, ((Customer) cmbCustomer.getSelectedItem().getValue()).getId());
+            }
+            if (cmbCustomer.getSelectedItem() != null && cmbCustomer.getSelectedIndex() != 0) {
+                params.put(QueryConstants.PARAM_CUSTOMER_ID, ((Customer) cmbCustomer.getSelectedItem().getValue()).getId());
+            }
+            if (cmbCondition.getSelectedItem() != null && cmbCondition.getSelectedIndex() != 0) {
+                params.put(QueryConstants.PARAM_CONDITION_ID, ((Condicion) cmbCondition.getSelectedItem().getValue()).getId());
+            }
+            if (cmbTransactionType.getSelectedItem() != null && cmbTransactionType.getSelectedIndex() != 0) {
+                params.put(QueryConstants.PARAM_TRANSACTION_TYPE_ID, ((TransactionType) cmbTransactionType.getSelectedItem().getValue()).getId());
+            }
+            if (txtWorkOrder.getText() != null && !txtWorkOrder.getText().equals("") && !txtWorkOrder.getText().isEmpty()) {
+                params.put(QueryConstants.PARAM_WORK_ORDER, txtWorkOrder.getText());
+            }
+            _request.setParams(params);
+            _request.setParam(true);
+            productSeries = productEJB.searchProductSerie(_request);
+            loadList(productSeries);
+            AccessControl.saveAction(Permission.REPORT_WAIT, "Se busco reporte de productos en espera");
+         
         } catch (GeneralException ex) {
             showError(ex);
         } catch (NullParameterException ex) {
@@ -257,7 +261,10 @@ public class ReportWaitController extends GenericAbstractListController<ProductS
                     item.appendChild(new Listcell(productSerie.getProduct().getPartNumber()));
                     item.appendChild(new Listcell(productSerie.getProduct().getDescription()));
                     item.appendChild(new Listcell(productSerie.getProvider().getName()));
-                    item.appendChild(new Listcell(productSerie.getCategory().getName()));
+                    if (productSerie.getEndingTransactionId()==null)
+                    	item.appendChild(new Listcell(Labels.getLabel("sp.common.entry")));
+                    else
+                    	item.appendChild(new Listcell(Labels.getLabel("sp.common.exit")));
                     item.appendChild(new Listcell(productSerie.getCondition().getName()));
                     item.appendChild(new Listcell(productSerie.getSerie()));
                     item.appendChild(new Listcell(productSerie.getCustomer()!=null?productSerie.getCustomer().getFirstName()+" " +
@@ -277,7 +284,18 @@ public class ReportWaitController extends GenericAbstractListController<ProductS
 						date = df.format(productSerie.getExpirationDate().getTime());
 					}
                     item.appendChild(new Listcell(date));
-                    //item.appendChild(new ListcellViewButton(adminPage, transaction, Permission.VIEW_TRANSACTION));
+                    date = null;
+                    if (productSerie.getCure() != null) {
+						SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+						date = df.format(productSerie.getCure().getTime());
+					}
+                    item.appendChild(new Listcell(date));
+                    date = null;
+                    if (productSerie.getEndingDate() != null) {
+						SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+						date = df.format(productSerie.getEndingDate().getTime());
+					}
+                    item.appendChild(new Listcell(date));
                     item.setParent(lbxReport);
                 }
                 btnDownload.setVisible(true);
