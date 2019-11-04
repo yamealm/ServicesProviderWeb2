@@ -2,7 +2,9 @@ package com.alodiga.services.provider.web.controllers;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
@@ -35,6 +37,7 @@ import com.alodiga.services.provider.commons.models.Permission;
 import com.alodiga.services.provider.commons.models.User;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
+import com.alodiga.services.provider.commons.utils.QueryConstants;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractAdminController;
 import com.alodiga.services.provider.web.utils.AccessControl;
 import com.alodiga.services.provider.web.utils.WebConstants;
@@ -337,37 +340,53 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
 
             if (_metrologicalControl != null) 
             	metrologicalControl.setId(_metrologicalControl.getId());
-            Braund braund = (Braund) cmbBraund.getSelectedItem().getValue();
-            metrologicalControl.setBraund(braund);
-            Model model = (Model) cmbModel.getSelectedItem().getValue();
-            metrologicalControl.setModel(model);
-            EnterCalibration enterCalibration = (EnterCalibration) cmbEnterCalibration.getSelectedItem().getValue();
-            Category category =(Category) cmbCategory.getSelectedItem().getValue();
-            metrologicalControl.setEnterCalibration(enterCalibration);
-            metrologicalControl.setDesignation(txtDesignation.getText());
-            metrologicalControl.setInstrument(txtInstrument.getText());
-            metrologicalControl.setControlType(txtType.getText());
-            metrologicalControl.setSerie(txtSerilNumber.getText());
-            metrologicalControl.setRango(txtRank.getText());
-            metrologicalControl.setCreationDate(new Timestamp((new java.util.Date().getTime())));
-            metrologicalControl.setScale(txtScale.getText());
-            metrologicalControl.setUbication(txtUbication.getText());
-            if(category.getId().equals(Category.METEOROLOGICAL_CONTROL))
-            	metrologicalControl.setEnabled(true);
-            else
-            	metrologicalControl.setEnabled(false);
-            MetrologicalControlHistory metrologicalControlHistory = new MetrologicalControlHistory();
-            metrologicalControlHistory.setCategory(category);
-            metrologicalControlHistory.setCreationDate(new Timestamp((new java.util.Date().getTime())));
-            metrologicalControlHistory.setCalibrationDate(new Timestamp(dtxCalibration.getValue().getTime()));
-            metrologicalControlHistory.setExpirationDate(new Timestamp(dtxExpiration.getValue().getTime()));
-            metrologicalControlHistory.setObservation(txtObservation.getText());
-            metrologicalControl = transactionEJB.saveMetrologicalControl(metrologicalControl,metrologicalControlHistory);
+            Map params = new HashMap<String, Object>();
+            params.put(QueryConstants.PARAM_INSTRUMENT, txtInstrument.getText());
+            request.setParams(params);
+			if (_metrologicalControl == null) {
+				try {
+					metrologicalControlParam = transactionEJB.loadControlByInstrument(request);
+					eventType = WebConstants.EVENT_EDIT;
+					loadData();
+				} catch (RegisterNotFoundException ex) {
+					metrologicalControlParam = null;
+				}
+			}
+			if (_metrologicalControl == null && metrologicalControlParam != null) {
+				this.showMessage("sp.error.instrument.exist", true, null);
 
-            this.showMessage("sp.common.save.success", false, null);
-//            saveAudit(_metrologicalControl, metrologicalControl);
-            AccessControl.saveAction(Permission.ADD_METEOROLOGICAL_CONTROL, "Ingreso producto a Control Metrologico= " + metrologicalControl.getDesignation());
-            btnSave.setVisible(false);
+			} else {
+	            Braund braund = (Braund) cmbBraund.getSelectedItem().getValue();
+	            metrologicalControl.setBraund(braund);
+	            Model model = (Model) cmbModel.getSelectedItem().getValue();
+	            metrologicalControl.setModel(model);
+	            EnterCalibration enterCalibration = (EnterCalibration) cmbEnterCalibration.getSelectedItem().getValue();
+	            Category category =(Category) cmbCategory.getSelectedItem().getValue();
+	            metrologicalControl.setEnterCalibration(enterCalibration);
+	            metrologicalControl.setDesignation(txtDesignation.getText());
+	            metrologicalControl.setInstrument(txtInstrument.getText());
+	            metrologicalControl.setControlType(txtType.getText());
+	            metrologicalControl.setSerie(txtSerilNumber.getText());
+	            metrologicalControl.setRango(txtRank.getText());
+	            metrologicalControl.setCreationDate(new Timestamp((new java.util.Date().getTime())));
+	            metrologicalControl.setScale(txtScale.getText());
+	            metrologicalControl.setUbication(txtUbication.getText());
+	            if(category.getId().equals(Category.METEOROLOGICAL_CONTROL))
+	            	metrologicalControl.setEnabled(true);
+	            else
+	            	metrologicalControl.setEnabled(false);
+	            MetrologicalControlHistory metrologicalControlHistory = new MetrologicalControlHistory();
+	            metrologicalControlHistory.setCategory(category);
+	            metrologicalControlHistory.setCreationDate(new Timestamp((new java.util.Date().getTime())));
+	            metrologicalControlHistory.setCalibrationDate(new Timestamp(dtxCalibration.getValue().getTime()));
+	            metrologicalControlHistory.setExpirationDate(new Timestamp(dtxExpiration.getValue().getTime()));
+	            metrologicalControlHistory.setObservation(txtObservation.getText());
+	            metrologicalControl = transactionEJB.saveMetrologicalControl(metrologicalControl,metrologicalControlHistory);
+	
+	            this.showMessage("sp.common.save.success", false, null);
+	            AccessControl.saveAction(Permission.ADD_METEOROLOGICAL_CONTROL, "Ingreso producto a Control Metrologico= " + metrologicalControl.getDesignation());
+	            btnSave.setVisible(false);
+			}
         } catch (NullParameterException ex) {
         	showMessage("sp.error.field.number", true, null);
         } catch (Exception ex) {

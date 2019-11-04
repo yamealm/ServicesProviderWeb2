@@ -270,7 +270,9 @@ public class AdminProductController extends GenericAbstractAdminController {
             if (_product != null) 
                 product.setId(_product.getId());
             Map params = new HashMap<String, Object>();
+            Category category = (Category) cmbCategory.getSelectedItem().getValue();
             params.put(QueryConstants.PARAM_PART_NUMBER, txtPartNumber.getText());
+            params.put(QueryConstants.PARAM_CATEGORY_ID, category.getId());
             request.setParams(params);
 			if (_product == null) {
 				try {
@@ -297,7 +299,6 @@ public class AdminProductController extends GenericAbstractAdminController {
 				product.setStockMax(intStockMax.getValue());
 				Enterprise e = (Enterprise) cmbEnterprise.getSelectedItem().getValue();
 				product.setEnterprise(e);
-				Category category = (Category) cmbCategory.getSelectedItem().getValue();
 				product.setCategory(category);
 				request.setParam(product);
 				request.setAuditData(null);

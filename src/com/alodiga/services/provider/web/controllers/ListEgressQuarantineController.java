@@ -105,7 +105,7 @@ public class ListEgressQuarantineController extends GenericAbstractListControlle
 		if (products != null) {
 			for (Iterator<Product> i = products.iterator(); i.hasNext();) {
 				Product tmp = i.next();
-				String field = tmp.getDescription().toLowerCase();
+				String field = tmp.getPartNumber().toLowerCase();
 				if (field.indexOf(filter.trim().toLowerCase()) >= 0) {
 					auxList.add(tmp);
 				}

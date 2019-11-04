@@ -175,10 +175,7 @@ public class ViewWaitController extends GenericAbstractAdminController {
         } else if (intQuantity.getText().isEmpty()) {
         	intQuantity.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
-        } else if (txtSerial.getText().isEmpty()) {
-        	txtSerial.setFocus(true);
-            this.showMessage("sp.error.field.cannotNull", true, null);
-        } else {
+        }  else {
             return true;
         }
         return false;

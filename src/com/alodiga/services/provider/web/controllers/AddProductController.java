@@ -180,6 +180,7 @@ public class AddProductController extends GenericAbstractAdminController {
 				product.setId(_product.getId());
 			 Map params = new HashMap<String, Object>();
              params.put(QueryConstants.PARAM_PART_NUMBER, txtPartNumber.getText());
+             params.put(QueryConstants.PARAM_CATEGORY_ID, category.getId());
              request.setParams(params);
 			if (_product == null) {
 				try {
