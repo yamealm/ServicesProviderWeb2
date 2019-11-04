@@ -298,7 +298,7 @@ public class ViewMetrologicalControlController extends GenericAbstractAdminContr
             metrologicalControl.setControlType(txtType.getText());
             metrologicalControl.setSerie(txtSerilNumber.getText());
             metrologicalControl.setRango(txtRank.getText());
-            metrologicalControl.setCreationDate(new Timestamp((new java.util.Date().getTime())));
+            metrologicalControl.setCreationDate(new Timestamp(dtxCreation.getValue().getTime()));
             metrologicalControl.setScale(txtScale.getText());
             metrologicalControl.setUbication(txtUbication.getText());
             if(category.getId().equals(Category.METEOROLOGICAL_CONTROL))
@@ -308,7 +308,7 @@ public class ViewMetrologicalControlController extends GenericAbstractAdminContr
 
             MetrologicalControlHistory metrologicalControlHistory = new MetrologicalControlHistory();
             metrologicalControlHistory.setCategory(category);
-            metrologicalControlHistory.setCreationDate(new Timestamp((new java.util.Date().getTime())));
+            metrologicalControlHistory.setCreationDate(new Timestamp(dtxCreation.getValue().getTime()));
             metrologicalControlHistory.setCalibrationDate(new Timestamp(dtxCalibration.getValue().getTime()));
             metrologicalControlHistory.setExpirationDate(new Timestamp(dtxExpiration.getValue().getTime()));
             metrologicalControl = transactionEJB.saveMetrologicalControl(metrologicalControl,metrologicalControlHistory);

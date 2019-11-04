@@ -51,6 +51,8 @@ public class ReportMetrologicalControlController extends GenericAbstractListCont
     private Button btnExportPdf;
     private Datebox dtbBeginningDate;
     private Datebox dtbEndingDate;
+    private Datebox dtbBeginningDateExit;
+    private Datebox dtbEndingDateExit;
     private Textbox txtSerial;
     private Textbox txtDesignation;
     private Textbox txtInstrument;
@@ -103,6 +105,15 @@ public class ReportMetrologicalControlController extends GenericAbstractListCont
 				params.put(QueryConstants.PARAM_BEGINNING_DATE, dtbBeginningDate.getValue());
 				params.put(QueryConstants.PARAM_ENDING_DATE, dtbEndingDate.getValue());
 				if (dtbEndingDate.getValue().getTime() >= dtbBeginningDate.getValue().getTime()) {
+
+				} else {
+					this.showMessage("sp.error.date.invalid", true, null);
+				}
+			}
+			if (dtbEndingDateExit.getValue() != null && dtbBeginningDateExit.getValue() != null) {
+				params.put(QueryConstants.PARAM_BEGINNING_DATE_EXIT, dtbBeginningDateExit.getValue());
+				params.put(QueryConstants.PARAM_ENDING_DATE_EXIT, dtbEndingDateExit.getValue());
+				if (dtbEndingDateExit.getValue().getTime() >= dtbBeginningDateExit.getValue().getTime()) {
 
 				} else {
 					this.showMessage("sp.error.date.invalid", true, null);
@@ -251,6 +262,7 @@ public class ReportMetrologicalControlController extends GenericAbstractListCont
             Listitem item = null;
             if (list != null && !list.isEmpty()) {
                 for (MetrologicalControlHistory control : list) {
+              
                     item = new Listitem();
                     item.setValue(control);
                     item.appendChild(new Listcell(control.getMetrologicalControl().getDesignation()));
@@ -333,6 +345,10 @@ public class ReportMetrologicalControlController extends GenericAbstractListCont
         dtbBeginningDate.setValue(new Timestamp(new java.util.Date().getTime()));
         dtbEndingDate.setFormat("yyyy/MM/dd");
         dtbEndingDate.setValue(new Timestamp(new java.util.Date().getTime()));
+        dtbBeginningDateExit.setFormat("yyyy/MM/dd");
+        dtbBeginningDateExit.setValue(new Timestamp(new java.util.Date().getTime()));
+        dtbEndingDateExit.setFormat("yyyy/MM/dd");
+        dtbEndingDateExit.setValue(new Timestamp(new java.util.Date().getTime()));
         loadBraunds(null);
         loadEnterCalibration(null);
         loadCategory();

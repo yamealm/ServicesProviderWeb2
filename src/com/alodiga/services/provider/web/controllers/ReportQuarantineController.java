@@ -55,6 +55,8 @@ public class ReportQuarantineController extends GenericAbstractListController<Pr
     private Combobox cmbProduct;
     private Datebox dtbBeginningDate;
     private Datebox dtbEndingDate;
+    private Datebox dtbBeginningDateExit;
+    private Datebox dtbEndingDateExit;
     private Textbox txtWorkOrder;
     private UtilsEJB utilsEJB = null;
     private CustomerEJB customerEJB = null;
@@ -104,6 +106,15 @@ public class ReportQuarantineController extends GenericAbstractListController<Pr
 				params.put(QueryConstants.PARAM_BEGINNING_DATE, dtbBeginningDate.getValue());
 				params.put(QueryConstants.PARAM_ENDING_DATE, dtbEndingDate.getValue());
 				if (dtbEndingDate.getValue().getTime() >= dtbBeginningDate.getValue().getTime()) {
+
+				} else {
+					this.showMessage("sp.error.date.invalid", true, null);
+				}
+			}
+            if (dtbEndingDateExit.getValue() != null && dtbBeginningDateExit.getValue() != null) {
+				params.put(QueryConstants.PARAM_BEGINNING_DATE_EXIT, dtbBeginningDateExit.getValue());
+				params.put(QueryConstants.PARAM_ENDING_DATE_EXIT, dtbEndingDateExit.getValue());
+				if (dtbEndingDateExit.getValue().getTime() >= dtbBeginningDateExit.getValue().getTime()) {
 
 				} else {
 					this.showMessage("sp.error.date.invalid", true, null);
@@ -268,7 +279,7 @@ public class ReportQuarantineController extends GenericAbstractListController<Pr
                     item.appendChild(new Listcell(productSerie.getCustomer()!=null?productSerie.getCustomer().getFirstName()+" " +
                     		productSerie.getCustomer().getLastName():null));
                     item.appendChild(new Listcell(productSerie.getOrderWord()));
-                    item.appendChild(new Listcell(productSerie.getAmount().toString()));
+//                    item.appendChild(new Listcell(productSerie.getAmount().toString()));
                     item.appendChild(new Listcell(String.valueOf(productSerie.getQuantityInto())));
                     String date = null;
 					if (productSerie.getCreationDate() != null) {
@@ -282,18 +293,19 @@ public class ReportQuarantineController extends GenericAbstractListController<Pr
 						date = df.format(productSerie.getExpirationDate().getTime());
 					}
                     item.appendChild(new Listcell(date));
-                    date = null;
-                    if (productSerie.getCure() != null) {
-						SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-						date = df.format(productSerie.getCure().getTime());
-					}
-                    item.appendChild(new Listcell(date));
+//                    date = null;
+//                    if (productSerie.getCure() != null) {
+//						SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+//						date = df.format(productSerie.getCure().getTime());
+//					}
+//                    item.appendChild(new Listcell(date));
                     date = null;
                     if (productSerie.getEndingDate() != null) {
 						SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 						date = df.format(productSerie.getEndingDate().getTime());
 					}
                     item.appendChild(new Listcell(date));
+                    item.appendChild(new Listcell(productSerie.getQuarantineStatus()!=null ?productSerie.getQuarantineStatus().getName():null));
                     item.setParent(lbxReport);
                 }
                 btnDownload.setVisible(true);
@@ -343,7 +355,7 @@ public class ReportQuarantineController extends GenericAbstractListController<Pr
     
     public void onClick$btnExportPdf() throws InterruptedException {
         try {
-        	PDFUtil.exportPdf((Labels.getLabel("sp.common.stock"))+".pdf", Labels.getLabel("sp.crud.product.list.reporte"), lbxReport,0);
+        	PDFUtil.exportPdf((Labels.getLabel("sp.common.quarantine"))+".pdf", Labels.getLabel("sp.crud.product.list.reporte"), lbxReport,0);
         	 AccessControl.saveAction(Permission.QUARANTINE, "Se descargo reporte de productos en quarentena formato pdf");
         } catch (Exception ex) {
             showError(ex);
@@ -355,6 +367,10 @@ public class ReportQuarantineController extends GenericAbstractListController<Pr
         dtbBeginningDate.setValue(new Timestamp(new java.util.Date().getTime()));
         dtbEndingDate.setFormat("yyyy/MM/dd");
         dtbEndingDate.setValue(new Timestamp(new java.util.Date().getTime()));
+        dtbBeginningDateExit.setFormat("yyyy/MM/dd");
+        dtbBeginningDateExit.setValue(new Timestamp(new java.util.Date().getTime()));
+        dtbEndingDateExit.setFormat("yyyy/MM/dd");
+        dtbEndingDateExit.setValue(new Timestamp(new java.util.Date().getTime()));
         //loadAccount();
         loadProvider();
         loadProduct();

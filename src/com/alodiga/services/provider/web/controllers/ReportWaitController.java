@@ -55,6 +55,8 @@ public class ReportWaitController extends GenericAbstractListController<ProductS
     private Combobox cmbProduct;
     private Datebox dtbBeginningDate;
     private Datebox dtbEndingDate;
+    private Datebox dtbBeginningDateExit;
+    private Datebox dtbEndingDateExit;
     private Textbox txtWorkOrder;
     private UtilsEJB utilsEJB = null;
     private CustomerEJB customerEJB = null;
@@ -109,6 +111,15 @@ public class ReportWaitController extends GenericAbstractListController<ProductS
 					this.showMessage("sp.error.date.invalid", true, null);
 				}
 			}
+			if (dtbEndingDateExit.getValue() != null && dtbBeginningDateExit.getValue() != null) {
+					params.put(QueryConstants.PARAM_BEGINNING_DATE_EXIT, dtbBeginningDateExit.getValue());
+					params.put(QueryConstants.PARAM_ENDING_DATE_EXIT, dtbEndingDateExit.getValue());
+					if (dtbEndingDateExit.getValue().getTime() >= dtbBeginningDateExit.getValue().getTime()) {
+
+					} else {
+						this.showMessage("sp.error.date.invalid", true, null);
+					}
+				}
 			params.put(QueryConstants.PARAM_CATEGORY_ID, Category.WAIT);
 
 			if (cmbProvider.getSelectedItem() != null && cmbProvider.getSelectedIndex() != 0) {
@@ -345,7 +356,7 @@ public class ReportWaitController extends GenericAbstractListController<ProductS
     
     public void onClick$btnExportPdf() throws InterruptedException {
         try {
-        	PDFUtil.exportPdf((Labels.getLabel("sp.common.stock"))+".pdf", Labels.getLabel("sp.crud.product.list.reporte"), lbxReport,0);
+        	PDFUtil.exportPdf((Labels.getLabel("sp.common.wait"))+".pdf", Labels.getLabel("sp.crud.product.list.reporte"), lbxReport,0);
         	AccessControl.saveAction(Permission.REPORT_WAIT, "Se descargo reporte de productos en espera formato pdf");
         } catch (Exception ex) {
             showError(ex);
@@ -357,6 +368,10 @@ public class ReportWaitController extends GenericAbstractListController<ProductS
         dtbBeginningDate.setValue(new Timestamp(new java.util.Date().getTime()));
         dtbEndingDate.setFormat("yyyy/MM/dd");
         dtbEndingDate.setValue(new Timestamp(new java.util.Date().getTime()));
+        dtbBeginningDateExit.setFormat("yyyy/MM/dd");
+        dtbBeginningDateExit.setValue(new Timestamp(new java.util.Date().getTime()));
+        dtbEndingDateExit.setFormat("yyyy/MM/dd");
+        dtbEndingDateExit.setValue(new Timestamp(new java.util.Date().getTime()));
         //loadAccount();
         loadProvider();
         loadProduct();
