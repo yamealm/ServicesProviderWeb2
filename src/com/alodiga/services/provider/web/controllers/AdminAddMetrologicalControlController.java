@@ -329,6 +329,7 @@ public class AdminAddMetrologicalControlController extends GenericAbstractAdminC
 					}
 				}
 			}
+        } catch (EmptyListException ex) {
         } catch (Exception ex) {
             showError(ex);
         }

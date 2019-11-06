@@ -21,6 +21,7 @@ import com.alodiga.services.provider.commons.ejbs.CustomerEJB;
 import com.alodiga.services.provider.commons.ejbs.ProductEJB;
 import com.alodiga.services.provider.commons.ejbs.TransactionEJB;
 import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
+import com.alodiga.services.provider.commons.exceptions.EmptyListException;
 import com.alodiga.services.provider.commons.genericEJB.EJBRequest;
 import com.alodiga.services.provider.commons.models.Category;
 import com.alodiga.services.provider.commons.models.Condicion;
@@ -313,6 +314,7 @@ public class AdminEgressUnitMetrologicalControlController extends GenericAbstrac
                 	cmbCustomer.setSelectedItem(cmbItem);
                 }  
             }
+        } catch (EmptyListException ex) {
         } catch (Exception ex) {
             showError(ex);
         }
@@ -354,6 +356,7 @@ public class AdminEgressUnitMetrologicalControlController extends GenericAbstrac
                 	cmbProvider.setSelectedIndex(0);
                 }
             }
+        } catch (EmptyListException ex) {
         } catch (Exception ex) {
             showError(ex);
         }

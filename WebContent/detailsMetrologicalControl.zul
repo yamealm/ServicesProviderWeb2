@@ -4,7 +4,7 @@
 <?link rel="icon" tye="image/x-icon" href="/images/favicon.ico"?>
 <?init class="com.alodiga.services.provider.web.security.InitiatorLoggedUser" ?>
 <zk xmlns:n="native">
-    <window width="100%" height="100%" apply="com.alodiga.services.provider.web.controllers.ListProductSerieController" class="general-window">
+    <window width="100%" height="100%" apply="com.alodiga.services.provider.web.controllers.DetailsMetrologicalControlController" class="general-window">
         <style src="/css/general.css"/>
         <borderlayout width="100%" height="100%" class="content-transparent">
             <north border="none" size="52px" class="content-transparent">
@@ -47,44 +47,34 @@
                                             <hlayout>
                                                 <toolbarbutton label="${c:l('sp.bread.crumb.home')}" onClick='Executions.sendRedirect(&quot;home-admin.zul&quot;)'/>
                                                  |
-                                                <toolbarbutton label="${c:l('sp.crud.product.list.reporte.stock')}"/>
+                                                <toolbarbutton label="${c:l('sp.crud.metrological.control.list.reporte')}" onClick='Executions.sendRedirect(&quot;reportMetrologicalControl.zul&quot;)'/>
+                                                 |
+                                                <toolbarbutton label="${c:l('sp.crud.metrological.control.list.details')}" />
                                             </hlayout>
                                         </div>
                                         <div height="5px" width="100%" style="background:#333;" align="left"></div>
                                         <div align="right">
                                             <separator/>
                                             <separator/>
-                                            <!--Filters for Searching-->
-                                            <vlayout>
-                                                <hlayout style="text-align:right">
-                                                    <label value="${c:l('sp.common.PartNumber')}" width="80px" sclass="lblbold"/>
-                                                    <textbox id="txtAlias" value="" width="150px" tooltiptext="${c:l('sp.common.searching.filter')}"/>
-                                                </hlayout>
-                                                <hlayout>
-                                                    <button id="btnSearch" label="${c:l('sp.common.actions.search')}" width="80px" class="open orange" tooltiptext="${c:l('sp.common.actions.search.filter.tooltip')}"/>
-                                                    <button id="btnClear" label="${c:l('sp.common.actions.cancel')}"  width="80px" class="open gray" tooltiptext="${c:l('sp.common.actions.cancel.filter.tooltip')}"/>
-                                                </hlayout>
-                                            </vlayout>
-                                            <separator/>
-                                            <div id="divInfo" height="20px" width="100%" style="background:#B6E59E;" align="left" visible="false"/>
+                                                          <div id="divInfo" height="20px" width="100%" style="background:#B6E59E;" align="left" visible="false"/>
                                                    <!--Record Listbox-->
                                             <separator/>
                                             <div align="center">
-                                             <listbox id="lbxRecords" fixedLayout="true" width="1395px" height="550px" mold="paging">
-                                                <listhead>
-                                                    <listheader label="${c:l('sp.common.PartNumber')}" width="155px" sort="auto"/>
-                                                    <listheader label="${c:l('sp.common.descripton')}" width="275px" sort="auto"/>
-                                                    <listheader label="${c:l('sp.common.actNpNsn')}" width="180px" sort="auto"/>
-                                                    <listheader label="${c:l('sp.common.ubicationBox')}" width="145px" sort="auto"/>
-                                                    <listheader label="${c:l('sp.common.ubicationFolder')}" width="145px" sort="auto"/>
-                                                    <listheader label="${c:l('sp.common.batchNumber')}" width="180px" sort="auto"/>
-                                                    <listheader label="${c:l('sp.common.amount')}" width="90px" sort="auto"/>
-                                                    <listheader label="min" width="50px"/>
-                                                    <listheader label="max" width="50px"/>
-                                                    <listheader label="${c:l('sp.common.quantity')}" width="75px" sort="auto"/>
-                                                    <listheader label="-" width="50px"/>
-                                                </listhead>
-                                            </listbox>
+                                                 <listbox id="lbxReport" fixedLayout="true" width="1395px" height="550px" mold="paging">
+                                                    <listhead>
+                                                       <listheader label="${c:l('sp.common.control.designation')}" width="130px" sort="auto"/>
+                                                       <listheader label="${c:l('sp.common.control.id.instrument')}" width="130px" sort="auto"/>
+                                                       <listheader label="${c:l('sp.common.control.braund')}" width="130px"/>
+                                                        <listheader label="${c:l('sp.common.control.model')}" width="140px"/>
+                                                        <listheader label="${c:l('sp.common.serial')}" width="100px"/>
+                                                        <listheader label="${c:l('sp.common.control.rank')}" width="120px"/>
+                                                        <listheader label="${c:l('sp.common.control.date.calibration')}" width="140px"/>
+                                                        <listheader label="${c:l('sp.common.control.due.date')}" width="140px"/>
+                                                        <listheader label="${c:l('sp.common.control.ubication')}" width="200px"/>
+                                                        <listheader label="${c:l('sp.common.control.minimun.scale')}" width="100px"/>
+                                                        <listheader label="${c:l('sp.common.control.type')}" width="65px"/>
+                                                    </listhead>
+                                                </listbox>
                                             </div>
                                         </div>
                                         <!--Download button-->

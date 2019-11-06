@@ -24,6 +24,7 @@ import com.alodiga.services.provider.commons.exceptions.GeneralException;
 import com.alodiga.services.provider.commons.exceptions.NullParameterException;
 import com.alodiga.services.provider.commons.genericEJB.EJBRequest;
 import com.alodiga.services.provider.commons.managers.PermissionManager;
+import com.alodiga.services.provider.commons.models.Category;
 import com.alodiga.services.provider.commons.models.Enterprise;
 import com.alodiga.services.provider.commons.models.MetrologicalControl;
 import com.alodiga.services.provider.commons.models.MetrologicalControlHistory;
@@ -137,6 +138,13 @@ public class ListMetrologicalControlController extends GenericAbstractListContro
                     item.appendChild(new Listcell(date));
                     item.appendChild(new Listcell(metrologicalControl.getUbication()));
                     item.appendChild(new Listcell(metrologicalControl.getScale()));
+                    if (history != null) {
+                    	if(history.getCategory().getId().equals(Category.METEOROLOGICAL_CONTROL))
+                    		item.appendChild(new Listcell(Labels.getLabel("sp.common.enabled")));
+                    	else
+                    		item.appendChild(new Listcell(Labels.getLabel("sp.common.quarantine")));
+                    }else
+                    	item.appendChild(new Listcell());
                     item.appendChild(new Listcell(metrologicalControl.getControlType()));
                     item.appendChild(permissionDelete ? initEnabledButton(metrologicalControl.isEnabled(), item) : new Listcell());
                     item.appendChild(permissionEdit ? new ListcellEditButton(adminPage, metrologicalControl,Permission.EDIT_METEOROLOGICAL_CONTROL) : new Listcell());

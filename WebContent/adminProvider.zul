@@ -14,7 +14,7 @@
                 <div align="center" >
                     <hlayout >
                         <div></div>
-                        <div width="1710px" align="left" height="600px">
+                        <div width="1800px" align="left" height="600px">
                             <hlayout>
                                 <div>
                                     <include src="adminMainMenu.zul"/>

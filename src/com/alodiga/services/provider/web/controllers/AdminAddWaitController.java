@@ -28,6 +28,7 @@ import com.alodiga.services.provider.commons.ejbs.CustomerEJB;
 import com.alodiga.services.provider.commons.ejbs.ProductEJB;
 import com.alodiga.services.provider.commons.ejbs.TransactionEJB;
 import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
+import com.alodiga.services.provider.commons.exceptions.EmptyListException;
 import com.alodiga.services.provider.commons.exceptions.NullParameterException;
 import com.alodiga.services.provider.commons.genericEJB.EJBRequest;
 import com.alodiga.services.provider.commons.models.Category;
@@ -373,6 +374,7 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
                 	cmbProvider.setSelectedIndex(0);
                 }
             }
+        } catch (EmptyListException ex) {
         } catch (Exception ex) {
             showError(ex);
         }
@@ -392,6 +394,7 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
                 	cmbCustomer.setSelectedItem(cmbItem);
                 } 
             }
+        } catch (EmptyListException ex) {
         } catch (Exception ex) {
             showError(ex);
         }
@@ -407,8 +410,9 @@ public class AdminAddWaitController extends GenericAbstractAdminController {
             transaction.setCategory(category);
             Condicion condition = (Condicion) cmbCondition.getSelectedItem().getValue();
 			transaction.setCondition(condition);
+			Customer customer = null;
 			if (cmbCustomer.getSelectedItem() != null) {
-				Customer customer = (Customer) cmbCustomer.getSelectedItem().getValue();
+				customer = (Customer) cmbCustomer.getSelectedItem().getValue();
 				transaction.setCustomer(customer);
 			}
             Provider provider = (Provider) cmbProvider.getSelectedItem().getValue();

@@ -14,7 +14,7 @@
                 <div align="center" >
                     <hlayout>
                         <div></div>
-                        <div width="1710px" align="left" height="670px">
+                        <div width="1800px" align="left" height="670px">
                             <hlayout>
                                 <div>
                                     <include src="adminMainMenu.zul"/>
@@ -65,6 +65,7 @@
                                                      <listheader label="${c:l('sp.common.control.due.date')}" width="145px"/>
                                                     <listheader label="${c:l('sp.common.control.ubication')}" width="195px" sort="auto"/>
                                                     <listheader label="${c:l('sp.common.control.minimun.scale')}" width="115px" sort="auto"/>
+                                                     <listheader label="${c:l('sp.common.category')}" width="85px" sort="auto"/>
                                                      <listheader label="${c:l('sp.common.control.type')}" width="55px" sort="auto"/>
                                                     <listheader label="-" width="45px"/>
                                                     <listheader label="-" width="45px"/>

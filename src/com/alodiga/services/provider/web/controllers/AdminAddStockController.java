@@ -28,6 +28,7 @@ import com.alodiga.services.provider.commons.ejbs.CustomerEJB;
 import com.alodiga.services.provider.commons.ejbs.ProductEJB;
 import com.alodiga.services.provider.commons.ejbs.TransactionEJB;
 import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
+import com.alodiga.services.provider.commons.exceptions.EmptyListException;
 import com.alodiga.services.provider.commons.exceptions.NullParameterException;
 import com.alodiga.services.provider.commons.genericEJB.EJBRequest;
 import com.alodiga.services.provider.commons.models.Category;
@@ -327,7 +328,8 @@ public class AdminAddStockController extends GenericAbstractAdminController {
             }
             cmbCategory.setReadonly(true);
             cmbCategory.setDisabled(true);
-        } catch (Exception ex) {
+        }catch (EmptyListException ex) {
+        }  catch (Exception ex) {
             showError(ex);
         }
     }
@@ -347,7 +349,8 @@ public class AdminAddStockController extends GenericAbstractAdminController {
                 	cmbCondition.setSelectedIndex(0);
                 }
             }
-        } catch (Exception ex) {
+        }catch (EmptyListException ex) {
+        }  catch (Exception ex) {
             showError(ex);
         }
     }
@@ -366,6 +369,7 @@ public class AdminAddStockController extends GenericAbstractAdminController {
                 	cmbProvider.setSelectedItem(cmbItem);
                 }
             }
+        } catch (EmptyListException ex) {
         } catch (Exception ex) {
             showError(ex);
         }

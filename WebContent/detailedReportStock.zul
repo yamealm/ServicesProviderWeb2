@@ -40,10 +40,8 @@
                                                     <combobox id="cmbProvider" width="160px" mold="rounded" readonly="true"/>
                                                     <label value="${c:l('sp.common.product')}" sclass="lblbold"/>
                                                     <combobox id="cmbProduct" width="160px" mold="rounded" readonly="true"/>
-                                                    <label value="${c:l('sp.common.beginningDate')}"  sclass="lblbold"/>
-                                                    <datebox id="dtbBeginningDate"  format="dd-MM-yyyy" tooltiptext="${c:l('sp.common.searching.filter')}"/>
-                                                    <label value="${c:l('sp.common.endingDate')}" sclass="lblbold"/>
-                                                    <datebox id="dtbEndingDate" format="dd-MM-yyyy" tooltiptext="${c:l('sp.common.searching.filter')}"/>
+                                                    <label value="${c:l('sp.common.PartNumber')}" sclass="lblbold"/>
+                                                    <textbox id="txtPartNumber"  maxlength="45" width="200px"/>
                                                 </hlayout>    
                                                  <hlayout>                                  
                                                     <label value="${c:l('sp.common.customer')}" sclass="lblbold"/>
@@ -56,6 +54,10 @@
                                                     <combobox id="cmbTransactionType" width="160px" mold="rounded" readonly="true"/>
                                                 </hlayout>
                                                 <hlayout>
+                                                 <label value="${c:l('sp.common.beginningDate')}"  sclass="lblbold"/>
+                                                    <datebox id="dtbBeginningDate"  format="dd-MM-yyyy" tooltiptext="${c:l('sp.common.searching.filter')}"/>
+                                                    <label value="${c:l('sp.common.endingDate')}" sclass="lblbold"/>
+                                                    <datebox id="dtbEndingDate" format="dd-MM-yyyy" tooltiptext="${c:l('sp.common.searching.filter')}"/>
                                                     <label value="${c:l('sp.common.beginningDate.Exit')}"  sclass="lblbold"/>
                                                     <datebox id="dtbBeginningDateExit"  format="dd-MM-yyyy" tooltiptext="${c:l('sp.common.searching.filter')}"/>
                                                     <label value="${c:l('sp.common.endingDate.Exit')}" sclass="lblbold"/>

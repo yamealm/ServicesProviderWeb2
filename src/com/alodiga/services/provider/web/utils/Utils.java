@@ -25,7 +25,6 @@ import org.zkoss.zul.Listhead;
 import org.zkoss.zul.Listheader;
 import org.zkoss.zul.Listitem;
 
-import com.alodiga.services.provider.commons.models.BannerType;
 import com.alodiga.services.provider.commons.models.Language;
 import com.alodiga.services.provider.commons.utils.Constants;
 import com.alodiga.services.provider.commons.utils.GeneralUtils;
@@ -237,34 +236,9 @@ public class Utils {
 
     public static String getTransactionTypeName(Long transactionTypeId) {
         String value = "";
-//        if (transactionTypeId.equals(TransactionType.PIN_PURCHASE)) {
-//            value = Labels.getLabel("sp.transactionType.purchaseProduct");
-//        } else if (transactionTypeId.equals(TransactionType.PIN_RECHARGE)) {
-//            value = Labels.getLabel("sp.transactionType.rechargeProduct");
-//        } else if (transactionTypeId.equals(TransactionType.TOP_UP_PURCHASE)) {
-//            value = Labels.getLabel("sp.transactionType.purchaseTopUp");
-//        } else if (transactionTypeId.equals(TransactionType.BILL_PAYMENT_PURCHASE)) {
-//            value = Labels.getLabel("sp.transactionType.billpaymentrecharge");
-//        } else if (transactionTypeId.equals(TransactionType.PURCHASE_BALANCE)) {
-//            value = Labels.getLabel("sp.transactionType.purchaseBalance");
-//        }
         return value;
     }
 
-        public static String getBannerTypeName(Long typeId) {
-        String value = "";
-
-        if (typeId.equals(BannerType.HOME_CENTRAL_BANNER_USA_ENGLISH)) {
-            value = Labels.getLabel("mlc.bannerhome.central.english");
-        } else if (typeId.equals(BannerType.HOME_CENTRAL_BANNER_USA_SPANISH)) {
-            value = Labels.getLabel("mlc.banner.home.central.spanish");
-        } else if (typeId.equals(BannerType.FOOTER_BANNER_USA_ENGLISH)) {
-            value = Labels.getLabel("mlc.banner.footer.english");
-        } else if (typeId.equals(BannerType.FOOTER_BANNER_USA_SPANISH)) {
-            value = Labels.getLabel("mlc.banner.footer.spanish");
-        }
-        return value;
-    }
         
       
 }

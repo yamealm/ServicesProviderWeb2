@@ -13,7 +13,7 @@
                         <div align="center">
                             <hlayout style="background:#232323; repeat center center; border:none;">
                                 <div ></div>
-                                <div width="1710px" height="18px" align="center">
+                                <div width="1800px" height="18px" align="center">
                                     <label value="${c:l('sp.common.page.title')}" style="color:#837E76; font-size:16px;"/>
                                 </div>
                                 <div></div>
@@ -35,7 +35,7 @@
                 <div align="center" >
                     <hlayout>
                         <div></div>
-                        <div width="1710px" align="left" height="700px">
+                        <div width="1800px" align="left" height="700px">
                             <hlayout>
                                 <div>
                                     <include src="adminMainMenu.zul"/>

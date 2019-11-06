@@ -13,7 +13,7 @@
                         <div align="center">
                             <hlayout style="background:#232323; repeat center center; border:none;">
                                 <div ></div>
-                                <div width="1710px" height="18px" align="center">
+                                <div width="1800px" height="18px" align="center">
                                     <label value="${c:l('sp.common.page.title')}" style="color:#837E76; font-size:16px;"/>
                                 </div>
                                 <div></div>
@@ -35,7 +35,7 @@
                 <div align="center" >
                     <hlayout>
                         <div></div>
-                        <div width="1710px" align="left" height="800px">
+                        <div width="1800px" align="left" height="800px">
                             <hlayout>
                                 <div>
                                     <include src="adminMainMenu.zul"/>
@@ -227,10 +227,11 @@
                                             <div align="left">
                                                 <listbox id="lbxReport5" width="1390px" height="460px" mold="paging">
                                                     <listhead>
-                                                        <listheader label="${c:l('sp.common.control.designation')}" width="240px" sort="auto"/>
-                                                        <listheader label="${c:l('sp.common.control.id.instrument')}" width="240px" sort="auto"/>
-                                                        <listheader label="${c:l('sp.common.control.braund.model')}" width="300px"/> 
+                                                        <listheader label="${c:l('sp.common.control.designation')}" width="200px" sort="auto"/>
+                                                        <listheader label="${c:l('sp.common.control.id.instrument')}" width="200px" sort="auto"/>
+                                                        <listheader label="${c:l('sp.common.control.braund.model')}" width="250px"/> 
                                                         <listheader label="${c:l('sp.common.serial')}" width="230px"/>
+                                                        <listheader label="${c:l('sp.common.category')}" width="160px"/>
                                                         <listheader label="${c:l('sp.common.control.date.calibration')}" width="190px"/>
                                                         <listheader label="${c:l('sp.common.control.due.date')}" width="190px"/>
                                                     </listhead>

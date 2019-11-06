@@ -58,6 +58,7 @@ public class ReportTransitController extends GenericAbstractListController<Produ
     private Datebox dtbBeginningDateExit;
     private Datebox dtbEndingDateExit;
     private Textbox txtWorkOrder;
+    private Textbox txtPartNumber;
     private UtilsEJB utilsEJB = null;
     private CustomerEJB customerEJB = null;
     private ProductEJB productEJB = null;
@@ -143,6 +144,9 @@ public class ReportTransitController extends GenericAbstractListController<Produ
            if (txtWorkOrder.getText() != null && !txtWorkOrder.getText().equals("") && !txtWorkOrder.getText().isEmpty()) {
                params.put(QueryConstants.PARAM_WORK_ORDER, txtWorkOrder.getText());
            }
+           if (txtPartNumber.getText() != null && !txtPartNumber.getText().equals("") && !txtPartNumber.getText().isEmpty()) {
+				params.put(QueryConstants.PARAM_PART_NUMBER, txtPartNumber.getText());
+			}
            _request.setParams(params);
            _request.setParam(true);
            productSeries = productEJB.searchProductSerie(_request);
@@ -172,6 +176,7 @@ public class ReportTransitController extends GenericAbstractListController<Produ
                 item.setLabel(providers.get(i).getName());
                 item.setParent(cmbProvider);
             }
+        } catch (EmptyListException ex) {
         } catch (Exception ex) {
             this.showError(ex);
         }
@@ -192,6 +197,7 @@ public class ReportTransitController extends GenericAbstractListController<Produ
                 item.setLabel(customers.get(i).getFirstName());
                 item.setParent(cmbCustomer);
             }
+        } catch (EmptyListException ex) {
         } catch (Exception ex) {
             this.showError(ex);
         }
@@ -255,7 +261,8 @@ public class ReportTransitController extends GenericAbstractListController<Produ
 					item.setParent(cmbProduct);
 				}
             }
-        } catch (Exception ex) {
+        }catch (EmptyListException ex) {
+        }  catch (Exception ex) {
             this.showError(ex);
         }
 

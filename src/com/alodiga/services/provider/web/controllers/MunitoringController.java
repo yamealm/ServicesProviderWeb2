@@ -465,6 +465,7 @@ public class MunitoringController extends GenericAbstractListController<ProductS
                     item.appendChild(new Listcell(controlHistory.getMetrologicalControl().getBraund().getName()+ "/"+
                     		controlHistory.getMetrologicalControl().getModel().getName()));
                     item.appendChild(new Listcell(controlHistory.getMetrologicalControl().getSerie()));
+                    item.appendChild(new Listcell(controlHistory.getCategory().getName()));
                     item.appendChild(new Listcell(controlHistory.getCalibrationDate().toString()));
                     Listcell listCellEnding = new Listcell(controlHistory.getExpirationDate().toString());
                     

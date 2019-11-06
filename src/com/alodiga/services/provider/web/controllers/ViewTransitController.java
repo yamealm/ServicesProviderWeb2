@@ -23,6 +23,7 @@ import com.alodiga.services.provider.commons.ejbs.CustomerEJB;
 import com.alodiga.services.provider.commons.ejbs.ProductEJB;
 import com.alodiga.services.provider.commons.ejbs.TransactionEJB;
 import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
+import com.alodiga.services.provider.commons.exceptions.EmptyListException;
 import com.alodiga.services.provider.commons.genericEJB.EJBRequest;
 import com.alodiga.services.provider.commons.models.Category;
 import com.alodiga.services.provider.commons.models.Condicion;
@@ -247,6 +248,7 @@ public class ViewTransitController extends GenericAbstractAdminController {
 //                	cmbCustomer.setSelectedIndex(0);
 //                }
             }
+        } catch (EmptyListException ex) {
         } catch (Exception ex) {
             showError(ex);
         }
@@ -283,6 +285,7 @@ public class ViewTransitController extends GenericAbstractAdminController {
     		intStock.setValue(0);
         }
 		intQuantity.setValue(productSerie.getQuantity());
+		dtxCreation.setValue(productSerie.getCreationDate());
 		if (productSerie.getExpirationDate()!=null) {
 			cbxExpiration.setChecked(true);
 			dtxExpiration.setValue(productSerie.getExpirationDate());
@@ -382,6 +385,7 @@ public class ViewTransitController extends GenericAbstractAdminController {
                 	cmbProvider.setSelectedIndex(0);
                 }
             }
+        } catch (EmptyListException ex) {
         } catch (Exception ex) {	
             showError(ex);
         }
@@ -397,8 +401,11 @@ public class ViewTransitController extends GenericAbstractAdminController {
 			transaction.setCondition(condition);
 			Provider provider = (Provider) cmbProvider.getSelectedItem().getValue();
 			transaction.setProvider(provider);
-			Customer customer = (Customer) cmbCustomer.getSelectedItem().getValue();
-	        transaction.setCustomer(customer);
+			Customer customer = null;
+			if (cmbCustomer.getSelectedItem() != null) {
+				customer = (Customer) cmbCustomer.getSelectedItem().getValue();
+				transaction.setCustomer(customer);
+			}
 			transaction.setObservation(txtObservation.getText());
 			transaction.setOrderWord(txtWorkOrder.getText());
 			transaction.setInvoice(txtInvoice.getText());

@@ -58,6 +58,7 @@ public class DetailedListProductSerieController extends GenericAbstractListContr
     private Datebox dtbBeginningDateExit;
     private Datebox dtbEndingDateExit;
     private Textbox txtWorkOrder;
+    private Textbox txtPartNumber;
     private UtilsEJB utilsEJB = null;
     private CustomerEJB customerEJB = null;
     private ProductEJB productEJB = null;
@@ -143,6 +144,9 @@ public class DetailedListProductSerieController extends GenericAbstractListContr
 			if (txtWorkOrder.getText() != null && !txtWorkOrder.getText().equals("") && !txtWorkOrder.getText().isEmpty()) {
 				params.put(QueryConstants.PARAM_WORK_ORDER, txtWorkOrder.getText());
 			}
+			if (txtPartNumber.getText() != null && !txtPartNumber.getText().equals("") && !txtPartNumber.getText().isEmpty()) {
+				params.put(QueryConstants.PARAM_PART_NUMBER, txtPartNumber.getText());
+			}
 			_request.setParams(params);
 			_request.setParam(true);
 			productSeries = productEJB.searchProductSerie(_request);
@@ -171,6 +175,7 @@ public class DetailedListProductSerieController extends GenericAbstractListContr
                 item.setLabel(providers.get(i).getName());
                 item.setParent(cmbProvider);
             }
+        } catch (EmptyListException ex) {
         } catch (Exception ex) {
             this.showError(ex);
         }
@@ -191,7 +196,8 @@ public class DetailedListProductSerieController extends GenericAbstractListContr
                 item.setLabel(customers.get(i).getFirstName());
                 item.setParent(cmbCustomer);
             }
-        } catch (Exception ex) {
+        }catch (EmptyListException ex) {
+        }  catch (Exception ex) {
             this.showError(ex);
         }
 
@@ -211,6 +217,7 @@ public class DetailedListProductSerieController extends GenericAbstractListContr
                 item.setLabel(condicions.get(i).getName());
                 item.setParent(cmbCondition);
             }
+        } catch (EmptyListException ex) {
         } catch (Exception ex) {
             this.showError(ex);
         }
@@ -254,6 +261,7 @@ public class DetailedListProductSerieController extends GenericAbstractListContr
 					item.setParent(cmbProduct);
 				}
             }
+        } catch (EmptyListException ex) {
         } catch (Exception ex) {
             this.showError(ex);
         }

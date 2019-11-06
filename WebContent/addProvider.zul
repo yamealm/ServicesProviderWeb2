@@ -3,8 +3,8 @@
 <?page title="${c:l('sp.common.page.title')}"?>
 <?link rel="icon" tye="image/x-icon" href="/images/favicon.ico"?>
 <zk xmlns:n="native">
-    <window id="winAddProviderView" apply ="com.alodiga.services.provider.web.controllers.AddProviderController" width="600px" height="380px" closable="true" border="normal">
-        <caption image="/images/icon-alodiga-1.png" label="${c:l('sp.common.customer')}"/>
+    <window id="winAddProviderView" apply ="com.alodiga.services.provider.web.controllers.AddProviderController" width="600px" height="200px" closable="true" border="normal">
+        <caption image="/images/icon-alodiga-1.png" label="${c:l('sp.common.provider')}"/>
         <style src="/css/general.css"/>
         <div>
         	<vlayout>

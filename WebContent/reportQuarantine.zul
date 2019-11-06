@@ -13,7 +13,7 @@
                         <div align="center">
                             <hlayout style="background:#232323; repeat center center; border:none;">
                                 <div ></div>
-                                <div width="1710px" height="18px" align="center">
+                                <div width="1800px" height="18px" align="center">
                                     <label value="${c:l('sp.common.page.title')}" style="color:#837E76; font-size:16px;"/>
                                 </div>
                                 <div></div>
@@ -61,10 +61,8 @@
                                                     <combobox id="cmbProvider" width="160px" mold="rounded" readonly="true"/>
                                                     <label value="${c:l('sp.common.product')}" sclass="lblbold"/>
                                                     <combobox id="cmbProduct" width="160px" mold="rounded" readonly="true"/>
-                                                    <label value="${c:l('sp.common.beginningDate')}"  sclass="lblbold"/>
-                                                    <datebox id="dtbBeginningDate"  format="dd-MM-yyyy" tooltiptext="${c:l('sp.common.searching.filter')}"/>
-                                                    <label value="${c:l('sp.common.endingDate')}" sclass="lblbold"/>
-                                                    <datebox id="dtbEndingDate" format="dd-MM-yyyy" tooltiptext="${c:l('sp.common.searching.filter')}"/>
+                                                    <label value="${c:l('sp.common.PartNumber')}" sclass="lblbold"/>
+                                                    <textbox id="txtPartNumber"  maxlength="45" width="200px"/>
                                                 </hlayout>    
                                                  <hlayout>                                  
                                                     <label value="${c:l('sp.common.customer')}" sclass="lblbold"/>
@@ -77,6 +75,10 @@
                                                     <combobox id="cmbTransactionType" width="160px" mold="rounded" readonly="true"/>
                                                 </hlayout>
                                                 <hlayout>
+                                                 <label value="${c:l('sp.common.beginningDate')}"  sclass="lblbold"/>
+                                                    <datebox id="dtbBeginningDate"  format="dd-MM-yyyy" tooltiptext="${c:l('sp.common.searching.filter')}"/>
+                                                    <label value="${c:l('sp.common.endingDate')}" sclass="lblbold"/>
+                                                    <datebox id="dtbEndingDate" format="dd-MM-yyyy" tooltiptext="${c:l('sp.common.searching.filter')}"/>
                                                     <label value="${c:l('sp.common.beginningDate.Exit')}"  sclass="lblbold"/>
                                                     <datebox id="dtbBeginningDateExit"  format="dd-MM-yyyy" tooltiptext="${c:l('sp.common.searching.filter')}"/>
                                                     <label value="${c:l('sp.common.endingDate.Exit')}" sclass="lblbold"/>

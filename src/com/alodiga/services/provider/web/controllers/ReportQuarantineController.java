@@ -58,6 +58,7 @@ public class ReportQuarantineController extends GenericAbstractListController<Pr
     private Datebox dtbBeginningDateExit;
     private Datebox dtbEndingDateExit;
     private Textbox txtWorkOrder;
+    private Textbox txtPartNumber;
     private UtilsEJB utilsEJB = null;
     private CustomerEJB customerEJB = null;
     private ProductEJB productEJB = null;
@@ -140,6 +141,9 @@ public class ReportQuarantineController extends GenericAbstractListController<Pr
 		    if (txtWorkOrder.getText() != null && !txtWorkOrder.getText().equals("") && !txtWorkOrder.getText().isEmpty()) {
 				params.put(QueryConstants.PARAM_WORK_ORDER, txtWorkOrder.getText());
 			}
+		    if (txtPartNumber.getText() != null && !txtPartNumber.getText().equals("") && !txtPartNumber.getText().isEmpty()) {
+				params.put(QueryConstants.PARAM_PART_NUMBER, txtPartNumber.getText());
+			}
 			_request.setParams(params);
 			_request.setParam(true);
 			productSeries = productEJB.searchProductSerie(_request);
@@ -169,6 +173,7 @@ public class ReportQuarantineController extends GenericAbstractListController<Pr
                 item.setLabel(providers.get(i).getName());
                 item.setParent(cmbProvider);
             }
+        } catch (EmptyListException ex) {
         } catch (Exception ex) {
             this.showError(ex);
         }
@@ -189,6 +194,7 @@ public class ReportQuarantineController extends GenericAbstractListController<Pr
                 item.setLabel(customers.get(i).getFirstName());
                 item.setParent(cmbCustomer);
             }
+        } catch (EmptyListException ex) {
         } catch (Exception ex) {
             this.showError(ex);
         }
@@ -252,6 +258,7 @@ public class ReportQuarantineController extends GenericAbstractListController<Pr
 					item.setParent(cmbProduct);
 				}
             }
+        } catch (EmptyListException ex) {
         } catch (Exception ex) {
             this.showError(ex);
         }

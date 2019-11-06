@@ -26,6 +26,7 @@ import org.zkoss.zul.Textbox;
 import com.alodiga.services.provider.commons.ejbs.CustomerEJB;
 import com.alodiga.services.provider.commons.ejbs.TransactionEJB;
 import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
+import com.alodiga.services.provider.commons.exceptions.EmptyListException;
 import com.alodiga.services.provider.commons.genericEJB.EJBRequest;
 import com.alodiga.services.provider.commons.models.Category;
 import com.alodiga.services.provider.commons.models.Customer;
@@ -372,7 +373,8 @@ public class AdminEgressQuarantineController extends GenericAbstractAdminControl
                 	cmbCustomer.setSelectedIndex(0);
                 }
             }
-        } catch (Exception ex) {
+        }catch (EmptyListException ex) {
+        }  catch (Exception ex) {
             showError(ex);
         }
     }
@@ -386,7 +388,9 @@ public class AdminEgressQuarantineController extends GenericAbstractAdminControl
             transaction.setProduct(productParam);
             Category category = (Category) cmbCategory.getSelectedItem().getValue();
             transaction.setCategory(category);
-            Customer customer = (Customer) cmbCustomer.getSelectedItem().getValue();
+            Customer customer = null;
+            if (cmbCustomer.getSelectedItem()!=null)
+            	customer = (Customer) cmbCustomer.getSelectedItem().getValue();
             transaction.setCustomer(customer);
             transaction.setUser(user);
             transaction.setCreationDate(new Timestamp((new java.util.Date().getTime())));

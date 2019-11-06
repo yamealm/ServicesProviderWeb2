@@ -10,9 +10,7 @@ import org.zkoss.zul.Listitem;
 
 import com.alodiga.services.provider.commons.ejbs.AccessControlEJB;
 import com.alodiga.services.provider.commons.ejbs.AuditoryEJB;
-import com.alodiga.services.provider.commons.ejbs.BannerEJB;
 import com.alodiga.services.provider.commons.ejbs.CustomerEJB;
-import com.alodiga.services.provider.commons.ejbs.ReportEJB;
 import com.alodiga.services.provider.commons.ejbs.UserEJB;
 import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
 import com.alodiga.services.provider.commons.exceptions.GeneralException;
@@ -49,13 +47,10 @@ public class CheckController extends GenericAbstractController implements Generi
         try {
             AccessControlEJB accessControlEJB = (AccessControlEJB) EJBServiceLocator.getInstance().get(EjbConstants.ACCESS_CONTROL_EJB);
             AuditoryEJB auditoryEJB = (AuditoryEJB) EJBServiceLocator.getInstance().get(EjbConstants.AUDITORY_EJB);
-            ReportEJB reportEJB = (ReportEJB) EJBServiceLocator.getInstance().get(EjbConstants.REPORT_EJB);
             UserEJB userEJB = (UserEJB) EJBServiceLocator.getInstance().get(EjbConstants.USER_EJB);
             UtilsEJB utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
             CustomerEJB customerEJB = (CustomerEJB) EJBServiceLocator.getInstance().get(EjbConstants.CUSTOMER_EJB);
       
-            BannerEJB bannerEJB = (BannerEJB) EJBServiceLocator.getInstance().get(EjbConstants.BANNER_EJB);
-                     
             
             if (accessControlEJB != null) {
                 goodEjbs.add("accessControlEJB");
@@ -69,11 +64,6 @@ public class CheckController extends GenericAbstractController implements Generi
             }
 
             
-            if (reportEJB != null) {
-                goodEjbs.add("reportEJB");
-            } else {
-                badEjbs.add("reportEJB");
-            }
             if (userEJB != null) {
                 goodEjbs.add("userEJB");
             } else {
@@ -83,12 +73,6 @@ public class CheckController extends GenericAbstractController implements Generi
                 goodEjbs.add("utilsEJB");
             } else {
                 badEjbs.add("utilsEJB");
-            }
-            
-             if (bannerEJB != null) {
-                goodEjbs.add("bannerEJB");
-            } else {
-                badEjbs.add("bannerEJB");
             }
 
             if (customerEJB != null) {
