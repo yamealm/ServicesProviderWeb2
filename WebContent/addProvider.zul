@@ -3,7 +3,7 @@
 <?page title="${c:l('sp.common.page.title')}"?>
 <?link rel="icon" tye="image/x-icon" href="/images/favicon.ico"?>
 <zk xmlns:n="native">
-    <window id="winAddProviderView" apply ="com.alodiga.services.provider.web.controllers.AddProviderController" width="600px" height="200px" closable="true" border="normal">
+    <window id="winAddProviderView" apply ="com.alodiga.services.provider.web.controllers.AddProviderController" width="600px" height="250px" closable="true" border="normal">
         <caption image="/images/icon-alodiga-1.png" label="${c:l('sp.common.provider')}"/>
         <style src="/css/general.css"/>
         <div>
@@ -32,7 +32,7 @@
         					<label value="${c:l('sp.common.name')}"
         						sclass="lblbold" />
         					<hlayout>
-        						<textbox id="txtName" maxlength="45" constraint="no empty: ${c:l('error.field.required')}" />
+        						<textbox id="txtName" width="310px" maxlength="45" constraint="no empty: ${c:l('error.field.required')}" />
         						<label value="*" sclass="lblreq" />
         						<label value="${c:l('sp.common.max45')}" sclass="lblexample" />
         					</hlayout>

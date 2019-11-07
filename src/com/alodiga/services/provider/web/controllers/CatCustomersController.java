@@ -117,6 +117,7 @@ public class CatCustomersController extends GenericAbstractListController<Custom
                     item.setValue(customer);
                     item.appendChild(new Listcell(customer.getFirstName()));
                     item.appendChild(new Listcell(customer.getLastName()));
+                    item.appendChild(new Listcell(customer.getDni()));
                     item.appendChild(new Listcell(customer.getPhoneNumber()));
                     item.setParent(lbxRecords);
                 }

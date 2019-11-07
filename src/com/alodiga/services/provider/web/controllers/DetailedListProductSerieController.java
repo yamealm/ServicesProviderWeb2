@@ -235,7 +235,11 @@ public class DetailedListProductSerieController extends GenericAbstractListContr
             for (int i = 0; i < transactionTypes.size(); i++) {
                 item = new Comboitem();
                 item.setValue(transactionTypes.get(i));
-                item.setLabel(transactionTypes.get(i).getName());
+                if (transactionTypes.get(i).getId().equals(TransactionType.ENTRY)) {
+                	item.setLabel(Labels.getLabel("sp.common.entry"));
+                }else {
+                	item.setLabel(Labels.getLabel("sp.common.exit"));
+                }
                 item.setParent(cmbTransactionType);
             }
         } catch (Exception ex) {
@@ -282,15 +286,16 @@ public class DetailedListProductSerieController extends GenericAbstractListContr
                     item.appendChild(new Listcell(productSerie.getProduct().getPartNumber()));
                     item.appendChild(new Listcell(productSerie.getProduct().getDescription()));
                     item.appendChild(new Listcell(productSerie.getProvider().getName()));
-                    if (productSerie.getEndingTransactionId()==null)
+                    if (productSerie.getBeginTransactionId().getTransactionType().getId().equals(TransactionType.ENTRY)) {
                     	item.appendChild(new Listcell(Labels.getLabel("sp.common.entry")));
-                    else
+                    }else {
                     	item.appendChild(new Listcell(Labels.getLabel("sp.common.exit")));
+                    }
                     item.appendChild(new Listcell(productSerie.getCondition().getName()));
                     item.appendChild(new Listcell(productSerie.getSerie()));
                     item.appendChild(new Listcell(productSerie.getOrderWord()));
                     item.appendChild(new Listcell(productSerie.getAmount().toString()));
-                    item.appendChild(new Listcell(String.valueOf(productSerie.getQuantityInto())));
+                    item.appendChild(new Listcell(String.valueOf(productSerie.getBeginTransactionId().getQuantity())));
                     String date = null;
 					if (productSerie.getCreationDate() != null) {
 						SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -310,9 +315,9 @@ public class DetailedListProductSerieController extends GenericAbstractListContr
 					}
                     item.appendChild(new Listcell(date));
                     date = null;
-                    if (productSerie.getEndingDate() != null) {
+                    if (productSerie.getBeginTransactionId().getTransactionType().getId().equals(TransactionType.EXIT)) {
 						SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-						date = df.format(productSerie.getEndingDate().getTime());
+						date = df.format(productSerie.getBeginTransactionId().getCreationDate().getTime());
 					}
                     item.appendChild(new Listcell(date));
                     item.setParent(lbxReport);
@@ -371,12 +376,16 @@ public class DetailedListProductSerieController extends GenericAbstractListContr
     public void getData() {
         dtbBeginningDate.setFormat("yyyy/MM/dd");
         dtbBeginningDate.setValue(new Timestamp(new java.util.Date().getTime()));
+        dtbBeginningDate.setText("");
         dtbEndingDate.setFormat("yyyy/MM/dd");
         dtbEndingDate.setValue(new Timestamp(new java.util.Date().getTime()));
+        dtbEndingDate.setText("");
         dtbBeginningDateExit.setFormat("yyyy/MM/dd");
         dtbBeginningDateExit.setValue(new Timestamp(new java.util.Date().getTime()));
+        dtbBeginningDateExit.setText("");
         dtbEndingDateExit.setFormat("yyyy/MM/dd");
         dtbEndingDateExit.setValue(new Timestamp(new java.util.Date().getTime()));
+        dtbEndingDateExit.setText("");
         //loadAccount();
         loadProvider();
         loadProduct();

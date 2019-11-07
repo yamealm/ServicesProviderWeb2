@@ -419,7 +419,9 @@ public class AdminEgressStockController extends GenericAbstractAdminController {
 					if ((oldQuantity - quantity) > 0) {
 						productSerie2.setId(null);
 						productSerie2.setQuantity(oldQuantity - quantity);
+						productSerie2.setBeginTransactionId(transaction);
 						productSeries.add(productSerie2);
+						productSerie.setEndingTransactionId(transaction);
 					}
 				}
 			}
