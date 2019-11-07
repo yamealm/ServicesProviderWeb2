@@ -400,13 +400,13 @@ public class AdminEgressUnitWaitController extends GenericAbstractAdminControlle
 			transaction.setObservation(txtObservation.getText());
 			transaction.setOrderWord(txtWorkOrder.getText());
 			transaction.setWork(txtWork.getText());
-			productSerieParam.setEndingTransactionId(transaction);
+			transaction.setQuantity(intQuantity.getValue());
 			productSerieParam.setOrderWord(txtWorkOrder.getText());
 			productSerieParam.setWork(txtWork.getText());
 			productSerieParam.setObservation(txtObservation.getText());
+			productSerieParam.setEndingTransactionId(transaction);
 			productSeries.add(productSerieParam);
-    		transaction.setQuantity(intQuantity.getValue());
-    		transaction = transactionEJB.saveEgressStock(transaction,productSeries);
+    		transaction = transactionEJB.saveEgress(transaction,productSeries);
     		this.showMessage(Labels.getLabel("sp.common.save.success"), false, null);
     		AccessControl.saveAction(Permission.REMOVE_WAIT, "Extraer producto de espera = " + productSerieParam.getProduct().getPartNumber() + " la cantidad de:" + intQuantity.getValue());
     		btnSave.setVisible(false);

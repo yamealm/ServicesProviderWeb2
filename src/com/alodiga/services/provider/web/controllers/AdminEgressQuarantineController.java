@@ -425,7 +425,7 @@ public class AdminEgressQuarantineController extends GenericAbstractAdminControl
 			}
     		if (totalQuantity>0) {
     			transaction.setQuantity(totalQuantity);
-    			transaction = transactionEJB.saveEgressStock(transaction,productSeries);
+    			transaction = transactionEJB.saveEgress(transaction,productSeries);
     			AccessControl.saveAction(Permission.REMOVE_QUARANTINE, "Extraer producto de quarentena = " + productParam.getPartNumber() + " la cantidad de:" + totalQuantity);
     			this.showMessage(Labels.getLabel("sp.common.save.success"), false, null);
     			btnSave.setVisible(false);

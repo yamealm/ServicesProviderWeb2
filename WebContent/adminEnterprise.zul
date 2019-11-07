@@ -138,13 +138,28 @@
                                                         </row>
                                                     </rows>
                                                 </grid>
-                                                <label value="${c:l('sp.common.tinTypes')}" sclass="lblbold"/>
-                                                <listbox id="lbxTinTypes" fixedLayout="true" multiple="true" checkmark="true" width="895px" height="180px">
+                                                 <grid fixedLayout="true">
+                                                    <columns>
+                                                        <column label="" width="300px"/>
+                                                        <column label="" width="1090px"/>
+                                                    </columns>
+                                                    <rows>
+                                                        <row>
+                                                            <label value="${c:l('sp.crud.enterprise.add.email')}" sclass="lblbold"/>
+                                                            <hlayout>
+                                                                <textbox id="txtEmail2"  width="320px" maxlength="255" constraint="/.+@.+\.[a-z]+/"/>
+                                                                <button  id="btnSaveEmail" width="150px" label="${c:l('sp.common.actions.add')}" class="open orange"/>
+                                                                <label value="${c:l('sp.common.email.example')}" sclass="lblexample"/>
+                                                                <separator/>
+                                                            </hlayout>
+                                                        </row>
+                                                       
+                                                    </rows>
+                                                </grid>
+                                                <listbox id="lbxRecords" fixedLayout="true" width="620px" height="180px">
                                                     <listhead>
-                                                        <listheader label="" width="30px"/>
-                                                        <listheader label="${c:l('sp.common.name')}" width="345px"/>
-                                                        <listheader label="${c:l('sp.common.isNatural')}" width="250px"/>
-                                                        <listheader label="${c:l('sp.common.prefix')}" width="250px"/>
+                                                        <listheader label="${c:l('sp.crud.enterprise.added.email')}" width="570px"/>
+                                                       	<listheader label="-" width="50px"/>
                                                     </listhead>
                                                 </listbox>
                                             </vlayout>

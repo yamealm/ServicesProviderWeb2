@@ -972,6 +972,18 @@ INSERT INTO `services`.`permission_has_profile` (`id`, `permissionId`, `profileI
 UPDATE `services`.`transaction_type` SET `name` = 'ENTRY' WHERE (`id` = '1');
 UPDATE `services`.`transaction_type` SET `name` = 'EXIT' WHERE (`id` = '2');
 
+CREATE TABLE `services`.`enterprise_has_email` (
+  `id` int(5) NOT NULL AUTO_INCREMENT,
+  `email` varchar(100) DEFAULT NULL,
+  `enterpriseId` bigint(3) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_enterprise_email` (`enterpriseId`),
+  CONSTRAINT `fk_enterprise_email` FOREIGN KEY (`enterpriseId`) REFERENCES `enterprise` (`id`)
+) ENGINE=InnoDB;
+
+INSERT INTO `services`.`enterprise_has_email` (`id`, `email`, `enterpriseId`) VALUES ('1', 'yamealm@gmail.com', '1');
+INSERT INTO `services`.`enterprise_has_email` (`id`, `email`, `enterpriseId`) VALUES ('2', 'ramosherreraluis@gmail.com', '1');
+
 
 
 

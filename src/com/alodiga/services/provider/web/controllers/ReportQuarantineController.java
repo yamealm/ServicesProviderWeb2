@@ -232,7 +232,11 @@ public class ReportQuarantineController extends GenericAbstractListController<Pr
             for (int i = 0; i < transactionTypes.size(); i++) {
                 item = new Comboitem();
                 item.setValue(transactionTypes.get(i));
-                item.setLabel(transactionTypes.get(i).getName());
+                if (transactionTypes.get(i).getId().equals(TransactionType.ENTRY)) {
+                	item.setLabel(Labels.getLabel("sp.common.entry"));
+                }else {
+                	item.setLabel(Labels.getLabel("sp.common.exit"));
+                }
                 item.setParent(cmbTransactionType);
             }
         } catch (Exception ex) {
@@ -370,15 +374,18 @@ public class ReportQuarantineController extends GenericAbstractListController<Pr
     }
 
     public void getData() {
-        dtbBeginningDate.setFormat("yyyy/MM/dd");
+    	dtbBeginningDate.setFormat("yyyy/MM/dd");
         dtbBeginningDate.setValue(new Timestamp(new java.util.Date().getTime()));
+        dtbBeginningDate.setText("");
         dtbEndingDate.setFormat("yyyy/MM/dd");
         dtbEndingDate.setValue(new Timestamp(new java.util.Date().getTime()));
+        dtbEndingDate.setText("");
         dtbBeginningDateExit.setFormat("yyyy/MM/dd");
         dtbBeginningDateExit.setValue(new Timestamp(new java.util.Date().getTime()));
+        dtbBeginningDateExit.setText("");
         dtbEndingDateExit.setFormat("yyyy/MM/dd");
         dtbEndingDateExit.setValue(new Timestamp(new java.util.Date().getTime()));
-        //loadAccount();
+        dtbEndingDateExit.setText("");
         loadProvider();
         loadProduct();
         loadCustomer();

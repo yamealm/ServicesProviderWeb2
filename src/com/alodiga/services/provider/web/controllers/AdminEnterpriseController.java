@@ -3,21 +3,33 @@ package com.alodiga.services.provider.web.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
+import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listcell;
+import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Textbox;
 
 import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
 import com.alodiga.services.provider.commons.models.Country;
 import com.alodiga.services.provider.commons.models.Currency;
+import com.alodiga.services.provider.commons.models.Customer;
 import com.alodiga.services.provider.commons.models.Enterprise;
+import com.alodiga.services.provider.commons.models.EnterpriseHasEmail;
+import com.alodiga.services.provider.commons.models.Permission;
+import com.alodiga.services.provider.commons.models.ProductSerie;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
+import com.alodiga.services.provider.web.components.DeleteButton;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractAdminController;
+import com.alodiga.services.provider.web.utils.AccessControl;
 import com.alodiga.services.provider.web.utils.WebConstants;
 
 public class AdminEnterpriseController extends GenericAbstractAdminController {
@@ -28,6 +40,7 @@ public class AdminEnterpriseController extends GenericAbstractAdminController {
     private Textbox txtAddress;
     private Textbox txtInvoiceAddress;
     private Textbox txtEmail;
+    private Textbox txtEmail2;
     private Textbox txtInfoEmail;
     private Textbox txtATCNumber;
     private Checkbox cbxEnabled;
@@ -35,12 +48,17 @@ public class AdminEnterpriseController extends GenericAbstractAdminController {
     private Combobox cmbCountries;
     private UtilsEJB utilsEJB = null;
     private Enterprise enterpriseParam;
+    private Listbox lbxRecords;
     private Button btnSave;
+    private Button btnSaveEmail;
+    private boolean active = true;
     
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
         enterpriseParam = (Sessions.getCurrent().getAttribute("object") != null) ? (Enterprise) Sessions.getCurrent().getAttribute("object") : null;
+        if (enterpriseParam==null)
+        	btnSaveEmail.setVisible(false);
         initialize();
         initView(eventType, "sp.crud.enterprise");
         
@@ -69,7 +87,7 @@ public class AdminEnterpriseController extends GenericAbstractAdminController {
         txtEmail.setRawValue(null);
         txtInfoEmail.setRawValue(null);
         txtATCNumber.setRawValue(null);
-    
+        txtEmail2.setRawValue(null);
         cbxEnabled.setChecked(true);
     }
 
@@ -82,18 +100,104 @@ public class AdminEnterpriseController extends GenericAbstractAdminController {
         txtInfoEmail.setText(enterprise.getInfoEmail());
         txtATCNumber.setText(enterprise.getAtcNumber());
         cbxEnabled.setChecked(enterprise.getEnabled());
+        try {
+        	List<EnterpriseHasEmail> emails = utilsEJB.getEnterpriseHasEmails();
+        	loadList(emails);
+        } catch (Exception ex) {
+        	loadList(null);
+        }
     }
 
+    public void loadList(List<EnterpriseHasEmail> list) {
+        try {
+            lbxRecords.getItems().clear();
+            Listitem item = null;
+            if (list != null && !list.isEmpty()) {
+                for (EnterpriseHasEmail e : list) {
+                    item = new Listitem();
+                    item.setValue(e);
+                    item.appendChild(new Listcell(e.getEmail()));
+                    item.appendChild(active?initDeleteButton(item):new Listcell());
+                    item.setParent(lbxRecords);
+                }
+            } else {
+                item = new Listitem();
+                item.appendChild(new Listcell(Labels.getLabel("sp.error.empty.list")));
+                item.appendChild(new Listcell());
+                item.appendChild(new Listcell());
+                item.setParent(lbxRecords);
+            }
+        } catch (Exception ex) {
+            showError(ex);
+        }
+    }
+    
+    private Listcell initDeleteButton(final Listitem listItem) {
+
+        Listcell cell = new Listcell();
+        cell.setValue("");
+        final DeleteButton button = new DeleteButton();
+        button.setTooltiptext(Labels.getLabel("sp.common.actions.delete"));
+        button.setClass("open orange");
+        button.addEventListener("onClick", new EventListener() {
+
+            public void onEvent(Event event) throws Exception {
+            	deleteEmail( listItem);
+            }
+        });
+
+        button.setParent(cell);
+        return cell;
+    }
+    
+    private void deleteEmail( Listitem listItem) {
+        try {
+        	EnterpriseHasEmail email = (EnterpriseHasEmail) listItem.getValue();
+        	utilsEJB.deleteEmail(email);
+            AccessControl.saveAction(Permission.EDIT_ENTERPRISE, "Eliminar email = " + email.getEmail());
+            try {
+            	List<EnterpriseHasEmail> emails = utilsEJB.getEnterpriseHasEmails();
+            	loadList(emails);
+            } catch (Exception ex) {
+            	loadList(null);
+            }
+        } catch (Exception ex) {
+            showError(ex);
+        }
+    }
+    
+    public void onClick$btnSaveEmail() {
+    
+    	EnterpriseHasEmail email = new EnterpriseHasEmail();
+        try {
+        	email.setEnterprise(enterpriseParam);
+        	email.setEmail(txtEmail2.getText());
+        	utilsEJB.saveEnterpriseHasEmail(email);
+        	try {
+            	List<EnterpriseHasEmail> emails = utilsEJB.getEnterpriseHasEmails();
+            	loadList(emails);
+            	txtEmail2.setRawValue(null);
+            } catch (Exception ex) {
+            	loadList(null);
+            }
+        } catch (Exception ex) {
+            showError(ex);
+        }
+    }
+    
     public void blockFields() {
         txtName.setReadonly(true);
         txtURL.setReadonly(true);
         txtAddress.setReadonly(true);
         txtInvoiceAddress.setReadonly(true);
         txtEmail.setReadonly(true);
+        txtEmail2.setReadonly(true);
         txtInfoEmail.setReadonly(true);
         txtATCNumber.setReadonly(true);
         cbxEnabled.setDisabled(true);
         btnSave.setVisible(false);
+        btnSaveEmail.setVisible(false);
+        active = false;
     }
 
     public Boolean validateEmpty() {
