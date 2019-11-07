@@ -66,7 +66,7 @@
                                                     <listheader label="${c:l('sp.common.control.ubication')}" width="195px" sort="auto"/>
                                                     <listheader label="${c:l('sp.common.control.minimun.scale')}" width="115px" sort="auto"/>
                                                      <listheader label="${c:l('sp.common.category')}" width="85px" sort="auto"/>
-                                                     <listheader label="${c:l('sp.common.control.type')}" width="55px" sort="auto"/>
+<!--                                                      <listheader label="${c:l('sp.common.control.type')}" width="55px" sort="auto"/> -->
                                                     <listheader label="-" width="45px"/>
                                                     <listheader label="-" width="45px"/>
                                                     

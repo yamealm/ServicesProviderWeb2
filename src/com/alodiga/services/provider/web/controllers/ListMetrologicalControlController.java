@@ -145,7 +145,7 @@ public class ListMetrologicalControlController extends GenericAbstractListContro
                     		item.appendChild(new Listcell(Labels.getLabel("sp.common.quarantine")));
                     }else
                     	item.appendChild(new Listcell());
-                    item.appendChild(new Listcell(metrologicalControl.getControlType()));
+//                    item.appendChild(new Listcell(metrologicalControl.getControlType()));
                     item.appendChild(permissionDelete ? initEnabledButton(metrologicalControl.isEnabled(), item) : new Listcell());
                     item.appendChild(permissionEdit ? new ListcellEditButton(adminPage, metrologicalControl,Permission.EDIT_METEOROLOGICAL_CONTROL) : new Listcell());
                     item.setParent(lbxRecords);

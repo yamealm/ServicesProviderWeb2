@@ -230,8 +230,8 @@
                                                         <listheader label="${c:l('sp.common.control.designation')}" width="200px" sort="auto"/>
                                                         <listheader label="${c:l('sp.common.control.id.instrument')}" width="190px" sort="auto"/>
                                                         <listheader label="${c:l('sp.common.control.braund.model')}" width="250px"/> 
-                                                        <listheader label="${c:l('sp.common.serial')}" width="230px"/>
-                                                        <listheader label="${c:l('sp.common.category')}" width="160px"/>
+                                                        <listheader label="${c:l('sp.common.serial')}" width="190px"/>
+                                                        <listheader label="${c:l('sp.common.category')}" width="200px"/>
                                                         <listheader label="${c:l('sp.common.control.date.calibration')}" width="180px"/>
                                                         <listheader label="${c:l('sp.common.control.due.date')}" width="180px"/>
                                                     </listhead>
