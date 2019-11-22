@@ -93,6 +93,7 @@ public class ViewWaitController extends GenericAbstractAdminController {
         super.doAfterCompose(comp);
         productSerieParam = (Sessions.getCurrent().getAttribute("object") != null) ? (ProductSerie) Sessions.getCurrent().getAttribute("object") : null;
         customer  = (Sessions.getCurrent().getAttribute("customer") != null) ? (Customer) Sessions.getCurrent().getAttribute("customer") : null;
+        eventType = WebConstants.EVENT_EDIT;
         initialize();
         initView(eventType, "sp.crud.product");
     }

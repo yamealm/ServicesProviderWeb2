@@ -984,6 +984,8 @@ CREATE TABLE `services`.`enterprise_has_email` (
 INSERT INTO `services`.`enterprise_has_email` (`id`, `email`, `enterpriseId`) VALUES ('1', 'yamealm@gmail.com', '1');
 INSERT INTO `services`.`enterprise_has_email` (`id`, `email`, `enterpriseId`) VALUES ('2', 'ramosherreraluis@gmail.com', '1');
 
+ALTER TABLE `services`.`product_serie` 
+ADD COLUMN `quantityRest` INT(3) NULL DEFAULT NULL AFTER `quarantineStatusId`;
 
 
 

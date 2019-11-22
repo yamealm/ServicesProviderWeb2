@@ -81,6 +81,7 @@ public class ViewStockController extends GenericAbstractAdminController {
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
         productSerieParam = (Sessions.getCurrent().getAttribute("object") != null) ? (ProductSerie) Sessions.getCurrent().getAttribute("object") : null;
+        eventType = WebConstants.EVENT_EDIT;
         initialize();
         initView(eventType, "sp.crud.product");
     }

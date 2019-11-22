@@ -343,14 +343,18 @@ public class ReportMetrologicalControlController extends GenericAbstractListCont
     }
 
     public void getData() {
-        dtbBeginningDate.setFormat("yyyy/MM/dd");
+    	dtbBeginningDate.setFormat("yyyy/MM/dd");
         dtbBeginningDate.setValue(new Timestamp(new java.util.Date().getTime()));
+        dtbBeginningDate.setText("");
         dtbEndingDate.setFormat("yyyy/MM/dd");
         dtbEndingDate.setValue(new Timestamp(new java.util.Date().getTime()));
+        dtbEndingDate.setText("");
         dtbBeginningDateExit.setFormat("yyyy/MM/dd");
         dtbBeginningDateExit.setValue(new Timestamp(new java.util.Date().getTime()));
+        dtbBeginningDateExit.setText("");
         dtbEndingDateExit.setFormat("yyyy/MM/dd");
         dtbEndingDateExit.setValue(new Timestamp(new java.util.Date().getTime()));
+        dtbEndingDateExit.setText("");
         loadBraunds(null);
         loadEnterCalibration(null);
         loadCategory();
