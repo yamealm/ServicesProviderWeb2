@@ -149,8 +149,9 @@ public class ReportWaitController extends GenericAbstractListController<ProductS
 			}
             _request.setParams(params);
             _request.setParam(true);
-            productSeries = productEJB.searchProductSerie(_request);
-            loadList(productSeries);
+            TransactionType ttype = (TransactionType) cmbTransactionType.getSelectedItem().getValue();
+			productSeries = productEJB.searchProductSerie(_request);
+			loadList(productSeries,ttype.getId().equals(TransactionType.ENTRY));
             AccessControl.saveAction(Permission.REPORT_WAIT, "Se busco reporte de productos en espera");
          
         } catch (GeneralException ex) {
@@ -225,15 +226,11 @@ public class ReportWaitController extends GenericAbstractListController<ProductS
     }
     
     private void loadTransactionType() {
-        try {
+    	try {
         	cmbTransactionType.getItems().clear();
             List<TransactionType> transactionTypes = transactionEJB.getTransactionTypes();
-            Comboitem item = new Comboitem();
-            item.setLabel(Labels.getLabel("sp.common.all"));
-            item.setParent(cmbTransactionType);
-            cmbTransactionType.setSelectedItem(item);
             for (int i = 0; i < transactionTypes.size(); i++) {
-                item = new Comboitem();
+            	Comboitem item = new Comboitem();
                 item.setValue(transactionTypes.get(i));
                 if (transactionTypes.get(i).getId().equals(TransactionType.ENTRY)) {
                 	item.setLabel(Labels.getLabel("sp.common.entry"));
@@ -241,6 +238,7 @@ public class ReportWaitController extends GenericAbstractListController<ProductS
                 	item.setLabel(Labels.getLabel("sp.common.exit"));
                 }
                 item.setParent(cmbTransactionType);
+                cmbTransactionType.setSelectedIndex(0);
             }
         } catch (Exception ex) {
             this.showError(ex);
@@ -273,7 +271,7 @@ public class ReportWaitController extends GenericAbstractListController<ProductS
     }
 
 
-    public void loadList(List<ProductSerie> list) {
+    public void loadList(List<ProductSerie> list, boolean entry) {
         try {
             lbxReport.getItems().clear();
             Listitem item = null;
@@ -283,17 +281,21 @@ public class ReportWaitController extends GenericAbstractListController<ProductS
                     item.appendChild(new Listcell(productSerie.getProduct().getPartNumber()));
                     item.appendChild(new Listcell(productSerie.getProduct().getDescription()));
                     item.appendChild(new Listcell(productSerie.getProvider().getName()));
-                    if (productSerie.getEndingTransactionId()==null)
+                    int quantity = 0;
+                    if (entry) {
                     	item.appendChild(new Listcell(Labels.getLabel("sp.common.entry")));
-                    else
+                    	quantity = productSerie.getQuantityInto();
+                    }else {
                     	item.appendChild(new Listcell(Labels.getLabel("sp.common.exit")));
+                    	quantity = productSerie.getQuantity();
+                    }
                     item.appendChild(new Listcell(productSerie.getCondition().getName()));
                     item.appendChild(new Listcell(productSerie.getSerie()));
                     item.appendChild(new Listcell(productSerie.getCustomer()!=null?productSerie.getCustomer().getFirstName()+" " +
                     		productSerie.getCustomer().getLastName():null));
-                    item.appendChild(new Listcell(productSerie.getOrderWord()));
+                    item.appendChild(new Listcell(!entry?productSerie.getOrderWord():null));
                     item.appendChild(new Listcell(productSerie.getAmount().toString()));
-                    item.appendChild(new Listcell(String.valueOf(productSerie.getQuantityInto())));
+                    item.appendChild(new Listcell(String.valueOf(quantity)));
                     String date = null;
 					if (productSerie.getCreationDate() != null) {
 						SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -313,7 +315,7 @@ public class ReportWaitController extends GenericAbstractListController<ProductS
 					}
                     item.appendChild(new Listcell(date));
                     date = null;
-                    if (productSerie.getEndingDate() != null) {
+                    if (!entry) {
 						SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 						date = df.format(productSerie.getEndingDate().getTime());
 					}
@@ -406,6 +408,12 @@ public class ReportWaitController extends GenericAbstractListController<ProductS
 	public List<ProductSerie> getFilteredList(String filter) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void loadList(List<ProductSerie> list) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

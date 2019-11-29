@@ -138,7 +138,7 @@ public class DetailedListProductSerieController extends GenericAbstractListContr
 			if (cmbCondition.getSelectedItem() != null && cmbCondition.getSelectedIndex() != 0) {
 				params.put(QueryConstants.PARAM_CONDITION_ID,((Condicion) cmbCondition.getSelectedItem().getValue()).getId());
 			}
-			if (cmbTransactionType.getSelectedItem() != null && cmbTransactionType.getSelectedIndex() != 0) {
+			if (cmbTransactionType.getSelectedItem() != null) {
 				params.put(QueryConstants.PARAM_TRANSACTION_TYPE_ID,((TransactionType) cmbTransactionType.getSelectedItem().getValue()).getId());
 			}
 			if (txtWorkOrder.getText() != null && !txtWorkOrder.getText().equals("") && !txtWorkOrder.getText().isEmpty()) {
@@ -149,8 +149,9 @@ public class DetailedListProductSerieController extends GenericAbstractListContr
 			}
 			_request.setParams(params);
 			_request.setParam(true);
+			TransactionType ttype = (TransactionType) cmbTransactionType.getSelectedItem().getValue();
 			productSeries = productEJB.searchProductSerie(_request);
-			loadList(productSeries);
+			loadList(productSeries,ttype.getId().equals(TransactionType.ENTRY));
 			AccessControl.saveAction(Permission.STOCK, "Se busco listado de productos en stock");
 		} catch (GeneralException ex) {
             showError(ex);
@@ -228,12 +229,8 @@ public class DetailedListProductSerieController extends GenericAbstractListContr
         try {
         	cmbTransactionType.getItems().clear();
             List<TransactionType> transactionTypes = transactionEJB.getTransactionTypes();
-            Comboitem item = new Comboitem();
-            item.setLabel(Labels.getLabel("sp.common.all"));
-            item.setParent(cmbTransactionType);
-            cmbTransactionType.setSelectedItem(item);
             for (int i = 0; i < transactionTypes.size(); i++) {
-                item = new Comboitem();
+            	Comboitem item = new Comboitem();
                 item.setValue(transactionTypes.get(i));
                 if (transactionTypes.get(i).getId().equals(TransactionType.ENTRY)) {
                 	item.setLabel(Labels.getLabel("sp.common.entry"));
@@ -241,6 +238,7 @@ public class DetailedListProductSerieController extends GenericAbstractListContr
                 	item.setLabel(Labels.getLabel("sp.common.exit"));
                 }
                 item.setParent(cmbTransactionType);
+                cmbTransactionType.setSelectedIndex(0);
             }
         } catch (Exception ex) {
             this.showError(ex);
@@ -273,7 +271,7 @@ public class DetailedListProductSerieController extends GenericAbstractListContr
     }
 
 
-    public void loadList(List<ProductSerie> list) {
+    public void loadList(List<ProductSerie> list, boolean entry) {
         try {
             lbxReport.getItems().clear();
             
@@ -286,16 +284,19 @@ public class DetailedListProductSerieController extends GenericAbstractListContr
                     item.appendChild(new Listcell(productSerie.getProduct().getPartNumber()));
                     item.appendChild(new Listcell(productSerie.getProduct().getDescription()));
                     item.appendChild(new Listcell(productSerie.getProvider().getName()));
-                    if (productSerie.getBeginTransactionId().getTransactionType().getId().equals(TransactionType.ENTRY)) {
+                    int quantity = 0;
+                    if (entry) {
                     	item.appendChild(new Listcell(Labels.getLabel("sp.common.entry")));
+                    	quantity = productSerie.getQuantityInto();
                     }else {
                     	item.appendChild(new Listcell(Labels.getLabel("sp.common.exit")));
+                    	quantity = productSerie.getQuantity();
                     }
                     item.appendChild(new Listcell(productSerie.getCondition().getName()));
                     item.appendChild(new Listcell(productSerie.getSerie()));
-                    item.appendChild(new Listcell(productSerie.getOrderWord()));
+                    item.appendChild(new Listcell(!entry?productSerie.getOrderWord():null));
                     item.appendChild(new Listcell(productSerie.getAmount().toString()));
-                    item.appendChild(new Listcell(String.valueOf(productSerie.getBeginTransactionId().getQuantity())));
+                    item.appendChild(new Listcell(String.valueOf(quantity)));
                     String date = null;
 					if (productSerie.getCreationDate() != null) {
 						SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -315,9 +316,9 @@ public class DetailedListProductSerieController extends GenericAbstractListContr
 					}
                     item.appendChild(new Listcell(date));
                     date = null;
-                    if (productSerie.getBeginTransactionId().getTransactionType().getId().equals(TransactionType.EXIT)) {
+                    if (!entry) {
 						SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-						date = df.format(productSerie.getBeginTransactionId().getCreationDate().getTime());
+						date = df.format(productSerie.getEndingDate().getTime());
 					}
                     item.appendChild(new Listcell(date));
                     item.setParent(lbxReport);
@@ -406,6 +407,12 @@ public class DetailedListProductSerieController extends GenericAbstractListContr
 	public List<ProductSerie> getFilteredList(String filter) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void loadList(List<ProductSerie> list) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -146,8 +146,9 @@ public class ReportQuarantineController extends GenericAbstractListController<Pr
 			}
 			_request.setParams(params);
 			_request.setParam(true);
+			TransactionType ttype = (TransactionType) cmbTransactionType.getSelectedItem().getValue();
 			productSeries = productEJB.searchProductSerie(_request);
-			loadList(productSeries);
+			loadList(productSeries,ttype.getId().equals(TransactionType.ENTRY));
 			AccessControl.saveAction(Permission.QUARANTINE, "Se busco reporte de productos en quarentena");
 
         } catch (GeneralException ex) {
@@ -222,15 +223,32 @@ public class ReportQuarantineController extends GenericAbstractListController<Pr
     }
     
     private void loadTransactionType() {
-        try {
+    	   try {
+           	cmbTransactionType.getItems().clear();
+               List<TransactionType> transactionTypes = transactionEJB.getTransactionTypes();
+               for (int i = 0; i < transactionTypes.size(); i++) {
+               	Comboitem item = new Comboitem();
+                   item.setValue(transactionTypes.get(i));
+                   if (transactionTypes.get(i).getId().equals(TransactionType.ENTRY)) {
+                   	item.setLabel(Labels.getLabel("sp.common.entry"));
+                   }else {
+                   	item.setLabel(Labels.getLabel("sp.common.exit"));
+                   }
+                   item.setParent(cmbTransactionType);
+                   cmbTransactionType.setSelectedIndex(0);
+               }
+           } catch (Exception ex) {
+               this.showError(ex);
+           }
+    	   
+    }
+    
+    private void loadProduct() {
+    	try {
         	cmbTransactionType.getItems().clear();
             List<TransactionType> transactionTypes = transactionEJB.getTransactionTypes();
-            Comboitem item = new Comboitem();
-            item.setLabel(Labels.getLabel("sp.common.all"));
-            item.setParent(cmbTransactionType);
-            cmbTransactionType.setSelectedItem(item);
             for (int i = 0; i < transactionTypes.size(); i++) {
-                item = new Comboitem();
+            	Comboitem item = new Comboitem();
                 item.setValue(transactionTypes.get(i));
                 if (transactionTypes.get(i).getId().equals(TransactionType.ENTRY)) {
                 	item.setLabel(Labels.getLabel("sp.common.entry"));
@@ -238,39 +256,16 @@ public class ReportQuarantineController extends GenericAbstractListController<Pr
                 	item.setLabel(Labels.getLabel("sp.common.exit"));
                 }
                 item.setParent(cmbTransactionType);
+                cmbTransactionType.setSelectedIndex(0);
             }
         } catch (Exception ex) {
             this.showError(ex);
         }
 
     }
-    
-    private void loadProduct() {
-        try {
-        	cmbProduct.getItems().clear();
-        	EJBRequest request2 = new EJBRequest();
-            List<Product> products = productEJB.getProducts(request2);
-            Comboitem item = new Comboitem();
-            item.setLabel(Labels.getLabel("sp.common.all"));
-            item.setParent(cmbProduct);
-            cmbProduct.setSelectedItem(item);
-            for (int i = 0; i < products.size(); i++) {
-				if (products.get(i).getCategory().getId().equals(Category.QUARANTINE)) {
-					item = new Comboitem();
-					item.setValue(products.get(i));
-					item.setLabel(products.get(i).getDescription());
-					item.setParent(cmbProduct);
-				}
-            }
-        } catch (EmptyListException ex) {
-        } catch (Exception ex) {
-            this.showError(ex);
-        }
-
-    }
 
 
-    public void loadList(List<ProductSerie> list) {
+    public void loadList(List<ProductSerie> list, boolean entry) {
         try {
             lbxReport.getItems().clear();
             Listitem item = null;
@@ -281,17 +276,21 @@ public class ReportQuarantineController extends GenericAbstractListController<Pr
                     item.appendChild(new Listcell(productSerie.getProduct().getPartNumber()));
                     item.appendChild(new Listcell(productSerie.getProduct().getDescription()));
                     item.appendChild(new Listcell(productSerie.getProvider().getName()));
-                    if (productSerie.getEndingTransactionId()==null)
+                    int quantity = 0;
+                    if (entry) {
                     	item.appendChild(new Listcell(Labels.getLabel("sp.common.entry")));
-                    else
+                    	quantity = productSerie.getQuantityInto();
+                    }else {
                     	item.appendChild(new Listcell(Labels.getLabel("sp.common.exit")));
+                    	quantity = productSerie.getQuantity();
+                    }
                     item.appendChild(new Listcell(productSerie.getCondition().getName()));
                     item.appendChild(new Listcell(productSerie.getSerie()));
                     item.appendChild(new Listcell(productSerie.getCustomer()!=null?productSerie.getCustomer().getFirstName()+" " +
                     		productSerie.getCustomer().getLastName():null));
-                    item.appendChild(new Listcell(productSerie.getOrderWord()));
+                    item.appendChild(new Listcell(!entry?productSerie.getOrderWord():null));
 //                    item.appendChild(new Listcell(productSerie.getAmount().toString()));
-                    item.appendChild(new Listcell(String.valueOf(productSerie.getQuantityInto())));
+                    item.appendChild(new Listcell(String.valueOf(quantity)));
                     String date = null;
 					if (productSerie.getCreationDate() != null) {
 						SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -311,7 +310,7 @@ public class ReportQuarantineController extends GenericAbstractListController<Pr
 //					}
 //                    item.appendChild(new Listcell(date));
                     date = null;
-                    if (productSerie.getEndingDate() != null) {
+                    if (!entry) {
 						SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 						date = df.format(productSerie.getEndingDate().getTime());
 					}
@@ -405,6 +404,12 @@ public class ReportQuarantineController extends GenericAbstractListController<Pr
 	public List<ProductSerie> getFilteredList(String filter) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void loadList(List<ProductSerie> list) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
