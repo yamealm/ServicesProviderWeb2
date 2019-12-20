@@ -115,6 +115,9 @@ public class AdminAddTransitController extends GenericAbstractAdminController {
         customerEJB = (CustomerEJB) EJBServiceLocator.getInstance().get(EjbConstants.CUSTOMER_EJB);
         user = AccessControl.loadCurrentUser();
         eventType =WebConstants.EVENT_ADD;
+        dtxExpiration.setValue(new Timestamp(new Date().getTime()));
+        dtxCure.setValue(new Timestamp(new Date().getTime()));
+        dtxCreation.setValue(new Timestamp(new Date().getTime()));
         if (customer != null && productParam !=null) {
 			loadFields(productParam!=null?productParam:null);
             loadEnterprises(productParam!=null?productParam.getEnterprise():null);
@@ -139,9 +142,6 @@ public class AdminAddTransitController extends GenericAbstractAdminController {
     public void initialize() {
         super.initialize();
         try {
-            dtxExpiration.setValue(new Timestamp(new Date().getTime()));
-            dtxCure.setValue(new Timestamp(new Date().getTime()));
-            dtxCreation.setValue(new Timestamp(new Date().getTime()));
             loadData();
         } catch (Exception ex) {
             showError(ex);

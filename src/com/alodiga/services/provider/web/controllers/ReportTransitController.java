@@ -159,7 +159,7 @@ public class ReportTransitController extends GenericAbstractListController<Produ
         } catch (NullParameterException ex) {
             showError(ex);
         } catch (EmptyListException ex) {
-            loadList(null);
+            loadList(null,false);
         }
     }
 
@@ -315,7 +315,7 @@ public class ReportTransitController extends GenericAbstractListController<Produ
 					}
                     item.appendChild(new Listcell(date));
                     date = null;
-                    if (!entry) {
+                    if (!entry && productSerie.getEndingDate()!=null) {
 						SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 						date = df.format(productSerie.getEndingDate().getTime());
 					}

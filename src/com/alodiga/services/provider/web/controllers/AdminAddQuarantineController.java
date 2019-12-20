@@ -117,6 +117,9 @@ public class AdminAddQuarantineController extends GenericAbstractAdminController
         customerEJB = (CustomerEJB) EJBServiceLocator.getInstance().get(EjbConstants.CUSTOMER_EJB);
         user = AccessControl.loadCurrentUser();
         eventType =WebConstants.EVENT_ADD;
+        dtxExpiration.setValue(new Timestamp(new Date().getTime()));
+        dtxCure.setValue(new Timestamp(new Date().getTime()));
+        dtxCreation.setValue(new Timestamp(new Date().getTime()));
 		if (customer != null && productParam !=null) {
 			loadFields(productParam!=null?productParam:null);
             loadEnterprises(productParam!=null?productParam.getEnterprise():null);
@@ -142,9 +145,6 @@ public class AdminAddQuarantineController extends GenericAbstractAdminController
         super.initialize();
         try {
 
-            dtxExpiration.setValue(new Timestamp(new Date().getTime()));
-            dtxCure.setValue(new Timestamp(new Date().getTime()));
-            dtxCreation.setValue(new Timestamp(new Date().getTime()));
             loadData();
         } catch (Exception ex) {
             showError(ex);
@@ -202,6 +202,9 @@ public class AdminAddQuarantineController extends GenericAbstractAdminController
             this.showMessage("sp.error.field.cannotNull", true, null);
         }else if (txtPartNumber.getText().isEmpty()) {
         	txtPartNumber.setFocus(true);
+            this.showMessage("sp.error.field.cannotNull", true, null);
+        }else if (txtQuarantine.getText().isEmpty()) {
+        	txtQuarantine.setFocus(true);
             this.showMessage("sp.error.field.cannotNull", true, null);
         }else if (intStockMin.getValue()>intStockMax.getValue()) {
         	intStockMin.setFocus(true);

@@ -10,6 +10,7 @@ import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zk.ui.SuspendNotAllowedException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zul.Button;
@@ -22,6 +23,7 @@ import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Window;
 
 import com.alodiga.services.provider.commons.ejbs.CustomerEJB;
 import com.alodiga.services.provider.commons.ejbs.TransactionEJB;
@@ -76,6 +78,7 @@ public class AdminEgressStockController extends GenericAbstractAdminController {
     private List<Enterprise> enterprises;
     private List<Category> categories;
     private List<Customer> customers;
+    private Customer customer = null;
     private User user;
     private Button btnSave;
 
@@ -83,9 +86,19 @@ public class AdminEgressStockController extends GenericAbstractAdminController {
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
         productParam = (Sessions.getCurrent().getAttribute("object") != null) ? (Product) Sessions.getCurrent().getAttribute("object") : null;
+        customer = (Sessions.getCurrent().getAttribute("customer") != null) ? (Customer) Sessions.getCurrent().getAttribute("customer") : null;
         user = AccessControl.loadCurrentUser();
-        initialize();
-        initView(eventType, "sp.crud.product");
+        utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
+		transactionEJB = (TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
+		customerEJB = (CustomerEJB) EJBServiceLocator.getInstance().get(EjbConstants.CUSTOMER_EJB);
+		dtxExit.setValue(new Timestamp(new Date().getTime()));
+		if (customer != null && productParam != null) {
+			loadData();
+			loadCustomer(customer);
+		} else if (customer == null) {
+			initialize();
+		}
+		initView(eventType, "sp.crud.product");
     }
 
     @Override
@@ -96,14 +109,7 @@ public class AdminEgressStockController extends GenericAbstractAdminController {
     @Override
     public void initialize() {
         super.initialize();
-        try {
-            utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
-            transactionEJB = (TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
-            customerEJB = (CustomerEJB) EJBServiceLocator.getInstance().get(EjbConstants.CUSTOMER_EJB);
-            dtxExit.setValue(new Timestamp(new Date().getTime()));
-        } catch (Exception ex) {
-            showError(ex);
-        }
+       
     }
 
     public void clearFields() {
@@ -175,15 +181,11 @@ public class AdminEgressStockController extends GenericAbstractAdminController {
     }
 
 
-    public void onClick$btnSave() {
-            switch (eventType) {
-                case WebConstants.EVENT_DELETE:
-                    saveProduct(null);
-                    break;
-                default:
-                    break;
-            }
-    }
+	public void onClick$btnSave() {
+		if (validateEmpty())
+			saveProduct();
+
+	}
 
     
 
@@ -367,9 +369,7 @@ public class AdminEgressStockController extends GenericAbstractAdminController {
                 cmbItem.setParent(cmbCustomer);
                 if (customer != null && customer.getId().equals(e.getId())) {
                 	cmbCustomer.setSelectedItem(cmbItem);
-                } else {
-                	cmbCustomer.setSelectedIndex(0);
-                }
+                } 
             }
         } catch (EmptyListException ex) {
         } catch (Exception ex) {
@@ -377,12 +377,10 @@ public class AdminEgressStockController extends GenericAbstractAdminController {
         }
     }
 
-    private void saveProduct(Transaction _transaction) {
+    private void saveProduct() {
         Transaction transaction = new Transaction();
         try {
 
-            if (_transaction != null) 
-            	transaction.setId(_transaction.getId());
             transaction.setProduct(productParam);
             Category category =(Category) cmbCategory.getSelectedItem().getValue();
             transaction.setCategory(category);
@@ -438,6 +436,23 @@ public class AdminEgressStockController extends GenericAbstractAdminController {
         }
     }
     
-   
+    public void onClick$btnSearchCustomer() {
+   	 Window window = (Window)Executions.createComponents("catCustomers.zul", null, null);
+   	 Sessions.getCurrent().setAttribute("page","adminEgressStock.zul");
+        try {
+			window.doModal();
+		} catch (SuspendNotAllowedException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+   }
+	 
+	 
+	 public void onClick$btnRemove() {
+		 cmbCustomer.setSelectedItem(null);
+		 cmbCustomer.setValue(null);
+		 cmbCustomer.setText("");
+	}
     
 } 

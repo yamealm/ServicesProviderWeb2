@@ -117,6 +117,8 @@ public class AdminAddStockController extends GenericAbstractAdminController {
         customerEJB = (CustomerEJB) EJBServiceLocator.getInstance().get(EjbConstants.CUSTOMER_EJB);
         user = AccessControl.loadCurrentUser();
         eventType =WebConstants.EVENT_ADD;
+        dtxExpiration.setValue(new Timestamp(new Date().getTime()));
+        dtxCure.setValue(new Timestamp(new Date().getTime()));
         if (provider != null && productParam !=null) {
 			loadFields(productParam!=null?productParam:null);
             loadEnterprises(productParam!=null?productParam.getEnterprise():null);
@@ -142,8 +144,7 @@ public class AdminAddStockController extends GenericAbstractAdminController {
         super.initialize();
         try {
 
-            dtxExpiration.setValue(new Timestamp(new Date().getTime()));
-            dtxCure.setValue(new Timestamp(new Date().getTime()));
+           
             loadData();
         } catch (Exception ex) {
             showError(ex);

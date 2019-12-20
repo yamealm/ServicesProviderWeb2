@@ -91,11 +91,13 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
         productSerieParam = (Sessions.getCurrent().getAttribute("object") != null) ? (ProductSerie) Sessions.getCurrent().getAttribute("object") : null;
+        customer = (Sessions.getCurrent().getAttribute("customer") != null) ? (Customer) Sessions.getCurrent().getAttribute("customer") : null;
         productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
         utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
         transactionEJB = (TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
         customerEJB = (CustomerEJB) EJBServiceLocator.getInstance().get(EjbConstants.CUSTOMER_EJB);
         user = AccessControl.loadCurrentUser();
+        dtxExit.setValue(new Timestamp(new Date().getTime()));
         if (customer != null && productSerieParam !=null) {
 			loadData();
             loadCustomer(customer);
@@ -114,7 +116,7 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
     public void initialize() {
         super.initialize();
         try {
-            dtxExit.setValue(new Timestamp(new Date().getTime()));
+           
             loadData();
         } catch (Exception ex) {
             showError(ex);
@@ -298,8 +300,7 @@ public class AdminEgressUnitQuarantineController extends GenericAbstractAdminCon
                 	cmbCustomer.setSelectedItem(cmbItem);
                 }  
             }
-            if (!customers.isEmpty())
-            	cmbCustomer.setSelectedIndex(1);
+            
         } catch (EmptyListException ex) {
         } catch (Exception ex) {
             showError(ex);

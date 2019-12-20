@@ -40,6 +40,7 @@ import com.alodiga.services.provider.commons.utils.EjbConstants;
 import com.alodiga.services.provider.commons.utils.GeneralUtils;
 import com.alodiga.services.provider.web.generic.controllers.GenericAbstractAdminController;
 import com.alodiga.services.provider.web.utils.AccessControl;
+import com.alodiga.services.provider.web.utils.WebConstants;
 
 public class AdminEgressUnitWaitController extends GenericAbstractAdminController {
 
@@ -90,11 +91,13 @@ public class AdminEgressUnitWaitController extends GenericAbstractAdminControlle
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
         productSerieParam = (Sessions.getCurrent().getAttribute("object") != null) ? (ProductSerie) Sessions.getCurrent().getAttribute("object") : null;
+        customer = (Sessions.getCurrent().getAttribute("customer") != null) ? (Customer) Sessions.getCurrent().getAttribute("customer") : null;
         productEJB = (ProductEJB) EJBServiceLocator.getInstance().get(EjbConstants.PRODUCT_EJB);
         utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
         transactionEJB = (TransactionEJB) EJBServiceLocator.getInstance().get(EjbConstants.TRANSACTION_EJB);
         customerEJB = (CustomerEJB) EJBServiceLocator.getInstance().get(EjbConstants.CUSTOMER_EJB);
         user = AccessControl.loadCurrentUser();
+        dtxExit.setValue(new Timestamp(new Date().getTime()));
         if (customer != null && productSerieParam !=null) {
 			loadData();
             loadCustomer(customer);
@@ -102,7 +105,6 @@ public class AdminEgressUnitWaitController extends GenericAbstractAdminControlle
 			initialize();
 		}
 		initView(eventType, "sp.crud.product");
-        initView(eventType, "sp.crud.product");
     }
 
     @Override
@@ -114,7 +116,6 @@ public class AdminEgressUnitWaitController extends GenericAbstractAdminControlle
     public void initialize() {
         super.initialize();
         try {
-            dtxExit.setValue(new Timestamp(new Date().getTime()));
             loadData();
         } catch (Exception ex) {
             showError(ex);
@@ -208,7 +209,8 @@ public class AdminEgressUnitWaitController extends GenericAbstractAdminControlle
 
 
 	public void onClick$btnSave() {
-		saveProduct();
+		if (validateEmpty())
+			saveProduct();
 	}
 
     
