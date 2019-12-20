@@ -132,6 +132,10 @@
                                                                 <label value="${c:l('sp.common.phoneNumber.example')}" sclass="lblexample"/>
                                                             </hlayout>
                                                         </row>
+                                                         <row>
+                                                            <label value="${c:l('sp.automatic.commission.title')}" sclass="lblbold"/>
+                                                            <checkbox id="cbxAutomatic" checked="true"/>
+                                                        </row>
                                                         <row>
                                                             <label value="${c:l('sp.common.enabled')}" sclass="lblbold"/>
                                                             <checkbox id="cbxEnabled" checked="true"/>

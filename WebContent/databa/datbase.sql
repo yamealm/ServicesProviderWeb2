@@ -987,5 +987,10 @@ INSERT INTO `services`.`enterprise_has_email` (`id`, `email`, `enterpriseId`) VA
 ALTER TABLE `services`.`product_serie` 
 ADD COLUMN `quantityRest` INT(3) NULL DEFAULT NULL AFTER `quarantineStatusId`;
 
+//20-12-2019
+ALTER TABLE `services`.`enterprise` 
+ADD COLUMN `automatic` TINYINT(1) NULL AFTER `infoEmail`;
+
+UPDATE `services`.`enterprise` SET `automatic` = '1' WHERE (`id` = '1');
 
 

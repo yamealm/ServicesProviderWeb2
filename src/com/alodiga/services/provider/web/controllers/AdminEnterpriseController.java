@@ -17,14 +17,14 @@ import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Textbox;
 
+import com.alodiga.services.provider.commons.ejbs.AutomaticProcessControlTimerEJB;
+import com.alodiga.services.provider.commons.ejbs.AutomaticProcessTimerEJB;
 import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
 import com.alodiga.services.provider.commons.models.Country;
 import com.alodiga.services.provider.commons.models.Currency;
-import com.alodiga.services.provider.commons.models.Customer;
 import com.alodiga.services.provider.commons.models.Enterprise;
 import com.alodiga.services.provider.commons.models.EnterpriseHasEmail;
 import com.alodiga.services.provider.commons.models.Permission;
-import com.alodiga.services.provider.commons.models.ProductSerie;
 import com.alodiga.services.provider.commons.utils.EJBServiceLocator;
 import com.alodiga.services.provider.commons.utils.EjbConstants;
 import com.alodiga.services.provider.web.components.DeleteButton;
@@ -44,9 +44,12 @@ public class AdminEnterpriseController extends GenericAbstractAdminController {
     private Textbox txtInfoEmail;
     private Textbox txtATCNumber;
     private Checkbox cbxEnabled;
+    private Checkbox cbxAutomatic;
     private Combobox cmbCurrencies;
     private Combobox cmbCountries;
     private UtilsEJB utilsEJB = null;
+    private AutomaticProcessTimerEJB automaticProcessTimerEJB = null;
+    private AutomaticProcessControlTimerEJB automaticProcessControlTimerEJB = null;
     private Enterprise enterpriseParam;
     private Listbox lbxRecords;
     private Button btnSave;
@@ -74,6 +77,8 @@ public class AdminEnterpriseController extends GenericAbstractAdminController {
         super.initialize();
         try {
             utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
+            automaticProcessTimerEJB = (AutomaticProcessTimerEJB) EJBServiceLocator.getInstance().get(EjbConstants.AUTOMATIC_PROCESS_TIMER_EJB);
+            automaticProcessControlTimerEJB = (AutomaticProcessControlTimerEJB) EJBServiceLocator.getInstance().get(EjbConstants.AUTOMATIC_PROCESS_CONTROL_TIMER_EJB);
         } catch (Exception ex) {
             showError(ex);
         }
@@ -89,6 +94,7 @@ public class AdminEnterpriseController extends GenericAbstractAdminController {
         txtATCNumber.setRawValue(null);
         txtEmail2.setRawValue(null);
         cbxEnabled.setChecked(true);
+        cbxAutomatic.setChecked(true);
     }
 
     private void loadFields(Enterprise enterprise) {
@@ -100,6 +106,7 @@ public class AdminEnterpriseController extends GenericAbstractAdminController {
         txtInfoEmail.setText(enterprise.getInfoEmail());
         txtATCNumber.setText(enterprise.getAtcNumber());
         cbxEnabled.setChecked(enterprise.getEnabled());
+        cbxAutomatic.setChecked(enterprise.getAutomatic());
         try {
         	List<EnterpriseHasEmail> emails = utilsEJB.getEnterpriseHasEmails();
         	loadList(emails);
@@ -195,6 +202,7 @@ public class AdminEnterpriseController extends GenericAbstractAdminController {
         txtInfoEmail.setReadonly(true);
         txtATCNumber.setReadonly(true);
         cbxEnabled.setDisabled(true);
+        cbxAutomatic.setDisabled(true);
         btnSave.setVisible(false);
         btnSaveEmail.setVisible(false);
         active = false;
@@ -242,7 +250,7 @@ public class AdminEnterpriseController extends GenericAbstractAdminController {
             enterprise.setInvoiceAddress(txtInvoiceAddress.getText());
             enterprise.setUrl(txtURL.getText());
             enterprise.setEnabled(cbxEnabled.isChecked());
-           
+            enterprise.setAutomatic(cbxAutomatic.isChecked());
             if (_enterprise != null) {
                 enterprise.setId(_enterprise.getId());
             }
@@ -250,7 +258,13 @@ public class AdminEnterpriseController extends GenericAbstractAdminController {
             enterprise = utilsEJB.saveEnterprise(request);
             enterpriseParam = enterprise;
             this.showMessage("sp.common.save.success", false, null);
-
+            if (cbxAutomatic.isChecked()) {
+				automaticProcessTimerEJB.restart();
+				automaticProcessControlTimerEJB.restart();
+			}else{
+				automaticProcessTimerEJB.stop();;
+				automaticProcessControlTimerEJB.stop();;
+			}
         } catch (Exception ex) {
             showError(ex);
         }

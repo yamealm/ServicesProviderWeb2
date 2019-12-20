@@ -17,6 +17,8 @@ import org.zkoss.zk.ui.metainfo.LanguageDefinition;
 
 import com.alodiga.services.provider.commons.ejbs.AccessControlEJB;
 import com.alodiga.services.provider.commons.ejbs.AuditoryEJB;
+import com.alodiga.services.provider.commons.ejbs.AutomaticProcessControlTimerEJB;
+import com.alodiga.services.provider.commons.ejbs.AutomaticProcessTimerEJB;
 import com.alodiga.services.provider.commons.ejbs.UserEJB;
 import com.alodiga.services.provider.commons.ejbs.UtilsEJB;
 import com.alodiga.services.provider.commons.exceptions.DisabledUserException;
@@ -52,6 +54,8 @@ public class AccessControl {
     static EJBRequest request = null;
     private static UserEJB userEJB = null;
     private static UtilsEJB utilsEJB;
+    private static AutomaticProcessTimerEJB automaticProcessTimerEJB = null;
+    private static AutomaticProcessControlTimerEJB automaticProcessControlTimerEJB = null;
     LanguageDefinition definition;
 
     public static boolean savePermissionUser(List<UserHasProfileHasEnterprise> userHasProfiles, Long enterpriseId) {
@@ -102,10 +106,22 @@ public class AccessControl {
         boolean valid = false;
         User user = null;
         accessEjb = (AccessControlEJB) EJBServiceLocator.getInstance().get(EjbConstants.ACCESS_CONTROL_EJB);
+        automaticProcessTimerEJB = (AutomaticProcessTimerEJB) EJBServiceLocator.getInstance().get(EjbConstants.AUTOMATIC_PROCESS_TIMER_EJB);
+        automaticProcessControlTimerEJB = (AutomaticProcessControlTimerEJB) EJBServiceLocator.getInstance().get(EjbConstants.AUTOMATIC_PROCESS_CONTROL_TIMER_EJB);
+        utilsEJB = (UtilsEJB) EJBServiceLocator.getInstance().get(EjbConstants.UTILS_EJB);
         //     request.setAuditData(getCurrentAudit());
         user = accessEjb.validateUser(login, Encoder.MD5(password));
         List<UserHasProfileHasEnterprise> userHasProfileHasEnterprises = user.getUserHasProfileHasEnterprises();
         if (userHasProfileHasEnterprises != null && userHasProfileHasEnterprises.size() > 0 && user.getEnabled()) {
+        	try {
+        		Enterprise enterprise = utilsEJB.loadEnterprisebyId(Enterprise.TURBINES);
+				if (enterprise.getAutomatic()) {
+					automaticProcessTimerEJB.restart();
+					automaticProcessControlTimerEJB.restart();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
             AccessControl.savePermissionUser(userHasProfileHasEnterprises, Enterprise.TURBINES);
             Sessions.getCurrent().setAttribute(WebConstants.SESSION_USER, user);
             saveAction(null, Permission.LOG_IN);
